@@ -1,0 +1,247 @@
+contents:
+  -
+    title: 100+ Working Examples
+    icon: fa-pencil
+    description: >
+      Learn by doing! With more than 100 working examples,
+      you immediately put into practice everything you learn.
+      Every code sample comes with a full step-by-step explanation,
+      so you don't have to spend time to guess how things work.
+  -
+    title: 11 Chapters
+    icon: fa-signal
+    description: >
+      Every chapter will bring you one step closer to becoming a Node.js
+      expert.
+      From the basics of the Node.js architecture to how to scale and
+      distribute your application, the book covers almost every aspect
+      of Node.js development.
+  -
+    title: +500 Pages
+    icon: fa-files-o
+    description: >
+      A good learning experience can't be achieved by only throwing code
+      and notions at the reader.
+      Node.js Design Patterns comes with in-depth explanations and
+      examples, so that even a novice can follow and immediately take
+      advantage of advanced techniques.
+
+chapters:
+  -
+    title: Chapter 1
+    icon: fa-university
+    subtitle: Welcome to the Node.js Platform
+    description: >
+      This chapter serves as an introduction to the world of Node.js application
+       design by showing the patterns at the core of the platform itself. It
+       covers the Node.js ecosystem and its philosophy, a short introduction to
+       Node.js version 6, ES2015, and the reactor pattern.
+  -
+    title: Chapter 2
+    icon: ~
+    subtitle: Node.js Essential Patterns
+    description: >
+      This chapter introduces the first steps towards asynchronous coding and
+      design patterns with Node.js discussing and comparing callbacks and the
+      event emitter (observer pattern). This chapter also introduces the
+      Node.js module system and the related module pattern.
+  -
+    title: Chapter 3
+    icon: ~
+    subtitle: Asynchronous Control Flow Patterns with Callbacks
+    description: >
+      The third chapter introduces a set of patterns and techniques for
+      efficiently handling asynchronous control flow in Node.js. This chapter
+      teaches you how to mitigate the "callback hell" problem using plain
+      JavaScript and the async library.
+  -
+    title: Chapter 4
+    icon: ~
+    subtitle: Asynchronous Control Flow Patterns with ES2015 and Beyond
+    description: >
+      In this chapter we progress with the exploration of asynchronous control
+      flows introducing Promises, Generators, and Async-Await.
+  -
+    title: Chapter 5
+    icon: ~
+    subtitle: Coding with Streams
+    description: >
+      This chapter dives deep into one of the most important patterns in
+      Node.js: streams. It shows you how to process data with transform streams
+      and how to combine them into different layouts.
+  -
+    title: Chapter 6
+    icon: ~
+    subtitle: Design Patterns
+    description: >
+      The sixth chapter deals with a controversial topic: traditional design
+      patterns in Node.js. It covers the most popular conventional design
+      patterns and shows you how unconventional they might look in Node.js.
+      It also introduces the reader to some emerging design patterns that are
+      specific only to JavaScript and Node.js.
+  -
+    title: Chapter 7
+    icon: ~
+    subtitle: Wiring Modules
+    description: >
+      This chapter analyzes the different solutions for linking the modules
+      of an application together. In this chapter, you will learn design
+      patterns such as Dependency Injection and service locator.
+  -
+    title: Chapter 8
+    icon: ~
+    subtitle: Universal JavaScript for Web Applications
+    description: >
+      This part of the book explores one of the most interesting capabilities
+      of modern JavaScript web applications: being able to share application
+      code between the frontend and the backend. Across this chapter we learn
+      the basic principles of Universal JavaScript by building a simple web
+      application with React, Webpack, and Babel.
+  -
+    title: Chapter 9
+    icon: ~
+    subtitle: Advanced Asynchronous Recipes
+    description: >
+      The ninth chapter takes a problem-solution approach to show you how some
+      common coding and design challenges can be solved with ready-to-use
+      solutions.
+  -
+    title: Chapter 10
+    icon: ~
+    subtitle: Scalability and Architectural Patterns
+    description: >
+      This chapter teaches you the basic techniques and patterns for scaling a
+      Node.js application.
+  -
+    title: Chapter 11
+    icon: ~
+    subtitle: Messaging and Integration Patterns
+    description: >
+      The final chapter presents the most important messaging patterns, teaching
+      you how to build and integrate complex distributed systems using ZMQ and
+      AMQP.
+
+reviews:
+  amazon:
+    -
+      text: The Node.js Bible
+      link: http://www.amazon.com/gp/review/RO4E0U4NF5S35
+    -
+      text: Awesome. Information Gold
+      link: http://www.amazon.com/gp/review/RBGSMRK8K5IGZ
+    -
+      text: The code examples are simple and brilliant
+      link: http://www.amazon.com/gp/review/R1VQZOYSWWOYP0
+    -
+      text: Easily the best book on Node.js
+      link: http://www.amazon.com/review/RAE3QHZ27Q91
+    -
+      text: Clear explanations of complex topics
+      link: http://www.amazon.com/gp/review/R24RI7U5UNR1DK
+    -
+      text: An indispensable book for every node developer
+      link: http://www.amazon.com/gp/customer-reviews/R178UOZ3QR5QSB
+    -
+      text: Great book, which is rare these days.
+      link: http://www.amazon.com/gp/customer-reviews/R1LAVWAZ4JKSUW
+    -
+      text: If you are doing anything with Node, this book should be on your shelf/iPad/Kindle.
+      link: http://www.amazon.com/gp/customer-reviews/R1D62GFOG7Y2QV
+
+  twitter:
+    -
+      text: It&#39;s hard to find good intermediate/advanced <a href="https://twitter.com/hashtag/nodejs?src=hash">#nodejs</a> resources, but <a href="https://twitter.com/mariocasciaro">@mariocasciaro</a>&#39;s Node.js Design Patterns delivers. Check it out
+      author: Chad Wyszynski (@nimbus154)
+      date: September 4, 2015
+      link: https://twitter.com/nimbus154/status/639674793327853568
+    -
+      text: As painful as it is to admit, <a href="https://twitter.com/mariocasciaro">@mariocasciaro</a> has written the best book on Node.js out there: <a href="http://t.co/LIbUtf6qQ4">http://t.co/LIbUtf6qQ4</a>
+      author: Sandro Pasquali (@spasquali)
+      date: March 2, 2015
+      link: https://twitter.com/spasquali/status/572460695058563072
+    -
+      text: The Node.js Design Patterns book is awesome <a href="https://twitter.com/mariocasciaro">@mariocasciaro</a>! It has really helped me to understand and work with <a href="https://twitter.com/hashtag/nodejs?src=hash">#nodejs</a>.
+      author: Romel Pérez (@ronelprhone)
+      date: September 2, 2015
+      link: https://twitter.com/ronelprhone/status/639198104206581760
+    -
+      text: &quot;Node.js design patterns&quot; was the best book I read about <a href="https://twitter.com/hashtag/scaling?src=hash">#scaling</a> a <a href="https://twitter.com/hashtag/nodejs?src=hash">#nodejs</a> application. I highly recommend it. Thank you <a href="https://twitter.com/mariocasciaro">@mariocasciaro</a>
+      author: Emmanuel Bourmalo (@ebourmalo)
+      date: May 7, 2015
+      link: https://twitter.com/ebourmalo/status/596277268625760256
+
+authors:
+  -
+    name: Mario Casciaro
+    image: mario-casciaro-nodejs-design-patterns.jpg
+    description1: >
+      <strong>Mario Casciaro</strong> is a software engineer and entrepreneur,
+      passionate about technology, science and open source knowledge. Mario
+      graduated with a master's degree in software engineering and started his
+      professional career at IBM where he worked for several years on different
+      enterprise products such as Tivoli Endpoint Manager, Cognos Insight, and
+      SalesConnect.
+      Next, he moved to D4H Technologies, a growing SaaS company, to lead the
+      development of a new bleeding-edge product for managing emergency
+      operations in real-time. Currently, Mario is the co-founder and CEO of
+      <a href="http://sponsorama.com" target="_blank">Sponsorama.com</a>, a
+      platform to help online projects raise funds through corporate sponsorship.
+    description2: >
+      Mario is also the author of the first edition of Node.js Design Patterns
+      (<em>first edition</em>).
+    links:
+      - {type: home, href: "https://www.mariocasciaro.me"}
+      - {type: twitter, href: "https://twitter.com/mariocasciaro"}
+      - {type: github, href: "https://github.com/mariocasciaro"}
+      - {type: linkedin, href: "https://www.linkedin.com/in/mariocasciaro"}
+      - {type: envelope, href: "mailto:mario@nodejsdesignpatterns.com"}
+  -
+    name: Luciano Mammino
+    image: luciano-mammino-nodejs-design-patterns.jpg
+    description1: >
+      <strong>Luciano Mammino</strong> is a software engineer born in 1987, the
+      same year that the Nintendo released Super Mario Bros in Europe, which by
+      chance is his favorite video-game. He started coding at the age of 12
+      using his father's old Intel 386, provided only with the DOS operating
+      system and the qBasic interpreter.
+      After a master's degree in computer science he developed his programming
+      skills mostly as a web developer working mainly as freelancer for
+      companies and startups all around Italy. After a start-up parenthesis of 3
+      years as CTO and co-founder of Sbaam.com in Italy and in Ireland,
+      he decided to relocate in Dublin to work as senior PHP engineer at
+      Smartbox.
+    description2: >
+      He loves developing open source libraries and working with frameworks such
+      as Symfony and Express. He is convinced that the JavaScript fame is still
+      at the very beginning and that this technology will have a huge impact in
+      the future of most of the web-and mobile-related technologies. For this
+      reason, he spends most of his free time improving his knowledge of
+      JavaScript and playing with Node.js.
+    links:
+      - {type: home, href: "http://loige.co"}
+      - {type: twitter, href: "https://twitter.com/loige"}
+      - {type: github, href: "https://github.com/lmammino"}
+      - {type: linkedin, href: "https://www.linkedin.com/in/mariocasciaro"}
+      - {type: envelope, href: "mailto:luciano@nodejsdesignpatterns.com"}
+
+buyButtons:
+  -
+    store: packt
+    label: Buy on Packtpub.com
+    link: https://bit.ly/1NR69qw
+    discount: Use promo NODEJSDP50 for 50% off e-book
+  -
+    store: amazon
+    label: Buy on Amazon.com
+    link: http://www.amazon.com/Node-js-Design-Patterns-Mario-Casciaro/dp/1783287314
+    discount: ~
+  -
+    store: google
+    label: Buy on Google Play
+    link: https://play.google.com/store/books/details/Mario_Casciaro_Node_js_Design_Patterns?id=Ys4GBgAAQBAJ
+    discount: ~
+  -
+    store: itunes
+    label: Buy on iTunes
+    link: https://itunes.apple.com/en/book/node.js-design-patterns/id954994790
+    discount: ~

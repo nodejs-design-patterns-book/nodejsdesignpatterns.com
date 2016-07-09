@@ -1,0 +1,200 @@
+doctype html
+html(lang="en")
+  head
+    //
+      Based on the Agency theme from https://github.com/IronSummitMedia/startbootstrap-agency
+
+      License:
+
+       Copyright 2013-2015 Iron Summit Media Strategies, LLC
+
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
+
+           http://www.apache.org/licenses/LICENSE-2.0
+
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    meta(name="description", content="Get the best out of Node.js by mastering a series of patterns and techniques to create modular, scalable, and efficient applications")
+    meta(name="author", content="Mario Casciaro, Luciano Mammino")
+    title Node.js Design Patterns — Second Edition by Mario Casciaro &amp; Luciano Mammino
+    link(href="/css/main.css", rel="stylesheet", type="text/css")
+    link(href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Droid+Serif:400,700,400italic,700italic|Roboto+Slab:400,300,700",rel="stylesheet", type="text/css")
+    //[if lt IE 9]
+    script(src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js")
+    script(src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js")
+    //[endif]
+    script.
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-42283801-2', 'auto');
+      ga('send', 'pageview');
+  body#page-top.index
+    nav.navbar.navbar-default.navbar-fixed-top
+      div.container
+        div.navbar-header.page-scroll
+          button.navbar-toggle(type="button", data-toggle="collapse", data-target="#bs-example-navbar-collapse-1")
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.navbar-brand.page-scroll(href="#page-top") Node.js Design Patterns
+
+        div#bs-example-navbar-collapse-1.collapse.navbar-collapse
+          ul.nav.navbar-nav.navbar-right
+            li.hidden
+              a(href="#page-top")
+            li
+              a.page-scroll(href="#what_you_get") In short
+            li
+              a.page-scroll(href="#journey") Contents
+            li
+              a.page-scroll(href="#sample") Sample
+            li
+              a.page-scroll(href="#praises") Praises
+            li
+              a.page-scroll(href="#author") Author
+            li
+              a.page-scroll.navbar-buy(href="#buy") Buy
+
+    header
+      div.container
+        div.row
+          div.col-sm-4
+            div.book-cover
+              img(src="/img/book-cover-nodejs-design-patterns.jpg", width="100%")
+          div.col-sm-8
+            div.intro-text
+              div.intro-heading Node.js Design Patterns
+              div.intro-subheading Get the best out of Node.js by mastering a series of patterns and techniques to create modular, scalable, and efficient applications
+
+    section
+      div.container
+        div.row
+          div.col-lg-12.text-center
+            h2(style="text-transform: none") Get 50% off the e-book price by using the promo code NODEJSDP50.
+            a.btn.btn-xl.packt(href="http://bit.ly/1NR69qw",target="_blank") Buy now
+
+    section#what_you_get
+      div.container
+        div.row
+          div.col-lg-12.section-heading
+            h2.section-heading-title What you get
+
+        div.row.text-center
+          each content in contents
+            div.col-md-4
+              span.fa-stack.fa-4x
+                i.fa.fa-circle.fa-stack-2x.text-primary
+                i.fa.fa-stack-1x.fa-inverse(class=content.icon)
+              h4.service-heading=content.title
+              p.text-muted.
+                !{content.description}
+
+    section#journey.bg-light-gray
+      div.container
+        div.row
+          div.col-lg-12.section-heading
+            h2 The Journey
+        div.row
+          div.col-lg-12
+            ul.timeline
+              - var i = -1
+              each chapter in chapters
+                - ++i
+                li(class=(i % 2 == 0) ? '' : 'timeline-inverted')
+                  div.timeline-image
+                    i.fa.fa-inverse(class=chapter.icon)
+                  div.timeline-panel
+                    div.timeline-heading
+                      h4=chapter.title
+                      h4.subheading=chapter.subtitle
+                    div.timeline-body
+                      p.text-muted.
+                        !{chapter.description}
+
+    section#sample
+      div.container
+        div.row
+          div.col-lg12.section-heading
+            h2.section-heading-title Download the entire Chapter 1 for free!
+            h2.section-sub-heading Discover the Node way, the reactor pattern and the module system
+        div.row
+          div.col-lg-12.text-center
+            a.btn.btn-xl(href="/other/Nodejs_Design_Patterns_Chapter_01.pdf" target="_blank")
+              i.fa.fa-download Download
+
+    section#praises.bg-light-gray
+      div.container
+        div.row
+          div.col-lg12.section-heading
+            h2.section-heading-title What people say
+        div.row
+          each review in reviews.amazon
+            div.col-sm-12.col-md-6.text-center
+              blockquote
+                div=review.text
+                a.reference(href=review.link, target="_blank") Review on Amazon.com
+        div.row
+          each review in reviews.twitter
+            div.col-sm-12.col-md-6.text-center
+              blockquote.twitter-tweet(lang="en", data-cards="hidden")
+                p(lang="en" dir="ltr").
+                  !{review.text}
+                span &mdash; #{review.author}
+                a(href=review.link, target="_blank")=review.date
+
+    section#author
+      div.container
+        div.row
+          div.col-lg12.section-heading
+            h2.section-heading About the authors
+        each author in authors
+          div.row
+            div.col-md-4.text-center
+              img.author-image(src="/img/" + author.image, alt=author.name + "'s picture")
+            div.col-md-8.text-muted.author-description
+              p.large.
+                !{author.description1}
+              p.large.
+                !{author.description2}
+            ul.list-inline.social-buttons.text-center
+              each link in author.links
+                li
+                  a(href=link.href, target="_blank")
+                    i.fa(class="fa-#{link.type}")
+
+    section#buy.bg-light-gray
+      div.container
+        div.row
+          div.col-lg-12.section-heading
+            h2.section-heading-title Buy the Book
+            h2.section-sub-heading Available in paperback and electronic format
+        div.row
+          each button in buyButtons
+            div.col-md-4.text-center.buy-button-container
+              a.btn.btn-xl(href="https://bit.ly/1NR69qw", class=button.store)
+                if button.discount
+                  span #{button.label}<br/><span style="font-size:10px">#{button.discount}</span>
+                else
+                  span=button.label
+
+    footer
+      div.container
+        div.row
+          div.col-md-12
+            div.copyright Copyright &copy; 2016 Mario Casciaro, Luciano Mammino, Packt Publishing
+            div.copyright All trademarks and registered trademarks are the property of their respective owners
+
+    script(src="js/bundle.js")
+    script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js")
+    script(async, src="https://platform.twitter.com/widgets.js", charset="utf-8")
