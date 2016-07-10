@@ -74,7 +74,9 @@ html(lang="en")
               img(src="/img/book-cover-nodejs-design-patterns.jpg", width="100%")
           div.col-sm-8
             div.intro-text
-              div.intro-heading Node.js Design Patterns
+              div
+                h1.intro-heading Node.js Design Patterns
+                h2 Second Edition
               div.intro-subheading Get the best out of Node.js by mastering a series of patterns and techniques to create modular, scalable, and efficient applications
 
     section
@@ -173,11 +175,11 @@ html(lang="en")
                   !{author.description1}
                 p.large.
                   !{author.description2}
-              ul.list-inline.social-buttons.text-center
-                each link in author.links
-                  li
-                    a(href=link.href, target="_blank")
-                      i.fa(class="fa-" + link.type)
+                ul.list-inline.social-buttons.text-center
+                  each link in author.links
+                    li
+                      a(href=link.href, target="_blank")
+                        i.fa(class="fa-" + link.type)
 
     section#buy.bg-light-gray
       div.container
@@ -200,6 +202,8 @@ html(lang="en")
           div.col-md-12
             div.copyright Copyright &copy; 2016 Mario Casciaro, Luciano Mammino, Packt Publishing
             div.copyright All trademarks and registered trademarks are the property of their respective owners
+            div.copyright.text-muted.
+              Found an error in this website? Help us improve it <a href="https://github.com/nodejs-design-patterns-book/nodejs-design-patterns-book">on <i class="fa fa-github"></i> GitHub</a>
 
     script(src="/js/bundle.js")
     script(src="//use.fontawesome.com/7eb46f7a5c.js")
