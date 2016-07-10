@@ -24,6 +24,7 @@ gulp.task('dev', () => {
   gulp.watch(["./src/index.pug", "./src/data.yml"], ['build:assets:html']);
   gulp.watch("./src/styles/*", ['build:assets:css']);
   gulp.watch("./src/images/*", ['build:assets:images']);
+  gulp.watch("./src/meta/*", ['build:assets:meta']);
   gulp.watch("./build/**/*").on('change', browserSync.reload);
 });
 
@@ -32,7 +33,10 @@ gulp.task('clean', () => {
     './build/css/**/*',
     './build/js/**/*',
     './build/img/**/*',
-    './build/index.html'
+    './build/*.html',
+    './build/*.png',
+    './build/*.ico',
+    './build/*.json'
   ]);
 });
 
@@ -77,8 +81,13 @@ gulp.task('build:assets:images', () => {
     .pipe(gulp.dest('build/img/'));
 });
 
+gulp.task('build:assets:meta', () => {
+  return gulp.src('src/meta/*')
+    .pipe(gulp.dest('build/'));
+});
+
 gulp.task('build:assets', ['build:assets:css', 'build:assets:js',
-  'build:assets:images', 'build:assets:html'
+  'build:assets:images', 'build:assets:meta', 'build:assets:html'
 ]);
 
 gulp.task('build', (cb) => {
