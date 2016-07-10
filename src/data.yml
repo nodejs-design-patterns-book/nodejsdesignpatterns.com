@@ -16,6 +16,7 @@ meta:
     - Engineering
     - Design Patterns
   themeColor: #f8931f
+  canonical: https://nodejs-design-patterns-book.github.io/
 
 contents:
   -
