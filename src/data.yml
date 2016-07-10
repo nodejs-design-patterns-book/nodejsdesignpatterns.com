@@ -38,7 +38,7 @@ chapters:
        Node.js version 6, ES2015, and the reactor pattern.
   -
     title: Chapter 2
-    icon: ~
+    icon: fa-eye
     subtitle: Node.js Essential Patterns
     description: >
       This chapter introduces the first steps towards asynchronous coding and
@@ -47,7 +47,7 @@ chapters:
       Node.js module system and the related module pattern.
   -
     title: Chapter 3
-    icon: ~
+    icon: fa-heartbeat
     subtitle: Asynchronous Control Flow Patterns with Callbacks
     description: >
       The third chapter introduces a set of patterns and techniques for
@@ -56,14 +56,14 @@ chapters:
       JavaScript and the async library.
   -
     title: Chapter 4
-    icon: ~
+    icon: fa-hand-peace-o
     subtitle: Asynchronous Control Flow Patterns with ES2015 and Beyond
     description: >
       In this chapter we progress with the exploration of asynchronous control
       flows introducing Promises, Generators, and Async-Await.
   -
     title: Chapter 5
-    icon: ~
+    icon: fa-exchange
     subtitle: Coding with Streams
     description: >
       This chapter dives deep into one of the most important patterns in
@@ -71,7 +71,7 @@ chapters:
       and how to combine them into different layouts.
   -
     title: Chapter 6
-    icon: ~
+    icon: fa-cog
     subtitle: Design Patterns
     description: >
       The sixth chapter deals with a controversial topic: traditional design
@@ -81,7 +81,7 @@ chapters:
       specific only to JavaScript and Node.js.
   -
     title: Chapter 7
-    icon: ~
+    icon: fa-code-fork
     subtitle: Wiring Modules
     description: >
       This chapter analyzes the different solutions for linking the modules
@@ -89,7 +89,7 @@ chapters:
       patterns such as Dependency Injection and service locator.
   -
     title: Chapter 8
-    icon: ~
+    icon: fa-universal-access
     subtitle: Universal JavaScript for Web Applications
     description: >
       This part of the book explores one of the most interesting capabilities
@@ -99,7 +99,7 @@ chapters:
       application with React, Webpack, and Babel.
   -
     title: Chapter 9
-    icon: ~
+    icon: fa-refresh
     subtitle: Advanced Asynchronous Recipes
     description: >
       The ninth chapter takes a problem-solution approach to show you how some
@@ -107,14 +107,14 @@ chapters:
       solutions.
   -
     title: Chapter 10
-    icon: ~
+    icon: fa-line-chart
     subtitle: Scalability and Architectural Patterns
     description: >
       This chapter teaches you the basic techniques and patterns for scaling a
       Node.js application.
   -
     title: Chapter 11
-    icon: ~
+    icon: fa-commenting-o
     subtitle: Messaging and Integration Patterns
     description: >
       The final chapter presents the most important messaging patterns, teaching

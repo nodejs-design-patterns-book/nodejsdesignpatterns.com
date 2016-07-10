@@ -129,7 +129,8 @@ html(lang="en")
         div.row
           div.col-lg-12.text-center
             a.btn.btn-xl(href="/other/Nodejs_Design_Patterns_Chapter_01.pdf" target="_blank")
-              i.fa.fa-download Download
+              i.fa.fa-download
+              span=" Download"
 
     section#praises.bg-light-gray
       div.container
@@ -169,7 +170,7 @@ html(lang="en")
               each link in author.links
                 li
                   a(href=link.href, target="_blank")
-                    i.fa(class="fa-#{link.type}")
+                    i.fa(class="fa-" + link.type)
 
     section#buy.bg-light-gray
       div.container
@@ -194,4 +195,5 @@ html(lang="en")
             div.copyright All trademarks and registered trademarks are the property of their respective owners
 
     script(src="/js/bundle.js")
+    script(src="//use.fontawesome.com/7eb46f7a5c.js")
     script(async, src="//platform.twitter.com/widgets.js", charset="utf-8")
