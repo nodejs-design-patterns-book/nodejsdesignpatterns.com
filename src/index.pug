@@ -62,7 +62,7 @@ html(lang="en")
             li
               a.page-scroll(href="#praises") Praises
             li
-              a.page-scroll(href="#author") Author
+              a.page-scroll(href="#authors") Authors
             li
               a.page-scroll.navbar-buy(href="#buy") Buy
 
@@ -108,9 +108,7 @@ html(lang="en")
         div.row
           div.col-lg-12
             ul.timeline
-              - var i = -1
-              each chapter in chapters
-                - ++i
+              each chapter, i in chapters
                 li(class=(i % 2 == 0) ? '' : 'timeline-inverted')
                   div.timeline-image
                     i.fa.fa-inverse(class=chapter.icon)
@@ -153,7 +151,7 @@ html(lang="en")
                 span &mdash; #{review.author}
                 a(href=review.link, target="_blank")=review.date
 
-    section#author
+    section#authors
       div.container
         div.row
           div.col-lg12.section-heading

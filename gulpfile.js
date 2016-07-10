@@ -20,9 +20,9 @@ gulp.task('dev', () => {
       baseDir: "./build/"
     }
   });
-  gulp.watch(["src/*.pug", "src/*.yml"], ['build-html']);
-  gulp.watch("src/styles/*", ['build-css']);
-  gulp.watch("src/images/*", ['build-images']);
+  gulp.watch(["src/*.pug", "src/*.yml"], ['build:assets:html']);
+  gulp.watch("src/styles/*", ['build:assets:css']);
+  gulp.watch("src/images/*", ['build:assets:images']);
   gulp.watch("build/**/*").on('change', browserSync.reload);
 });
 
