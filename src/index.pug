@@ -137,20 +137,23 @@ html(lang="en")
         div.row
           div.col-lg12.section-heading
             h2.section-heading-title What people say
-        div.row
-          each review in reviews.amazon
-            div.col-sm-12.col-md-6.text-center
-              blockquote
-                div=review.text
-                a.reference(href=review.link, target="_blank") Review on Amazon.com
-        div.row
-          each review in reviews.twitter
-            div.col-sm-12.col-md-6.text-center
-              blockquote.twitter-tweet(lang="en", data-cards="hidden")
-                p(lang="en" dir="ltr").
-                  !{review.text}
-                span &mdash; #{review.author}
-                a(href=review.link, target="_blank")=review.date
+
+        each rows in chunk(reviews.amazon, 2)
+          div.row
+            each review in rows
+              div.col-sm-12.col-md-6.text-center
+                blockquote
+                  div=review.text
+                  a.reference(href=review.link, target="_blank") Review on Amazon.com
+        each rows in chunk(reviews.twitter, 2)
+          div.row
+            each review in rows
+              div.col-sm-12.col-md-6.text-center
+                blockquote.twitter-tweet(lang="en", data-cards="hidden")
+                  p(lang="en" dir="ltr").
+                    !{review.text}
+                  span &mdash; #{review.author}
+                  a(href=review.link, target="_blank")=review.date
 
     section#authors
       div.container

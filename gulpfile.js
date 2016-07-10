@@ -1,5 +1,6 @@
 "use strict";
 
+const _ = require('lodash');
 const gulp = require('gulp');
 const runSequence = require('run-sequence');
 const del = require('del');
@@ -64,7 +65,9 @@ gulp.task('build:assets:js', () => {
 gulp.task('build:assets:html', () => {
   return gulp.src('src/*.pug')
     .pipe(pug({
-      locals: templateData
+      locals: _.extend(templateData, {
+        chunk: _.chunk
+      }),
     }))
     .pipe(gulp.dest('build'));
 });
