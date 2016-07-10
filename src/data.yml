@@ -1,6 +1,7 @@
 meta:
   name: Node.js Design Patterns
   title: Node.js Design Patterns — Second Edition by Mario Casciaro & Luciano Mammino
+  authors: Mario Casciaro, Luciano Mammino
   description: Get the best out of Node.js by mastering a series of patterns and techniques to create modular, scalable, and efficient applications
   tags:
     - Node.js
