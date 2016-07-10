@@ -23,7 +23,7 @@ html(lang="en")
     meta(http-equiv="X-UA-Compatible", content="IE=edge")
     meta(name="viewport", content="width=device-width, initial-scale=1")
     meta(name="description", content=meta.description)
-    meta(property="author", content=meta.authors)
+    meta(name="author", content=meta.authors)
     title!=meta.title
     link(rel="apple-touch-icon", sizes="57x57", href="/apple-icon-57x57.png")
     link(rel="apple-touch-icon", sizes="60x60", href="/apple-icon-60x60.png")
@@ -105,7 +105,7 @@ html(lang="en")
         div.row
           div.col-sm-4
             div.book-cover
-              img(src="/img/book-cover-nodejs-design-patterns.jpg", width="100%")
+              img(src="/img/book-cover-nodejs-design-patterns.jpg", width="100%", alt=meta.name + " book cover")
           div.col-sm-8
             div.intro-text
               div
@@ -180,7 +180,7 @@ html(lang="en")
               div.col-sm-12.col-md-6.text-center
                 blockquote
                   div=review.text
-                  a.reference(href=review.link, target="_blank") Review on Amazon.com
+                  a.reference(href=review.link, target="_blank", rel="nofollow") Review on Amazon.com
         each rows in chunk(reviews.twitter, 2)
           div.row
             each review in rows
@@ -189,7 +189,7 @@ html(lang="en")
                   p(lang="en" dir="ltr").
                     !{review.text}
                   span &mdash; #{review.author}
-                  a(href=review.link, target="_blank")=review.date
+                  a(href=review.link, target="_blank", rel="nofollow")=review.date
 
     section#authors
       div.container
@@ -224,7 +224,7 @@ html(lang="en")
         div.row
           each button in buyButtons
             div.col-md-4.text-center.buy-button-container
-              a.btn.btn-xl(href="https://bit.ly/1NR69qw", class=button.store)
+              a.btn.btn-xl(href="https://bit.ly/1NR69qw", class=button.store, rel="nofollow")
                 if button.discount
                   span #{button.label}<br/><span style="font-size:10px">#{button.discount}</span>
                 else
