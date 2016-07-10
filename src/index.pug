@@ -161,19 +161,23 @@ html(lang="en")
           div.col-lg12.section-heading
             h2.section-heading About the authors
         each author in authors
-          div.row
-            div.col-md-4.text-center
-              img.author-image(src="/img/" + author.image, alt=author.name + "'s picture")
-            div.col-md-8.text-muted.author-description
-              p.large.
-                !{author.description1}
-              p.large.
-                !{author.description2}
-            ul.list-inline.social-buttons.text-center
-              each link in author.links
-                li
-                  a(href=link.href, target="_blank")
-                    i.fa(class="fa-" + link.type)
+          section.small-gap
+            div.row
+              div.col-xs-12.col-md-8.col-md-offset-4.text-center
+                h3=author.name
+            div.row
+              div.col-md-4.text-center
+                img.author-image(src="/img/" + author.image, alt=author.name + "'s picture")
+              div.col-md-8.text-muted.author-description
+                p.large.
+                  !{author.description1}
+                p.large.
+                  !{author.description2}
+              ul.list-inline.social-buttons.text-center
+                each link in author.links
+                  li
+                    a(href=link.href, target="_blank")
+                      i.fa(class="fa-" + link.type)
 
     section#buy.bg-light-gray
       div.container
