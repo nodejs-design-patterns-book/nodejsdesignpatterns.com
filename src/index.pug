@@ -22,9 +22,9 @@ html(lang="en")
     meta(charset="utf-8")
     meta(http-equiv="X-UA-Compatible", content="IE=edge")
     meta(name="viewport", content="width=device-width, initial-scale=1")
-    meta(name="description", content="Get the best out of Node.js by mastering a series of patterns and techniques to create modular, scalable, and efficient applications")
+    meta(name="description", content=meta.description)
     meta(name="author", content="Mario Casciaro, Luciano Mammino")
-    title Node.js Design Patterns — Second Edition by Mario Casciaro &amp; Luciano Mammino
+    title=meta.title
     link(rel="apple-touch-icon", sizes="57x57", href="/apple-icon-57x57.png")
     link(rel="apple-touch-icon", sizes="60x60", href="/apple-icon-60x60.png")
     link(rel="apple-touch-icon", sizes="72x72", href="/apple-icon-72x72.png")
@@ -39,9 +39,25 @@ html(lang="en")
     link(rel="icon", type="image/png", sizes="96x96", href="/favicon-96x96.png")
     link(rel="icon", type="image/png", sizes="16x16", href="/favicon-16x16.png")
     link(rel="manifest", href="/manifest.json")
-    <meta name="msapplication-TileColor" content="#f8931f">
-    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-    <meta name="theme-color" content="#f8931f">
+    meta(name="msapplication-TileColor", content="#f8931f")
+    meta(name="msapplication-TileImage", content="/ms-icon-144x144.png")
+    meta(name="theme-color", content=meta.themeColor)
+    meta(name="twitter:card", content="summary_large_image")
+    meta(name="twitter:site", content="@mariocasciaro")
+    meta(name="twitter:creator", content="@loige")
+    meta(name="twitter:title", content=meta.title)
+    meta(name="twitter:description", content=meta.description)
+    meta(name="twitter:image:src", content="/img/nodejs-design-patterns-book-share-tw.jpg")
+    meta(property="og:site_name" content=meta.name)
+    meta(property="og:title", content=meta.title)
+    meta(property="og:description", content=meta.description)
+    meta(property="og:image", content="/img/nodejs-design-patterns-book-share-fb.jpg")
+    meta(property="og:type", content="book")
+    meta(property="book:author", content="Mario Casciaro")
+    meta(property="book:author", content="Luciano Mammino")
+    meta(property="book:isbn", content="978-1785885587")
+    meta(property="book:release_date", content="2016-07-06")
+    meta(property="book:tag", content=" Computers, Internet, Computer Science, Programming, Software Design, Testing, Engineering, Design Patterns, Node.js, Node, JavaScript")
     link(href="/css/main.css", rel="stylesheet", type="text/css")
     link(href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Droid+Serif:400,700,400italic,700italic|Roboto+Slab:400,300,700",rel="stylesheet", type="text/css")
     //[if lt IE 9]
@@ -195,7 +211,7 @@ html(lang="en")
                 ul.list-inline.social-buttons.text-center
                   each link in author.links
                     li
-                      a(href=link.href, target="_blank")
+                      a(href=link.href, target="_blank", rel="nofollow")
                         i.fa(class="fa-" + link.type)
 
     section#buy.bg-light-gray

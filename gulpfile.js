@@ -36,7 +36,9 @@ gulp.task('clean', () => {
     './build/*.html',
     './build/*.png',
     './build/*.ico',
-    './build/*.json'
+    './build/*.json',
+    './build/robots.txt',
+    './build/sitemap.xml'
   ]);
 });
 
