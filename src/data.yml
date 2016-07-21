@@ -117,6 +117,7 @@ chapters:
       patterns such as Dependency Injection and service locator.
   -
     title: Chapter 8
+    new: true
     icon: fa-universal-access
     subtitle: Universal JavaScript for Web Applications
     description: >

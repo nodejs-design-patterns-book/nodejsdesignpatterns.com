@@ -182,7 +182,10 @@ html(lang="en")
                     i.fa.fa-inverse(class=chapter.icon)
                   div.timeline-panel
                     div.timeline-heading
-                      h4=chapter.title
+                      if chapter.new
+                        h4!=chapter.title + " <span class=\"label label-warning\">NEW</span>"
+                      else
+                        h4=chapter.title
                       h4.subheading=chapter.subtitle
                     div.timeline-body
                       p.text-muted.
