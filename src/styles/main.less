@@ -25,6 +25,10 @@ p.large {
   font-size: 16px;
 }
 
+p.x-large {
+  font-size: 26px;
+}
+
 a,
 a:hover,
 a:focus,
@@ -860,17 +864,39 @@ body {
 }
 
 .btn-xl.packt {
-  background-color: rgb(229, 52, 0);
-  box-shadow: 0px 5px 0px #A34E36;
-  border-color: #D73100;
+  background-color: #faab50;
+  box-shadow: 0px 5px 0px darken(#faab50, 20%);
+  border-color: darken(#faab50, 10%);
+  color: #000;
   width: 300px;
+
+  &:hover {
+    background-color: lighten(#faab50, 10%) !important;
+  }
 }
 
 .btn-xl.amazon {
   background-color: #f0c14b;
-  box-shadow: 0px 5px 0px #C88F00;
-  border-color: #CFA334;
+  box-shadow: 0px 5px 0px darken(#f0c14b, 20%);
+  border-color: darken(#f0c14b, 10%);
+  color: #000;
   width: 300px;
+
+  &:hover {
+    background-color: lighten(#f0c14b, 10%) !important;
+  }
+}
+
+.btn-xl.oreilly {
+  background-color: #ececec;
+  box-shadow: 0px 5px 0px darken(#ececec, 20%);
+  border-color: darken(#ececec, 10%);
+  color: #000;
+  width: 300px;
+
+  &:hover {
+    background-color: lighten(#ececec, 10%) !important;
+  }
 }
 
 .btn-xl.google {

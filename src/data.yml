@@ -2,7 +2,9 @@ meta:
   name: Node.js Design Patterns
   title: Node.js Design Patterns — Second Edition by Mario Casciaro & Luciano Mammino
   authors: Mario Casciaro, Luciano Mammino
-  description: Get the best out of Node.js by mastering a series of patterns and techniques to create modular, scalable, and efficient applications
+  description: >
+    Get the best out of Node.js by mastering its most powerful components and
+    patterns to create modular and scalable applications with ease
   tags:
     - Node.js
     - Node
@@ -17,6 +19,12 @@ meta:
     - Design Patterns
   themeColor: #f8931f
   canonical: https://nodejs-design-patterns-book.github.io/
+
+discount:
+  available: false
+  title: Get 50% off the e-book price by using the promo code NODEJSDP50.
+  label: Buy now
+  link: http://bit.ly/1NR69qw
 
 contents:
   -
@@ -248,20 +256,15 @@ buyButtons:
   -
     store: packt
     label: Buy on Packtpub.com
-    link: https://bit.ly/1NR69qw
-    discount: Use promo NODEJSDP50 for 50% off e-book
+    link: https://www.packtpub.com/web-development/nodejs-design-patterns-second-edition
+    discount: Use promo "Skill up" for a discount
   -
     store: amazon
     label: Buy on Amazon.com
-    link: http://www.amazon.com/Node-js-Design-Patterns-Mario-Casciaro/dp/1783287314
+    link: http://amzn.to/2a418Q2
     discount: ~
   -
-    store: google
-    label: Buy on Google Play
-    link: https://play.google.com/store/books/details/Mario_Casciaro_Node_js_Design_Patterns?id=Ys4GBgAAQBAJ
-    discount: ~
-  -
-    store: itunes
-    label: Buy on iTunes
-    link: https://itunes.apple.com/en/book/node.js-design-patterns/id954994790
+    store: oreilly
+    label: Buy on O'REILLY
+    link: http://shop.oreilly.com/product/9781783287314.do
     discount: ~

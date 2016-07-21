@@ -89,6 +89,8 @@ html(lang="en")
             li.hidden
               a(href="#page-top")
             li
+              a.page-scroll(href="#whats_new") What's new
+            li
               a.page-scroll(href="#what_you_get") In short
             li
               a.page-scroll(href="#journey") Contents
@@ -112,14 +114,43 @@ html(lang="en")
               div
                 h1.intro-heading Node.js Design Patterns
                 h2 Second Edition
-              div.intro-subheading Get the best out of Node.js by mastering a series of patterns and techniques to create modular, scalable, and efficient applications
+              div.intro-subheading=meta.description
 
-    section
+    if discount.enabled
+      section
+        div.container
+          div.row
+            div.col-lg-12.text-center
+              h2(style="text-transform: none")!=discount.title
+              a.btn.btn-xl.packt(href=discount.link,target="_blank")=discount.label
+
+    section#whats_new
       div.container
         div.row
-          div.col-lg-12.text-center
-            h2(style="text-transform: none") Get 50% off the e-book price by using the promo code NODEJSDP50.
-            a.btn.btn-xl.packt(href="http://bit.ly/1NR69qw",target="_blank") Buy now
+          div.col-lg-12.section-heading
+            h2.section-heading-title What's new
+        div.row
+          div.col-lg-12
+            p.x-large.
+              This new edition of <em>Node.js Design patterns</em> has been completely
+              revamped in order to be even more relevant and up to date.
+            p.x-large.
+              All the contents have been adapted to leverage the new features of <strong>Node.js
+              version 6</strong> and the code examples now extensively use many of the
+              new features provided with <strong>EcmaScript 2015</strong>.
+              Furthermore an entire new chapter about <strong>Universal JavaScript</strong> has been introduced.
+            p.x-large.
+              Even if you read the first edition of this book you are going to love this upgrade!
+        if !discount.enabled
+          div.row(style="margin-top:20px")
+            each button in buyButtons
+              div.col-md-4.text-center.buy-button-container
+                a.btn.btn-xl(href=button.link, class=button.store, rel="nofollow")
+                  if button.discount
+                    span #{button.label}<br/><span style="font-size:10px">#{button.discount}</span>
+                  else
+                    span=button.label
+
 
     section#what_you_get
       div.container
@@ -165,7 +196,7 @@ html(lang="en")
             h2.section-sub-heading Discover the Node way, the reactor pattern and the module system
         div.row
           div.col-lg-12.text-center
-            a.btn.btn-xl(href="/other/Nodejs_Design_Patterns_Chapter_01.pdf" target="_blank")
+            a.btn.btn-xl(href="/files/nodejs_design_patterns_preview_chapter1.pdf" target="_blank")
               i.fa.fa-download
               span=" Download"
 
@@ -173,7 +204,8 @@ html(lang="en")
       div.container
         div.row
           div.col-lg12.section-heading
-            h2.section-heading-title What people say
+            h2.section-heading-title What people said
+            h3 about the first edition
 
         each rows in chunk(reviews.amazon, 2)
           div.row
@@ -197,8 +229,13 @@ html(lang="en")
         div.row
           div.col-lg12.section-heading
             h2.section-heading About the authors
+        div.row
+          div.col-lg-12.text-center
+            a.btn.btn-xl(href="mailto:authors@nodejsdesignpatterns.com" target="_blank")
+              i.fa.fa-envelope-o
+              span=" Contact the authors"
         each author in authors
-          section.small-gap
+          section
             div.row
               div.col-xs-12.col-md-8.col-md-offset-4.text-center
                 h3=author.name
@@ -225,7 +262,7 @@ html(lang="en")
         div.row
           each button in buyButtons
             div.col-md-4.text-center.buy-button-container
-              a.btn.btn-xl(href="https://bit.ly/1NR69qw", class=button.store, rel="nofollow")
+              a.btn.btn-xl(href=button.link, class=button.store, rel="nofollow")
                 if button.discount
                   span #{button.label}<br/><span style="font-size:10px">#{button.discount}</span>
                 else
