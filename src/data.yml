@@ -18,7 +18,7 @@ meta:
     - Engineering
     - Design Patterns
   themeColor: #f8931f
-  canonical: https://nodejs-design-patterns-book.github.io/
+  canonical: https://www.nodejsdesignpatterns.com/
 
 discount:
   available: false
@@ -269,6 +269,6 @@ buyButtons:
   -
     store: oreilly
     label: Buy on O'REILLY
-    link: http://shop.oreilly.com/product/9781783287314.do
+    link: http://shop.oreilly.com/product/9781785885587.do
     discount: ~
     subtext: ~
