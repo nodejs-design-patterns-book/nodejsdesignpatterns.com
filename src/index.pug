@@ -1,3 +1,4 @@
+include ./_mixins/buy-button.pug
 doctype html
 html(lang="en")
   head
@@ -145,11 +146,7 @@ html(lang="en")
           div.row(style="margin-top:20px")
             each button in buyButtons
               div.col-md-4.text-center.buy-button-container
-                a.btn.btn-xl(href=button.link, class=button.store, rel="nofollow")
-                  if button.discount
-                    span #{button.label}<br/><span style="font-size:10px">#{button.discount}</span>
-                  else
-                    span=button.label
+                +buyButton(button)
 
 
     section#what_you_get
@@ -265,11 +262,7 @@ html(lang="en")
         div.row
           each button in buyButtons
             div.col-md-4.text-center.buy-button-container
-              a.btn.btn-xl(href=button.link, class=button.store, rel="nofollow")
-                if button.discount
-                  span #{button.label}<br/><span style="font-size:10px">#{button.discount}</span>
-                else
-                  span=button.label
+              +buyButton(button)
 
     footer
       div.container

@@ -21,7 +21,7 @@ gulp.task('dev', () => {
       baseDir: "./build/"
     }
   });
-  gulp.watch(["./src/index.pug", "./src/data.yml"], ['build:assets:html']);
+  gulp.watch(["./src/**/*.pug", "./src/data.yml"], ['build:assets:html']);
   gulp.watch("./src/styles/*", ['build:assets:css']);
   gulp.watch("./src/images/*", ['build:assets:images']);
   gulp.watch("./src/meta/*", ['build:assets:meta']);

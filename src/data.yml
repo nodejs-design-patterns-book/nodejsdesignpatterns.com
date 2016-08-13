@@ -258,14 +258,17 @@ buyButtons:
     store: packt
     label: Buy on Packtpub.com
     link: https://www.packtpub.com/web-development/nodejs-design-patterns-second-edition
-    discount: Use promo "Skill up" for a discount
+    discount: ~
+    subtext: ~
   -
     store: amazon
-    label: Buy on Amazon.com
+    label: Buy on Amazon (USA)
     link: http://amzn.to/2a418Q2
     discount: ~
+    subtext: or <a href="http://amzn.to/2bddyWq" rel="nofollow">Buy on Amazon (UK)</a>
   -
     store: oreilly
     label: Buy on O'REILLY
     link: http://shop.oreilly.com/product/9781783287314.do
     discount: ~
+    subtext: ~
