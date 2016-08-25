@@ -263,7 +263,7 @@ buyButtons:
   -
     store: amazon
     label: Buy on Amazon (USA)
-    link: http://amzn.to/2bdtUQS
+    link: http://amzn.to/2bB58Ic
     discount: ~
     subtext: or <a href="http://amzn.to/2bddyWq" rel="nofollow">Buy on Amazon (UK)</a>
   -
