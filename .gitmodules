@@ -1,3 +1,0 @@
-[submodule "build"]
-	path = build
-	url = https://github.com/nodejs-design-patterns-book/nodejs-design-patterns-book.github.io.git

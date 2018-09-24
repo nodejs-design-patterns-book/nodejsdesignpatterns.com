@@ -1,4 +1,4 @@
-"use strict";
+'use strict'
 
 // scripts
 module.exports = [
@@ -8,4 +8,4 @@ module.exports = [
   './src/scripts/classie.js',
   './src/scripts/cbpAnimatedHeader.js',
   './src/scripts/agency.js'
-];
+]
