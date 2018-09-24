@@ -1,4 +1,4 @@
-# nodejs-design-patterns-book
+# nodejsdesignpatterns.com
 
 [![CircleCI](https://circleci.com/gh/nodejs-design-patterns-book/nodejsdesignpatterns.com.svg?style=shield)](https://circleci.com/gh/nodejs-design-patterns-book/nodejsdesignpatterns.com)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
