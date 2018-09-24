@@ -5,6 +5,8 @@
 
 Source for Website for Node.js Design Patterns, book by Mario Casciaro and Luciano Mammino, published by Packt (http://amzn.to/28LJws7)
 
+![Node.js Design Patterns (second edition)](/src/images/nodejs-design-patterns-book-share-fb.jpg)
+
 ## Setup
 
 To be able to contribute to this repository you need to install dependencies with
