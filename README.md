@@ -31,6 +31,10 @@ To build a deployable version run:
 npm run build
 ```
 
+## Publishing
+
+Publishing is automated through CircleCI and GitHub Pages.
+
 ## Request changes
 
 If you want to request changes please submit a pull request to the [compiled sources repository](https://github.com/nodejs-design-patterns-book/nodejs-design-patterns-book.github.io).
