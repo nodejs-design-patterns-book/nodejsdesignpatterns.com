@@ -1,10 +1,6 @@
 version: 2
 jobs:
   build:
-    branches:
-      ignore:
-        - gh-pages
-
     docker:
       - image: circleci/node:10.11
 
@@ -52,3 +48,7 @@ workflows:
   build:
     jobs:
       - build
+          filters:
+            branches:
+              ignore:
+                - gh-pages
