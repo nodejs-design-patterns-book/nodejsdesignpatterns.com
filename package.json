@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "eslint src",
+    "dev": "gulp dev",
     "build": "gulp",
-    "dev": "gulp dev"
+    "deploy": "gh-pages -d build --dotfiles"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "eslint-plugin-node": "^7.0.1",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
+    "gh-pages": "^2.0.0",
     "gulp": "^4.0.0",
     "gulp-clean-css": "^3.10.0",
     "gulp-concat": "^2.6.1",

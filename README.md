@@ -1,7 +1,9 @@
 # nodejs-design-patterns-book
 
-Source for Website for Node.js Design Patterns, book by Mario Casciaro and Luciano Mammino, published by Packt (http://amzn.to/28LJws7)
+[![CircleCI](https://circleci.com/gh/nodejs-design-patterns-book/nodejsdesignpatterns.com.svg?style=shield)](https://circleci.com/gh/nodejs-design-patterns-book/nodejsdesignpatterns.com)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
+Source for Website for Node.js Design Patterns, book by Mario Casciaro and Luciano Mammino, published by Packt (http://amzn.to/28LJws7)
 
 ## Setup
 
@@ -11,20 +13,14 @@ To be able to contribute to this repository you need to install dependencies wit
 npm install
 ```
 
-You need to have a recent version of Node.js and NPM to do so. You will also need
-to have Gulp installed locally. You can get it with:
-
-```shell
-npm install -g gulp
-```
-
+You need to have a recent version of Node.js and NPM to do so.
 
 ## Development
 
 To run the development server launch:
 
 ```shell
-gulp dev
+npm run dev
 ```
 
 ## Build
@@ -32,9 +28,8 @@ gulp dev
 To build a deployable version run:
 
 ```shell
-gulp build
+npm run build
 ```
-
 
 ## Request changes
 

@@ -1,0 +1,48 @@
+version: 2
+jobs:
+  build:
+    branches:
+      ignore:
+        - gh-pages
+
+    docker:
+      - image: circleci/node:10.11
+
+    working_directory: ~/nodejs-design-patterns-website
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-
+
+      - run:
+          name: Install dependencies
+          command: npm install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run:
+          name: Test
+          command: npm test
+
+      - run:
+          name: Build
+          command: npm run build
+
+      - deploy:
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              echo "$DOMAIN" > build/CNAME
+              cp -r .circleci build/.circleci
+              git config --global user.email "$GH_EMAIL"
+              git config --global user.name "$GH_NAME"
+              NODE_DEBUG=gh-pages npm run deploy -- -m 'automated build'
+            else
+              echo "Not master branch so not deploying"
+            fi
