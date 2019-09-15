@@ -232,7 +232,7 @@ authors:
     description2: >
       He loves the Cloud, the fullstack web, Node.js & Serverless. Among other things, Luciano runs <a href="https://fstack.link" target="_blank">Fullstack Bulletin</a>, a weekly newsletter for ambitious fullstack developers and <a href="https://serverlesslab.com" target="_blank">Serverlesslab.com</a>, bespoke training courses to foster Serverless adoption.
     links:
-      - {type: home, href: "http://loige.co"}
+      - {type: home, href: "https://loige.co"}
       - {type: twitter, href: "https://twitter.com/loige"}
       - {type: github, href: "https://github.com/lmammino"}
       - {type: linkedin, href: "https://www.linkedin.com/in/lucianomammino"}
