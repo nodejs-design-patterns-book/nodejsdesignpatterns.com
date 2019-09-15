@@ -228,9 +228,9 @@ authors:
     description1: >
       <strong>Luciano Mammino</strong> was born in 1987, the same year Super Mario Bros was released in Europe, which, by chance is his favourite game!
       He started coding at the age of 12, hacking away with his father's old i386 armed only with MS-DOS and the QBasic interpreter and since then he has been professionally a software developer for more than 10 years.
-      He is currently a Cloud Architect at [Vectra AI](https://vectra.ai) in Dublin where he is automating the hunt for cyberattackers.
+      He is currently a Cloud Architect at <a href="https://vectra.ai" target="_blank">Vectra AI</a> in Dublin where he is automating the hunt for cyberattackers.
     description2: >
-      He loves the Cloud, the fullstack web, Node.js & Serverless. Among other things, Luciano runs [Fullstack Bulletin](https://fstack.link), a weekly newsletter for ambitious fullstack developers and [Serverlesslab.com](https://serverlesslab.com), bespoke training courses to foster Serverless adoption.
+      He loves the Cloud, the fullstack web, Node.js & Serverless. Among other things, Luciano runs <a href="https://fstack.link" target="_blank">Fullstack Bulletin</a>, a weekly newsletter for ambitious fullstack developers and <a href="https://serverlesslab.com" target="_blank">Serverlesslab.com</a>, bespoke training courses to foster Serverless adoption.
     links:
       - {type: home, href: "http://loige.co"}
       - {type: twitter, href: "https://twitter.com/loige"}
