@@ -226,24 +226,11 @@ authors:
     name: Luciano Mammino
     image: luciano-mammino-nodejs-design-patterns.jpg
     description1: >
-      <strong>Luciano Mammino</strong> is a software engineer born in 1987, the
-      same year that the Nintendo released Super Mario Bros in Europe, which by
-      chance is his favorite video-game. He started coding at the age of 12
-      using his father's old Intel 386, provided only with the DOS operating
-      system and the qBasic interpreter.
-      After a master's degree in computer science he developed his programming
-      skills mostly as a web developer working mainly as freelancer for
-      companies and startups all around Italy. After a start-up parenthesis of 3
-      years as CTO and co-founder of Sbaam.com in Italy and in Ireland,
-      he decided to relocate in Dublin to work as senior PHP engineer at
-      Smartbox.
+      <strong>Luciano Mammino</strong> was born in 1987, the same year Super Mario Bros was released in Europe, which, by chance is his favourite game!
+      He started coding at the age of 12, hacking away with his father's old i386 armed only with MS-DOS and the QBasic interpreter and since then he has been professionally a software developer for more than 10 years.
+      He is currently a Cloud Architect at [Vectra AI](https://vectra.ai) in Dublin where he is automating the hunt for cyberattackers.
     description2: >
-      He loves developing open source libraries and working with frameworks such
-      as Symfony and Express. He is convinced that the JavaScript fame is still
-      at the very beginning and that this technology will have a huge impact in
-      the future of most of the web-and mobile-related technologies. For this
-      reason, he spends most of his free time improving his knowledge of
-      JavaScript and playing with Node.js.
+      He loves the Cloud, the fullstack web, Node.js & Serverless. Among other things, Luciano runs [Fullstack Bulletin](https://fstack.link), a weekly newsletter for ambitious fullstack developers and [Serverlesslab.com](https://serverlesslab.com), bespoke training courses to foster Serverless adoption.
     links:
       - {type: home, href: "http://loige.co"}
       - {type: twitter, href: "https://twitter.com/loige"}
