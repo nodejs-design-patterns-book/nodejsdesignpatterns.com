@@ -17,7 +17,7 @@ meta:
     - Engineering
     - Design Patterns
   themeColor: #f8931f
-  canonical: https://www.nodejsdesignpatterns.com/
+  canonical: https://nodejsdesignpatterns.com
 
 discount:
   available: false
