@@ -1,12 +1,12 @@
 {
   "name": "nodejs-design-patterns-book",
-  "version": "2.0.0",
-  "description": "Source for Website for Node.js Design Patterns, book by Mario Casciaro and Luciano Mammino, published by Packt (http://amzn.to/28LJws7)",
+  "version": "3.0.0",
+  "description": "Source for Website for Node.js Design Patterns, book by Mario Casciaro and Luciano Mammino, published by Packt (http://nodejsdp.link/buy)",
   "main": "index.js",
   "scripts": {
     "test": "eslint src",
-    "dev": "gulp dev",
-    "build": "gulp",
+    "dev": "eleventy --input=src --output=build --serve",
+    "build": "eleventy --input=src --output=build",
     "deploy": "gh-pages -d build --dotfiles"
   },
   "repository": {
@@ -20,28 +20,14 @@
   },
   "homepage": "https://github.com/nodejs-design-patterns-book/nodejs-design-patterns-book#readme",
   "devDependencies": {
-    "bootstrap": "^3.3.7",
-    "browser-sync": "^2.24.7",
-    "del": "^3.0.0",
-    "eslint": "^5.6.0",
-    "eslint-config-standard": "^12.0.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-node": "^7.0.1",
-    "eslint-plugin-promise": "^4.0.1",
-    "eslint-plugin-standard": "^4.0.0",
-    "gh-pages": "^2.0.0",
-    "gulp": "^4.0.0",
-    "gulp-clean-css": "^3.10.0",
-    "gulp-concat": "^2.6.1",
-    "gulp-concat-css": "^3.1.0",
-    "gulp-less": "^4.0.1",
-    "gulp-pug": "^4.0.1",
-    "gulp-sourcemaps": "^2.6.4",
-    "gulp-uglify": "^3.0.1",
-    "jquery": "^3.3.1",
-    "lodash": "^4.17.11",
-    "pug": "^2.0.3",
-    "yamljs": "^0.3.0"
+    "eslint": "^7.5.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@11ty/eleventy": "^0.11.0"
+  }
 }
