@@ -1,6 +1,6 @@
 # nodejsdesignpatterns.com
 
-The website source code for the [Best Node.js book](https://www.nodejsdesignpatterns.com/) out there: Node.js Design Patterns :)
+The website source code for possibly the [Best Node.js book](https://www.nodejsdesignpatterns.com/) out there: Node.js Design Patterns 😊
 
 
 ## Dependencies

@@ -8,6 +8,9 @@ title: My Rad Blog
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
+    <style>
+      {% include "css/style.css" ignore missing %}
+    </style>
   </head>
   <body>
     {{ content | safe }}

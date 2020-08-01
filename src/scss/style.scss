@@ -1,0 +1,66 @@
+@supports (font-size-adjust: 1) {
+  article {
+      font-size-adjust: 0.5;
+  }
+}
+
+p {
+  line-height: calc(1ex / 0.32);
+}
+
+article h1 {
+  font-size: 2.5em;
+  line-height: calc(1ex / 0.42);
+  margin: calc(1ex / 0.42) 0;
+}
+
+article h2 {
+  font-size: 2em;
+  line-height: calc(1ex / 0.42);
+  margin: calc(1ex / 0.42) 0;
+}
+
+article h3 {
+  font-size: 1.75em;
+  line-height: calc(1ex / 0.38);
+  margin: calc(1ex / 0.38) 0;
+}
+
+article h4 {
+  font-size: 1.5em;
+  line-height: calc(1ex / 0.37);
+  margin: calc(1ex / 0.37) 0;
+}
+
+article p {
+  font-size: 1em;
+  line-height: calc(1ex / 0.32);
+  margin: calc(1ex / 0.32) 0;
+}
+
+p {
+  width: 60ch;
+  max-width: 100%;
+}
+
+article {
+  --red: 230;
+  --green: 230;
+  --blue: 230;
+  --aa-brightness: (
+      (var(--red) * 299) +
+      (var(--green) * 587) +
+      (var(--blue) * 114)
+  ) / 1000;
+  --aa-color: calc((var(--aa-brightness) - 128) * -1000);
+  background: rgb(var(--red), var(--green), var(--blue));
+  color: rgb(var(--aa-color), var(--aa-color), var(--aa-color));
+}
+
+@media (prefers-color-scheme: dark) {
+  article {
+      --red: 30;
+      --green: 30;
+      --blue: 30;
+  }
+}
