@@ -3,23 +3,49 @@ layout: layout.njk
 title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammino
 ---
 
-<nav>
-    <ul>
-        <li><a href="#contents">Contents</a></li>
-        <li><a href="#sample">Sample</a></li>
-        <li><a href="#praises">Praises</a></li>
-        <li><a href="#authors">Authors</a></li>
-        <li><a href="#buy">Buy</a></li>
-    </ul>
+<nav id="navbar" class="navbar is-fixed-top has-shadow" role="navigation" aria-label="main navigation">
+  <div class="container">
+    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbar">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+    <div id="navbar" class="navbar-menu">
+      <div class="navbar-start">
+        <a class="navbar-item">Content</a>
+        <a class="navbar-item">Sample</a>
+        <a class="navbar-item">Praises</a>
+        <a class="navbar-item">Authors</a>
+      </div>
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+            <a class="button is-primary">
+              <strong>Buy</strong>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </nav>
 
 <main>
   <section class="hero">
-    <h1>Take your Node.js knowledge to the next level</h1>
-    <h2>Design and implement production-grade Node.js applications using proven patterns and techniques</h2>
-    <div>
-      <p><a href="#">Buy</a></p>
-      <p><a href="#">Download sample chapter</a></p>
+    <div class="content">
+      <div class="columns">
+        <div class="column">
+          {% responsiveImage './img/book-stack.png', 'Node.js Design Patterns book cover' %}
+        </div>
+        <div class="column">
+          <h1>Take your Node.js knowledge to the next level</h1>
+          <h2>Design and implement production-grade Node.js applications using proven patterns and techniques</h2>
+          <div>
+            <p><a href="#">Buy</a></p>
+            <p><a href="#">Download sample chapter</a></p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -254,8 +280,10 @@ Use Node.js in conjunction with other powerful technologies such as Redis, Rabbi
   <section>
 
 </main>
-<footer>
-  <p>Copyright © 2020 Mario Casciaro, Luciano Mammino, Packt Publishing.</p>
-  <p>All trademarks and registered trademarks are the property of their respective owners.</p>
-  <p>Found an error in this website? Help us improve it on <a href="https://github.com/nodejs-design-patterns-book/nodejsdesignpatterns.com">GitHub</a>.</p>
+<footer class="footer">
+  <div class="container">
+    <p>Copyright © 2020 Mario Casciaro, Luciano Mammino, Packt Publishing.</p>
+    <p>All trademarks and registered trademarks are the property of their respective owners.</p>
+    <p>Found an error in this website? Help us improve it on <a href="https://github.com/nodejs-design-patterns-book/nodejsdesignpatterns.com">GitHub</a>.</p>
+  </div>
 </footer>

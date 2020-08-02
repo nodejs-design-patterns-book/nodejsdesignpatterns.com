@@ -1,3 +1,6 @@
+@charset "utf-8";
+@import "../../node_modules/bulma/bulma.sass";
+
 @supports (font-size-adjust: 1) {
   article {
       font-size-adjust: 0.5;

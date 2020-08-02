@@ -24,6 +24,9 @@
   },
   "homepage": "https://github.com/nodejs-design-patterns-book/nodejs-design-patterns-book#readme",
   "devDependencies": {
+    "@11ty/eleventy": "^0.11.0",
+    "@11ty/eleventy-img": "^0.3.0",
+    "bulma": "^0.9.0",
     "eslint": "^7.5.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.22.0",
@@ -31,7 +34,6 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "npm-run-all": "^4.1.5",
-    "@11ty/eleventy": "^0.11.0",
     "sass": "^1.26.10"
   },
   "dependencies": {}
