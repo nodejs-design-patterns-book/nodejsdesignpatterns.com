@@ -2,14 +2,55 @@
 
 const path = require('path')
 const { cpus } = require('os')
+const { readFile } = require('fs').promises
+const htmlmin = require('html-minifier')
 const Image = require('@11ty/eleventy-img')
 
 Image.concurrency = (cpus()).length
 
-module.exports = function (eleventyConfig) {
-  eleventyConfig.setUseGitIgnore(false)
+module.exports = function (config) {
+  config.setUseGitIgnore(false)
 
-  eleventyConfig.addNunjucksAsyncShortcode('responsiveImage', async function (src, alt, options = {}) {
+  // Pass-through files
+  config.addPassthroughCopy('src/robots.txt')
+  config.addPassthroughCopy({ 'src/_includes/js': 'js' })
+
+  // favicons
+  const favicons = [
+    'android-chrome-192x192.png',
+    'android-chrome-512x512.png',
+    'apple-touch-icon.png',
+    'favicon-16x16.png',
+    'favicon-32x32.png',
+    'favicon.ico',
+    'site.webmanifest'
+  ]
+  favicons.forEach((f) => config.addPassthroughCopy(`src/${f}`))
+
+  // Add webpack assets helper
+  config.addNunjucksAsyncShortcode('webpackAssets', async function () {
+    const manifestPath = path.join(__dirname, 'src', '_includes', 'js', 'manifest.json')
+    const content = await readFile(manifestPath)
+    const manifest = JSON.parse(content)
+    return `${Object.values(manifest).map(f => `<script src="/js/${f}"></script>`)}`
+  })
+
+  // Add HTML minification transform
+  config.addTransform('htmlmin', function (content, outputPath) {
+    if (outputPath.endsWith('.html')) {
+      const minified = htmlmin.minify(content, {
+        useShortDoctype: true,
+        removeComments: true,
+        collapseWhitespace: true
+      })
+      return minified
+    }
+
+    return content
+  })
+
+  // Add responsive image helper
+  config.addNunjucksAsyncShortcode('responsiveImage', async function (src, alt, options = {}) {
     if (alt === undefined) {
       throw new Error(`Missing \`alt\` on responsiveImage from: ${src}`)
     }

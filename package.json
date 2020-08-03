@@ -1,17 +1,21 @@
 {
   "name": "nodejs-design-patterns-book",
-  "version": "3.0.0",
-  "description": "Source for Website for Node.js Design Patterns, book by Mario Casciaro and Luciano Mammino, published by Packt (http://nodejsdp.link/buy)",
+  "version": "1.0.0",
+  "description": "My webpack project",
   "main": "index.js",
   "scripts": {
+    "clean": "rm -rf build",
     "test": "eslint src",
-    "build:sass": "sass --style=compressed src/scss/style.scss src/_includes/css/style.css",
-    "build:eleventy": "eleventy --input=src --output=build",
+    "build:js": "NODE_ENV=production webpack",
+    "build:sass": "NODE_ENV=production sass --style=compressed src/scss/style.scss src/_includes/css/style.css",
+    "build:eleventy": "NODE_ENV=production eleventy --input=src --output=build",
+    "watch:js": "webpack --watch",
     "watch:sass": "npm run build:sass -- --watch",
     "watch:eleventy": "eleventy --input=src --output=build --serve",
-    "dev": "npm-run-all build:sass --parallel watch:*",
-    "build": "npm-run-all build:sass build:eleventy",
-    "deploy": "gh-pages -d build --dotfiles"
+    "dev": "npm-run-all build:sass build:js --parallel watch:*",
+    "build": "npm-run-all clean build:sass build:js build:eleventy",
+    "deploy": "gh-pages -d build --dotfiles",
+    "start": "webpack-dev-server"
   },
   "repository": {
     "type": "git",
@@ -26,15 +30,25 @@
   "devDependencies": {
     "@11ty/eleventy": "^0.11.0",
     "@11ty/eleventy-img": "^0.3.0",
+    "@babel/core": "^7.11.0",
+    "@babel/preset-env": "^7.11.0",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "bulma": "^0.9.0",
+    "clean-webpack-plugin": "^3.0.0",
     "eslint": "^7.5.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
+    "html-minifier": "^4.0.0",
+    "html-webpack-plugin": "^4.3.0",
     "npm-run-all": "^4.1.5",
-    "sass": "^1.26.10"
+    "sass": "^1.26.10",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-manifest-plugin": "^2.2.0"
   },
   "dependencies": {}
 }
