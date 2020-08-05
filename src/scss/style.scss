@@ -2,6 +2,23 @@
 
 @import "./bulma-custom.scss";
 
+html {
+  scroll-behavior: smooth;
+}
+
+.svg-icon {
+  width: 48px;
+}
+
+.svg-icon svg .gradient-bg {
+  fill: url(#shape-gradient) #000;
+}
+
+#shape-gradient {
+  --color-stop: #94561f;
+  --color-bot: #da8f4c;
+}
+
 @supports (font-size-adjust: 1) {
   article {
       font-size-adjust: 0.5;
