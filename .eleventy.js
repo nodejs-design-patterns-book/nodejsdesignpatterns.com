@@ -2,7 +2,7 @@
 
 const path = require('path')
 const { cpus } = require('os')
-const { readFile } = require('fs').promises
+const { readFile, access } = require('fs').promises
 const htmlmin = require('html-minifier')
 const Image = require('@11ty/eleventy-img')
 
@@ -55,12 +55,13 @@ module.exports = function (config) {
       throw new Error(`Missing \`alt\` on responsiveImage from: ${src}`)
     }
 
+    const inputImage = path.join(__dirname, 'src', src)
+    // makes sure that the input picture exists
+    await access(inputImage)
+
     options.outputDir = path.join(__dirname, 'build', 'img')
     options.widths = [256, 512, 1024, null]
-    options.cacheOptions = {
-
-    }
-    const stats = await Image(path.join(__dirname, 'src', src), options)
+    const stats = await Image(inputImage, options)
     const lowestSrc = stats.jpeg[0]
     const sizes = '(max-width: 1024px) 100vw, 1024px'
 
@@ -74,6 +75,7 @@ module.exports = function (config) {
       <img
         loading="lazy"
         style="max-width: 100%; width: 100%; margin: 0px; vertical-align: middle;"
+        ${options.class ? `class="${options.class}"` : ''}
         alt="${alt}"
         src="${lowestSrc.url}"
         width="${lowestSrc.width}"

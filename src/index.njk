@@ -85,47 +85,26 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
   <section class="section">
     <div class="container">
       <h2 class="title is-2">What people say</h2>
-      <div class="columns">
-        <div class="column is-6">
-          <div class="media">
-            <figure class="media-left">
-              <p class="image is-64x64">
-                <img class="is-rounded" src="https://unavatar.now.sh/twitter/theburningmonk"/>
-              </p>
-            </figure>
-            <div class="media-content">
-              <p>
-                <strong>Yan Cuy</strong>
-                <small>- AWS Serverless Hero</small>
-                <small>
-                  <a href="#">31m</a>
-                </small>
-              </p>
-              <p></p>
-              <p>The best book on Node.js I had the pleasure to read so far. This third editon made it even better!</p>
+      <div class="columns is-multiline">
+        {% for quote in quotes -%}
+          {% set alt %}{{ quote.name }}'s profile picture{% endset %}
+          <div class="column is-6">
+            <div class="media">
+              <figure class="media-left">
+                <p class="image is-64x64">
+                  {% responsiveImage quote.picture, alt, { class: 'is-rounded' } %}
+                </p>
+              </figure>
+              <div class="media-content">
+                <p>
+                  <strong>{{ quote.name }}</strong>
+                  <small>{{ quote.role }}</small>
+                </p>
+                <p>{{ quote.text }}</p>
+              </div>
             </div>
           </div>
-        </div>
-
-        <div class="column is-6">
-          <div class="media">
-            <figure class="media-left">
-              <p class="image is-64x64">
-                <img class="is-rounded" src="https://unavatar.now.sh/twitter/dhigit9"/>
-              </p>
-            </figure>
-            <div class="media-content">
-              <p>
-                <strong>Anton Whalley</strong>
-                <small>- Software Engineer, IBM</small>
-                <small>
-                  <a href="#">31m</a>
-                </small>
-              </p>
-              <p>The best book on Node.js I had the pleasure to read so far. This third editon made it even better!</p>
-            </div>
-          </div>
-        </div>
+        {% endfor -%}
       </div>
     </div>
   </section>
