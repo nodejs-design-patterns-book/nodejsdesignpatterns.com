@@ -1,5 +1,43 @@
 @charset "utf-8";
 
+// palette
+// ["323232","da8f4c","b9eec5","e5e5e5","ffffff"]
+$black: #323232;
+$blackD1: darken( $black, 10% );
+$blackD2: darken( $black, 20% );
+$blackD3: darken( $black, 30% );
+$blackL1: lighten( $black, 10% );
+$blackL2: lighten( $black, 20% );
+$blackL3: lighten( $black, 30% );
+$orange: #da8f4c;
+$orangeD1: darken( $orange, 10% );
+$orangeD2: darken( $orange, 20% );
+$orangeD3: darken( $orange, 30% );
+$orangeL1: lighten( $orange, 10% );
+$orangeL2: lighten( $orange, 20% );
+$orangeL3: lighten( $orange, 30% );
+$green: #b9eec5;
+$greenD1: darken( $green, 10% );
+$greenD2: darken( $green, 20% );
+$greenD3: darken( $green, 30% );
+$greenL1: lighten( $green, 10% );
+$greenL2: lighten( $green, 20% );
+$greenL3: lighten( $green, 30% );
+$gray: #e5e5e5;
+$grayD1: darken( $gray, 10% );
+$grayD2: darken( $gray, 20% );
+$grayD3: darken( $gray, 30% );
+$grayL1: lighten( $gray, 10% );
+$grayL2: lighten( $gray, 20% );
+$grayL3: lighten( $gray, 30% );
+$white: #ffffff;
+$whiteD1: darken( $white, 10% );
+$whiteD2: darken( $white, 20% );
+$whiteD3: darken( $white, 30% );
+$whiteL1: lighten( $white, 10% );
+$whiteL2: lighten( $white, 20% );
+$whiteL3: lighten( $white, 30% );
+
 @import "./bulma-custom.scss";
 
 html {
@@ -15,20 +53,27 @@ html {
 }
 
 #svg-linear-gradient {
-  --color-stop: #94561f;
-  --color-bot: #da8f4c;
+  --color-stop: #{$orangeD2};
+  --color-bot: #{$orange};
 }
 
 .title {
   font-family: 'Playfair Display', serif;
 }
 
+.title.underline {
+  display: inline-block;
+  background-image: linear-gradient(transparent 55%,#b9eec5 0,#b9eec5 80%,transparent 0,transparent);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  padding-bottom: .3em;
+}
+
 .container {
-  font-family: 'Work Sans', sans-serif;
   color: #323;
 }
 
-p.quote::before {
+.quote::before {
   display: inline-block;
   content: "\"";
   font-size: 4em;

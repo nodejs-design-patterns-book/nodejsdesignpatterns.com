@@ -1,26 +1,18 @@
 @charset "utf-8";
 
-// Set your brand colors
-$orange: #da8f4c;
-$purple: #8A4D76;
-$pink: #FA7C91;
-$brown: #757763;
-$beige-light: #D0D1CD;
-$beige-lighter: #EFF0EB;
-
 // Update Bulma's global variables
-$family-sans-serif: sans-serif;
-$grey-dark: $brown;
-$grey-light: $beige-light;
+$family-sans-serif: 'Open Sans', sans-serif;
+$grey-dark: $grayD3;
+$grey-light: $grayL3;
 $primary: $orange;
-$link: $pink;
+$link: $orange;
 $widescreen-enabled: true;
 $fullhd-enabled: false;
 
 // Update some of Bulma's component variables
-$body-background-color: $beige-lighter;
+$body-background-color: $white;
 $control-border-width: 3px;
-$input-border-color: $brown;
+$input-border-color: $grayD3;
 $input-shadow: none;
 
 // Import only what you need from Bulma
