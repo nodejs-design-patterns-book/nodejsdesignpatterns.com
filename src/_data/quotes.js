@@ -28,7 +28,7 @@ module.exports = [
     name: 'Ersel Aker',
     role: 'Co-founder & CTO at JustFulfil',
     picture: './img/people/ersel-aker-node-js.jpg',
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae volutpat nisi. Cras ut dui felis. Nam porttitor fermentum lacus id placerat. Curabitur erat turpis, condimentum quis malesuada et, consequat in nisl. Sed vel turpis ex. Fusce scelerisque ac urna id ultrices. Etiam accumsan, quam ut imperdiet venenatis'
+    text: 'Read through a few chapters of Node.js Design Patterns this morning. It\'s an excellent reference book covering everything from from the intricacies of the Node.js runtime to scaling your services to serve millions of users. Grabbed another copy for our engineering team to use as a study tool.'
   },
   {
     name: 'Gleb Bahmutov',

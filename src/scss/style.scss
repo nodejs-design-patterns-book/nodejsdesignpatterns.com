@@ -18,3 +18,24 @@ html {
   --color-stop: #94561f;
   --color-bot: #da8f4c;
 }
+
+.title {
+  font-family: 'Playfair Display', serif;
+}
+
+.container {
+  font-family: 'Work Sans', sans-serif;
+  color: #323;
+}
+
+p.quote::before {
+  display: inline-block;
+  content: "\"";
+  font-size: 4em;
+  line-height: 50%;
+  font-family: 'Coustard', serif;
+  position: relative;
+  bottom: -0.4em;
+  margin-right: .25em;
+  color: #da8f4c;
+}
