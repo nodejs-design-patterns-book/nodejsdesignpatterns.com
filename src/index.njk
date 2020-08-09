@@ -31,7 +31,7 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
 </nav>
 
 <main>
-  <section class="hero" style="background: #b9eec5;">
+  <section class="hero green">
     <div class="hero-body">
       <div class="container">
         <div class="columns is-vcentered">
@@ -43,8 +43,11 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
               <a class="button" href="#">Download sample chapter</a>
             </div>
           </div>
-          <div class="column">
-            {% responsiveImage './img/book-stack.png', 'Node.js Design Patterns book cover' %}
+          <div class="column pos-rel">
+            <div class="floating-label">
+              <a href="#"><span class="tag is-primary"><strong>New Edition!</strong></span></a>
+            </div>
+            {% responsiveImage './img/book-stack.png', 'Node.js Design Patterns book cover', { class: 'book-cover' }  %}
           </div>
         </div>
       </div>
@@ -58,7 +61,7 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
         <div class="column is-3">
           <p class="svg-icon">{% include "svg/books.svg" %}</p>
           <p>
-            <strong>+30,000</strong> Copies sold World wide</p>
+            <strong>+16,000</strong> Copies sold World wide</p>
         </div>
 
         <div class="column is-3">
@@ -84,7 +87,7 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
 
   <section class="section">
     <div class="container">
-      <h2 class="title is-2 underline">What people say</h2>
+      <h2 class="title is-2 underline has-text-centered"><span>What people say</span></h2>
       <div class="columns is-multiline">
         {% for quote in quotes -%}
           {% set alt %}{{ quote.name }}'s profile picture{% endset %}
@@ -92,7 +95,7 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
             <div class="media">
               <figure class="media-left">
                 <p class="image is-64x64">
-                  {% responsiveImage quote.picture, alt, { class: 'is-rounded' } %}
+                  {% responsiveImage quote.picture, alt, { class: 'is-rounded avatar' } %}
                 </p>
               </figure>
               <div class="media-content">
@@ -109,16 +112,29 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
     </div>
   </section>
 
-  <section id="book-abstract" class="section">
+  <section id="book-abstract" class="section green">
     <div class="container">
       <article>
-        <h2 class="title is-2">Learn proven patterns, techniques, and tricks to take full advantage of the Node.js platform</h2>
-        <h3 class="subtitle is-4">Master well-known design principles to create modern applications that are readable, extensible, and that can grow big</h3>
-        <p>This book will teach you how to implement a series of best practices and design patterns to create efficient and robust Node.js applications.</p>
-        <p>The first chapters of the book are designed to explore the basics of Node.js, analyzing its asynchronous event driven architecture and its fundamental design patterns including control flow patterns with callbacks, promises and async/await.</p>
-        <p>The second part of the book dives into Node.js streams and explores some of the most famous Gang of Four design patterns reinterpreted in the context of Node.js plus some original patterns that are specific to JavaScript and Node.js.</p>
-        <p>In the last section this book covers more advanced topics such as Universal JavaScript with Node.js, React and Webpack, best practices to scale Node.js services, microservices and messaging patterns for enterprise-grade distributed applications.</p>
-        <p>Throughout the book you will see Node.js in action with the help of several real-life examples leveraging great technologies such as LevelDB, Redis, RabbitMQ, ZeroMQ and many others. They will be used to demonstrate a pattern or a technique, but they will also give you a great introduction to the Node.js ecosystem and its set of solutions.</p>
+        <div class="columns is-centered">
+          <div class="column is-half"></div>
+          <div class="column is-half">
+            <h2 class="title is-2">Learn proven patterns, techniques, and tricks to take full advantage of the Node.js platform</h2>
+          </div>
+        </div>
+        <div class="columns is-centered">
+          <div class="column is-half">
+            {% responsiveImage './img/book-unboxed.png', 'Node.js Design Patterns book cover'  %}
+          </div>
+          <div class="column is-half">
+            <h3 class="subtitle is-4">Master well-known design principles to create modern applications that are readable, extensible, and that can grow big</h3>
+            <p>This book will teach you how to implement a series of best practices and design patterns to create efficient and robust Node.js applications.</p>
+            <p class="mt-2">The first chapters of the book are designed to explore the basics of Node.js, analyzing its <strong>asynchronous event driven architecture</strong> and its fundamental design patterns including control flow patterns with <strong>callbacks</strong>, <strong>promises</strong> and <strong>async/await</strong>.</p>
+            <p class="mt-2">The second part of the book dives into Node.js <strong>streams</strong> and explores some of the most famous Gang of Four <strong>design patterns</strong> reinterpreted in the context of Node.js plus some original patterns that are specific to JavaScript and Node.js.</p>
+            <p class="mt-2">In the last section this book covers more advanced topics such as <strong>Universal JavaScript</strong> with Node.js, <strong>React</strong> and <strong>Webpack</strong>, best practices to <strong>scale Node.js</strong> services, <strong>microservices</strong> and <strong>messaging patterns</strong> for enterprise-grade <strong>distributed applications</strong>.</p>
+            <p class="mt-2">Throughout the book you will see Node.js in action with the help of several real-life examples leveraging great technologies such as <strong>LevelDB</strong>, <strong>Redis</strong>, <strong>RabbitMQ</strong>, <strong>ZeroMQ</strong> and many others. They will be used to demonstrate a pattern or a technique, but they will also give you a great introduction to the <strong>Node.js ecosystem</strong> and its set of solutions.</p>
+          </div>
+          
+        </div>
       </article>
     </div>
   </section>

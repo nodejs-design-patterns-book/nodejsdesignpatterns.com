@@ -1,7 +1,6 @@
 @charset "utf-8";
 
 // palette
-// ["323232","da8f4c","b9eec5","e5e5e5","ffffff"]
 $black: #323232;
 $blackD1: darken( $black, 10% );
 $blackD2: darken( $black, 20% );
@@ -61,7 +60,7 @@ html {
   font-family: 'Playfair Display', serif;
 }
 
-.title.underline {
+.title.underline span {
   display: inline-block;
   background-image: linear-gradient(transparent 55%,#b9eec5 0,#b9eec5 80%,transparent 0,transparent);
   background-repeat: no-repeat;
@@ -76,11 +75,49 @@ html {
 .quote::before {
   display: inline-block;
   content: "\"";
-  font-size: 4em;
+  font-size: 4rem;
   line-height: 50%;
   font-family: 'Coustard', serif;
   position: relative;
-  bottom: -0.4em;
-  margin-right: .25em;
+  bottom: -1.25rem;
+  margin-right: .25rem;
   color: #da8f4c;
+}
+
+p {
+  line-height: 145%;
+}
+
+img.avatar {
+  border: 4px solid $green;
+}
+
+.floating-label {
+  position: absolute;
+  z-index: 999;
+  right: 1rem;
+  top: 2rem;
+}
+
+nav a.navbar-item {
+  color: $blackL2;
+  font-weight: bold;
+}
+
+section.green {
+  background-color: $green;
+}
+
+.subtitle {
+  color: $blackL2;
+}
+
+.pos-rel {
+  position: relative;
+}
+
+@media screen and (min-width: 769px) {
+  .book-cover {
+    transform: translateX(-100px);
+  }
 }
