@@ -7,6 +7,12 @@ module.exports = [
     What can I say, this is a must for anyone writing code in Node. js. Everything in the book, including the code examples, are very useful in practice.`
   },
   {
+    name: 'Radoslav Stankov',
+    role: 'Head of engineering at ProductHunt',
+    picture: './img/people/radoslav-stankov-node-js.jpg',
+    text: 'Node.js Design Patterns is an excellent resource for learning. I learned a lot of things that I thought I already knew. My favorite part is the Commonjs and ES6 import systems and a lot of the more advanced recipes.'
+  },
+  {
     name: 'Yan Cui',
     role: 'AWS Serverless Hero & Author',
     picture: './img/people/yan-cui-node-js.jpg',
