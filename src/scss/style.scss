@@ -19,6 +19,7 @@ $green: #b9eec5;
 $greenD1: darken( $green, 10% );
 $greenD2: darken( $green, 20% );
 $greenD3: darken( $green, 30% );
+$greenD4: darken( $green, 40% );
 $greenL1: lighten( $green, 10% );
 $greenL2: lighten( $green, 20% );
 $greenL3: lighten( $green, 30% );
@@ -41,6 +42,11 @@ $whiteL3: lighten( $white, 30% );
 
 html {
   scroll-behavior: smooth;
+}
+@media(prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 .svg-icon {
@@ -84,8 +90,8 @@ html {
   color: #da8f4c;
 }
 
-p {
-  line-height: 145%;
+p, h1, h2, h3, h4, div {
+  line-height: 1.5555555556rem;;
 }
 
 img.avatar {
@@ -104,8 +110,12 @@ nav a.navbar-item {
   font-weight: bold;
 }
 
-section.green {
+.bg-green {
   background-color: $green;
+}
+
+.bg-white {
+  background-color: $white;
 }
 
 .subtitle {
@@ -116,8 +126,40 @@ section.green {
   position: relative;
 }
 
+.book-cover {
+  transform: translateX(-60px);
+}
+
 @media screen and (min-width: 769px) {
   .book-cover {
     transform: translateX(-100px);
   }
+}
+
+.is-green {
+  color: $greenD4;
+}
+
+.bd-lt {
+  border-radius: 6rem 0 0 0;
+}
+
+.bd-rt {
+  border-radius: 0 6rem 0 0;
+}
+
+.bd-rd {
+  border-radius: 0 0 6rem 0;
+}
+
+.bd-ld {
+  border-radius: 0 0 0 6rem;
+}
+
+.bd-lt-rd {
+  border-radius: 6rem 0 6rem 0;
+}
+
+.bd-all-small {
+  border-radius: 3rem;
 }
