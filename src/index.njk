@@ -31,10 +31,10 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
 </nav>
 
 <main>
-  <section class="hero bg-green bd-rd">
+  <section id="hero" class="hero bg-green bd-rd">
     <div class="hero-body">
       <div class="container">
-        <div class="columns is-vcentered">
+        <div class="columns is-vcentered is-gapless">
           <div class="column">
             <h1 class="title is-1">Take your Node.js knowledge to the next level</h1>
             <h2 class="subtitle is-4 mt-1">Design and implement production-grade Node.js applications using proven patterns and techniques</h2>
@@ -90,7 +90,7 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
   </div>
 
   <div class="bg-green">
-    <section class="section bg-white bd-rd">
+    <section id="praises" class="section bg-white bd-rd">
       <div class="container">
         <h2 class="title is-2 underline has-text-centered">
           <span>What people say</span></h2>
@@ -135,11 +135,11 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
           <div class="column is-half">
             <h3 class="subtitle is-4">Master well-known design principles to create modern applications that are readable, extensible, and that can grow big</h3>
             <p>This book will teach you how to implement a series of best practices and design patterns to create efficient and robust Node.js applications.</p>
-            <p class="mt-2">The first chapters of the book are designed to explore the basics of Node.js, analyzing its <strong>asynchronous event driven architecture</strong> and its fundamental design patterns including control flow patterns with <strong>callbacks</strong>, <strong>promises</strong> and <strong>async/await</strong>.</p>
-            <p class="mt-2">The second part of the book dives into Node.js <strong>streams</strong> and explores some of the most famous Gang of Four <strong>design patterns</strong> reinterpreted in the context of Node.js plus some original patterns that are specific to JavaScript and Node.js.</p>
-            <p class="mt-2">In the last section this book covers more advanced topics such as <strong>Universal JavaScript</strong> with Node.js, <strong>React</strong> and <strong>Webpack</strong>, best practices to <strong>scale Node.js</strong> services, <strong>microservices</strong> and <strong>messaging patterns</strong> for enterprise-grade <strong>distributed applications</strong>.</p>
-            <p class="mt-2">Throughout the book you will see Node.js in action with the help of several real-life examples leveraging great technologies such as <strong>LevelDB</strong>, <strong>Redis</strong>, <strong>RabbitMQ</strong>, <strong>ZeroMQ</strong> and many others. They will be used to demonstrate a pattern or a technique, but they will also give you a great introduction to the <strong>Node.js ecosystem</strong> and its set of solutions.</p>
-            <div class="buttons mt-5">
+            <p>The first chapters of the book are designed to explore the basics of Node.js, analyzing its <strong>asynchronous event driven architecture</strong> and its fundamental design patterns including control flow patterns with <strong>callbacks</strong>, <strong>promises</strong> and <strong>async/await</strong>.</p>
+            <p>The second part of the book dives into Node.js <strong>streams</strong> and explores some of the most famous Gang of Four <strong>design patterns</strong> reinterpreted in the context of Node.js plus some original patterns that are specific to JavaScript and Node.js.</p>
+            <p>In the last section this book covers more advanced topics such as <strong>Universal JavaScript</strong> with Node.js, <strong>React</strong> and <strong>Webpack</strong>, best practices to <strong>scale Node.js</strong> services, <strong>microservices</strong> and <strong>messaging patterns</strong> for enterprise-grade <strong>distributed applications</strong>.</p>
+            <p>Throughout the book you will see Node.js in action with the help of several real-life examples leveraging great technologies such as <strong>LevelDB</strong>, <strong>Redis</strong>, <strong>RabbitMQ</strong>, <strong>ZeroMQ</strong> and many others. They will be used to demonstrate a pattern or a technique, but they will also give you a great introduction to the <strong>Node.js ecosystem</strong> and its set of solutions.</p>
+            <div class="buttons">
               <a class="button is-primary" href="#">Buy the book</a>
               <a class="button" href="#">Download the sample chapter</a>
             </div>
@@ -158,25 +158,25 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
           <span>What's in the book</span>
         </h2>
 
-        <div class="columns is-centered">
+        <div class="columns is-centered is-gapless">
           <div class="column is-10">
             <h3 class="subtitle is-3">Node.js Design Patterns is the book for software engineers who want to <strong>master Node.js</strong> and <strong>run production applications</strong> with confidence.</h3>
           </div>
         </div>
 
-        <div class="columns mt-6 is-variable is-8">
+        <div class="columns is-variable is-8">
           <div class="column is-one-third">
-            <h6 class="title is-4 md-3 is-green">150 Working examples &amp; 50 exercises</h6>
+            <h4 class="title is-4 is-green">150 Working examples &amp; 50 exercises</h4>
             <p>With hundreds of working examples, you immediately put into practice everything you learn. Every code sample comes with a full step-by-step explanation, so you don't have to spend time to guess how things work. At the end of every chapter you will find engaging coding challenges to test your understanding and gain more confidence on your progress.</p>
           </div>
 
           <div class="column is-one-third">
-            <h6 class="title is-4 md-3 is-green">13 Exquisitely crafted chapters</h6>
+            <h4 class="title is-4 is-green">13 Exquisitely crafted chapters</h4>
             <p>Every chapter will bring you one step closer to becoming a Node.js expert. From the basics of the Node.js architecture to how to scale and distribute your application, the book covers almost every aspect of professional Node.js development.</p>
           </div>
 
           <div class="column is-one-third">
-            <h6 class="title is-4 md-3 is-green">660 Pages packed with knowledge</h6>
+            <h4 class="title is-4 is-green">660 Pages packed with knowledge</h4>
             <p>A good learning experience can't be achieved by only throwing code and notions at the reader. Node.js Design Patterns comes with in-depth explanations and examples, so that even a novice can follow and immediately take advantage of advanced techniques.</p>
           </div>
         </div>
@@ -186,13 +186,13 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
 
   <section id="sample-chapter" class="section">
     <div class="container bg-green px-6 py-6 bd-all-small">
-      <div class="columns">
+      <div class="columns is-gapless">
         <div class="column is-half">
           <h2 class="title is-2">Get the free chapter</h2>
-          <h3 class="subtitle is-3 mt-1">Behavioural Design Patterns</h3>
+          <h3 class="subtitle is-3">Behavioural Design Patterns</h3>
           <p>Learn how to implement and leverage some of the most well known behavioural design patterns in the context of Node.js:
             the <strong>Strategy pattern</strong>, the <strong>State pattern</strong>, the <strong>Template pattern</strong>, the <strong>Iterator pattern</strong>, the <strong>Middleware pattern</strong>, and the <strong>Command pattern</strong>.</p>
-          <p class="mt-6">
+          <p class="buttons">
             <a class="button is-primary" href="#">Download the FREE chapter</a>
           </p>
         </div>
@@ -204,7 +204,7 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
   </section>
 
   <section id="book-chapters" class="section bg-white">
-    <div class="container">
+    <div class="container hhh">
       <h2 class="title is-2 underline has-text-centered">
         <span>Table of Contents</span>
       </h2>

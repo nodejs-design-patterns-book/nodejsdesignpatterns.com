@@ -49,8 +49,8 @@ html {
   }
 }
 
-.svg-icon {
-  width: 48px;
+.svg-icon svg {
+  width: 3rem;
 }
 
 .svg-icon svg .svg-linear-gradient {
@@ -71,27 +71,27 @@ html {
   background-image: linear-gradient(transparent 55%,#b9eec5 0,#b9eec5 80%,transparent 0,transparent);
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  padding-bottom: .3em;
+  background-position: 0 .5rem;
 }
 
 .container {
-  color: #323;
+  color: $blackL1;
 }
 
 .quote::before {
   display: inline-block;
-  content: "\"";
-  font-size: 4rem;
-  line-height: 50%;
-  font-family: 'Coustard', serif;
+  content: '"';
+  font-size: 3rem;
+  line-height: 100%;
+  font-family: "Coustard",serif;
   position: relative;
-  bottom: -1.25rem;
+  bottom: -.75rem;
   margin-right: .25rem;
-  color: #da8f4c;
+  color: $orange;
 }
 
 p, h1, h2, h3, h4, div {
-  line-height: 1.5555555556rem;;
+  line-height: 1.5rem;;
 }
 
 img.avatar {
@@ -143,19 +143,114 @@ nav a.navbar-item {
 
 @media screen and (min-width: 769px) {
   .chapter9 {
-    transform: rotate(-10deg) translateY(-30px);
+    transform: rotate(-10deg) translate(30px, -30px);
     margin: 0 auto;
   }
 }
 
-#book-chapters {
-
+#hero {
+  h1 {
+    line-height: 4.5rem;
+    font-size: 3.5rem;
+  }
   h2 {
-    margin: 0 0 1rem 0;
+    line-height: 3rem;
+    font-size: 1.8rem;
+  }
+  .buttons {
+    margin: 1.5rem 0 0 0;
+    .button {
+      height: 3rem;
+    }
+  }
+}
+
+#praises {
+  h2 {
+    margin: 0 0 1.5rem 0;
+    padding: 0;
+    line-height: 3rem;
+  }
+
+  .column {
+    padding: 1.5rem 1rem;
+  }
+}
+
+#book-abstract {
+  .column {
+    padding: 0 0.75rem;
+  }
+  h2 {
+    margin: 0;
+    padding: 1.5rem 0 1.5rem 0;
+    line-height: 3rem;
+  }
+  h3 {
+    line-height: 3rem;
+    font-size: 1.8rem;
+  }
+  p {
+    margin: 1.5rem 0 0 0;
+  }
+  .buttons {
+    margin: 1.5rem 0 0 0;
+    .button {
+      height: 3rem;
+    }
+  }
+}
+
+#book-content {
+  h2, h3 {
+    margin: 0;
+    padding: 0;
+    line-height: 3rem;
+  }
+
+  h3 {
+    padding: 3rem 0 0 0;
+  }
+
+  h4 {
+    margin: 3rem 0 1.5rem 0;
+    line-height: 1.5rem;
+    font-size: 1.3rem;
+  }
+
+  .columns {
+    margin: 0 0 0 0;
+
+    .column {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+}
+
+#sample-chapter {
+  h2, h3 {
+    line-height: 3rem;
+    margin: 0;
+  }
+  p {
+    margin-top: 1.5rem;
+  }
+  .buttons {
+    .button {
+      height: 3rem;
+    }
+  }
+}
+
+#book-chapters {
+  h2 {
+    margin: 0 0 1.5rem 0;
   }
 
   h3.subtitle {
-    line-height: 1.5rem;
+    line-height: 3rem;
+    font-size: 1.8rem;
   }
 
 
@@ -204,4 +299,10 @@ nav a.navbar-item {
 
 .bd-all-small {
   border-radius: 3rem;
+}
+
+.hhh {
+  background-color: #fff;
+  background-size: 100% 1.5em;
+  background-image: linear-gradient(0deg, transparent 79px, #abced4 79px, #abced4 81px, transparent 81px), linear-gradient(#eee .05em, transparent .05em);
 }
