@@ -136,6 +136,48 @@ nav a.navbar-item {
   }
 }
 
+.chapter9 {
+  transform: rotate(-10deg) translateY(30px);
+  margin-bottom: -20px !important;
+}
+
+@media screen and (min-width: 769px) {
+  .chapter9 {
+    transform: rotate(-10deg) translateY(-30px);
+    margin: 0 auto;
+  }
+}
+
+#book-chapters {
+
+  h2 {
+    margin: 0 0 1rem 0;
+  }
+
+  h3.subtitle {
+    line-height: 1.5rem;
+  }
+
+
+  article {
+    // border: 1px solid red;
+    margin-bottom: 3rem;
+    padding: 0;
+
+    h3 {
+      margin: 0 0 1.5rem 0;
+      padding-left: 3.8rem;
+      text-indent: -3.7rem;
+      line-height: 1.5rem;
+    }
+
+    p {
+      margin-left: 3.8rem;
+      line-height: 1.5rem;
+    }
+  }
+}
+
 .is-green {
   color: $greenD4;
 }

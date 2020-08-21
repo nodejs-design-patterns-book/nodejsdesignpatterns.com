@@ -32,7 +32,7 @@ module.exports = function (config) {
     const manifestPath = path.join(__dirname, 'src', '_includes', 'js', 'manifest.json')
     const content = await readFile(manifestPath)
     const manifest = JSON.parse(content)
-    return `${Object.values(manifest).map(f => `<script src="/js/${f}"></script>`)}`
+    return `${Object.values(manifest).map(f => `<script defer="defer" src="/js/${f}"></script>`)}`
   })
 
   // Add HTML minification transform
