@@ -21,7 +21,7 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
         <div class="navbar-item">
           <div class="buttons">
             <a class="button is-primary">
-              <strong>Buy</strong>
+              <strong>Buy the book</strong>
             </a>
           </div>
         </div>
@@ -62,25 +62,25 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
         <div class="columns">
 
           <div class="column is-3">
-            <p class="svg-icon">{% include "svg/books.svg" %}</p>
-            <p>
-              <strong>+16,000</strong> Copies sold World wide</p>
+            <p class="svg-icon has-text-centered">{% include "svg/books.svg" %}</p>
+            <p class="has-text-centered">
+              <strong>+60,000</strong> Copies sold World wide</p>
           </div>
 
           <div class="column is-3">
-            <p class="svg-icon">{% include "svg/english-to-chinese.svg" %}</p>
-            <p>Translated in <strong>8 languages</strong>
+            <p class="svg-icon has-text-centered">{% include "svg/english-to-chinese.svg" %}</p>
+            <p class="has-text-centered">Translated in <strong>8 languages</strong>
             </p>
           </div>
 
           <div class="column is-3">
-            <p class="svg-icon">{% include "svg/star.svg" %}</p>
-            <p>Rated <strong>4.7</strong> on Amazon</p>
+            <p class="svg-icon has-text-centered">{% include "svg/star.svg" %}</p>
+            <p class="has-text-centered">Rated <strong>4.7</strong> on Amazon</p>
           </div>
 
           <div class="column is-3">
-            <p class="svg-icon">{% include "svg/brush-alt.svg" %}</p>
-            <p>Perfected through <strong>3 editions</strong>
+            <p class="svg-icon has-text-centered">{% include "svg/brush-alt.svg" %}</p>
+            <p class="has-text-centered">Perfected through <strong>3 editions</strong>
             </p>
           </div>
 
@@ -204,7 +204,7 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
   </section>
 
   <section id="book-chapters" class="section bg-white">
-    <div class="container hhh">
+    <div class="container">
       <h2 class="title is-2 underline has-text-centered">
         <span>Table of Contents</span>
       </h2>
@@ -218,84 +218,74 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
       <div class="columns is-centered">
         <div class="column is-8">
 
-          <article>
-            <h3 class="title is-4">
-              <span class="is-green">01 &mdash;</span> The Node.js Platform</h3>
-            <p>Learn about the Node.js philosophy, the reactor patterns and the differences between JavaScript on the browser and Node.js on the server.</p>
-          </article>
+          <ol>
+            <li>
+              <h3 class="title is-4">The Node.js Platform</h3>
+              <p>Learn about the Node.js philosophy, the reactor patterns and the differences between JavaScript on the browser and Node.js on the server.</p>
+            </li>
 
-          <article>
-            <h3 class="title is-4">
-              <span class="is-green">02 &mdash;</span> The Module System</h3>
-            <p>Learn how to leverage the powerful Node.js module system and discover the main differences between CommonJS and ESM.</p>
-          </article>
+            <li>
+              <h3 class="title is-4">The Module System</h3>
+              <p>Learn how to leverage the powerful Node.js module system and discover the main differences between CommonJS and ESM.</p>
+            </li>
 
-          <article>
-            <h3 class="title is-4">
-              <span class="is-green">03 &mdash;</span> Callbacks and Events</h3>
-            <p>Discover the callback pattern, how it works and the conventions used in Node.js. Learn how to avoid pitfalls and when to take advantage of the observer pattern using Node.js built-in event emitter.</p>
-          </article>
+            <li>
+              <h3 class="title is-4">Callbacks and Events</h3>
+              <p>Discover the callback pattern, how it works and the conventions used in Node.js. Learn how to avoid pitfalls and when to take advantage of the observer pattern using Node.js built-in event emitter.</p>
+            </li>
 
-          <article>
-            <h3 class="title is-4">
-              <span class="is-green">04 &mdash;</span> Asynchronous Control Flow Patterns with Callbacks</h3>
-            <p>Lean how to avoid callback hell and explore common asynchronous patterns such as sequential execution, sequential iteration, parallel execution and limited parallel execution.</p>
-          </article>
+            <li>
+              <h3 class="title is-4">Asynchronous Control Flow Patterns with Callbacks</h3>
+              <p>Lean how to avoid callback hell and explore common asynchronous patterns such as sequential execution, sequential iteration, parallel execution and limited parallel execution.</p>
+            </li>
 
-          <article>
-            <h3 class="title is-4">
-              <span class="is-green">05 &mdash;</span> Asynchronous Control Flow Patterns with Promises and Async/Await</h3>
-            <p>Find out how promises work and how to use them effectively to implement various asynchronous control flow patterns. Explore the modern async/await syntax, the main tool today for dealing with asynchronous code in Node.js</p>
-          </article>
+            <li>
+              <h3 class="title is-4">Asynchronous Control Flow Patterns with Promises and Async/Await</h3>
+              <p>Find out how promises work and how to use them effectively to implement various asynchronous control flow patterns. Explore the modern async/await syntax, the main tool today for dealing with asynchronous code in Node.js</p>
+            </li>
 
-          <article>
-            <h3 class="title is-4">
-              <span class="is-green">06 &mdash;</span> Coding with Streams</h3>
-            <p>Understand why streams are so important in Node.js. Learn how to use standard streams and how to create custom ones. Explore various streaming patterns and learn how to build powerful streaming pipelines.</p>
-          </article>
+            <li>
+              <h3 class="title is-4">Coding with Streams</h3>
+              <p>Understand why streams are so important in Node.js. Learn how to use standard streams and how to create custom ones. Explore various streaming patterns and learn how to build powerful streaming pipelines.</p>
+            </li>
 
-          <article>
-            <h3 class="title is-4">
-              <span class="is-green">07 &mdash;</span> Creational Design Patterns</h3>
-            <p>Learn about the most famous creational design patterns in Node.js: the Factory pattern, the Revealing Constructor pattern, the Builder pattern. Finally, explore the Singleton pattern and the Dependency Injection pattern.</p>
-          </article>
+            <li>
+              <h3 class="title is-4">Creational Design Patterns</h3>
+              <p>Learn about the most famous creational design patterns in Node.js: the Factory pattern, the Revealing Constructor pattern, the Builder pattern. Finally, explore the Singleton pattern and the Dependency Injection pattern.</p>
+            </li>
 
-          <article>
-            <h3 class="title is-4">
-              <span class="is-green">08 &mdash;</span> Structural Design Patterns</h3>
-            <p>Discover how to implement and use the Proxy, the Decorator and the Adapter pattern in Node.js.</p>
-          </article>
+            <li>
+              <h3 class="title is-4">Structural Design Patterns</h3>
+              <p>Discover how to implement and use the Proxy, the Decorator and the Adapter pattern in Node.js.</p>
+            </li>
 
-          <article>
-            <h3 class="title is-4">
-              <span class="is-green">09 &mdash;</span> Behavioural Design Patterns</h3>
-            <p>Learn how to implement and leverage some of the most well known behavioural design patterns in the context of Node.js: the Strategy pattern, the State pattern, the Template pattern, the Iterator pattern, the Middleware pattern, and the Command pattern.</p>
-            <p><span class="tag is-primary">Free Chapter!</span></p>
-          </article>
+            <li>
+              <h3 class="title is-4">Behavioural Design Patterns</h3>
+              <p>Learn how to implement and leverage some of the most well known behavioural design patterns in the context of Node.js: the Strategy pattern, the State pattern, the Template pattern, the Iterator pattern, the Middleware pattern, and the Command pattern.</p>
+              <p>
+                <span class="tag is-primary">Free Chapter!</span></p>
+            </li>
 
-          <article>
-            <h3 class="title is-4">
-              <span class="is-green">10 &mdash;</span> Universal JavaScript</h3>
-            <p>Explore the fundamentals of JavaScript cross-platform developments and how to share code between the browser and Node.js. Learn React.js and how to build a complete universal JavaScript application.</p>
-          </article>
+            <li>
+              <h3 class="title is-4">Universal JavaScript</h3>
+              <p>Explore the fundamentals of JavaScript cross-platform developments and how to share code between the browser and Node.js. Learn React.js and how to build a complete universal JavaScript application.</p>
+            </li>
 
-          <article>
-            <h3 class="title is-4">
-              <span class="is-green">11 &mdash;</span> Advanced Recipes</h3>
-            <p>Learn advanced recipes such as dealing with asynchronously initialized components, performing asynchronous request batching and caching, canceling asynchronous operations and running CPU-bound tasks.</p>
-          </article>
+            <li>
+              <h3 class="title is-4">Advanced Recipes</h3>
+              <p>Learn advanced recipes such as dealing with asynchronously initialized components, performing asynchronous request batching and caching, canceling asynchronous operations and running CPU-bound tasks.</p>
+            </li>
 
-          <article>
-            <h3 class="title is-4">
-              <span class="is-green">12 &mdash;</span> Scalability and Architectural Patterns</h3>
-            <p>Master the art of Node.js scalability by learning about the "Scale Cube", discover how to run multiple instances of the same application and how to use load balancers and service registers. Learn how to use containers and containers orchestration platforms such as Kubernetes. Finally, find out how to design and build microservices architectures.</p>
-          </article>
+            <li>
+              <h3 class="title is-4">Scalability and Architectural Patterns</h3>
+              <p>Master the art of Node.js scalability by learning about the "Scale Cube", discover how to run multiple instances of the same application and how to use load balancers and service registers. Learn how to use containers and containers orchestration platforms such as Kubernetes. Finally, find out how to design and build microservices architectures.</p>
+            </li>
 
-          <article>
-            <h3 class="title is-4">
-              <span class="is-green">13 &mdash;</span> Messaging and Integration Patterns</h3>
-            <p>Discover the fundamentals of messaging systems and learn the Publish/Subscribe pattern. Master distribution patterns, messaging pipelines and the most common Request/Reply patterns.</p>
-          </article>
+            <li>
+              <h3 class="title is-4">Messaging and Integration Patterns</h3>
+              <p>Discover the fundamentals of messaging systems and learn the Publish/Subscribe pattern. Master distribution patterns, messaging pipelines and the most common Request/Reply patterns.</p>
+            </li>
+          </ol>
         </div>
       </div>
     </div>
@@ -304,132 +294,140 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
   <div class="bg-green">
     <section id="authors" class="section bd-rd bg-white">
       <div class="container">
-        <h2 class="title is-2">Meet the authors</h2>
-        <p>Meet Mario and Luciano, two passionate software engineers with a shared passion for Node.js and more than 15 years of collective experience on the field!</a>
+        <h2 class="title is-2 underline has-text-centered">
+          <span>Meet the authors</span>
+        </h2>
 
-        <div>
-          <h3 class="title is-3">Mario Casciaro</h3>
-          <p>Mario is a software engineer and entrepreneur who worked at IBM for a number of years. He currently splits his time between Var7 Technologies (his own software company) and its role as Lead Engineer at D4H Technologies where he creates software for emergency response teams.</p>
-          <ul>
-            <li>
-              <a href="https://mario.fyi/">website</a>
-            </li>
-            <li>
-              <a href="https://twitter.com/mariocasciaro">twitter</a>
-            </li>
-            <li>
-              <a href="https://github.com/mariocasciaro">github</a>
-            </li>
-            <li>
-              <a href="https://www.linkedin.com/in/mariocasciaro/">linkedin</a>
-            </li>
-          </ul>
+        <div class="columns is-centered">
+          <div class="column is-10">
+            <h3 class="subtitle has-text-centered">Meet Mario and Luciano, two passionate software engineers with a shared passion for Node.js and more than 15 years of collective experience on the field!</h3>
+          </div>
         </div>
 
-        <div>
-          <h3 class="title is-3">Luciano Mammino</h3>
-          <p>Luciano wrote his first line of code at the age of 12 on his father's old i386. Since then, he has never stopped coding. He is currently working at FabFitFun as Principal Software Engineer where he is building microservices to serve millions of users every day. Luciano is an active speaker and in the last few years he has delivered more than 50 talks in conferences and meetups around the world.</p>
+        <div class="columns">
+          <div class="column is-half">
+            <h3 class="title is-3">Mario Casciaro</h3>
+            <p>Mario is a software engineer and entrepreneur who worked at IBM for a number of years. He currently splits his time between Var7 Technologies (his own software company) and its role as Lead Engineer at D4H Technologies where he creates software for emergency response teams.</p>
+            <ul>
+              <li>
+                <a href="https://mario.fyi/">website</a>
+              </li>
+              <li>
+                <a href="https://twitter.com/mariocasciaro">twitter</a>
+              </li>
+              <li>
+                <a href="https://github.com/mariocasciaro">github</a>
+              </li>
+              <li>
+                <a href="https://www.linkedin.com/in/mariocasciaro/">linkedin</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="column is-half">
+            <h3 class="title is-3">Luciano Mammino</h3>
+            <p>Luciano wrote his first line of code at the age of 12 on his father's old i386. Since then, he has never stopped coding. He is currently working at FabFitFun as Principal Software Engineer where he is building microservices to serve millions of users every day. Luciano is an active speaker and in the last few years he has delivered more than 50 talks in conferences and meetups around the world.</p>
+            <ul>
+              <li>
+                <a href="https://loige.co/">website</a>
+              </li>
+              <li>
+                <a href="https://twitter.com/loige">twitter</a>
+              </li>
+              <li>
+                <a href="https://github.com/lmammino">github</a>
+              </li>
+              <li>
+                <a href="https://www.linkedin.com/in/lucianomammino/">linkedin</a>
+              </li>
+            </ul>
+          </div>
         </div>
-        <ul>
-          <li>
-            <a href="https://loige.co/">website</a>
-          </li>
-          <li>
-            <a href="https://twitter.com/loige">twitter</a>
-          </li>
-          <li>
-            <a href="https://github.com/lmammino">github</a>
-          </li>
-          <li>
-            <a href="https://www.linkedin.com/in/lucianomammino/">linkedin</a>
-          </li>
-        </ul>
+      </section>
+    </div>
+
+    <section id="buy" class="section bg-green bd-lt-rd">
+      <div class="container">
+        <h2 class="title is-2">Buy Node.js Design Patterns third edition</h2>
+        <p>Node.js Design Patterns third edition is available in Print and e-book (epub and Kindle) and can be purchased on Amazon and on Packt.</p>
+
+        <a href="https://nodejsdp.link/buy">Buy on Amazon</a>
+        <a href="https://www.packtpub.com/eu/programming/node-js-design-patterns-third-edition">Buy on Packt.com</a>
       </div>
     </section>
-  </div>
 
-  <section id="buy" class="section bg-green bd-lt-rd">
-    <div class="container">
-      <h2 class="title is-2">Buy Node.js Design Patterns third edition</h2>
-      <p>Node.js Design Patterns third edition is available in Print and e-book (epub and Kindle) and can be purchased on Amazon and on Packt.</p>
+    <div class="bg-green">
+      <section id="faq" class="section bd-lt bg-white">
+        <div class="container">
+          <h2 class="title is-2">FAQ</h2>
 
-      <a href="https://nodejsdp.link/buy">Buy on Amazon</a>
-      <a href="https://www.packtpub.com/eu/programming/node-js-design-patterns-third-edition">Buy on Packt.com</a>
-    </div>
-  </section>
-
-  <div class="bg-green">
-    <section id="faq" class="section bd-lt bg-white">
-      <div class="container">
-        <h2 class="title is-2">FAQ</h2>
-
-        <div>
-          <h3>Who is this book for?</h3>
-          <p>TODO summarize below statement
+          <div>
+            <h3>Who is this book for?</h3>
+            <p>TODO summarize below statement
     This book is for developers and software architects who have some prior basic knowledge of JavaScript and Node.js and now want to get the most out of these technologies in terms of productivity, design quality, and scalability. Software professionals with intermediate experience in Node.js and JavaScript will also find valuable the more advanced patterns and techniques presented in this book.
     This book assumes that you have an intermediate understanding of web application development, databases, and software design principles.</p>
-        </div>
+          </div>
 
-        <div>
-          <h3>I am new to JavaScript and Node.js, is this book for me?</h3>
-          <p>TODO:</p>
-        </div>
+          <div>
+            <h3>I am new to JavaScript and Node.js, is this book for me?</h3>
+            <p>TODO:</p>
+          </div>
 
-        <div>
-          <h3>What are the main concepts I will learn in this book?</h3>
-          <p>TODO: summarise the points below
+          <div>
+            <h3>What are the main concepts I will learn in this book?</h3>
+            <p>TODO: summarise the points below
     Become comfortable with writing asynchronous code by leveraging callbacks, promises, and the async/await syntax
     Leverage Node.js streams to create data-driven asynchronous processing pipelines
     Implement well-known software design patterns to create production grade applications
     Share code between Node.js and the browser and take advantage of full-stack JavaScript
     Build and scale microservices and distributed systems powered by Node.js
     Use Node.js in conjunction with other powerful technologies such as Redis, RabbitMQ, ZeroMQ, and LevelDB</p>
-        </div>
+          </div>
 
-        <div>
-          <h3>How long is the book?</h3>
-          <p>The book has 13 chapters totaling about 600+ pages.</p>
-        </div>
+          <div>
+            <h3>How long is the book?</h3>
+            <p>The book has 13 chapters totaling about 600+ pages.</p>
+          </div>
 
-        <div>
-          <h3>Do I have to read all 600 pages to make sense of the book?</h3>
-          <p>TODO:</p>
-        </div>
+          <div>
+            <h3>Do I have to read all 600 pages to make sense of the book?</h3>
+            <p>TODO:</p>
+          </div>
 
-        <div>
-          <h3>How up to date is this book?</h3>
-          <p>The third edition of this book has been updated to cover the most modern Node.js LTS version (Node.js 14) and best practices such as Async/Await and EcmaScript Modules (ESM).</p>
-        </div>
+          <div>
+            <h3>How up to date is this book?</h3>
+            <p>The third edition of this book has been updated to cover the most modern Node.js LTS version (Node.js 14) and best practices such as Async/Await and EcmaScript Modules (ESM).</p>
+          </div>
 
-        <div>
-          <h3>Are the code examples available online?</h3>
-          <p>TODO:</p>
-        </div>
+          <div>
+            <h3>Are the code examples available online?</h3>
+            <p>TODO:</p>
+          </div>
 
-        <div>
-          <h3>What are some examples of real-life applications that are presented in the book?</h3>
-          <p>TODO:</p>
-        </div>
+          <div>
+            <h3>What are some examples of real-life applications that are presented in the book?</h3>
+            <p>TODO:</p>
+          </div>
 
-        <div>
-          <h3>How can I practice the learnings from the book?</h3>
-          <p>TODO:</p>
-        </div>
+          <div>
+            <h3>How can I practice the learnings from the book?</h3>
+            <p>TODO:</p>
+          </div>
 
-        <div>
-          <h3>What if I get stuck with any of the exercises?</h3>
-          <p>TODO:</p>
+          <div>
+            <h3>What if I get stuck with any of the exercises?</h3>
+            <p>TODO:</p>
+          </div>
         </div>
-      </div>
-    </section>
-  </div>
-</main>
-<footer class="footer">
-  <div class="container">
-    <p>Copyright © 2020 Mario Casciaro, Luciano Mammino, Packt Publishing.</p>
-    <p>All trademarks and registered trademarks are the property of their respective owners.</p>
-    <p>Icons <strong>Unicons</strong> by <a href="https://iconscout.com" rel="nofollow">Iconscout</a>
-    </p>
-    <p>Found an error in this website? Help us improve it on <a href="https://github.com/nodejs-design-patterns-book/nodejsdesignpatterns.com">GitHub</a>.</p>
-  </div>
-</footer>
+      </section>
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="container">
+      <p>Copyright © 2020 Mario Casciaro, Luciano Mammino, Packt Publishing.</p>
+      <p>All trademarks and registered trademarks are the property of their respective owners.</p>
+      <p>Icons <strong>Unicons</strong> by <a href="https://iconscout.com" rel="nofollow">Iconscout</a>
+      </p>
+      <p>Found an error in this website? Help us improve it on <a href="https://github.com/nodejs-design-patterns-book/nodejsdesignpatterns.com">GitHub</a>.</p>
+    </div>
+  </footer>

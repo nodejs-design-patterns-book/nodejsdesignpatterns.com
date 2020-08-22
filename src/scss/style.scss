@@ -38,6 +38,9 @@ $whiteL1: lighten( $white, 10% );
 $whiteL2: lighten( $white, 20% );
 $whiteL3: lighten( $white, 30% );
 
+$family-serif: 'Playfair Display', serif;
+$family-sans-serif: 'Open Sans', sans-serif;
+
 @import "./bulma-custom.scss";
 
 html {
@@ -63,7 +66,7 @@ html {
 }
 
 .title {
-  font-family: 'Playfair Display', serif;
+  font-family: $family-serif;
 }
 
 .title.underline span {
@@ -167,7 +170,7 @@ nav a.navbar-item {
 
 #praises {
   h2 {
-    margin: 0 0 1.5rem 0;
+    margin: 0 0 3rem 0;
     padding: 0;
     line-height: 3rem;
   }
@@ -254,21 +257,33 @@ nav a.navbar-item {
   }
 
 
-  article {
-    // border: 1px solid red;
+  ol {
+    list-style-type: decimal-leading-zero;
+    padding-left: 3.8rem;
+    font-family: $family-serif;
+    color: $greenD3;
+    font-size: 1.5rem;
     margin-bottom: 3rem;
-    padding: 0;
+
+    li {
+      margin: 0;
+      padding: 0;
+    }
 
     h3 {
-      margin: 0 0 1.5rem 0;
-      padding-left: 3.8rem;
-      text-indent: -3.7rem;
+      margin: 1.5rem 0 1.5rem 0;
+      padding: 0;
       line-height: 1.5rem;
+      font-size: 1.5rem;
     }
 
     p {
-      margin-left: 3.8rem;
       line-height: 1.5rem;
+      font-family: $family-sans-serif;
+      font-size: 1rem;
+      color: $black;
+      padding: 0 0 1.5em 0;
+      margin: 0;
     }
   }
 }
