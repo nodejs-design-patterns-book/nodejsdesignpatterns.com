@@ -289,6 +289,8 @@ nav a.navbar-item {
 }
 
 #authors {
+  padding-bottom: 6rem;
+
   h2 {
     line-height: 3rem;
     margin: 0;
@@ -298,11 +300,11 @@ nav a.navbar-item {
   h3.subtitle {
     line-height: 3rem;
     font-size: 1.8rem;
-    padding: 3rem 0;
+    padding: 3rem 0 0 0;
   }
 
   h3.title {
-    margin: 0 0 1.5rem 0;
+    margin: 3rem 0 1.5rem 0;
     padding: 0;
     line-height: 3rem;
     text-align: center;
@@ -348,6 +350,14 @@ nav a.navbar-item {
         fill: inherit;
       }
     }
+  }
+}
+
+#buy {
+  h2 {
+    line-height: 3rem;
+    margin: 0 0 1.5rem 0;
+    padding: 0;
   }
 }
 
