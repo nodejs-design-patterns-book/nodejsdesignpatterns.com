@@ -59,15 +59,20 @@ module.exports = function (config) {
     // makes sure that the input picture exists
     await access(inputImage)
 
+    const maxWidth = options.maxWidth || 1024
     options.outputDir = path.join(__dirname, 'build', 'img')
-    options.widths = [256, 512, 1024, null]
+    options.widths = [null, 64]
+    while (options.widths[options.widths.length - 1] * 2 <= maxWidth) {
+      options.widths.push(options.widths[options.widths.length - 1] * 2)
+    }
+
     const stats = await Image(inputImage, options)
     const lowestSrc = stats.jpeg[0]
-    const sizes = '(max-width: 1024px) 100vw, 1024px'
+    const sizes = `(max-width: ${maxWidth}px) 100vw, ${maxWidth}px`
 
     // Iterate over formats and widths
     return `
-    <span style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 1024px; ">
+    <span style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: ${maxWidth}px; ">
     <picture>
       ${Object.values(stats).map(imageFormat => {
       return `  <source type="image/${imageFormat[0].format}" srcset="${imageFormat.map(entry => `${entry.url} ${entry.width}w`).join(', ')}" sizes="${sizes}">`
