@@ -242,15 +242,15 @@ buyButtons:
   -
     store: packt
     label: Buy on Packtpub.com
-    link: https://www.packtpub.com/web-development/nodejs-design-patterns-second-edition
+    link: https://www.packtpub.com/product/node-js-design-patterns-third-edition/9781839214110
     discount: ~
     subtext: ~
   -
     store: amazon
     label: Buy on Amazon (USA)
-    link: http://amzn.to/2bB58Ic
+    link: https://amzn.to/2EpkyQD
     discount: ~
-    subtext: or <a href="http://amzn.to/2bddyWq" rel="nofollow">Buy on Amazon (UK)</a>
+    subtext: or <a href="https://amzn.to/32nlY6b" rel="nofollow">Buy on Amazon (UK)</a>
   -
     store: oreilly
     label: Buy on O'REILLY
