@@ -50,6 +50,9 @@ html {
   html {
     scroll-behavior: auto;
   }
+  #faq p.desc  {
+    transition: none;
+  }
 }
 
 .svg-icon svg {
@@ -356,8 +359,89 @@ nav a.navbar-item {
 #buy {
   h2 {
     line-height: 3rem;
-    margin: 0 0 1.5rem 0;
+    margin: 0 0 3rem 0;
     padding: 0;
+  }
+
+  h3 {
+    line-height: 3rem;
+    margin: 0 0 3rem 0;
+    padding: 0;
+  }
+
+  .buttons {
+    margin: 0 0 3rem 0;
+  }
+
+  .buttons .button {
+    height: 3rem;
+    line-height: 3rem;
+  }
+}
+
+#faq {
+  button {
+    border: none;
+    text-align: left;
+    background: transparent;
+    width: 100%;
+    cursor: pointer;
+
+    &:active {
+      border: none;
+    }
+
+    &:focus {
+      border: none;
+      outline: 0;
+    }
+
+    h3 {
+      font-size: 1rem;
+      line-height: 1.5rem;
+      margin: 1.5rem 0 0 0;
+      text-align: left;
+      font-weight: bold;
+    }
+
+    &[aria-expanded=false] h3::before {
+      content: "+ ";
+      font-weight: bold;
+      color: $greenD3;
+      width: 3rem;
+      display: inline-block;
+    }
+
+    &[aria-expanded=true] h3::before {
+      content: "- ";
+      font-weight: bold;
+      color: $greenD3;
+      width: 3rem;
+      display: inline-block;
+    }
+  }
+
+  p.desc {
+    padding: 1.5rem 0 1.5rem 3.2rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5rem;
+    overflow: hidden;
+    transition: all 0.5s ease-in-out;
+
+    &.open {
+      max-height: 1000px;
+      padding: 1.5rem 0 1.5rem 3.2rem;
+    }
+
+    &.close {
+      max-height: 0;
+      padding: 0 0 0 3.2rem;
+    }
+  }
+
+  dd {
+    border-bottom: 1px solid $green;
+    margin: 0 0;
   }
 }
 

@@ -35,29 +35,29 @@ module.exports = [
     role: 'Software Engineer and Author',
     picture: './img/people/mike-rourke-node.jpg',
     text: 'There is a lot of useful content in this book, and I think the title doesn\'t do it justice. If you want a comprehensive book about Node.js that not only acts as a reference for best practices and design patterns, but also as a one-stop shop for understanding how Node.js works behind the scenes, look no further!'
-  },
-  {
-    name: 'Yan Cui',
-    role: 'AWS Serverless Hero & Author',
-    picture: './img/people/yan-cui-node-js.jpg',
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae volutpat nisi. Cras ut dui felis. Nam porttitor fermentum lacus id placerat. Curabitur erat turpis, condimentum quis malesuada et, consequat in nisl. Sed vel turpis ex. Fusce scelerisque ac urna id ultrices. Etiam accumsan, quam ut imperdiet venenatis'
-  },
-  {
-    name: 'Anton Whalley',
-    role: 'Solution Architect at IBM',
-    picture: './img/people/anton-whalley-node-js.jpg',
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae volutpat nisi. Cras ut dui felis. Nam porttitor fermentum lacus id placerat. Curabitur erat turpis, condimentum quis malesuada et, consequat in nisl. Sed vel turpis ex. Fusce scelerisque ac urna id ultrices. Etiam accumsan, quam ut imperdiet venenatis'
-  },
-  {
-    name: 'Clíona de Róiste',
-    role: 'Lead Engineer at Viasat Inc.',
-    picture: './img/people/cliona-de-roiste-node-js.jpg',
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae volutpat nisi. Cras ut dui felis. Nam porttitor fermentum lacus id placerat. Curabitur erat turpis, condimentum quis malesuada et, consequat in nisl. Sed vel turpis ex. Fusce scelerisque ac urna id ultrices. Etiam accumsan, quam ut imperdiet venenatis'
-  },
-  {
-    name: 'Maya Shavin',
-    role: 'Senior Frontend Developer at Cloudinary',
-    picture: './img/people/maya-shavin-node-js.jpg',
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae volutpat nisi. Cras ut dui felis. Nam porttitor fermentum lacus id placerat. Curabitur erat turpis, condimentum quis malesuada et, consequat in nisl. Sed vel turpis ex. Fusce scelerisque ac urna id ultrices. Etiam accumsan, quam ut imperdiet venenatis'
   }
+  // ,{
+  //   name: 'Yan Cui',
+  //   role: 'AWS Serverless Hero & Author',
+  //   picture: './img/people/yan-cui-node-js.jpg',
+  //   text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae volutpat nisi. Cras ut dui felis. Nam porttitor fermentum lacus id placerat. Curabitur erat turpis, condimentum quis malesuada et, consequat in nisl. Sed vel turpis ex. Fusce scelerisque ac urna id ultrices. Etiam accumsan, quam ut imperdiet venenatis'
+  // },
+  // {
+  //   name: 'Anton Whalley',
+  //   role: 'Solution Architect at IBM',
+  //   picture: './img/people/anton-whalley-node-js.jpg',
+  //   text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae volutpat nisi. Cras ut dui felis. Nam porttitor fermentum lacus id placerat. Curabitur erat turpis, condimentum quis malesuada et, consequat in nisl. Sed vel turpis ex. Fusce scelerisque ac urna id ultrices. Etiam accumsan, quam ut imperdiet venenatis'
+  // },
+  // {
+  //   name: 'Clíona de Róiste',
+  //   role: 'Lead Engineer at Viasat Inc.',
+  //   picture: './img/people/cliona-de-roiste-node-js.jpg',
+  //   text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae volutpat nisi. Cras ut dui felis. Nam porttitor fermentum lacus id placerat. Curabitur erat turpis, condimentum quis malesuada et, consequat in nisl. Sed vel turpis ex. Fusce scelerisque ac urna id ultrices. Etiam accumsan, quam ut imperdiet venenatis'
+  // },
+  // {
+  //   name: 'Maya Shavin',
+  //   role: 'Senior Frontend Developer at Cloudinary',
+  //   picture: './img/people/maya-shavin-node-js.jpg',
+  //   text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae volutpat nisi. Cras ut dui felis. Nam porttitor fermentum lacus id placerat. Curabitur erat turpis, condimentum quis malesuada et, consequat in nisl. Sed vel turpis ex. Fusce scelerisque ac urna id ultrices. Etiam accumsan, quam ut imperdiet venenatis'
+  // }
 ]

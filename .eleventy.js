@@ -88,4 +88,14 @@ module.exports = function (config) {
     </picture>
     </span>`
   })
+
+  return {
+    templateFormats: ['njk'],
+    dir: {
+      input: './src',
+      output: './build',
+      includes: '_includes',
+      data: '_data'
+    }
+  }
 }

@@ -11,6 +11,9 @@ $fullhd-enabled: false;
 
 // Update some of Bulma's component variables
 $body-background-color: $white;
+$button-active-border-color: $primary;
+$button-hover-border-color: $primary;
+$button-focus-border-color: $orangeD3;
 $control-border-width: 3px;
 $input-border-color: $grayD3;
 $input-shadow: none;

@@ -369,19 +369,13 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
 
     <section id="buy" class="section bg-green bd-lt-rd">
       <div class="container">
-        <h2 class="title is-2 has-text-centered">Buy Node.js Design Patterns third edition</h2>
-        <div class="columns">
+        <div class="columns is-vcentered">
           <div class="column is-half">
-            <h3 class="subtitle is-4">Node.js Design Patterns third edition is available in Print and e-book (epub and Kindle) and can be purchased on Amazon and on Packt.com</h3>
-            <h4 class="is-4">Buy on Amazon</h4>
-            <p class="buttons">
-              <a class="button is-primary" href="https://nodejsdp.link/buy">Buy Print</a>
-              <a class="button" href="https://nodejsdp.link/buy">Buy Kindle</a>
-            </p>
-            <h4 class="is-4">Buy on Packt.com</h4>
-            <p class="buttons">
-              <a class="button  is-primary" href="https://www.packtpub.com/eu/buyitem/index/index/sku/9781839214110">Buy Print + eBook</a>
-              <a class="button" href="https://www.packtpub.com/eu/buyitem/index/index/sku/9781839210440">Buy eBook</a>
+            <h2 class="title is-2 has-text-centered">Buy Node.js Design Patterns third edition</h2>
+            <h3 class="subtitle is-4 has-text-centered">Node.js Design Patterns third edition is available in Print and Kindle editions</h3>
+            <p class="buttons is-centered">
+              <a class="button is-primary" href="https://nodejsdp.link/buy">Buy Print edition</a>
+              <a class="button" href="https://nodejsdp.link/buy-kindle">Buy Kindle edition</a>
             </p>
           </div>
           <div class="column is-half">
@@ -394,65 +388,23 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
     <div class="bg-green">
       <section id="faq" class="section bd-lt bg-white">
         <div class="container">
-          <h2 class="title is-2">FAQ</h2>
+          <h2 class="title is-2 underline has-text-centered">
+            <span>FAQ</span>
+          </h2>
 
-          <div>
-            <h3>Who is this book for?</h3>
-            <p>TODO summarize below statement
-    This book is for developers and software architects who have some prior basic knowledge of JavaScript and Node.js and now want to get the most out of these technologies in terms of productivity, design quality, and scalability. Software professionals with intermediate experience in Node.js and JavaScript will also find valuable the more advanced patterns and techniques presented in this book.
-    This book assumes that you have an intermediate understanding of web application development, databases, and software design principles.</p>
-          </div>
+          <dl class="faq">
+            {% for faq in faqs %}
+              <dt>
+                <button aria-expanded="true" aria-controls="faq_{{ loop.index0 }}_desc">
+                  <h3 class="subtitle is-4"> {{ faq.question }}</h3>
+                </button>
+              </dt>
+              <dd>
+                <p id="faq_{{ loop.index0 }}_desc" class="desc">{{ faq.answer }}</p>
+              </dd>
+            {% endfor %}
+          </dl>
 
-          <div>
-            <h3>I am new to JavaScript and Node.js, is this book for me?</h3>
-            <p>TODO:</p>
-          </div>
-
-          <div>
-            <h3>What are the main concepts I will learn in this book?</h3>
-            <p>TODO: summarise the points below
-    Become comfortable with writing asynchronous code by leveraging callbacks, promises, and the async/await syntax
-    Leverage Node.js streams to create data-driven asynchronous processing pipelines
-    Implement well-known software design patterns to create production grade applications
-    Share code between Node.js and the browser and take advantage of full-stack JavaScript
-    Build and scale microservices and distributed systems powered by Node.js
-    Use Node.js in conjunction with other powerful technologies such as Redis, RabbitMQ, ZeroMQ, and LevelDB</p>
-          </div>
-
-          <div>
-            <h3>How long is the book?</h3>
-            <p>The book has 13 chapters totaling about 600+ pages.</p>
-          </div>
-
-          <div>
-            <h3>Do I have to read all 600 pages to make sense of the book?</h3>
-            <p>TODO:</p>
-          </div>
-
-          <div>
-            <h3>How up to date is this book?</h3>
-            <p>The third edition of this book has been updated to cover the most modern Node.js LTS version (Node.js 14) and best practices such as Async/Await and EcmaScript Modules (ESM).</p>
-          </div>
-
-          <div>
-            <h3>Are the code examples available online?</h3>
-            <p>TODO:</p>
-          </div>
-
-          <div>
-            <h3>What are some examples of real-life applications that are presented in the book?</h3>
-            <p>TODO:</p>
-          </div>
-
-          <div>
-            <h3>How can I practice the learnings from the book?</h3>
-            <p>TODO:</p>
-          </div>
-
-          <div>
-            <h3>What if I get stuck with any of the exercises?</h3>
-            <p>TODO:</p>
-          </div>
         </div>
       </section>
     </div>
