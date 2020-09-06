@@ -1,0 +1,56 @@
+---
+layout: layout.njk
+title: Page not found - Node.js Design Patterns Third Edition
+---
+
+<nav class="navbar is-fixed-top has-shadow" role="navigation" aria-label="main navigation">
+  <div class="container">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="/">
+        <h1 class="title is-5">Node.js Design Patterns</h1>
+      </a>
+    </div>
+
+    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbar">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+    <div id="navbar" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+            <a href="/#buy" class="button is-primary">
+              <strong>Buy the book</strong>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main id="page404">
+  <section class="hero is-fullheight-with-navbar">
+    <div class="hero-body">
+      <div class="container">
+        <div class="content columns is-vcentered">
+          <div class="column is-two-third">
+            <p>
+              <h1 class="title is-1 underline"><span>404 Error</span>: Page not found!</h1>
+              <h2 class="subtitle is-4 mt-2">The page you were looking for could not be found</h2>
+            </p>
+            <div class="buttons">
+              <a href="/" class="button is-primary is-large">Go back to the Home</a> 
+            </div>
+          </div>
+          <div classs="column is-one-third">
+            <a href="/">
+              {% responsiveImage './img/man-with-node-js-design-patterns.png', 'Man reading Node.js Design Patterns book', { maxWidth: 404 }  %}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

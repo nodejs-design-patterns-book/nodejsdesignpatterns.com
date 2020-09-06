@@ -445,6 +445,20 @@ nav a.navbar-item {
   }
 }
 
+#page404 {
+  background: $green;
+
+  .content {
+    padding: 3em;
+    border-radius: 20px;
+    background: $white;
+  }
+
+  img {
+    border-radius: 20px;
+  }
+}
+
 .is-green {
   color: $greenD4;
 }

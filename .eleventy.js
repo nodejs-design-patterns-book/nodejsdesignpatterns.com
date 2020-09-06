@@ -79,6 +79,7 @@ module.exports = function (config) {
     }).join('\n')}
       <img
         loading="lazy"
+        decoding="async"
         style="max-width: 100%; width: 100%; margin: 0px; vertical-align: middle;"
         ${options.class ? `class="${options.class}"` : ''}
         alt="${alt}"
