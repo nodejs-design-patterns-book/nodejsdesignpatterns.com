@@ -2,6 +2,7 @@
 
 const path = require('path')
 const webpack = require('webpack')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const ManifestPlugin = require('webpack-manifest-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
@@ -11,13 +12,16 @@ module.exports = {
 
   output: {
     filename: '[name].[chunkhash].js',
-    path: path.resolve(__dirname, 'src/_includes/js')
+    path: path.resolve(__dirname, 'src/_includes/assets')
   },
 
   plugins: [
     new webpack.ProgressPlugin(),
     new ManifestPlugin(),
-    new CleanWebpackPlugin()
+    new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({
+      filename: 'style.[chunkhash].css'
+    })
   ],
 
   module: {
@@ -39,6 +43,22 @@ module.exports = {
             ]
           ]
         }
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader'
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true
+              // options...
+            }
+          }
+        ]
       }
     ]
   },

@@ -7,7 +7,6 @@ module.exports = () => {
     const isExpanded = btn.getAttribute('aria-expanded') === 'true'
     const targetId = btn.getAttribute('aria-controls')
     const target = document.getElementById(targetId)
-    console.log({ isExpanded, targetId, target, el: btn })
     if (isExpanded) {
       btn.setAttribute('aria-expanded', 'false')
       target.classList.remove('open')

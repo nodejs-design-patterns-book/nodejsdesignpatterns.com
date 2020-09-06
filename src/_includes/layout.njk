@@ -9,18 +9,19 @@ title: Node.js Design Patterns third edition
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Coustard&family=Playfair+Display:wght@600&family=Open+Sans:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
     <meta name="theme-color" content="#FFFFFF">
-    <style>
-      {% include "css/style.css" ignore missing %}
-    </style>
+    {% for style in webpack.styles %}
+      <link rel="stylesheet" href="{{ style.href }}">
+    {% endfor %}
   </head>
   <body>
     {{ content | safe }}
-    {% webpackAssets %}
+    {% for script in webpack.scripts %}
+      {{ script.html | safe }}
+    {% endfor %}
   </body>
 </html>

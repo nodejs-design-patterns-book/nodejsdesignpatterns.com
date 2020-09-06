@@ -38,6 +38,9 @@ $whiteL1: lighten( $white, 10% );
 $whiteL2: lighten( $white, 20% );
 $whiteL3: lighten( $white, 30% );
 
+// Import Google Fonts
+@import url('https://fonts.googleapis.com/css2?family=Coustard&family=Playfair+Display:wght@600&family=Open+Sans:ital,wght@0,400;0,700;1,700&display=swap');
+
 $family-serif: 'Playfair Display', serif;
 $family-sans-serif: 'Open Sans', sans-serif;
 
@@ -59,13 +62,8 @@ html {
   width: 3rem;
 }
 
-.svg-icon svg .svg-linear-gradient {
-  fill: url(#svg-linear-gradient) #000;
-}
-
-#svg-linear-gradient {
-  --color-stop: #{$orangeD2};
-  --color-bot: #{$orange};
+.svg-icon svg  {
+  fill: $orange;
 }
 
 .title {

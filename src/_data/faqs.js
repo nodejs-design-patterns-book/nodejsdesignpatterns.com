@@ -1,3 +1,5 @@
+'use strict'
+
 module.exports = [
   {
     question: 'Who is this book for?',
@@ -39,6 +41,6 @@ module.exports = [
   },
   {
     question: 'I have more questions!',
-    answer: 'Reach out to the authors on Twitter or Linkedin'
+    answer: 'Reach out to the authors on Twitter or '
   }
 ]

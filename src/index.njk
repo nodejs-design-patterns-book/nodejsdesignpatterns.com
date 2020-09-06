@@ -101,7 +101,7 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
               <div class="media">
                 <figure class="media-left">
                   <p class="image is-64x64">
-                    {% responsiveImage quote.picture, alt, { class: 'is-rounded avatar' } %}
+                    {% responsiveImage quote.picture, alt, { class: 'is-rounded avatar', maxWidth: 64 } %}
                   </p>
                 </figure>
                 <div class="media-content">
@@ -417,5 +417,4 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
       </p>
       <p>Found an error in this website? Help us improve it on <a href="https://github.com/nodejs-design-patterns-book/nodejsdesignpatterns.com">GitHub</a>.</p>
     </div>
-    {% include "svg/linear-gradient.svg" %}
   </footer>

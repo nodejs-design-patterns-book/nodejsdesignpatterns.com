@@ -37,5 +37,4 @@ jspm_packages
 .node_repl_history
 
 build/
-src/_includes/css/
-src/_includes/js/
+src/_includes/assets/

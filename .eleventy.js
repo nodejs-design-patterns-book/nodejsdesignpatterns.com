@@ -4,6 +4,8 @@ const path = require('path')
 const { cpus } = require('os')
 const { readFile, access } = require('fs').promises
 const htmlmin = require('html-minifier')
+const PurgeCSS = require('purgecss').PurgeCSS
+const csso = require('csso')
 const Image = require('@11ty/eleventy-img')
 
 Image.concurrency = (cpus()).length
@@ -13,8 +15,7 @@ module.exports = function (config) {
 
   // Pass-through files
   config.addPassthroughCopy('src/robots.txt')
-  config.addPassthroughCopy({ 'src/_includes/js': 'js' })
-
+  config.addPassthroughCopy({ 'src/_includes/assets': 'assets' })
   // favicons
   const favicons = [
     'android-chrome-192x192.png',
@@ -27,12 +28,43 @@ module.exports = function (config) {
   ]
   favicons.forEach((f) => config.addPassthroughCopy(`src/${f}`))
 
-  // Add webpack assets helper
-  config.addNunjucksAsyncShortcode('webpackAssets', async function () {
-    const manifestPath = path.join(__dirname, 'src', '_includes', 'js', 'manifest.json')
-    const content = await readFile(manifestPath)
-    const manifest = JSON.parse(content)
-    return `${Object.values(manifest).map(f => `<script defer="defer" src="/js/${f}"></script>`)}`
+  // optimize css - removes unused css and inlines css
+  config.addTransform('purifyCss', async function (content, outputPath) {
+    if (outputPath.endsWith('.html')) {
+      const stylesheetsRegex = /<link rel="stylesheet" href="([0-9a-zA-Z/._]+)">/gm
+      const stylesheets = content.matchAll(stylesheetsRegex)
+      let newContent = content
+      for await (const [match, href] of stylesheets) {
+        const filePath = path.join(__dirname, 'build', href)
+        console.log({ match, href, filePath })
+
+        let cssContent = await readFile(filePath, 'utf8')
+        cssContent = cssContent.replace(/@font-face {/g, '@font-face {font-display:swap;')
+
+        const purged = await new PurgeCSS().purge({
+          content: [
+            {
+              raw: content,
+              extension: 'html'
+            }
+          ],
+          css: [
+            {
+              raw: cssContent
+            }
+          ],
+          fontFace: true,
+          variables: true
+        })
+
+        const after = csso.minify(purged[0].css).css
+        newContent = newContent.replace(match, `<style>${after}</style>`)
+      }
+
+      return newContent
+    }
+
+    return content
   })
 
   // Add HTML minification transform
