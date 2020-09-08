@@ -9,12 +9,12 @@ module.exports = () => {
     const target = document.getElementById(targetId)
     if (isExpanded) {
       btn.setAttribute('aria-expanded', 'false')
-      target.classList.remove('open')
-      target.classList.add('close')
+      target.style.maxHeight = 0
+      target.style.padding = '0 0 0 3.2rem'
     } else {
       btn.setAttribute('aria-expanded', 'true')
-      target.classList.remove('close')
-      target.classList.add('open')
+      target.style.maxHeight = '1000px'
+      target.style.padding = '1.5rem 0 1.5rem 3.2rem'
     }
   }
 

@@ -6,6 +6,7 @@ const { readFile, access } = require('fs').promises
 const htmlmin = require('html-minifier')
 const PurgeCSS = require('purgecss').PurgeCSS
 const csso = require('csso')
+const markdownIt = require('markdown-it')
 const Image = require('@11ty/eleventy-img')
 
 Image.concurrency = (cpus()).length
@@ -78,6 +79,19 @@ module.exports = function (config) {
     }
 
     return content
+  })
+
+  // Add markdown filter
+  config.addFilter('markdown', function (value) {
+    const markdown = markdownIt({
+      html: true
+    })
+    return markdown.render(value)
+  })
+
+  // Add currentYear helper
+  config.addNunjucksShortcode('currentYear', function () {
+    return `${new Date().getFullYear()}`
   })
 
   // Add responsive image helper

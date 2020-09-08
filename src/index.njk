@@ -401,7 +401,7 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
                 </button>
               </dt>
               <dd>
-                <p id="faq_{{ loop.index0 }}_desc" class="desc">{{ faq.answer }}</p>
+                <div id="faq_{{ loop.index0 }}_desc" class="desc">{{ faq.answer | markdown | safe }}</div>
               </dd>
             {% endfor %}
           </dl>
@@ -412,10 +412,10 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
   </main>
   <footer class="footer">
     <div class="container">
-      <p>Copyright © 2020 Mario Casciaro, Luciano Mammino, Packt Publishing.</p>
-      <p>All trademarks and registered trademarks are the property of their respective owners.</p>
-      <p>Icons <strong>Unicons</strong> by <a href="https://iconscout.com" rel="nofollow">Iconscout</a>
-      </p>
-      <p>Found an error in this website? Help us improve it on <a href="https://github.com/nodejs-design-patterns-book/nodejsdesignpatterns.com">GitHub</a>.</p>
+      <p class="is-size-7">Copyright © 2014-{% currentYear %} Mario Casciaro, Luciano Mammino, Packt Publishing.</p>
+      <p class="is-size-7">All trademarks and registered trademarks are the property of their respective owners.</p>
+      <p class="is-size-7 mt-1">Icons <strong>Unicons</strong> by <a href="https://iconscout.com" rel="nofollow noreferer">Iconscout</a></p>
+      <hr/>
+      <p class="mt-2">Found an error or something that can be improved? You can contribute to this website on <a href="https://github.com/nodejs-design-patterns-book/nodejsdesignpatterns.com">GitHub</a>!</p>
     </div>
   </footer>
