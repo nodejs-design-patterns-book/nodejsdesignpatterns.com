@@ -36,7 +36,6 @@ module.exports = function (config) {
       let newContent = content
       for await (const [match, href] of stylesheets) {
         const filePath = path.join(__dirname, 'build', href)
-        console.log({ match, href, filePath })
 
         let cssContent = await readFile(filePath, 'utf8')
         cssContent = cssContent.replace(/@font-face {/g, '@font-face {font-display:swap;')

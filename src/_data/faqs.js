@@ -16,6 +16,10 @@ module.exports = [
     answer: 'TODO: summarise the points below Become comfortable with writing asynchronous code by leveraging callbacks, promises, and the async/await syntax Leverage Node.js streams to create data-driven asynchronous processing pipelines Implement well-known software design patterns to create production grade applications Share code between Node.js and the browser and take advantage of full-stack JavaScript Build and scale microservices and distributed systems powered by Node.js Use Node.js in conjunction with other powerful technologies such as Redis, RabbitMQ, ZeroMQ, and LevelDB'
   },
   {
+    question: 'Can I download Node.js Design Patterns for FREE?',
+    answer: 'TODO:'
+  },
+  {
     question: 'How long is the book?',
     answer: 'The book has 13 chapters totaling about 600+ pages.'
   },

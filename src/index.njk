@@ -12,15 +12,16 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
     </a>
     <div id="navbar" class="navbar-menu">
       <div class="navbar-start">
-        <a class="navbar-item">Content</a>
-        <a class="navbar-item">Sample</a>
-        <a class="navbar-item">Praises</a>
-        <a class="navbar-item">Authors</a>
+        <a href="#reviews" class="navbar-item">Reviews</a>
+        <a href="#book-content" class="navbar-item">Content</a>
+        <a href="#sample-chapter" class="navbar-item">Sample chapter</a>
+        <a href="#authors" class="navbar-item">Authors</a>
+        <a href="#faq" class="navbar-item">FAQs</a>
       </div>
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
-            <a class="button is-primary">
+            <a href="#buy" class="button is-primary">
               <strong>Buy the book</strong>
             </a>
           </div>
@@ -39,17 +40,17 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
             <h1 class="title is-1">Take your Node.js knowledge to the next level</h1>
             <h2 class="subtitle is-4 mt-1">Design and implement production-grade Node.js applications using proven patterns and techniques</h2>
             <div class="buttons">
-              <a class="button is-primary" href="#">Buy</a>
-              <a class="button" href="#">Download sample chapter</a>
+              <a class="button is-primary" href="#buy">Buy</a>
+              <a class="button" href="#sample-chapter">Download sample chapter</a>
             </div>
           </div>
           <div class="column pos-rel">
             <div class="floating-label">
-              <a href="#">
+              <a href="#buy">
                 <span class="tag is-primary">
                   <strong>New Edition!</strong></span></a>
             </div>
-            {% responsiveImage './img/book-stack.png', 'Node.js Design Patterns book cover', { class: 'book-cover' }  %}
+            {% responsiveImage './img/book-stack.png', 'Node.js Design Patterns book cover', { class: 'book-cover', maxWidth: 580 }  %}
           </div>
         </div>
       </div>
@@ -90,7 +91,7 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
   </div>
 
   <div class="bg-green">
-    <section id="praises" class="section bg-white bd-rd">
+    <section id="reviews" class="section bg-white bd-rd">
       <div class="container">
         <h2 class="title is-2 underline has-text-centered">
           <span>What people say</span></h2>
@@ -140,8 +141,8 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
             <p>In the last section this book covers more advanced topics such as <strong>Universal JavaScript</strong> with Node.js, <strong>React</strong> and <strong>Webpack</strong>, best practices to <strong>scale Node.js</strong> services, <strong>microservices</strong> and <strong>messaging patterns</strong> for enterprise-grade <strong>distributed applications</strong>.</p>
             <p>Throughout the book you will see Node.js in action with the help of several real-life examples leveraging great technologies such as <strong>LevelDB</strong>, <strong>Redis</strong>, <strong>RabbitMQ</strong>, <strong>ZeroMQ</strong> and many others. They will be used to demonstrate a pattern or a technique, but they will also give you a great introduction to the <strong>Node.js ecosystem</strong> and its set of solutions.</p>
             <div class="buttons">
-              <a class="button is-primary" href="#">Buy the book</a>
-              <a class="button" href="#">Download the sample chapter</a>
+              <a class="button is-primary" href="#buy">Buy the book</a>
+              <a class="button" href="#sample-chapter">Download the sample chapter</a>
             </div>
           </div>
 
@@ -264,7 +265,7 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
               <h3 class="title is-4">Behavioural Design Patterns</h3>
               <p>Learn how to implement and leverage some of the most well known behavioural design patterns in the context of Node.js: the Strategy pattern, the State pattern, the Template pattern, the Iterator pattern, the Middleware pattern, and the Command pattern.</p>
               <p>
-                <span class="tag is-primary">Free Chapter!</span></p>
+                <a href="#sample-chapter"><span class="tag is-primary">Free Chapter!</span></a></p>
             </li>
 
             <li>
@@ -319,16 +320,16 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
                 <p>Mario is a software engineer and entrepreneur who worked at IBM for a number of years. He currently splits his time between Var7 Technologies (his own software company) and its role as Lead Engineer at D4H Technologies where he creates software for emergency response teams.</p>
                 <ul>
                   <li>
-                    <a title="Visit Mario's blog" target="_blank" rel="me" href="https://mario.fyi/">{% include "svg/comment-dots.svg" %} Blog</a>
+                    <a title="Visit Mario's blog" target="_blank" rel="me noopener" href="https://mario.fyi/">{% include "svg/comment-dots.svg" %} Blog</a>
                   </li>
                   <li>
-                    <a title="Visit Mario's Twitter profile" target="_blank" rel="me" href="https://twitter.com/mariocasciaro">{% include "svg/twitter.svg" %} Twitter</a>
+                    <a title="Visit Mario's Twitter profile" target="_blank" rel="me noopener noreferrer" href="https://twitter.com/mariocasciaro">{% include "svg/twitter.svg" %} Twitter</a>
                   </li>
                   <li>
-                    <a title="Visit Mario's GitHub profile" target="_blank" rel="me" href="https://github.com/mariocasciaro">{% include "svg/github-alt.svg" %} GitHub</a>
+                    <a title="Visit Mario's GitHub profile" target="_blank" rel="me noopener noreferrer" href="https://github.com/mariocasciaro">{% include "svg/github-alt.svg" %} GitHub</a>
                   </li>
                   <li>
-                    <a title="Visit Mario's LinkedIn profile" target="_blank" rel="me" href="https://www.linkedin.com/in/mariocasciaro/">{% include "svg/linkedin-alt.svg" %} LinkedIn</a>
+                    <a title="Visit Mario's LinkedIn profile" target="_blank" rel="me noopener noreferrer" href="https://www.linkedin.com/in/mariocasciaro/">{% include "svg/linkedin-alt.svg" %} LinkedIn</a>
                   </li>
                 </ul>
               </div>
@@ -348,16 +349,16 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
                 <p>Luciano wrote his first line of code at the age of 12 on his father's old i386. Since then, he has never stopped coding. He is working at FabFitFun as Principal Software Engineer where he is building software to serve millions of users every day. He is an active speaker and in the last few years he has delivered more than 50 talks.</p>
                 <ul>
                   <li>
-                    <a title="Visit Luciano's blog" target="_blank" rel="me" href="https://loige.co/">{% include "svg/comment-dots.svg" %} Blog</a>
+                    <a title="Visit Luciano's blog" target="_blank" rel="me noopener" href="https://loige.co/">{% include "svg/comment-dots.svg" %} Blog</a>
                   </li>
                   <li>
-                    <a title="Visit Luciano's Twitter profile" target="_blank" rel="me" href="https://twitter.com/loige">{% include "svg/twitter.svg" %} Twitter</a>
+                    <a title="Visit Luciano's Twitter profile" target="_blank" rel="me noopener noreferrer" href="https://twitter.com/loige">{% include "svg/twitter.svg" %} Twitter</a>
                   </li>
                   <li>
-                    <a title="Visit Luciano's GitHub profile" target="_blank" rel="me" href="https://github.com/lmammino">{% include "svg/github-alt.svg" %} GitHub</a>
+                    <a title="Visit Luciano's GitHub profile" target="_blank" rel="me noopener noreferrer" href="https://github.com/lmammino">{% include "svg/github-alt.svg" %} GitHub</a>
                   </li>
                   <li>
-                    <a title="Visit Luciano's LinkedIn profile" target="_blank" rel="me" href="https://www.linkedin.com/in/lucianomammino/">{% include "svg/linkedin-alt.svg" %} LinkedIn</a>
+                    <a title="Visit Luciano's LinkedIn profile" target="_blank" rel="me noopener noreferrer" href="https://www.linkedin.com/in/lucianomammino/">{% include "svg/linkedin-alt.svg" %} LinkedIn</a>
                   </li>
                 </ul>
               </div>

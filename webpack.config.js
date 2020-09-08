@@ -21,8 +21,11 @@ module.exports = {
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: 'style.[chunkhash].css'
+
     })
   ],
+
+  devtool: 'source-map',
 
   module: {
     rules: [
@@ -47,9 +50,17 @@ module.exports = {
       {
         test: /\.scss$/,
         use: [
-          MiniCssExtractPlugin.loader,
           {
-            loader: 'css-loader'
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              publicPath: '/assets/'
+            }
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true
+            }
           },
           {
             loader: 'sass-loader',
@@ -59,6 +70,14 @@ module.exports = {
             }
           }
         ]
+      },
+      {
+        test: /\.(eot|svg|ttf|woff|woff2)$/,
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]',
+          outputPath: '/fonts/'
+        }
       }
     ]
   },
