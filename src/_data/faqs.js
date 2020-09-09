@@ -2,6 +2,7 @@
 
 module.exports = [
   {
+    id: 'faq-who-is-this-book-for',
     question: 'Who is this book for?',
     answer: `This book is for developers and software architects who have some prior knowledge of JavaScript and Node.js
 and now want to get the most out of these technologies in terms of productivity, design quality, and scalability.
@@ -9,6 +10,7 @@ Software professionals with intermediate experience in Node.js and JavaScript wi
 patterns and techniques presented in this book.`
   },
   {
+    id: 'faq-is-this-book-for-me',
     question: 'I am new to JavaScript and Node.js, is this book for me?',
     answer: `This book assumes that you have an intermediate understanding of JavasScript, web application development,
 databases, and software design principles. If you are new to JavaScript but you are familiar with other languages and
@@ -19,6 +21,7 @@ Some good FREE resources you could check out are [Eloquent JavaScript](https://e
 [JavaScript in 30 days](https://javascript30.com/).`
   },
   {
+    id: 'faq-main-concepts',
     question: 'What are the main concepts I will learn in this book?',
     answer: `This book will get you comfortable with writing asynchronous code by leveraging **callbacks**, **promises**,
 and the **async/await** syntax, leverage Node.js **streams** to create data-driven asynchronous processing pipelines,
@@ -28,6 +31,7 @@ and the browser and take advantage of full-stack JavaScript. Finally, this book 
 technologies such as Redis, RabbitMQ, ZeroMQ, and LevelDB.`
   },
   {
+    id: 'faq-download-for-free',
     question: 'Can I download Node.js Design Patterns for FREE?',
     answer: `**No**. Node.js Design Patterns is the result of countless hours of hard work by the authors, the reviewers and 
 many professionals at Packt, so we simply can't afford to give it away for free. If you want to have a feeling about the
@@ -36,10 +40,12 @@ You can also check out for FREE all the code examples available in the book on
 [the official GitHub repository](https://github.com/PacktPublishing/Node.js-Design-Patterns-Third-Edition).`
   },
   {
+    id: 'faq-book-length',
     question: 'How long is the book?',
     answer: 'The book has 13 chapters totaling about 660 pages.'
   },
   {
+    id: 'faq-should-i-read-660-pages',
     question: 'Do I have to read all 660 pages to make sense of the book?',
     answer: `The book was written to give you continuity throughout the chapters so that you can enjoy reading the book from 
 the first to the very last page. Although, if you are already familiar with many Node.js concepts and design patterns, 
@@ -47,16 +53,19 @@ you can easily skim through the chapters and focus only on the content that matt
 [Table of Contents](#book-chapters) if you want to have a better feeling on how the book is structured.`
   },
   {
+    id: 'faq-is-it-up-to-date',
     question: 'How up to date is this book?',
     answer: `The third edition of this book (released in **July 2020**) has been updated to cover the features of the most 
 recent Node.js LTS version (**Node.js 14**). Node.js Design Patterns (third edition) leverages modern best practices and 
 Node.js features such as **Async/Await** and **EcmaScript Modules (ESM)**.`
   },
   {
+    id: 'faq-code-examples-online',
     question: 'Are the code examples available online?',
     answer: 'All the code examples contained in the book are [available on GitHub](https://github.com/PacktPublishing/Node.js-Design-Patterns-Third-Edition) and can be accessed for FREE.'
   },
   {
+    id: 'faq-real-life-applications',
     question: 'What are some examples of real-life applications that are presented in the book?',
     answer: `Node.js Design Patterns provides a mix of simple examples and real-life applications to gradually 
 introduce you to new topics and patterns. Some examples of real-life applications are:
@@ -74,11 +83,13 @@ introduce you to new topics and patterns. Some examples of real-life application
 You can checkout the source code for these examples for FREE [on GitHub](https://github.com/PacktPublishing/Node.js-Design-Patterns-Third-Edition).`
   },
   {
+    id: 'faq-practice',
     question: 'How can I practice the learnings from the book?',
     answer: `Every chapter comes with a set of engaging coding challenges and exercises crafted to put your new learnings
 into practice. Node.js Design Patterns contains 50 exercises in total.`
   },
   {
+    id: 'faq-more-questions',
     question: 'I have more questions!',
     answer: `You are more than welcome to reach out to the authors on Twitter 
 ([@mariocasciaro](https://twitter.com/mariocasciaro) and [@loige](https://twitter.com/loige)) or you can write an email to 

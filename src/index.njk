@@ -396,12 +396,15 @@ title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammi
           <dl class="faq">
             {% for faq in faqs %}
               <dt>
-                <button aria-expanded="true" aria-controls="faq_{{ loop.index0 }}_desc">
+                <button aria-expanded="true" aria-controls="{{ faq.id }}">
                   <h3 class="subtitle is-4"> {{ faq.question }}</h3>
                 </button>
               </dt>
               <dd>
-                <div id="faq_{{ loop.index0 }}_desc" class="desc">{{ faq.answer | markdown | safe }}</div>
+                <div id="{{ faq.id }}" class="desc">
+                  <p class="is-size-7 has-text-right mb-1"><a href="#{{ faq.id }}">{{ '&para;' | safe }}</a></p>
+                  {{ faq.answer | markdown | safe }}
+                </div>
               </dd>
             {% endfor %}
           </dl>

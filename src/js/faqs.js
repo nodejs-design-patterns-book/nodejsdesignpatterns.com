@@ -3,10 +3,15 @@
 module.exports = () => {
   const buttons = document.querySelectorAll('dl.faq button')
 
-  function toggle (btn) {
+  function toggle (btn, skipIfAnchor = false) {
     const isExpanded = btn.getAttribute('aria-expanded') === 'true'
     const targetId = btn.getAttribute('aria-controls')
     const target = document.getElementById(targetId)
+
+    if (skipIfAnchor && target.id === window.location.hash.substr(1)) {
+      return
+    }
+
     if (isExpanded) {
       btn.setAttribute('aria-expanded', 'false')
       target.style.maxHeight = 0
@@ -23,6 +28,6 @@ module.exports = () => {
       e.preventDefault()
       toggle(e.currentTarget)
     })
-    toggle(button) // once the page loads collapse all tha faqs
+    toggle(button, true) // once the page loads collapse all tha faqs
   })
 }
