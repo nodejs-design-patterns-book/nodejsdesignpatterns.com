@@ -17,6 +17,7 @@ title: Node.js Design Patterns third edition
     {% for style in webpack.styles %}
       <link rel="stylesheet" href="{{ style.href }}">
     {% endfor %}
+    {% block extraHead%}{% endblock %}
   </head>
   <body>
     {{ content | safe }}
