@@ -424,6 +424,11 @@ nav a.navbar-item {
     line-height: 1.5rem;
     overflow: hidden;
     transition: all 0.1s linear;
+
+    ul {
+      list-style: disc;
+      padding: 1.5em 0 1.5em 3em;
+    }
   }
 
   dd {

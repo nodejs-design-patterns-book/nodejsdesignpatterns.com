@@ -58,14 +58,30 @@ Node.js features such as **Async/Await** and **EcmaScript Modules (ESM)**.`
   },
   {
     question: 'What are some examples of real-life applications that are presented in the book?',
-    answer: 'TODO'
+    answer: `Node.js Design Patterns provides a mix of simple examples and real-life applications to gradually 
+introduce you to new topics and patterns. Some examples of real-life applications are:
+
+- Your own module loader
+- A website spider and downloader
+- A streaming file archive pipeline
+- A plugin for LevelUp
+- A full stack universal JavaScript website with Fastify, React and Webpack
+- A dynamic HTTP load balancer using Consul
+- A peer-to-peer network for web services
+- A pub-sub chat with an interactive web UI usign ZeroMQ, RabbitMQ and Redis Streams
+- A worker pool for background job executions using ZeroMQ, RabbitMQ and Redis Streams
+
+You can checkout the source code for these examples for FREE [on GitHub](https://github.com/PacktPublishing/Node.js-Design-Patterns-Third-Edition).`
   },
   {
     question: 'How can I practice the learnings from the book?',
-    answer: 'TODO'
+    answer: `Every chapter comes with a set of engaging coding challenges and exercises crafted to put your new learnings
+into practice. Node.js Design Patterns contains 50 exercises in total.`
   },
   {
     question: 'I have more questions!',
-    answer: 'Reach out to the authors on Twitter or '
+    answer: `You are more than welcome to reach out to the authors on Twitter 
+([@mariocasciaro](https://twitter.com/mariocasciaro) and [@loige](https://twitter.com/loige)) or you can write an email to 
+[authors@nodejsdesignpatterns.com](mailto:authors@nodejsdesignpatterns.com).`
   }
 ]
