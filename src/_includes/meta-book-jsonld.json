@@ -1,0 +1,103 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Book",
+  "@id": "https://nodejsdesignpatterns.com",
+  "url": "https://nodejsdesignpatterns.com",
+  "accessibilityAPI": "ARIA",
+  "accessibilityControl": [
+    "fullKeyboardControl",
+    "fullMouseControl"
+  ],
+  "accessibilityFeature": [
+    "largePrint/CSSEnabled",
+    "highContrast/CSSEnabled",
+    "resizeText/CSSEnabled",
+    "displayTransformability",
+    "longDescription",
+    "alternativeText"
+  ],
+  "accessibilityHazard": [
+    "noFlashingHazard",
+    "noMotionSimulationHazard",
+    "noSoundHazard"
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "reviewCount": "4",
+    "ratingCount": "5",
+    "ratingValue": "5",
+    "bestRating": "5",
+    "itemReviewed": "https://www.amazon.com/dp/1839214112"
+  },
+  "bookFormat": [
+    "http://schema.org/EBook",
+    "http://schema.org/Paperback"
+  ],
+  "copyrightHolder": {
+    "@type": "Organization",
+    "name": "Packt Publishing"
+  },
+  "copyrightYear": "2020",
+  "description": "Learn proven patterns, techniques, and tricks to take full advantage of the Node.js platform. Master well-known design principles to create applications that are readable, extensible, and that can grow big.",
+  "genre": "Computing & Internet, Programming, Software Design, Testing & Engineering",
+  "inLanguage": "en-US",
+  "isFamilyFriendly": "true",
+  "isbn": "9781839214110",
+  "name": "Node.js Design Patterns: Design and implement production-grade Node.js applications using proven patterns and techniques, 3rd Edition",
+  "numberOfPages": "660",
+  "datePublished": "2020-07-29",
+  "bookEdition": "3rd Edition",
+  "potentialAction": {
+    "@type": "ReadAction",
+    "target": [
+      {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://www.amazon.com/dp/1839214112/ref=as_li_ss_tl?&linkCode=ll1&tag=loige0e-20&linkId=d644401e62bee9f30e8948975603c412&language=en_US",
+        "actionPlatform": [
+          "http://schema.org/DesktopWebPlatform",
+          "http://schema.org/AndroidPlatform",
+          "http://schema.org/IOSPlatform"
+        ]
+      },
+      {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://www.amazon.com/Node-js-Design-Patterns-production-grade-applications-ebook/dp/B08CHMDKW2/ref=as_li_ss_tl?_encoding=UTF8&qid=&sr=&linkCode=ll1&tag=loige0e-20&linkId=c43962ade25ff216d6be404f49f8e0ae&language=en_US",
+        "actionPlatform": [
+          "http://schema.org/DesktopWebPlatform",
+          "http://schema.org/AndroidPlatform",
+          "http://schema.org/IOSPlatform"
+        ]
+      }
+    ],
+    "expectsAcceptanceOf": {
+      "@type": "Offer",
+      "category": "purchase",
+      "price": "49.90",
+      "priceCurrency": "USD",
+      "availabilityStarts": "2020-07-29T00:00:00-00:00",
+      "availabilityEnds": "2030-07-29T00:00:00-00:00",
+      "eligibleRegion": {
+        "@type": "Country",
+        "name": "US"
+      }
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Packt Publishing"
+  },
+  "author": [
+    {
+      "@type": "Person",
+      "familyName": "Casciaro",
+      "givenName": "Mario",
+      "name": "Mario Casciaro"
+    },
+    {
+      "@type": "Person",
+      "familyName": "Mammino",
+      "givenName": "Luciano",
+      "name": "Luciano Mammino"
+    }
+  ]
+}

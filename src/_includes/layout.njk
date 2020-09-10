@@ -17,7 +17,9 @@ title: Node.js Design Patterns third edition
     {% for style in webpack.styles %}
       <link rel="stylesheet" href="{{ style.href }}">
     {% endfor %}
-    {% block extraHead%}{% endblock %}
+    <script type="application/ld+json">
+      {% include "meta-book-jsonld.json" %}
+    </script>
   </head>
   <body>
     {{ content | safe }}
