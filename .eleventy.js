@@ -107,6 +107,17 @@ module.exports = function (config) {
     const maxWidth = options.maxWidth || 1024
     options.outputDir = path.join(__dirname, 'build', 'img')
     options.widths = [null, 64]
+    options.filenameFormat = function (id, src, width, format, options) {
+      const ext = path.extname(src)
+      const name = path.basename(src, ext)
+
+      if (width) {
+        return `${name}-${id}-${width}.${format}`
+      }
+
+      return `${name}-${id}.${format}`
+    }
+
     while (options.widths[options.widths.length - 1] * 2 <= maxWidth) {
       options.widths.push(options.widths[options.widths.length - 1] * 2)
     }
