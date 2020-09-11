@@ -81,6 +81,11 @@ module.exports = function (config) {
     return content
   })
 
+  // Add is_array filter
+  config.addFilter('is_array', function (value) {
+    return Array.isArray(value)
+  })
+
   // Add markdown filter
   config.addFilter('markdown', function (value) {
     const markdown = markdownIt({
