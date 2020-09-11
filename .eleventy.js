@@ -17,6 +17,7 @@ module.exports = function (config) {
   // Pass-through files
   config.addPassthroughCopy('src/robots.txt')
   config.addPassthroughCopy({ 'src/_includes/assets': 'assets' })
+  config.addPassthroughCopy({ 'src/node-js-design-patterns.jpg': 'img/node-js-design-patterns.jpg' })
   // favicons
   const favicons = [
     'android-chrome-192x192.png',

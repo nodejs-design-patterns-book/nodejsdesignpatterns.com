@@ -12,6 +12,9 @@ module.exports = function () {
     copyright: 'Mario Casciaro, Luciano Mammino, Packt Publishing',
     lang: 'en',
     locale: 'en_US',
+    image: '/img/node-js-design-patterns.jpg',
+    image_width: 1260,
+    image_height: 630,
     generator: `${eleventyPackage.name} v${eleventyPackage.version}`
   }
 }
