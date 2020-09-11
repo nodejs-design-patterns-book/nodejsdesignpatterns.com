@@ -1,19 +1,21 @@
 ---
-title: Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammino
-description: A book to learn how to design and implement production-grade Node.js applications using proven patterns and techniques
-site_url: https://nodejsdesignpatterns.com
 og_title: ~
 og_description: ~
 og_image: ~
 og_image_width: ~
 og_image_height: ~
 og_type: ~
-og_locale: en_US
-og_site_name: Node.js Design Patterns
+date: Last Modified
+eleventyComputed:
+  title: "{{ site.title | safe }}"
+  description: "{{ site.description | safe }}"
+  og_site_name: "{{ site.name | safe }}"
+  lang: "{{ site.lang | safe }}"
+  og_locale: "{{ site.locale | safe }}"
 ---
 
 <!doctype html>
-<html lang="en" class="has-navbar-fixed-top">
+<html lang="{{ lang }}" class="has-navbar-fixed-top">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,7 +24,9 @@ og_site_name: Node.js Design Patterns
     <meta property="og:title" content="{{ og_title | default(title, true) }}">
     <meta name="description" content="{{ description }}">
     <meta property="og:og:description" content="{{ og_description | default(description, true) }}">
-    <meta property="og:url" content="{{ site_url }}{{ page.url }}">
+    <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+    <meta name="url" content='{{ site.url }}{{ page.url }}'>
+    <meta name="pageKey" content="{{ page.filePathStem | slug }}">
     {% if og_image %}<meta property="og:image" content="{{ og_image }}">{% endif %}
     {% if og_image_width %}<meta property="og:image:width" content="{{ og_image_width }}">{% endif %}
     {% if og_image_height %}<meta property="og:image:height" content="{{ og_image_height }}">{% endif %}
@@ -39,7 +43,12 @@ og_site_name: Node.js Design Patterns
         {% endif %}
       {% endfor %}
     {% endif %}
-    <meta name=”robots” content="index, follow">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="{{ site.author }}">
+    <meta name="copyright" content="{{ site.copyright }}">
+    <meta name="generator" content="{{ site.generator }}">
+    <meta http-equiv="last-modified" content="{{ page.date.toUTCString() }}">
+    <meta name="date" content="{{ page.date.toUTCString() }}">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
