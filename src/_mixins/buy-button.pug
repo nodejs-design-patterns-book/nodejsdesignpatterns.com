@@ -1,8 +1,0 @@
-mixin buyButton(button)
-  a.btn.btn-xl(href=button.link, class=button.store, rel="nofollow")
-    if button.discount
-      span #{button.label}<br/><span style="font-size:10px">#{button.discount}</span>
-    else
-      span=button.label
-  if button.subtext
-    p.center.buyButtonSub!=button.subtext

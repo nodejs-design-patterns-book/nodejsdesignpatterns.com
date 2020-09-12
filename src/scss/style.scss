@@ -1,0 +1,486 @@
+@charset "utf-8";
+
+// palette
+$black: #323232;
+$blackD1: darken( $black, 10% );
+$blackD2: darken( $black, 20% );
+$blackD3: darken( $black, 30% );
+$blackL1: lighten( $black, 10% );
+$blackL2: lighten( $black, 20% );
+$blackL3: lighten( $black, 30% );
+$orange: #da8f4c;
+$orangeD1: darken( $orange, 10% );
+$orangeD2: darken( $orange, 20% );
+$orangeD3: darken( $orange, 30% );
+$orangeL1: lighten( $orange, 10% );
+$orangeL2: lighten( $orange, 20% );
+$orangeL3: lighten( $orange, 30% );
+$green: #b9eec5;
+$greenD1: darken( $green, 10% );
+$greenD2: darken( $green, 20% );
+$greenD3: darken( $green, 30% );
+$greenD4: darken( $green, 40% );
+$greenL1: lighten( $green, 10% );
+$greenL2: lighten( $green, 20% );
+$greenL3: lighten( $green, 30% );
+$gray: #e5e5e5;
+$grayD1: darken( $gray, 10% );
+$grayD2: darken( $gray, 20% );
+$grayD3: darken( $gray, 30% );
+$grayL1: lighten( $gray, 10% );
+$grayL2: lighten( $gray, 20% );
+$grayL3: lighten( $gray, 30% );
+$white: #ffffff;
+$whiteD1: darken( $white, 10% );
+$whiteD2: darken( $white, 20% );
+$whiteD3: darken( $white, 30% );
+$whiteL1: lighten( $white, 10% );
+$whiteL2: lighten( $white, 20% );
+$whiteL3: lighten( $white, 30% );
+
+@import "./fonts.scss";
+
+$family-serif: 'Playfair Display', serif;
+$family-sans-serif: 'Open Sans', sans-serif;
+
+@import "./bulma-custom.scss";
+
+html {
+  scroll-behavior: smooth;
+}
+@media(prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  #faq p.desc  {
+    transition: none;
+  }
+}
+
+.svg-icon svg {
+  width: 3rem;
+}
+
+.svg-icon svg  {
+  fill: $orange;
+}
+
+.title {
+  font-family: $family-serif;
+}
+
+.title.underline span {
+  display: inline-block;
+  background-image: linear-gradient(transparent 55%,#b9eec5 0,#b9eec5 80%,transparent 0,transparent);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: 0 .5rem;
+}
+
+.container {
+  color: $blackL1;
+}
+
+.quote::before {
+  display: inline-block;
+  content: '"';
+  font-size: 3rem;
+  line-height: 100%;
+  font-family: "Coustard",serif;
+  position: relative;
+  bottom: -.75rem;
+  margin-right: .25rem;
+  color: $orange;
+}
+
+p, h1, h2, h3, h4, div {
+  line-height: 1.5rem;;
+}
+
+img.avatar {
+  border: 4px solid $green;
+}
+
+.floating-label {
+  position: absolute;
+  z-index: 999;
+  right: 1rem;
+  top: 2rem;
+}
+
+nav a.navbar-item {
+  color: $blackL2;
+  font-weight: bold;
+}
+
+.bg-green {
+  background-color: $green;
+}
+
+.bg-white {
+  background-color: $white;
+}
+
+.subtitle {
+  color: $blackL2;
+}
+
+.pos-rel {
+  position: relative;
+}
+
+.book-cover {
+  transform: translateX(-60px);
+}
+
+@media screen and (min-width: 769px) {
+  .book-cover {
+    transform: translateX(-100px);
+  }
+}
+
+.chapter9 {
+  transform: rotate(-10deg) translateY(30px);
+  margin-bottom: -20px !important;
+}
+
+@media screen and (min-width: 769px) {
+  .chapter9 {
+    transform: rotate(-10deg) translate(30px, -30px);
+    margin: 0 auto;
+  }
+}
+
+#hero {
+  h1 {
+    line-height: 4.5rem;
+    font-size: 3.5rem;
+  }
+  h2 {
+    line-height: 3rem;
+    font-size: 1.8rem;
+  }
+  .buttons {
+    margin: 1.5rem 0 0 0;
+    .button {
+      height: 3rem;
+    }
+  }
+}
+
+#reviews {
+  h2 {
+    margin: 0 0 3rem 0;
+    padding: 0;
+    line-height: 3rem;
+  }
+
+  .column {
+    padding: 1.5rem 1rem;
+  }
+}
+
+#book-abstract {
+  .column {
+    padding: 0 0.75rem;
+  }
+  h2 {
+    margin: 0;
+    padding: 1.5rem 0 1.5rem 0;
+    line-height: 3rem;
+  }
+  h3 {
+    line-height: 3rem;
+    font-size: 1.8rem;
+  }
+  p {
+    margin: 1.5rem 0 0 0;
+  }
+  .buttons {
+    margin: 1.5rem 0 0 0;
+    .button {
+      height: 3rem;
+    }
+  }
+}
+
+#book-content {
+  h2, h3 {
+    margin: 0;
+    padding: 0;
+    line-height: 3rem;
+  }
+
+  h3 {
+    padding: 3rem 0 0 0;
+  }
+
+  h4 {
+    margin: 3rem 0 1.5rem 0;
+    line-height: 1.5rem;
+    font-size: 1.3rem;
+  }
+
+  .columns {
+    margin: 0 0 0 0;
+
+    .column {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+}
+
+#sample-chapter {
+  h2, h3 {
+    line-height: 3rem;
+    margin: 0;
+  }
+  p {
+    margin-top: 1.5rem;
+  }
+  .buttons {
+    .button {
+      height: 3rem;
+    }
+  }
+}
+
+#book-chapters {
+  h2 {
+    margin: 0 0 1.5rem 0;
+  }
+
+  h3.subtitle {
+    line-height: 3rem;
+    font-size: 1.8rem;
+  }
+
+
+  ol {
+    list-style-type: decimal-leading-zero;
+    padding-left: 3.8rem;
+    font-family: $family-serif;
+    color: $greenD3;
+    font-size: 1.5rem;
+    margin-bottom: 3rem;
+
+    li {
+      margin: 0;
+      padding: 0;
+    }
+
+    h3 {
+      margin: 1.5rem 0 1.5rem 0;
+      padding: 0;
+      line-height: 1.5rem;
+      font-size: 1.5rem;
+    }
+
+    p {
+      line-height: 1.5rem;
+      font-family: $family-sans-serif;
+      font-size: 1rem;
+      color: $black;
+      padding: 0 0 1.5em 0;
+      margin: 0;
+    }
+  }
+}
+
+#authors {
+  padding-bottom: 6rem;
+
+  h2 {
+    line-height: 3rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  h3.subtitle {
+    line-height: 3rem;
+    font-size: 1.8rem;
+    padding: 3rem 0 0 0;
+  }
+
+  h3.title {
+    margin: 3rem 0 1.5rem 0;
+    padding: 0;
+    line-height: 3rem;
+    text-align: center;
+  }
+
+  p {
+    line-height: 1.5rem;
+  }
+
+  .column {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .avatar {
+    border-radius: 50%;
+    margin-bottom: 1.5rem !important;
+  }
+
+  ul {
+    margin: 1.5rem 0 1.5rem 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    li a {
+      color: $orange;
+      fill: $orangeD3;
+      vertical-align: baseline;
+      font-weight: bold;
+
+      &:hover {
+        color: $orangeD3;
+        fill: $black;
+      }
+
+      svg {
+        width: 1rem;
+        vertical-align: middle;
+        fill: inherit;
+      }
+    }
+  }
+}
+
+#buy {
+  h2 {
+    line-height: 3rem;
+    margin: 0 0 3rem 0;
+    padding: 0;
+  }
+
+  h3 {
+    line-height: 3rem;
+    margin: 0 0 3rem 0;
+    padding: 0;
+  }
+
+  .buttons {
+    margin: 0 0 3rem 0;
+  }
+
+  .buttons .button {
+    height: 3rem;
+    line-height: 3rem;
+  }
+}
+
+#faq {
+  button {
+    border: none;
+    text-align: left;
+    background: transparent;
+    width: 100%;
+    cursor: pointer;
+
+    &:active {
+      border: none;
+    }
+
+    &:focus {
+      border: none;
+      outline: 0;
+    }
+
+    h3 {
+      font-size: 1rem;
+      line-height: 1.5rem;
+      margin: 1.5rem 0 0 0;
+      text-align: left;
+      font-weight: bold;
+    }
+
+    &[aria-expanded=false] h3::before {
+      content: "+ ";
+      font-weight: bold;
+      color: $greenD3;
+      width: 3rem;
+      display: inline-block;
+    }
+
+    &[aria-expanded=true] h3::before {
+      content: "- ";
+      font-weight: bold;
+      color: $greenD3;
+      width: 3rem;
+      display: inline-block;
+    }
+  }
+
+  div.desc {
+    padding: 1.5rem 0 1.5rem 3.2rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5rem;
+    overflow: hidden;
+    transition: all 0.1s linear;
+
+    ul {
+      list-style: disc;
+      padding: 1.5em 0 1.5em 3em;
+    }
+  }
+
+  dd {
+    border-bottom: 1px solid $green;
+    margin: 0 0;
+  }
+}
+
+#page404 {
+  background: $green;
+
+  .content {
+    padding: 3em;
+    border-radius: 20px;
+    background: $white;
+  }
+
+  img {
+    border-radius: 20px;
+  }
+}
+
+.is-green {
+  color: $greenD4;
+}
+
+.bd-lt {
+  border-radius: 6rem 0 0 0;
+}
+
+.bd-rt {
+  border-radius: 0 6rem 0 0;
+}
+
+.bd-rd {
+  border-radius: 0 0 6rem 0;
+}
+
+.bd-ld {
+  border-radius: 0 0 0 6rem;
+}
+
+.bd-lt-rd {
+  border-radius: 6rem 0 6rem 0;
+}
+
+.bd-all-small {
+  border-radius: 3rem;
+}
+
+.hhh {
+  background-color: #fff;
+  background-size: 100% 1.5em;
+  background-image: linear-gradient(0deg, transparent 79px, #abced4 79px, #abced4 81px, transparent 81px), linear-gradient(#eee .05em, transparent .05em);
+}

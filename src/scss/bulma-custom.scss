@@ -1,0 +1,29 @@
+@charset "utf-8";
+
+// Update Bulma's global variables
+
+$grey-dark: $grayD3;
+$grey-light: $grayL3;
+$primary: $orange;
+$link: $orange;
+$widescreen-enabled: true;
+$fullhd-enabled: false;
+
+// Update some of Bulma's component variables
+$body-background-color: $white;
+$button-active-border-color: $primary;
+$button-hover-border-color: $primary;
+$button-focus-border-color: $orangeD3;
+$control-border-width: 3px;
+$input-border-color: $grayD3;
+$input-shadow: none;
+
+// Import only what you need from Bulma
+@import "../../node_modules/bulma/sass/utilities/_all.sass";
+@import "../../node_modules/bulma/sass/base/_all.sass";
+@import "../../node_modules/bulma/sass/components/_all.sass";
+@import "../../node_modules/bulma/sass/elements/_all.sass";
+@import "../../node_modules/bulma/sass/form/_all.sass";
+@import "../../node_modules/bulma/sass/grid/_all.sass";
+@import "../../node_modules/bulma/sass/helpers/_all.sass";
+@import "../../node_modules/bulma/sass/layout/_all.sass";

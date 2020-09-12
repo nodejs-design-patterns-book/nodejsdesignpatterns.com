@@ -1,0 +1,80 @@
+---
+og_title: ~
+og_description: ~
+og_type: ~
+date: Last Modified
+eleventyComputed:
+  title: "{{ site.title | safe }}"
+  description: "{{ site.description | safe }}"
+  og_site_name: "{{ site.name | safe }}"
+  lang: "{{ site.lang | safe }}"
+  og_locale: "{{ site.locale | safe }}"
+  og_image: "{{ site.image }}"
+  og_image_width: "{{ site.image_width }}"
+  og_image_height: "{{ site.image_height }}"
+---
+
+<!doctype html>
+<html lang="{{ lang }}" class="has-navbar-fixed-top">
+  <head>
+    {% if site.analyticsId %}
+      <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.analyticsId }}"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{ site.analyticsId }}');
+      </script>
+    {% endif %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <meta property="og:title" content="{{ og_title | default(title, true) }}">
+    <meta name="description" content="{{ description }}">
+    <meta property="og:og:description" content="{{ og_description | default(description, true) }}">
+    <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+    <meta name="url" content='{{ site.url }}{{ page.url }}'>
+    <meta name="pageKey" content="{{ page.filePathStem | slug }}">
+    {% if og_image %}<meta property="og:image" content="{{ site.url }}{{ og_image }}">{% endif %}
+    {% if og_image_width %}<meta property="og:image:width" content="{{ og_image_width }}">{% endif %}
+    {% if og_image_height %}<meta property="og:image:height" content="{{ og_image_height }}">{% endif %}
+    <meta property="og:locale" content="{{ og_locale }}">
+    <meta property="og:site_name" content="{{ og_site_name }}" />
+    {% if og_type %}
+      {% for attr, val in og_type %}
+        {% if val | is_array %}
+          {% for item in val %}
+            <meta property="{{ attr }}" content="{{ item }}">
+          {% endfor %}
+        {% else %}
+          <meta property="{{ attr }}" content="{{ val }}">
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="{{ site.author }}">
+    <meta name="copyright" content="{{ site.copyright }}">
+    <meta name="generator" content="{{ site.generator }}">
+    <meta http-equiv="last-modified" content="{{ page.date.toUTCString() }}">
+    <meta name="date" content="{{ page.date.toUTCString() }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#FFFFFF">
+    {% for style in webpack.styles %}
+      <link rel="stylesheet" href="{{ style.href }}">
+    {% endfor %}
+    <script type="application/ld+json">
+      {% include "meta-book-jsonld.json" %}
+    </script>
+  </head>
+  <body>
+    {{ content | safe }}
+    {% for script in webpack.scripts %}
+      {{ script.html | safe }}
+    {% endfor %}
+  </body>
+</html>

@@ -1,0 +1,83 @@
+/* Coustard_400 */
+@font-face {
+  font-family: 'Coustard';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../_includes/fonts/Coustard_400.eot'); /* IE9 Compat Modes */
+  src: local('Coustard Regular'), local('Coustard-Regular'),
+       url('../_includes/fonts/Coustard_400.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../_includes/fonts/Coustard_400.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../_includes/fonts/Coustard_400.woff') format('woff'), /* Modern Browsers */
+       url('../_includes/fonts/Coustard_400.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../_includes/fonts/Coustard_400.svg#Coustard') format('svg'); /* Legacy iOS */
+}
+
+/* open-sans-regular - latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../_includes/fonts/Open_Sans_400.eot'); /* IE9 Compat Modes */
+  src: local('Open Sans Regular'), local('OpenSans-Regular'),
+       url('../_includes/fonts/Open_Sans_400.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../_includes/fonts/Open_Sans_400.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../_includes/fonts/Open_Sans_400.woff') format('woff'), /* Modern Browsers */
+       url('../_includes/fonts/Open_Sans_400.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../_includes/fonts/Open_Sans_400.svg#OpenSans') format('svg'); /* Legacy iOS */
+}
+
+/* open-sans-italic - latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: url('../_includes/fonts/Open_Sans_400i.eot'); /* IE9 Compat Modes */
+  src: local('Open Sans Italic'), local('OpenSans-Italic'),
+       url('../_includes/fonts/Open_Sans_400i.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../_includes/fonts/Open_Sans_400i.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../_includes/fonts/Open_Sans_400i.woff') format('woff'), /* Modern Browsers */
+       url('../_includes/fonts/Open_Sans_400i.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../_includes/fonts/Open_Sans_400i.svg#OpenSans') format('svg'); /* Legacy iOS */
+}
+
+/* open-sans-700 - latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: url('../_includes/fonts/Open_Sans_700.eot'); /* IE9 Compat Modes */
+  src: local('Open Sans Bold'), local('OpenSans-Bold'),
+       url('../_includes/fonts/Open_Sans_700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../_includes/fonts/Open_Sans_700.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../_includes/fonts/Open_Sans_700.woff') format('woff'), /* Modern Browsers */
+       url('../_includes/fonts/Open_Sans_700.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../_includes/fonts/Open_Sans_700.svg#OpenSans') format('svg'); /* Legacy iOS */
+}
+
+/* open-sans-700italic - latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 700;
+  src: url('../_includes/fonts/Open_Sans_700i.eot'); /* IE9 Compat Modes */
+  src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'),
+       url('../_includes/fonts/Open_Sans_700i.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../_includes/fonts/Open_Sans_700i.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../_includes/fonts/Open_Sans_700i.woff') format('woff'), /* Modern Browsers */
+       url('../_includes/fonts/Open_Sans_700i.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../_includes/fonts/Open_Sans_700i.svg#OpenSans') format('svg'); /* Legacy iOS */
+}
+
+/* playfair-display-600 - latin */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 600;
+  src: url('../_includes/fonts/Playfair_Display_600.eot'); /* IE9 Compat Modes */
+  src: local(''),
+       url('../_includes/fonts/Playfair_Display_600.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../_includes/fonts/Playfair_Display_600.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../_includes/fonts/Playfair_Display_600.woff') format('woff'), /* Modern Browsers */
+       url('../_includes/fonts/Playfair_Display_600.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../_includes/fonts/Playfair_Display_600.svg#PlayfairDisplay') format('svg'); /* Legacy iOS */
+}
