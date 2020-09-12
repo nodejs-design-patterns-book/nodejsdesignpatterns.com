@@ -1,4 +1,5 @@
-name: CI
+name: Build
+
 on: [push]
 
 jobs:
@@ -18,9 +19,10 @@ jobs:
         uses: actions/cache@v1
         with:
           path: node_modules
-          key: nodeModules-${{ hashFiles('**/yarn.lock') }}
+          key: nodeModules-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             nodeModules-
+
       - name: Install dependencies
         run: npm install
         env:
@@ -35,3 +37,12 @@ jobs:
         run: npm run build
         env:
           CI: true
+
+      - name: Release to GH pages if on master
+        if: github.ref == 'refs/heads/master'
+        uses: crazy-max/ghaction-github-pages@v1
+        with:
+          target_branch: gh-pages
+          build_dir: build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
