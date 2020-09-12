@@ -4,8 +4,8 @@ const eleventyPackage = require('@11ty/eleventy/package.json')
 
 module.exports = function () {
   return {
-    domain: 'nodejsdesignpatterns.com',
-    url: 'https://nodejsdesignpatterns.com',
+    domain: 'www.nodejsdesignpatterns.com',
+    url: 'https://www.nodejsdesignpatterns.com',
     name: 'Node.js Design Patterns',
     title: 'Node.js Design Patterns Third Edition by Mario Casciaro and Luciano Mammino',
     description: 'A book to learn how to design and implement production-grade Node.js applications using proven patterns and techniques',
