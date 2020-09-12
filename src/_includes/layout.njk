@@ -32,7 +32,7 @@ eleventyComputed:
     <title>{{ title }}</title>
     <meta property="og:title" content="{{ og_title | default(title, true) }}">
     <meta name="description" content="{{ description }}">
-    <meta property="og:og:description" content="{{ og_description | default(description, true) }}">
+    <meta property="og:description" content="{{ og_description | default(description, true) }}">
     <meta property="og:url" content="{{ site.url }}{{ page.url }}">
     <meta name="url" content='{{ site.url }}{{ page.url }}'>
     <meta name="pageKey" content="{{ page.filePathStem | slug }}">
