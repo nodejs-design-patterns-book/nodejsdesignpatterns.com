@@ -21,12 +21,12 @@ Some good FREE resources you could check out are [Eloquent JavaScript](https://e
 [JavaScript in 30 days](https://javascript30.com/).`
   },
   {
-    id: 'faq-main-concepts',
-    question: 'What are the main concepts I will learn in this book?',
+    id: 'faq-main-topics',
+    question: 'What are the main topics I will learn in this book?',
     answer: `This book will get you comfortable with writing asynchronous code by leveraging **callbacks**, **promises**,
-and the **async/await** syntax, leverage Node.js **streams** to create data-driven asynchronous processing pipelines,
-implement well-known software design patterns to create production grade applications, share code between Node.js 
-and the browser and take advantage of full-stack JavaScript. Finally, this book will teach you how to build and scale 
+and the **async/await** syntax. It will teach you how to leverage Node.js **streams** to create data-driven asynchronous processing pipelines,
+how to implement well-known software design patterns to create production grade applications, and how to share code between Node.js 
+and the browser, taking full advantage of full-stack JavaScript. Finally, this book will show you how to build and scale 
 **microservices** and **distributed systems** powered by Node.js and how to use Node.js in conjunction with other powerful
 technologies such as Redis, RabbitMQ, ZeroMQ, and LevelDB.`
   },
@@ -77,7 +77,7 @@ introduce you to new topics and patterns. Some examples of real-life application
 - A full stack universal JavaScript website with Fastify, React and Webpack
 - A dynamic HTTP load balancer using Consul
 - A peer-to-peer network for web services
-- A pub-sub chat with an interactive web UI usign ZeroMQ, RabbitMQ and Redis Streams
+- A distributed real-time chat application with an interactive web UI which leverages ZeroMQ, RabbitMQ and Redis Streams
 - A worker pool for background job executions using ZeroMQ, RabbitMQ and Redis Streams
 
 You can checkout the source code for these examples for FREE [on GitHub](https://github.com/PacktPublishing/Node.js-Design-Patterns-Third-Edition).`
