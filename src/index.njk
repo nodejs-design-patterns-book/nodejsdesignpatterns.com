@@ -409,7 +409,7 @@ og_type:
               </dt>
               <dd>
                 <div id="{{ faq.id }}" class="desc">
-                  <p class="is-size-7 has-text-right mb-1"><a href="#{{ faq.id }}">{{ '&para;' | safe }}</a></p>
+                  <p class="is-size-7 has-text-right mb-1"><a title="Permalink to this FAQ" href="#{{ faq.id }}">{{ '&para;' | safe }}</a></p>
                   {{ faq.answer | markdown | safe }}
                 </div>
               </dd>
