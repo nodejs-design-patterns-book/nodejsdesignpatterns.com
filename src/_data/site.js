@@ -14,9 +14,10 @@ module.exports = function () {
     lang: 'en',
     locale: 'en_US',
     image: '/img/node-js-design-patterns.jpg',
-    image_width: 1260,
-    image_height: 630,
+    imageWidth: 1260,
+    imageHeight: 630,
     analyticsId: 'UA-42283801-2',
+    facebookAppId: '765341910910483',
     generator: `${eleventyPackage.name} v${eleventyPackage.version}`
   }
 }
