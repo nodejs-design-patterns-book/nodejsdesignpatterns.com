@@ -38,6 +38,12 @@ module.exports = [
     picture: './img/people/mike-rourke-node.jpg',
     text: 'There is a lot of useful content in this book, and I think the title doesn\'t do it justice. If you want a comprehensive book about Node.js that not only acts as a reference for best practices and design patterns, but also as a one-stop shop for understanding how Node.js works behind the scenes, look no further!'
   }
+  // {
+  //   name: 'David Wells',
+  //   role: 'Serverless architect & full-stack developer',
+  //   picture: './img/people/david-wells-node.jpg',
+  //   text: 'If you want a deep dive into how Node.js works and the available design patterns, I\'d recommend checking out Mario and Luciano\'s new book. I particularly enjoyed the section on using streams. After reading, I realized haven\'t been leveraging streams enough in my projects.'
+  // }
   // ,{
   //   name: 'Yan Cui',
   //   role: 'AWS Serverless Hero & Author',

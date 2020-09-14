@@ -55,6 +55,7 @@ module.exports = function (config) {
               raw: cssContent
             }
           ],
+          whitelist: ['is-active'],
           fontFace: true,
           variables: true
         })
