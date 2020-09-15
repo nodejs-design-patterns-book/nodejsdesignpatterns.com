@@ -289,7 +289,10 @@ nav a.navbar-item {
 }
 
 #authors {
-  padding-bottom: 6rem;
+
+  section {
+    padding-bottom: 6rem;
+  }
 
   h2 {
     line-height: 3rem;
@@ -383,6 +386,8 @@ nav a.navbar-item {
     background: transparent;
     width: 100%;
     cursor: pointer;
+    position: relative;
+  
 
     &:active {
       border: none;
@@ -399,22 +404,25 @@ nav a.navbar-item {
       margin: 1.5rem 0 0 0;
       text-align: left;
       font-weight: bold;
+      padding-left: 3em;
     }
 
     &[aria-expanded=false] h3::before {
       content: "+ ";
       font-weight: bold;
       color: $greenD3;
-      width: 3rem;
       display: inline-block;
+      position: absolute;
+      left: 0;
     }
 
     &[aria-expanded=true] h3::before {
       content: "- ";
       font-weight: bold;
       color: $greenD3;
-      width: 3rem;
       display: inline-block;
+      position: absolute;
+      left: 0;
     }
   }
 
