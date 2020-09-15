@@ -37,13 +37,19 @@ module.exports = [
     role: 'Software Engineer and Author',
     picture: './img/people/mike-rourke-node.jpg',
     text: 'There is a lot of useful content in this book, and I think the title doesn\'t do it justice. If you want a comprehensive book about Node.js that not only acts as a reference for best practices and design patterns, but also as a one-stop shop for understanding how Node.js works behind the scenes, look no further!'
+  },
+  {
+    name: 'Maya Shavin',
+    role: 'Senior Frontend Engineer at Cloudinary',
+    picture: './img/people/maya-shavin-node-js.jpg',
+    text: 'This book surprised me for how detailed it is! It contains a lot of useful and easy-to-understand information. For someone familiar with the Node.js, I\'m intrigued by how much depth the book provides in working with Node.js. Every topic is approached in a very straightforward way: while being practical, this book offers different readers\' levels - from the most juniors to the experienced ones - an excellent reference to apply design patterns in any real scale Node.js application. Totally going to bookmark it as my favorite Node.js book!'
+  },
+  {
+    name: 'David Wells',
+    role: 'Serverless architect & full-stack developer',
+    picture: './img/people/david-wells-node-js.jpg',
+    text: 'If you want a deep dive into how Node.js works and the available design patterns, I\'d recommend checking out Mario and Luciano\'s new book. I particularly enjoyed the section on using streams. After reading, I realized haven\'t been leveraging streams enough in my projects.'
   }
-  // {
-  //   name: 'David Wells',
-  //   role: 'Serverless architect & full-stack developer',
-  //   picture: './img/people/david-wells-node.jpg',
-  //   text: 'If you want a deep dive into how Node.js works and the available design patterns, I\'d recommend checking out Mario and Luciano\'s new book. I particularly enjoyed the section on using streams. After reading, I realized haven\'t been leveraging streams enough in my projects.'
-  // }
   // ,{
   //   name: 'Yan Cui',
   //   role: 'AWS Serverless Hero & Author',
