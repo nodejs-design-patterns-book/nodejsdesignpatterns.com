@@ -1,0 +1,18 @@
+---
+permalink: sitemap.xml
+ignore: true
+---
+
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{%- for item in collections.all -%}
+  {%- if not item.data.ignore %}
+  <url>
+    <loc>{{ site.url }}{{ item.url }}</loc>
+    <lastmod>{{ item.date | date("yyyy-MM-dd")}}</lastmod>
+    <changefreq>{{ item.changefreq | default("monthly") }}</changefreq>
+    <priority>{{ item.priority | default(0.9) }}</priority>
+  </url>
+  {%- endif -%}
+{%- endfor %}
+</urlset>

@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
 Sitemap: https://nodejsdesignpatterns.com/sitemap.xml

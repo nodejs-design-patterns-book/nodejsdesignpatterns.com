@@ -36,6 +36,7 @@
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^4.2.2",
     "csso": "^4.0.3",
+    "date-fns": "^2.16.1",
     "eslint": "^7.5.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.22.0",

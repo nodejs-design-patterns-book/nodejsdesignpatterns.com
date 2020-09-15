@@ -8,6 +8,7 @@ const PurgeCSS = require('purgecss').PurgeCSS
 const csso = require('csso')
 const markdownIt = require('markdown-it')
 const Image = require('@11ty/eleventy-img')
+const format = require('date-fns/format')
 
 Image.concurrency = (cpus()).length
 
@@ -87,6 +88,11 @@ module.exports = function (config) {
   // Add is_array filter
   config.addFilter('is_array', function (value) {
     return Array.isArray(value)
+  })
+
+  // add date filter
+  config.addFilter('date', function (date, dateFormat = 'yyyy-MM-dd\'T\'HH:mm:ss.SSSxxx') {
+    return format(date, dateFormat)
   })
 
   // Add markdown filter
