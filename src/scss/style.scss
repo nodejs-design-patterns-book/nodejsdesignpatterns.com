@@ -291,7 +291,7 @@ nav a.navbar-item {
 #authors {
 
   section {
-    padding-bottom: 6rem;
+    padding-bottom: 24rem;
   }
 
   h2 {
@@ -380,6 +380,10 @@ nav a.navbar-item {
 }
 
 #faq {
+  dt {
+    padding-top: 3em
+  }
+
   button {
     border: none;
     text-align: left;

@@ -403,13 +403,13 @@ og_type:
 
           <dl class="faq">
             {% for faq in faqs %}
-              <dt>
-                <button aria-expanded="true" aria-controls="{{ faq.id }}">
+              <dt id="{{ faq.id }}">
+                <button aria-expanded="true" aria-controls="{{ faq.id }}-answer">
                   <h3 class="subtitle is-4"> {{ faq.question }}</h3>
                 </button>
               </dt>
               <dd>
-                <div id="{{ faq.id }}" class="desc">
+                <div id="{{ faq.id }}-answer" class="desc">
                   <p class="is-size-7 has-text-right mb-1"><a title="Permalink to this FAQ" href="#{{ faq.id }}">{{ '&para;' | safe }}</a></p>
                   {{ faq.answer | markdown | safe }}
                 </div>
