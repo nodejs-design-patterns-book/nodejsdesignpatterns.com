@@ -9,6 +9,9 @@ module.exports = () => {
     const target = document.getElementById(targetId)
 
     if (skipIfAnchor && target.id.includes(window.location.hash.substr(1))) {
+      if (window.dataLayer) {
+        window.dataLayer.push({ event: `faq_open_${targetId}` })
+      }
       return
     }
 
@@ -17,6 +20,9 @@ module.exports = () => {
       target.style.maxHeight = 0
       target.style.padding = '0 0 0 3.2rem'
     } else {
+      if (window.dataLayer) {
+        window.dataLayer.push({ event: `faq_open_${targetId}` })
+      }
       btn.setAttribute('aria-expanded', 'true')
       target.style.maxHeight = '1000px'
       target.style.padding = '1.5rem 0 1.5rem 3.2rem'

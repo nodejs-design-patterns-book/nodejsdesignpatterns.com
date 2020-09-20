@@ -11,12 +11,12 @@ og_type:
     - "https://www.amazon.com/Mario-Casciaro/e/B00SLY3S1K"
     - "https://www.amazon.com/Luciano-Mammino/e/B01GW5CID8/"
 ---
-
+{% from "analytics.njk" import track with context %}
 <nav class="navbar is-fixed-top has-shadow" role="navigation" aria-label="main navigation">
   <div class="container">
     <div class="navbar-brand">
       <div class="navbar-item">
-        <a href="#buy" class="button is-primary">
+        <a href="#buy" class="button is-primary" {{ track("click_nav_buy") }}>
           <strong>Buy the book</strong>
         </a>
       </div>
@@ -28,11 +28,11 @@ og_type:
     </div>
     <div id="navbar" class="navbar-menu">
       <div class="navbar-end">
-        <a href="#reviews" class="navbar-item">Reviews</a>
-        <a href="#book-content" class="navbar-item">Content</a>
-        <a href="#sample-chapter" class="navbar-item">Sample chapter</a>
-        <a href="#authors" class="navbar-item">Authors</a>
-        <a href="#faq" class="navbar-item">FAQs</a>
+        <a href="#reviews" class="navbar-item" {{ track("click_nav_reviews") }}>Reviews</a>
+        <a href="#book-content" class="navbar-item" {{ track("click_nav_book_content") }}>Content</a>
+        <a href="#sample-chapter" class="navbar-item" {{ track("click_nav_sample_chapter") }}>Sample chapter</a>
+        <a href="#authors" class="navbar-item" {{ track("click_nav_authors") }}>Authors</a>
+        <a href="#faq" class="navbar-item" {{ track("click_nav_faq") }}>FAQs</a>
       </div>
     </div>
   </div>
@@ -47,8 +47,8 @@ og_type:
             <h1 class="title is-1">Take your Node.js knowledge to the next level</h1>
             <h2 class="subtitle is-4 mt-1">Design and implement production-grade Node.js applications using proven patterns and techniques</h2>
             <div class="buttons">
-              <a class="button is-primary" href="#buy">Buy</a>
-              <a class="button" href="#sample-chapter">Download sample chapter</a>
+              <a class="button is-primary" href="#buy" {{ track("click_hero_buy") }}>Buy</a>
+              <a class="button" href="#sample-chapter" {{ track("click_hero_sample_chapter") }}>Download sample chapter</a>
             </div>
           </div>
           <div class="column pos-rel">
@@ -148,8 +148,8 @@ og_type:
             <p>In the last section this book covers more advanced topics such as <strong>Universal JavaScript</strong> with Node.js, <strong>React</strong> and <strong>Webpack</strong>, best practices to <strong>scale Node.js</strong> services, <strong>microservices</strong> and <strong>messaging patterns</strong> for enterprise-grade <strong>distributed applications</strong>.</p>
             <p>Throughout the book you will see Node.js in action with the help of several real-life examples leveraging great technologies such as <strong>LevelDB</strong>, <strong>Redis</strong>, <strong>RabbitMQ</strong>, <strong>ZeroMQ</strong> and many others. They will be used to demonstrate a pattern or a technique, but they will also give you a great introduction to the <strong>Node.js ecosystem</strong> and its set of solutions.</p>
             <div class="buttons">
-              <a class="button is-primary" href="#buy">Buy the book</a>
-              <a class="button" href="#sample-chapter">Download the sample chapter</a>
+              <a class="button is-primary" href="#buy" {{ track("click_abstract_buy") }}>Buy the book</a>
+              <a class="button" href="#sample-chapter" {{ track("click_abstract_sample_chapter") }}>Download the sample chapter</a>
             </div>
           </div>
 
@@ -382,8 +382,8 @@ og_type:
             <h2 class="title is-2 has-text-centered">Buy Node.js Design Patterns third edition</h2>
             <h3 class="subtitle is-4 has-text-centered">Node.js Design Patterns third edition is available in Print and Kindle editions</h3>
             <p class="buttons is-centered">
-              <a class="button is-primary" href="https://nodejsdp.link/buy">Buy Print edition</a>
-              <a class="button" href="https://nodejsdp.link/buy-kindle">Buy Kindle edition</a>
+              <a class="button is-primary" href="https://nodejsdp.link/buy" {{ track("click_buy_print") }}>Buy Print edition</a>
+              <a class="button" href="https://nodejsdp.link/buy-kindle" {{ track("click_buy_kindle") }}>Buy Kindle edition</a>
             </p>
           </div>
           <div class="column is-half">

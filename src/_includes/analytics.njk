@@ -1,0 +1,5 @@
+{%- macro track(event_name) -%}
+  {%- if site.analyticsId -%}
+    onclick="dataLayer.push({'event': '{{ event_name }}'});"
+  {%- endif -%}
+{%- endmacro -%}
