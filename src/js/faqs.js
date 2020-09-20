@@ -8,7 +8,7 @@ module.exports = () => {
     const targetId = btn.getAttribute('aria-controls')
     const target = document.getElementById(targetId)
 
-    if (skipIfAnchor && target.id === window.location.hash.substr(1)) {
+    if (skipIfAnchor && target.id.includes(window.location.hash.substr(1))) {
       return
     }
 
