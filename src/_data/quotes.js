@@ -49,6 +49,12 @@ module.exports = [
     role: 'Serverless architect & full-stack developer',
     picture: './img/people/david-wells-node-js.jpg',
     text: 'If you want a deep dive into how Node.js works and the available design patterns, I\'d recommend checking out Mario and Luciano\'s new book. I particularly enjoyed the section on using streams. After reading, I realized haven\'t been leveraging streams enough in my projects.'
+  },
+  {
+    name: 'Mike Alche',
+    role: 'Node.js and React consultant',
+    picture: './img/people/mike-alche-node-js.jpg',
+    text: 'Every time a new Node.JS book comes out I read it. I think there isn’t a single one that I haven’t read. And out of all of them I must say that Node.JS Design Patterns is by far — and I mean it BY FAR— the undisputed best. To put it in the most honest way possible: this is the book I go to read when preparing to teach a Node.js class to groups of software engineers.'
   }
   // ,{
   //   name: 'Yan Cui',
@@ -66,12 +72,6 @@ module.exports = [
   //   name: 'Clíona de Róiste',
   //   role: 'Lead Engineer at Viasat Inc.',
   //   picture: './img/people/cliona-de-roiste-node-js.jpg',
-  //   text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae volutpat nisi. Cras ut dui felis. Nam porttitor fermentum lacus id placerat. Curabitur erat turpis, condimentum quis malesuada et, consequat in nisl. Sed vel turpis ex. Fusce scelerisque ac urna id ultrices. Etiam accumsan, quam ut imperdiet venenatis'
-  // },
-  // {
-  //   name: 'Maya Shavin',
-  //   role: 'Senior Frontend Developer at Cloudinary',
-  //   picture: './img/people/maya-shavin-node-js.jpg',
   //   text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae volutpat nisi. Cras ut dui felis. Nam porttitor fermentum lacus id placerat. Curabitur erat turpis, condimentum quis malesuada et, consequat in nisl. Sed vel turpis ex. Fusce scelerisque ac urna id ultrices. Etiam accumsan, quam ut imperdiet venenatis'
   // }
 ]
