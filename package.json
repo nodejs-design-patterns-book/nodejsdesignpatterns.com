@@ -13,7 +13,7 @@
     "dev": "npm-run-all build:assets --parallel watch:*",
     "build": "npm-run-all clean build:assets build:eleventy",
     "deploy": "gh-pages -d build --dotfiles",
-    "start": "webpack-dev-server"
+    "start": "npm run dev"
   },
   "repository": {
     "type": "git",

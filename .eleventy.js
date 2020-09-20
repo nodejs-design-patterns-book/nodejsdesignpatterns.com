@@ -16,7 +16,6 @@ module.exports = function (config) {
   config.setUseGitIgnore(false)
 
   // Pass-through files
-  config.addPassthroughCopy('src/robots.txt')
   config.addPassthroughCopy('src/CNAME')
   config.addPassthroughCopy({ 'src/_includes/assets': 'assets' })
   config.addPassthroughCopy({ 'src/node-js-design-patterns.jpg': 'img/node-js-design-patterns.jpg' })

@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://www.nodejsdesignpatterns.com/sitemap.xml
