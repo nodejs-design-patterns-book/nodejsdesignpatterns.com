@@ -63,12 +63,10 @@ eleventyComputed:
       {% include "meta-book-jsonld.json" %}
     </script>
     {% if site.gtmId %}
-      <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.gtmId }}"></script>
+      <script async src="https://www.googletagmanager.com/gtm.js?id={{ site.gtmId }}"></script>
       <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        {% if site.analyticsId %}gtag('config', '{{ site.analyticsId }}');{% endif %}
+        dataLayer.push({'gtm.start': new Date().getTime(), event:'gtm.js'})
       </script>
     {% endif %}
   </head>
