@@ -5,12 +5,13 @@ module.exports = () => {
 
   function toggle (btn, skipIfAnchor = false) {
     const isExpanded = btn.getAttribute('aria-expanded') === 'true'
+    const faqId = btn.getAttribute('data-faq-id')
     const targetId = btn.getAttribute('aria-controls')
     const target = document.getElementById(targetId)
 
-    if (skipIfAnchor && target.id.includes(window.location.hash.substr(1))) {
+    if (skipIfAnchor && window.location.hash.length > 0 && faqId === window.location.hash.substr(1)) {
       if (window.dataLayer) {
-        window.dataLayer.push({ event: `faq_open_${targetId}` })
+        window.dataLayer.push({ event: `faq_open_${faqId}` })
       }
       return
     }
@@ -21,7 +22,7 @@ module.exports = () => {
       target.style.padding = '0 0 0 3.2rem'
     } else {
       if (window.dataLayer) {
-        window.dataLayer.push({ event: `faq_open_${targetId}` })
+        window.dataLayer.push({ event: `faq_open_${faqId}` })
       }
       btn.setAttribute('aria-expanded', 'true')
       target.style.maxHeight = '1000px'

@@ -403,7 +403,7 @@ og_type:
           <dl class="faq">
             {% for faq in faqs %}
               <dt id="{{ faq.id }}">
-                <button aria-expanded="true" aria-controls="{{ faq.id }}-answer">
+                <button aria-expanded="true" aria-controls="{{ faq.id }}-answer" data-faq-id="{{ faq.id }}">
                   <h3 class="subtitle is-4"> {{ faq.question }}</h3>
                 </button>
               </dt>
