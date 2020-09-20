@@ -151,6 +151,10 @@ nav a.navbar-item {
   }
 }
 
+nav.navbar {
+  z-index: 99999 !important;
+}
+
 #hero {
   h1 {
     line-height: 4.5rem;
