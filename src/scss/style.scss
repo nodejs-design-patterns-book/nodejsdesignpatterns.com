@@ -151,6 +151,11 @@ nav a.navbar-item {
   }
 }
 
+section.section {
+  content-visibility: auto;
+  contain-intrinsic-size: 1000px;
+}
+
 nav.navbar {
   z-index: 99999 !important;
 }

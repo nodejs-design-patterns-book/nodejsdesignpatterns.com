@@ -21,7 +21,7 @@ npm install
 Run the local development server (with auto-reload):
 
 ```bash
-npm run dev
+npm start
 ```
 
 Run the build with:
