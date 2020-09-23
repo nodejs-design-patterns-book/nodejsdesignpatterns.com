@@ -45,6 +45,12 @@ module.exports = [
     text: 'This book surprised me for how detailed it is! It contains a lot of useful and easy-to-understand information. For someone familiar with the Node.js, I\'m intrigued by how much depth the book provides in working with Node.js. Every topic is approached in a very straightforward way: while being practical, this book offers different readers\' levels - from the most juniors to the experienced ones - an excellent reference to apply design patterns in any real scale Node.js application. Totally going to bookmark it as my favorite Node.js book!'
   },
   {
+    name: 'Kostas Bariotis',
+    role: 'Software Engineer at Bulb',
+    picture: './img/people/kostas-bariotis-node-js.jpg',
+    text: 'Node.js Design Patterns is an amazing resource for every level of Node.js developers. It covers important design patters that are used in the Node.js world (modules, callbacks, asynchronicity, etc) and explores critical bits of the core library (promises, streams, event emitters, etc). Finally, it provides best practices on running Node.js as part of a bigger architecture where you need to horizontally scale an application, balance the incoming load and setup a message bus in between your services.'
+  },
+  {
     name: 'David Wells',
     role: 'Serverless architect & full-stack developer',
     picture: './img/people/david-wells-node-js.jpg',
