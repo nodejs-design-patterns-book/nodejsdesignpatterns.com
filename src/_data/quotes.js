@@ -61,6 +61,12 @@ module.exports = [
     role: 'Node.js and React consultant',
     picture: './img/people/mike-alche-node-js.jpg',
     text: 'Every time a new Node.js book comes out I read it. I think there isn’t a single one that I haven’t read. And out of all of them I must say that Node.js Design Patterns is by far — and I mean it BY FAR— the undisputed best. To put it in the most honest way possible: this is the book I go to read when preparing to teach a Node.js class to groups of software engineers.'
+  },
+  {
+    name: 'Theodore Vorillas',
+    role: 'JavaScript Engineer at Workable',
+    picture: './img/people/theodore-vorillas-node-js.jpg',
+    text: 'Node.js Design Patterns is a must read, an excellent resource for learning how to build Node.js applications. I loved the fact that you can actually learn new stuff regardless your experience. My favorite chapters are about scaling a production application (Universal JavaScript, Scalability and Architectural Patterns, Advanced Recipes)... and the coding samples are also available for free on GitHub!'
   }
   // ,{
   //   name: 'Yan Cui',
