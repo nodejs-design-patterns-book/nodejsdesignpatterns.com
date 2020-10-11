@@ -57,6 +57,12 @@ module.exports = [
     text: 'If you want a deep dive into how Node.js works and the available design patterns, I\'d recommend checking out Mario and Luciano\'s new book. I particularly enjoyed the section on using streams. After reading, I realized haven\'t been leveraging streams enough in my projects.'
   },
   {
+    name: 'Simon Høiberg',
+    role: 'Freelance Software Engineer',
+    picture: './img/people/simon-hoiberg-node-js.jpg',
+    text: 'Node.js Design Patterns is a great, in-depth resource for both beginners and advanced. Even though I\'ve been writing Node.js applications for the past 5 years, I learned a lot from this comprehensive piece of work. By far the best Node.js book currently out there.'
+  },
+  {
     name: 'Mike Alche',
     role: 'Node.js and React consultant',
     picture: './img/people/mike-alche-node-js.jpg',
