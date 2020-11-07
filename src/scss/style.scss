@@ -489,6 +489,19 @@ nav.navbar {
   border-radius: 3rem;
 }
 
+.article article {
+  h2, h3 {
+    margin-top: 1.25em;
+  }
+  p {
+    margin-top: .75em;
+  }
+
+  p:first-child {
+    margin-top: 0;
+  }
+}
+
 .hhh {
   background-color: #fff;
   background-size: 100% 1.5em;

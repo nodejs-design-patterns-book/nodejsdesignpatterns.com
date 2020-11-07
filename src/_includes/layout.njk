@@ -4,14 +4,14 @@ og_description: ~
 og_type: ~
 date: Last Modified
 eleventyComputed:
-  title: "{{ site.title | safe }}"
-  description: "{{ site.description | safe }}"
+  title: "{{ title | default (site.title) | safe }}"
+  description: "{{ description | default(site.description) | safe }}"
   og_site_name: "{{ site.name | safe }}"
   lang: "{{ site.lang | safe }}"
   og_locale: "{{ site.locale | safe }}"
-  og_image: "{{ site.image }}"
-  og_image_width: "{{ site.imageWidth }}"
-  og_image_height: "{{ site.imageHeight }}"
+  og_image: "{{ og_image | default(site.image) }}"
+  og_image_width: "{{ og_image_width | default(site.imageWidth) }}"
+  og_image_height: "{{ og_image_height | default(site.imageHeight) }}"
   fb_app_id: "{{ site.facebookAppId }}"
 ---
 <!doctype html>
@@ -32,7 +32,7 @@ eleventyComputed:
     {% if og_image_height %}<meta property="og:image:height" content="{{ og_image_height }}">{% endif %}
     {% if fb_app_id %}<meta property="fb:app_id" content="{{ fb_app_id }}">{% endif %}
     <meta property="og:locale" content="{{ og_locale }}">
-    <meta property="og:site_name" content="{{ og_site_name }}" />
+    <meta property="og:site_name" content="{{ og_site_name }}"/>
     {% if og_type %}
       {% for attr, val in og_type %}
         {% if val | is_array %}
@@ -66,7 +66,9 @@ eleventyComputed:
       <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.analyticsId }}"></script>
       <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+        function gtag() {
+          dataLayer.push(arguments);
+        }
         gtag('js', new Date());
         gtag('config', 'UA-42283801-2');
       </script>

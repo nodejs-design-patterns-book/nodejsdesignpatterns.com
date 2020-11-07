@@ -7,8 +7,11 @@ const htmlmin = require('html-minifier')
 const PurgeCSS = require('purgecss').PurgeCSS
 const csso = require('csso')
 const markdownIt = require('markdown-it')
+const markdownItAnchor = require('markdown-it-anchor')
+const markdownItClass = require('@toycode/markdown-it-class')
 const Image = require('@11ty/eleventy-img')
 const format = require('date-fns/format')
+const pluginTOC = require('eleventy-plugin-toc')
 
 Image.concurrency = (cpus()).length
 
@@ -30,6 +33,25 @@ module.exports = function (config) {
     'site.webmanifest'
   ]
   favicons.forEach((f) => config.addPassthroughCopy(`src/${f}`))
+
+  // configure markdown
+  const mdClassesMapping = {
+    h2: ['title', 'is-2'],
+    h3: ['title', 'is-3']
+  }
+  config.setLibrary('md',
+    markdownIt({
+      html: true,
+      linkify: true
+    })
+      .use(markdownItAnchor)
+      .use(markdownItClass, mdClassesMapping)
+  )
+
+  config.addPlugin(pluginTOC, {
+    tags: ['h2', 'h3'],
+    wrapper: 'div'
+  })
 
   // optimize css - removes unused css and inlines css
   config.addTransform('purifyCss', async function (content, outputPath) {
@@ -118,6 +140,7 @@ module.exports = function (config) {
     await access(inputImage)
 
     const maxWidth = options.maxWidth || 1024
+    options.formats = ['png', 'webp']
     options.outputDir = path.join(__dirname, 'build', 'img')
     options.widths = [null, 64]
     options.filenameFormat = function (id, src, width, format, options) {
@@ -136,7 +159,7 @@ module.exports = function (config) {
     }
 
     const stats = await Image(inputImage, options)
-    const lowestSrc = stats.jpeg[0]
+    const lowestSrc = stats.png[0]
     const sizes = `(max-width: ${maxWidth}px) 100vw, ${maxWidth}px`
 
     // Iterate over formats and widths
@@ -160,12 +183,9 @@ module.exports = function (config) {
   })
 
   return {
-    templateFormats: ['njk'],
     dir: {
       input: './src',
-      output: './build',
-      includes: '_includes',
-      data: '_data'
+      output: './build'
     }
   }
 }
