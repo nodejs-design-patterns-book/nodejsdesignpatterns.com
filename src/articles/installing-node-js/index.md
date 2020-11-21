@@ -11,6 +11,17 @@ In this article we will explore some of the most common ways to install Node.js 
 Let's get started!
 
 
+## Which option should I pick?
+
+The first question that you might have is 
+
+> "Why there are so many options?" 
+
+... and that's a very legit question!
+
+...
+
+
 ## Install Node.js using the official installer
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam hendrerit placerat metus, at imperdiet sapien euismod et. Sed dictum sem quis diam pretium elementum. Aliquam erat volutpat. Donec vel finibus lorem. Aliquam fringilla lectus et sapien fermentum maximus. Sed auctor est vel consectetur convallis. Etiam a elit nec justo porttitor finibus a vel sem. Vivamus a eros at dui sagittis bibendum nec quis magna. Vivamus fermentum purus non magna semper faucibus. Vivamus tincidunt dictum tempor. Donec consequat congue pretium.
@@ -74,6 +85,12 @@ Aenean mattis sem non convallis aliquam. Morbi libero turpis, bibendum accumsan 
 Ut a dapibus lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc molestie ex in lorem pharetra pretium. Duis vulputate sodales magna, vitae sagittis urna suscipit ac. Nullam sit amet libero malesuada, placerat felis vitae, dictum sapien. Vestibulum egestas, urna ac imperdiet vehicula, massa turpis venenatis libero, ac pulvinar tortor ipsum vitae urna. Quisque sed eros id lacus aliquam euismod. Cras et facilisis mi. Donec tempor aliquet erat, in volutpat lectus. Nam non mollis magna, in elementum velit. Ut ipsum lectus, tincidunt a ante et, pretium bibendum tortor. Donec ultricies, lectus eget fringilla pharetra, mauris augue laoreet ante, tristique vehicula elit metus id libero. Etiam eu vestibulum nunc, at faucibus ligula. Vestibulum eget nisl arcu. Nam vitae erat sit amet erat luctus commodo molestie sed tortor. Vestibulum rhoncus quam ut nibh pulvinar lacinia.
 
 Fusce ut auctor dolor, ac dictum eros. Curabitur porta, diam in blandit convallis, est eros tincidunt massa, eu mollis metus diam ac nisi. Nunc a dictum purus. Cras tempor nisi sit amet arcu congue tincidunt. Fusce ullamcorper dolor non mauris tempus, et pretium diam pharetra. Integer elit ex, dictum condimentum finibus ac, mattis id justo. Pellentesque mauris ex, dictum sit amet augue a, sollicitudin facilisis ex. Aliquam luctus dui felis, vel malesuada nunc lacinia id. Quisque rhoncus quam commodo ligula dapibus, et placerat mauris dignissim. Nunc venenatis aliquet ligula, sed viverra libero condimentum sit amet. Sed elit sapien, sagittis sed risus lacinia, eleifend molestie ante. Vestibulum ac mattis urna. Suspendisse quis ex ultrices tortor varius tincidunt. Integer condimentum eros sit amet ultricies dignissim.
+
+
+## Node.js with Docker
+
+...
+
 
 ## Conclusion
 
