@@ -73,23 +73,11 @@ module.exports = [
     role: 'JavaScript Engineer at Workable',
     picture: './img/people/theodore-vorillas-node-js.jpg',
     text: 'Node.js Design Patterns is a must read, an excellent resource for learning how to build Node.js applications. I loved the fact that you can actually learn new stuff regardless your experience. My favorite chapters are about scaling a production application (Universal JavaScript, Scalability and Architectural Patterns, Advanced Recipes)... and the coding samples are also available for free on GitHub!'
+  },
+  {
+    name: 'David Gonzalez',
+    role: 'Full stack engineer/DevOps, Google Developer Expert and author',
+    picture: './img/people/david-gonzalez-node-js.jpg',
+    text: 'I am a hardcore techie, big into Node.js and I have to say I have learnt a lot by just going through Node.js Design Patterns. The level of detail and quality of the examples are incredible and in general, it is a good book have as a reference to solve any problem that might arise while code (not only in Node.js). This is a book I recommend to my students to go from 0 to hero and keep it as a reference forever. The previous edition was good, but this one is just out of this world.'
   }
-  // ,{
-  //   name: 'Yan Cui',
-  //   role: 'AWS Serverless Hero & Author',
-  //   picture: './img/people/yan-cui-node-js.jpg',
-  //   text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae volutpat nisi. Cras ut dui felis. Nam porttitor fermentum lacus id placerat. Curabitur erat turpis, condimentum quis malesuada et, consequat in nisl. Sed vel turpis ex. Fusce scelerisque ac urna id ultrices. Etiam accumsan, quam ut imperdiet venenatis'
-  // },
-  // {
-  //   name: 'Anton Whalley',
-  //   role: 'Solution Architect at IBM',
-  //   picture: './img/people/anton-whalley-node-js.jpg',
-  //   text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae volutpat nisi. Cras ut dui felis. Nam porttitor fermentum lacus id placerat. Curabitur erat turpis, condimentum quis malesuada et, consequat in nisl. Sed vel turpis ex. Fusce scelerisque ac urna id ultrices. Etiam accumsan, quam ut imperdiet venenatis'
-  // },
-  // {
-  //   name: 'Clíona de Róiste',
-  //   role: 'Lead Engineer at Viasat Inc.',
-  //   picture: './img/people/cliona-de-roiste-node-js.jpg',
-  //   text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae volutpat nisi. Cras ut dui felis. Nam porttitor fermentum lacus id placerat. Curabitur erat turpis, condimentum quis malesuada et, consequat in nisl. Sed vel turpis ex. Fusce scelerisque ac urna id ultrices. Etiam accumsan, quam ut imperdiet venenatis'
-  // }
 ]
