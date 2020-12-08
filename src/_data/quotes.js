@@ -79,5 +79,11 @@ module.exports = [
     role: 'Full stack engineer/DevOps, Google Developer Expert and author',
     picture: './img/people/david-gonzalez-node-js.jpg',
     text: 'I am a hardcore techie, big into Node.js and I have to say I have learnt a lot by just going through Node.js Design Patterns. The level of detail and quality of the examples are incredible and in general, it is a good book have as a reference to solve any problem that might arise while code (not only in Node.js). This is a book I recommend to my students to go from 0 to hero and keep it as a reference forever. The previous edition was good, but this one is just out of this world.'
+  },
+  {
+    name: 'Maxim Salnikov',
+    role: 'Developer Engagement Lead at Microsoft',
+    picture: './img/people/maxim-salnikov-node-js.jpg',
+    text: 'I have "Node.js Design Patterns" always at hand both when I start quick new projects and when the time comes to refactor the larger and mature ones. It\'s an invaluable and well-structured source of patterns, best practices, and guidelines.  Also, it’s always good to know that particular features are in use in well-known projects - thanks to the “In the wild” section. As a full-stack developer focused on the front-end, I especially enjoyed a chapter about universal JavaScript.'
   }
 ]
