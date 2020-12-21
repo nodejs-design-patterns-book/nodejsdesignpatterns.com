@@ -131,7 +131,7 @@ module.exports = function (config) {
 
   // Add responsive image helper
   config.addNunjucksAsyncShortcode('responsiveImage', async function (src, alt, options = {}) {
-    if (alt === undefined) {
+    if (typeof alt === 'undefined') {
       throw new Error(`Missing \`alt\` on responsiveImage from: ${src}`)
     }
 
