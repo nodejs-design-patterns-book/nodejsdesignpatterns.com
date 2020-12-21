@@ -80,9 +80,15 @@ eleventyComputed:
       <div class="container">
         <div class="navbar-brand">
           <div class="navbar-item">
-            <a href="#buy" class="button is-primary" {{ track("click_nav_buy") }}>
-              <strong>Buy Node.js Design Patterns</strong>
-            </a>
+            {% if page.url == "/" %}
+              <a href="/#buy" class="button is-primary" {{ track("click_nav_buy") }}>
+                <strong>Buy Node.js Design Patterns</strong>
+              </a>
+            {% else %}
+              <a href="/">
+                <h1 class="title is-5">Node.js Design Patterns</h1>
+              </a>
+            {% endif %}
           </div>
           <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbar">
             <span aria-hidden="true"></span>
