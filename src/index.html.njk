@@ -12,32 +12,6 @@ og_type:
     - "https://www.amazon.com/Luciano-Mammino/e/B01GW5CID8/"
 ---
 {% from "analytics.njk" import track with context %}
-<nav class="navbar is-fixed-top has-shadow" role="navigation" aria-label="main navigation">
-  <div class="container">
-    <div class="navbar-brand">
-      <div class="navbar-item">
-        <a href="#buy" class="button is-primary" {{ track("click_nav_buy") }}>
-          <strong>Buy the book</strong>
-        </a>
-      </div>
-      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbar">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-      </a>
-    </div>
-    <div id="navbar" class="navbar-menu">
-      <div class="navbar-end">
-        <a href="#reviews" class="navbar-item" {{ track("click_nav_reviews") }}>Reviews</a>
-        <a href="#book-content" class="navbar-item" {{ track("click_nav_book_content") }}>Content</a>
-        <a href="#sample-chapter" class="navbar-item" {{ track("click_nav_sample_chapter") }}>Sample chapter</a>
-        <a href="#authors" class="navbar-item" {{ track("click_nav_authors") }}>Authors</a>
-        <a href="#faq" class="navbar-item" {{ track("click_nav_faq") }}>FAQs</a>
-      </div>
-    </div>
-  </div>
-</nav>
-
 <main>
   <section id="hero" class="hero bg-green bd-rd">
     <div class="hero-body">
@@ -272,7 +246,9 @@ og_type:
               <h3 class="title is-4">Behavioural Design Patterns</h3>
               <p>Learn how to implement and leverage some of the most well known behavioural design patterns in the context of Node.js: the Strategy pattern, the State pattern, the Template pattern, the Iterator pattern, the Middleware pattern, and the Command pattern.</p>
               <p>
-                <a href="#sample-chapter"><span class="tag is-primary">Free Chapter!</span></a></p>
+                <a href="#sample-chapter">
+                  <span class="tag is-primary">Free Chapter!</span></a>
+              </p>
             </li>
 
             <li>
@@ -317,7 +293,9 @@ og_type:
           <div class="column is-half">
             <div class="columns">
               <div class="column is-one-third"></div>
-              <div class="column is-two-third"><h3 class="title is-3">Mario Casciaro</h3></div>
+              <div class="column is-two-third">
+                <h3 class="title is-3">Mario Casciaro</h3>
+              </div>
             </div>
             <div class="columns">
               <div class="column is-one-third">
@@ -346,7 +324,9 @@ og_type:
           <div class="column is-half">
             <div class="columns">
               <div class="column is-one-third"></div>
-              <div class="column is-two-third"><h3 class="title is-3">Luciano Mammino</h3></div>
+              <div class="column is-two-third">
+                <h3 class="title is-3">Luciano Mammino</h3>
+              </div>
             </div>
             <div class="columns">
               <div class="column is-one-third">
@@ -372,60 +352,55 @@ og_type:
             </div>
           </div>
         </div>
-      </section>
-    </div>
-
-    <section id="buy" class="section bg-green bd-lt-rd is-medium">
-      <div class="container">
-        <div class="columns is-vcentered">
-          <div class="column is-half">
-            <h2 class="title is-2 has-text-centered">Buy Node.js Design Patterns third edition</h2>
-            <h3 class="subtitle is-4 has-text-centered">Node.js Design Patterns third edition is available in Print and Kindle editions</h3>
-            <p class="buttons is-centered">
-              <a class="button is-primary" href="https://nodejsdp.link/buy" {{ track("click_buy_print") }}>Buy Print edition</a>
-              <a class="button" href="https://nodejsdp.link/buy-kindle" {{ track("click_buy_kindle") }}>Buy Kindle edition</a>
-            </p>
-          </div>
-          <div class="column is-half">
-            {% responsiveImage './img/node-js-design-patterns-print-ebook-kindle.png', "Mario Casciaro's picture", {maxWidth: 600}  %}
-          </div>
-        </div>
       </div>
     </section>
+  </div>
 
-    <div id="faq" class="bg-green">
-      <section class="section bd-lt bg-white is-medium">
-        <div class="container">
-          <h2 class="title is-2 underline has-text-centered">
-            <span>FAQs</span>
-          </h2>
-
-          <dl class="faq">
-            {% for faq in faqs %}
-              <dt id="{{ faq.id }}">
-                <button aria-expanded="true" aria-controls="{{ faq.id }}-answer" data-faq-id="{{ faq.id }}">
-                  <h3 class="subtitle is-4"> {{ faq.question }}</h3>
-                </button>
-              </dt>
-              <dd>
-                <div id="{{ faq.id }}-answer" class="desc">
-                  <p class="is-size-7 has-text-right mb-1"><a title="Permalink to this FAQ" href="#{{ faq.id }}">{{ '&para;' | safe }}</a></p>
-                  {{ faq.answer | markdown | safe }}
-                </div>
-              </dd>
-            {% endfor %}
-          </dl>
-
-        </div>
-      </section>
-    </div>
-  </main>
-  <footer class="footer">
+  <section id="buy" class="section bg-green bd-lt-rd is-medium">
     <div class="container">
-      <p class="is-size-7">Copyright © 2014-{% currentYear %} {{ site.copyright }}.</p>
-      <p class="is-size-7">All trademarks and registered trademarks are the property of their respective owners.</p>
-      <p class="is-size-7 mt-1">Icons <strong>Unicons</strong> by <a href="https://iconscout.com" rel="nofollow noreferer">Iconscout</a></p>
-      <hr/>
-      <p class="mt-2">Found an error or something that can be improved? You can contribute to this website on <a href="https://github.com/nodejs-design-patterns-book/nodejsdesignpatterns.com">GitHub</a>!</p>
+      <div class="columns is-vcentered">
+        <div class="column is-half">
+          <h2 class="title is-2 has-text-centered">Buy Node.js Design Patterns third edition</h2>
+          <h3 class="subtitle is-4 has-text-centered">Node.js Design Patterns third edition is available in Print and Kindle editions</h3>
+          <p class="buttons is-centered">
+            <a class="button is-primary" href="https://nodejsdp.link/buy" {{ track("click_buy_print") }}>Buy Print edition</a>
+            <a class="button" href="https://nodejsdp.link/buy-kindle" {{ track("click_buy_kindle") }}>Buy Kindle edition</a>
+          </p>
+        </div>
+        <div class="column is-half">
+          {% responsiveImage './img/node-js-design-patterns-print-ebook-kindle.png', "Mario Casciaro's picture", {maxWidth: 600}  %}
+        </div>
+      </div>
     </div>
-  </footer>
+  </section>
+
+  <div id="faq" class="bg-green">
+    <section class="section bd-lt bg-white is-medium">
+      <div class="container">
+        <h2 class="title is-2 underline has-text-centered">
+          <span>FAQs</span>
+        </h2>
+
+        <dl class="faq">
+          {% for faq in faqs %}
+            <dt id="{{ faq.id }}">
+              <button aria-expanded="true" aria-controls="{{ faq.id }}-answer" data-faq-id="{{ faq.id }}">
+                <h3 class="subtitle is-4">
+                  {{ faq.question }}</h3>
+              </button>
+            </dt>
+            <dd>
+              <div id="{{ faq.id }}-answer" class="desc">
+                <p class="is-size-7 has-text-right mb-1">
+                  <a title="Permalink to this FAQ" href="#{{ faq.id }}">{{ '&para;' | safe }}</a>
+                </p>
+                {{ faq.answer | markdown | safe }}
+              </div>
+            </dd>
+          {% endfor %}
+        </dl>
+
+      </div>
+    </section>
+  </div>
+</main>

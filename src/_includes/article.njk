@@ -2,25 +2,6 @@
 layout: layout
 ---
 
-<nav class="navbar is-fixed-top has-shadow" role="navigation" aria-label="main navigation">
-  <div class="container">
-    <div class="navbar-brand">
-      <a class="navbar-item" href="/">
-        <h1 class="title is-5">Node.js Design Patterns</h1>
-      </a>
-    </div>
-    <div class="navbar-end">
-      <div class="navbar-item">
-        <div class="buttons">
-          <a href="/#buy" class="button is-primary">
-            <strong>Get the book</strong>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</nav>
-
 <section class="hero is-medium bg-green bd-rd">
   <div class="hero-body">
     <div class="container">
@@ -47,7 +28,7 @@ layout: layout
                   <path fill="currentColor" d="M5 18h.09l4.17-.38a2 2 0 0 0 1.21-.57l9-9a1.92 1.92 0 0 0-.07-2.71L16.66 2.6A2 2 0 0 0 14 2.53l-9 9a2 2 0 0 0-.57 1.21L4 16.91a1 1 0 0 0 .29.8A1 1 0 0 0 5 18zM15.27 4L18 6.73l-2 1.95L13.32 6z"/>
                 </svg>
               </span>
-              Published by <a href="/">
+              Published by <a href="{{ author_link }}">
                 <img alt="{{ author }}'s profile picture" src="https://www.gravatar.com/avatar/e18d2c2510d828bc95bde6817e6e9ce2"/>
                 {{ author }}
               </a> on {{ page.date.toUTCString() }}
@@ -60,6 +41,14 @@ layout: layout
 
         <aside class="column is-one-quarter">
           <div class="wrapper-sticky">
+            <div class="aside-ad-block">
+              <a href="/">
+                {% responsiveImage './img/book-stack.png', 'Node.js Design Patterns book cover', { class: 'book', maxWidth: 380 }  %}
+                <h5>Take your Node.js knowledge to the next level.</h5>
+                <p>Get <em>Node.js Design Patterns</em> today to learn how to design and implement production-grade Node.js applications using proven patterns and techniques.</p>
+              </a>
+            </div>
+
             <h3 class="title is-4">Sections</h3>
             {{ content | toc | safe }}
 

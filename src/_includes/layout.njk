@@ -14,6 +14,7 @@ eleventyComputed:
   og_image_height: "{{ og_image_height | default(site.imageHeight) }}"
   fb_app_id: "{{ site.facebookAppId }}"
 ---
+{% from "analytics.njk" import track with context %}
 <!doctype html>
 <html lang="{{ lang }}" class="has-navbar-fixed-top">
   <head>
@@ -75,7 +76,43 @@ eleventyComputed:
     {% endif %}
   </head>
   <body>
+    <nav class="navbar is-fixed-top has-shadow" role="navigation" aria-label="main navigation">
+      <div class="container">
+        <div class="navbar-brand">
+          <div class="navbar-item">
+            <a href="#buy" class="button is-primary" {{ track("click_nav_buy") }}>
+              <strong>Buy Node.js Design Patterns</strong>
+            </a>
+          </div>
+          <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbar">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+        <div id="navbar" class="navbar-menu">
+          <div class="navbar-end">
+            <a href="/#reviews" class="navbar-item" {{ track("click_nav_reviews") }}>Reviews</a>
+            <a href="/#book-content" class="navbar-item" {{ track("click_nav_book_content") }}>Content</a>
+            <a href="/#sample-chapter" class="navbar-item" {{ track("click_nav_sample_chapter") }}>Sample chapter</a>
+            <a href="/#authors" class="navbar-item" {{ track("click_nav_authors") }}>Authors</a>
+            <a href="/#faq" class="navbar-item" {{ track("click_nav_faq") }}>FAQs</a>
+          </div>
+        </div>
+      </div>
+    </nav>
     {{ content | safe }}
+    <footer class="footer">
+      <div class="container">
+        <p class="is-size-7">Copyright © 2014-{% currentYear %}
+          {{ site.copyright }}.</p>
+        <p class="is-size-7">All trademarks and registered trademarks are the property of their respective owners.</p>
+        <p class="is-size-7 mt-1">Icons <strong>Unicons</strong> by <a href="https://iconscout.com" rel="nofollow noreferer">Iconscout</a>
+        </p>
+        <hr/>
+        <p class="mt-2">Found an error or something that can be improved? You can help us make this website better on <a href="https://github.com/nodejs-design-patterns-book/nodejsdesignpatterns.com">GitHub</a>!</p>
+      </div>
+    </footer>
     {% for script in webpack.scripts %}
       {{ script.html | safe }}
     {% endfor %}

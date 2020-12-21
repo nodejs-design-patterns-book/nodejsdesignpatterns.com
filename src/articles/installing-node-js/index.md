@@ -4,6 +4,7 @@ permalink: /5-ways-to-install-node-js/
 layout: article
 author: Luciano Mammino
 author_profile_pic: https://www.gravatar.com/avatar/e18d2c2510d828bc95bde6817e6e9ce2
+author_link: https://loige.co
 ---
 
 In this article we will explore some of the most common ways to install Node.js in your system. We will see how to install Node.js using the official installer for various platforms, how to use a Node.js version manager such as `n` or `nvm` and, finally, we will also see how to compile and install Node.js from source.

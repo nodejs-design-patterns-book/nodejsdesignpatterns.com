@@ -542,6 +542,36 @@ nav.navbar {
       top: 80px;
     }
 
+    .aside-ad-block {
+      .book {
+        transform: translateX(-1em);
+      }
+
+      a {
+        background: $green;
+        padding: 1em;
+        border-radius: 1em;
+        margin: 0 0 2em 0;
+        color: $black;
+        display: block;
+        border: 3px solid transparent;
+      }
+
+      a:hover {
+        border: 3px solid $greenD4;
+      }
+
+      h5 {
+        font-weight: bold;
+        font-size: .8em;
+        padding: 0 0 .2em 0;
+      }
+
+      p {
+        font-size: .8em;
+      }
+    }
+
     h3 {
       margin-bottom: 1em;
     }
