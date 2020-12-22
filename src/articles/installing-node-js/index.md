@@ -1,9 +1,10 @@
 ---
 title: 5 Ways to install Node.js
 permalink: /5-ways-to-install-node-js/
+description: Learn what are the most common ways to install Node.js in your development machine
 layout: article
 author: Luciano Mammino
-author_profile_pic: https://www.gravatar.com/avatar/e18d2c2510d828bc95bde6817e6e9ce2
+author_profile_pic: https://api.microlink.io/?url=https://twitter.com/loige&embed=image.url
 author_link: https://loige.co
 tags: ["blog"]
 ---
