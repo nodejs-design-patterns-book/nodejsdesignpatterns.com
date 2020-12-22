@@ -1,5 +1,9 @@
 ---
 layout: layout
+og_image_width: 1200
+og_image_height: 669
+eleventyComputed:
+  og_image: "{% generateShareImage title %}"
 ---
 {% from "analytics.njk" import track with context %}
 

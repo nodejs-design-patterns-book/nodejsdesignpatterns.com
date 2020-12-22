@@ -27,6 +27,7 @@
   "homepage": "https://github.com/nodejs-design-patterns-book/nodejs-design-patterns-book#readme",
   "devDependencies": {
     "@11ty/eleventy": "^0.11.0",
+    "@11ty/eleventy-cache-assets": "^2.0.3",
     "@11ty/eleventy-img": "^0.5.0",
     "@babel/core": "^7.11.0",
     "@babel/preset-env": "^7.11.0",

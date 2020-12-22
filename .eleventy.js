@@ -2,13 +2,15 @@
 
 const path = require('path')
 const { cpus } = require('os')
-const { readFile, access } = require('fs').promises
+const { join, dirname } = require('path')
+const { readFile, writeFile, access } = require('fs').promises
 const htmlmin = require('html-minifier')
 const PurgeCSS = require('purgecss').PurgeCSS
 const csso = require('csso')
 const markdownIt = require('markdown-it')
 const markdownItAnchor = require('markdown-it-anchor')
 const markdownItClass = require('@toycode/markdown-it-class')
+const Cache = require('@11ty/eleventy-cache-assets')
 const Image = require('@11ty/eleventy-img')
 const format = require('date-fns/format')
 const pluginTOC = require('eleventy-plugin-toc')
@@ -129,6 +131,22 @@ module.exports = function (config) {
     return `${new Date().getFullYear()}`
   })
 
+  // Generates blog share images
+  config.addNunjucksAsyncShortcode('generateShareImage', async function (title) {
+    if (typeof title === 'undefined') {
+      throw new Error('Missing `title` on generateShareImage')
+    }
+
+    const filename = `og_${this.page.fileSlug}.jpg`
+    const destPath = join(dirname(this.page.outputPath), filename)
+    const destUrl = `${this.page.url}${filename}`
+    const imageUrl = `https://res.cloudinary.com/loige/image/upload/w_1280,h_669,c_fill,q_auto,f_jpg/l_text:Playfair%20Display_80_bold_center:${encodeURIComponent(title)},co_rgb:363636,c_fit,g_north,w_1000,y_200/l_text:Playfair%20Display_40_bold_center:Node.js%20Design%20Patterns,co_rgb:363636,c_fit,g_south,w_1000,y_40/nodejsdesignpatterns/fsb-bg-share-fb.png`
+    const image = await Cache(imageUrl, { duration: '1d', type: 'buffer' })
+    await writeFile(destPath, image)
+
+    return destUrl
+  })
+
   // Add responsive image helper
   config.addNunjucksAsyncShortcode('responsiveImage', async function (src, alt, options = {}) {
     if (typeof alt === 'undefined') {
@@ -183,6 +201,7 @@ module.exports = function (config) {
   })
 
   return {
+    markdownTemplateEngine: 'njk',
     dir: {
       input: './src',
       output: './build'

@@ -38,4 +38,5 @@ jspm_packages
 
 build/
 src/_includes/assets/
-.idea
+.idea/
+.cache/
