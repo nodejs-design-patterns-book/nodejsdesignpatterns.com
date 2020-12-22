@@ -17,13 +17,16 @@ module.exports = function shareImage (config) {
     await mkdirp(destFolder)
     const destPath = join(destFolder, filename)
     const destUrl = `${this.page.url}${filename}`
+
     const imageUrl = 'https://res.cloudinary.com/loige/image/upload' +
       // size, fill, quality, format
       '/w_1280,h_669,c_fill,q_auto,f_jpg' +
+      // book stack
+      '/l_v1608629631:nodejsdesignpatterns:book_stack_trimmed.png,h_669,g_north_west,c_fill' +
       // title
-      `/l_text:Playfair%20Display_80_bold_center:${encodeURIComponent(title)},co_rgb:363636,c_fit,g_north,w_1000,y_200` +
+      `/l_text:Playfair%20Display_70_bold_left:${encodeURIComponent(title)},co_rgb:363636,c_fit,g_north_west,w_780,x_460,y_200` +
       // subtitle
-      '/l_text:Playfair%20Display_40_bold_center:Node.js%20Design%20Patterns,co_rgb:363636,c_fit,g_south,w_1000,y_40' +
+      '/l_text:Playfair%20Display_40_bold_left:Node.js%20Design%20Patterns,co_rgb:363636,c_fit,g_south_west,w_1000,y_40,x_460' +
       // base image
       '/nodejsdesignpatterns/fsb-bg-share-fb.png'
 
