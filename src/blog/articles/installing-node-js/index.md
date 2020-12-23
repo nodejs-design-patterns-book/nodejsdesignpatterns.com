@@ -9,14 +9,14 @@ author_link: https://loige.co
 tags: ["blog"]
 ---
 
-In this article we will explore some of the most common ways to install Node.js in your development system. We will see how to install Node.js using the official installer for various platforms, how to use a Node.js version manager such as `n` or `nvm` and, finally, we will also see how to compile and install Node.js from source. Along the way we will try to disclose one or two tips to get you even more productive with Node.js!
+In this article, we will explore some of the most common ways to install Node.js in your development system. We will see how to install Node.js using the official installer for various platforms, how to use a Node.js version manager such as `n` or `nvm` and, finally, we will also see how to compile and install Node.js from source. Along the way, we will try to disclose one or two tips to get you even more productive with Node.js!
 
 Let's get started!
 
 
 ## Which option should I pick?
 
-There are many different ways to install Node.js and every one of them comes with its own perks and drawbacks. In this article we will try to explore the most common ones and by the end of it you should have a good understanding of which ones should be more suitable to you.
+There are many different ways to install Node.js and every one of them comes with its own perks and drawbacks. In this article, we will try to explore the most common ones and by the end of it, you should have a good understanding of which ones should be more suitable for you.
 
 ### TLDR;
 
@@ -53,7 +53,7 @@ Before moving on and exploring all the different installation options, it is def
 Node.js offers 2 main release lines:
 
   - **Stable** (or *Current*): every new major Node.js release is considered "Current" for the first 6 months after the publish date. The idea is to give library authors the time to test their compatibility with the new release and do any necessary change. After the 6 months period, all the odd release numbers (9, 11, 13, 15, etc.) move to the state of *Unsupported*, while even releases (10, 12, 14, etc.) are promoted to *Long Term Support* (or "LTS").
-  - **LTS**: releases marked as "Long Term Support" get get critical bug fixes for a total of 30 months since the initial publish date. This make LTS releases particularly suitable for production deployments. The most recent LTS is also called *Active LTS*, while previous LTS versions (still under the 30 months support timeframe) are called *Maintenance LTS*.
+  - **LTS**: releases marked as "Long Term Support" get critical bug fixes for a total of 30 months since the initial publish date. This makes LTS releases particularly suitable for production deployments. The most recent LTS is also called *Active LTS*, while previous LTS versions (still under the 30 months support timeframe) are called *Maintenance LTS*.
 
 Finally, the release coming from the current *master* branch is considered **Unstable**. This is generally a release dedicated to people maintaining Node.js or developers who want to explore new experimental features that haven't been yet included in any of the major releases.
 
@@ -75,7 +75,7 @@ The main issue with it is that it does not support Windows, so if Windows is you
 
 Let's see how to install `n`:
 
-If you are on macOS and you have `brew` installed, the simplest way to install `n` is to just do it with `brew`:
+If you are on macOS and you have `brew` (Homebrew) installed, the simplest way to install `n` is to just do it with `brew`:
 
 ```bash
 brew install n
@@ -237,28 +237,123 @@ To summarise, these are the main pros and cons of intallers and binary distribut
 
 ## Install Node.js using a package manager
 
-TODO: ...
+If you are the kind of person that loves to install and manage all the software in your device using system package managers such as `apt` (Debian / Ubuntu), `brew` (macOS), or `winget` (Windows), installing Node.js through a package manager is definitely an option.
 
-Reference: https://nodejs.org/en/download/package-manager/
+A word of warning though, the various Node.js packages in every package repository are not officially maintained by the Node.js core team, so your mileage might vary quite a lot. This also means that you might not have fresh releases available straight away in your package manager of choice.
+
+The Node.js core team has compiled an official documentation page on [how to install Node.js using the most common system package managers](https://nodejs.org/en/download/package-manager/).
+
+Let's see here a summary for the most common options:
+
+```bash
+# Homebrew (macOS)
+brew install node
+
+# Arch Linux
+pacman -S nodejs npm
+
+# CentOS, Fedora and Red Hat Enterprise Linux
+dnf module list nodejs
+
+# Debian and Ubuntu based Linux distributions
+apt-get install -y nodejs
+
+# FreeBSD
+pkg install node
+
+# Gentoo
+emerge nodejs
+
+# Winget (Windows)
+winget install -e --id OpenJS.Nodejs
+
+# Chocolatey (Windows)
+cinst nodejs.install
+
+# Scoop (Windows)
+scoop install nodejs
+```
+
+In short, this is the good and bad of following this approach:
+
+  - 👍 Familiar approach if you install software often using your system package manager.
+  - 👎 Latest Node.js versions might not be immediately available in your package manager of choice. Some versions might not be available at all.
+  - 👎 In most cases, Node.js is installed as super user, which makes it harder to install global packages with `npm`.
 
 
 ## Install Node.js from source
 
-TODO: ...
+If you are brave enough to be willing to build and install Node.js from source, your first stop should be the [official documentation on how to build Node.js from source](https://github.com/nodejs/node/blob/master/BUILDING.md).
+
+Here is a brief summary of all the steps involved:
+
+  1. Install the necessary build dependencies (C++ compiler and build toolchains) for your target system.
+  2. Install Python (used by the build process).
+  3. Download the source code from the [official repository](https://github.com/nodejs/node).
+  4. Launch `./configure` and then `make`.
+  5. Test your compiled version with `make test`.
+  6. Install it with `make install`.
+
+If all went well, you should have the `node` binary available on your system and be able to run:
+
+```bash
+node --version
+```
+
+
+Finally, here is the usual summary of pros and cons:
+
+- 👍 You can install any version of Node.js, including master or even work in progress from a dev branch or a PR. You can even play around with custom changes and get to the point where you might decide to contribute back to Node.js.
+- 👍 You have full control on how to compile and install Node.js and don't have to follow pre-defined structures.
+- 👎 You might need to install a bunch of additional build requirements (compilers, build tools, etc.) before you can even start with the process.
+- 👎 Definitely the most complicated and the slowest way to get Node.js in your machine.
 
 
 ## Node.js with Docker
 
-TODO: ...
+If you just want to "play" a bit with a Node.js REPL, you don't need to install Node.js in your system. If you have `docker` installed in your system, running a Node.js REPL in a container is as easy as running:
+
+```bash
+docker run -it node
+```
+
+Here's a super quick demo:
+
+{% image './blog/articles/installing-node-js/node-repl-with-docker.gif', 'Running a Node.js REPL using Docker', { width: 750, height: 482 } %}
+
+If you want to run a shell in a container with Node.js and `npm` installed, then you can do the following:
+
+```bash
+docker run -it node bash
+```
+
+This way you can install third party modules using `npm`, create your own scripts and run them with `node`. When you close the session the container and all the generated files will be destroyed.
+
+This is the perfect environment for quick and dirty experiments.
+
 
 ## Node.js online
 
-  - Code sandbox
-  - etc.
+But what if you don't have docker installed and still want to have an environment where you can write and run some Node.js code?
 
-TODO: ...
+Well, there is no shortage of platforms online that will give you a Node.js environment and an IDE that you can use to write and run JavaScript online.
+
+These environments often offer delightful additional features like collaborative edit and the possibility to host and share your applications.
+
+Here's a non-exaustive list of services that you might want to try if you just need a quick way to write and share some Node.js examples:
+
+  - [CodeSandbox](https://codesandbox.io/)
+  - [Repl.it](https://repl.it/)
+  - [Glitch](https://glitch.com/)
+  - [Stackblitz](https://stackblitz.com/)
+
+Most of these services offer a quite generous free plan, so you just need to sign up to start coding!
 
 
 ## Conclusion
 
-TODO: ...
+This concludes our list of ways to install Node.js. At this point, I hope you feel comfortable enough picking one of options suggested here and that along the way you learned a trick or two.
+
+If you enjoyed this article please consider sharing it and don't hesitate to reach out to me [on Twitter](https://twitter.com/loige). I am quite curious to find out what is your favourite way to install Node.js and why!
+
+Until next time!
