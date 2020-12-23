@@ -1,5 +1,6 @@
 ---
 layout: layout
+highlight: true
 og_image_width: 1200
 og_image_height: 669
 eleventyComputed:
@@ -38,8 +39,8 @@ eleventyComputed:
                 <img alt="{{ author }}'s profile picture" src="{{ author_profile_pic }}"/>
                 {{ author }}
               </a>
-              <span class="is-hidden-mobile"> on</span>
-              {{ page.date.toUTCString() }}
+              <span class="is-hidden-mobile">on</span>
+              &nbsp;{{ page.date.toUTCString() }}
             </p>
           </div>
           <main class="content">

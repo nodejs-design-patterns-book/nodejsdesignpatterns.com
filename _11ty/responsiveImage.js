@@ -42,22 +42,14 @@ module.exports = function responsiveImage (config) {
     const sizes = `(max-width: ${maxWidth}px) 100vw, ${maxWidth}px`
 
     // Iterate over formats and widths
-    return `
-    <span style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: ${maxWidth}px; ">
-    <picture>
-      ${Object.values(stats).map(imageFormat => {
-      return `  <source type="image/${imageFormat[0].format}" srcset="${imageFormat.map(entry => `${entry.url} ${entry.width}w`).join(', ')}" sizes="${sizes}">`
-    }).join('\n')}
-      <img
-        loading="lazy"
-        decoding="async"
-        style="max-width: 100%; width: 100%; margin: 0px; vertical-align: middle;"
-        ${options.class ? `class="${options.class}"` : ''}
-        alt="${alt}"
-        src="${lowestSrc.url}"
-        width="${lowestSrc.width}"
-        height="${lowestSrc.height}">
-    </picture>
-    </span>`
+    const html = `<span style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: ${maxWidth}px; ">
+<picture>
+  ${Object.values(stats).map(imageFormat => {
+  return `<source type="image/${imageFormat[0].format}" srcset="${imageFormat.map(entry => `${entry.url} ${entry.width}w`).join(', ')}" sizes="${sizes}">`
+}).join('\n')}
+<img loading="lazy" decoding="async" style="max-width: 100%; width: 100%; margin: 0px; vertical-align: middle;" ${options.class ? `class="${options.class}"` : ''} alt="${alt}" src="${lowestSrc.url}" width="${lowestSrc.width}" height="${lowestSrc.height}">
+</picture>
+</span>`
+    return html
   })
 }
