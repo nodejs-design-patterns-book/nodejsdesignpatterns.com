@@ -56,7 +56,7 @@ module.exports = function image (config) {
       }
     }
 
-    const html = `<img loading="lazy" decoding="async" style="max-width: 100%; width: 100%; margin: 0px; vertical-align: middle;" ${options.class ? `class="${options.class}"` : ''} alt="${alt}" src="${url}" ${options.width ? `width="${options.width}"` : ''} ${options.height ? `height="${options.height}"` : ''}/>`
+    const html = `<p style="text-align: center"><img loading="lazy" decoding="async" style="max-width: 100%; margin: 0px; vertical-align: middle;" ${options.class ? `class="${options.class}"` : ''} alt="${alt}" src="${url}" ${options.width ? `width="${options.width}"` : ''} ${options.height ? `height="${options.height}"` : ''}/></p>`
 
     return html
   })

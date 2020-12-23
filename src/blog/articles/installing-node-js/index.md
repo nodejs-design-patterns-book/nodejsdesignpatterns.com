@@ -16,7 +16,7 @@ Let's get started!
 
 ## Which option should I pick?
 
-There are many different ways to install Node.js and every one of them comes with its own perks and drawbacks. In this article we will try to explore the most common ones and by the end of it you should have a good understanding of which one should be more suitable to you.
+There are many different ways to install Node.js and every one of them comes with its own perks and drawbacks. In this article we will try to explore the most common ones and by the end of it you should have a good understanding of which ones should be more suitable to you.
 
 ### TLDR;
 
@@ -46,6 +46,26 @@ It seems quite obvious that people in my network, mostly fellow software enginee
 The second place (actually very tight with the third one) is the official installer, followed by a system package manager and, last one, installing Node.js from source.
 
 
+### LTS and stable releases
+
+Before moving on and exploring all the different installation options, it is definitely worth spending few words to learn about the types of release the Node.js project maintains.
+
+Node.js offers 2 main release lines:
+
+  - **Stable** (or *Current*): every new major Node.js release is considered "Current" for the first 6 months after the publish date. The idea is to give library authors the time to test their compatibility with the new release and do any necessary change. After the 6 months period, all the odd release numbers (9, 11, 13, 15, etc.) move to the state of *Unsupported*, while even releases (10, 12, 14, etc.) are promoted to *Long Term Support* (or "LTS").
+  - **LTS**: releases marked as "Long Term Support" get get critical bug fixes for a total of 30 months since the initial publish date. This make LTS releases particularly suitable for production deployments. The most recent LTS is also called *Active LTS*, while previous LTS versions (still under the 30 months support timeframe) are called *Maintenance LTS*.
+
+Finally, the release coming from the current *master* branch is considered **Unstable**. This is generally a release dedicated to people maintaining Node.js or developers who want to explore new experimental features that haven't been yet included in any of the major releases.
+
+Node.js publishes an [official timeline of current and future releases](https://nodejs.org/en/about/releases/). At the time of writing (December 2020), this how the timeline looks like:
+
+<a href="https://nodejs.org/en/about/releases/" target="_blank" rel="noreferrer noopener">
+{% image './blog/articles/installing-node-js/nodejs-release-schedule.svg', 'Node.js release timeline', { width: 760, height: 396 } %}
+</a>
+
+If you are still wondering which release should you use, going with the *Active LTS* is almost always the best choice, especially if you are building production applications.
+
+
 ## Install Node.js using n
 
 Since installing Node.js using a version manager seems to be the favourite option (and it's also my personal favorite!) let's start with it.
@@ -72,10 +92,17 @@ If all goes well, you should now be able to use the `n` executable from your she
 This are some of the commands you can run:
 
 ```bash
-n --version # shows the version of `n` installed in your system
-n lts # installs the latest LTS release of Node.js
-n list # lists all the versions of Node.js currently available
-n <some_version> # install the given version of Node.js and switch to it 
+# shows the version of `n` installed in your system
+n --version
+
+# installs the latest LTS release of Node.js
+n lts
+
+# lists all the versions of Node.js currently available
+n list
+
+# install the given version of Node.js and switch to it
+n <some_version>
 ```
 
 Or you can simply run:
@@ -91,7 +118,7 @@ For an interactive prompt that will show you all the available versions, highlig
 In summary, this is where `n` shines or falls short:
 
   - 👎 No official support for Windows
-  - 👍 Very easy to install on macOs and unix systems
+  - 👍 Very easy to install on macOS and unix systems
   - 👍 Very easy to keep your Node.js install up to date and switch version on demand
   - 👍 It keeps all the installed versions cached, so you can switch quicly between versions (no full re-install)
   - 👍 Allows to keep the setup local to the user so you don't have to use admin permission to install global packages
@@ -115,13 +142,26 @@ curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/${VERSION}/install.sh" | 
 Once `nvm` is installed in your system, here's some examples showing what you can do with it:
 
 ```bash
-nvm install node # installs the latest version of No.js
-nvm install --lts # installs the latest LTS version of Node.js
-nvm install "10.10.0" # installs a specific version of Node.js
-nvm use "8.9.1" # switch to a specific version of Node.js
-nvm exec "4.2" node somescript.js # runs a specific script with a given version of Node.js (no switch)
-nvm which "4.2" # shows the full path where a given version of Node.js was installed
-nvm ls # lists all the versions of Node.js available
+# installs the latest version of Node.js
+nvm install node
+
+# installs the latest LTS version of Node.js
+nvm install --lts
+
+# installs a specific version of Node.js
+nvm install "10.10.0"
+
+# switch to a specific version of Node.js
+nvm use "8.9.1"
+
+# runs a specific script with a given version of Node.js (no switch)
+nvm exec "4.2" node somescript.js
+
+# shows the full path where a given version of Node.js was installed
+nvm which "4.2"
+
+# lists all the versions of Node.js available
+nvm ls
 ```
 
 One great thing about `nvm` is that it allows to easily specify the Node.js version you want to use for a given project.
@@ -149,7 +189,7 @@ At this point, you can be sure that you working using the correct Node.js versio
 
 If you don't want to do manually, you can enable [deeper shell integration](https://github.com/nvm-sh/nvm#deeper-shell-integration) to make this appen automatically when you `cd` into a folder that has a `.nvmrc` file.
 
-**PRO tip**: You can also do that by using [`asdf`](https://asdf-vm.com/), a *meta* version manager that offers a unified interface for various languages and version managers (including Node.js, of course).
+**PRO tip**: You can also do that by using [`asdf`](https://asdf-vm.com/), a *meta* version manager that offers a unified interface for various programming languages and version managers (including Node.js, of course).
 
 Finally, here are some pros and cons of `nvm`:
 
@@ -163,26 +203,62 @@ Finally, here are some pros and cons of `nvm`:
 
 ## Install Node.js using the official installer
 
-TODO
+The second most common way to install Node.js is through one of the official installers or the pre-compiled binaries.
 
-TODO: mention Nodesource
+[Official installers](https://nodejs.org/en/download/) are available on the official Node.js website for Windows and macOS and they cover the latest *Active LTS* release and the latest *Current* release.
+
+The installe for Windows is an executable *.msi* installer, while the one for macOS is a *.pkg* one.
+
+These installers behave and look like most of the installers you see while installing software on Windows or macOS. You will be presented with clickable UI which will allow you to customise and install Node.js into your system.
+
+{% responsiveImage './blog/articles/installing-node-js/node-js-macos-installer-screenshot.png', 'Install Node.js using the official macOS installer', { maxWidth: 732 }  %}
+
+This is probably the easiest way to install Node.js as you don't need to be a POSIX expert or do any kind of manual configuration. The installer will suggest sensible defaults to you and allow you to customise the main paramters (e.g. installation path).
+
+If you are running a unix system, there is no official graphical installer avaiable, but the [official Node.js dowload page](https://nodejs.org/dist/) offers a set of pre-compiled binaries for most architectures (32-bit, 64-bit, ARMv7 and ARMv8) for Linux, Windows and macOS.
+
+{% responsiveImage './blog/articles/installing-node-js/node-js-macos-precompiled-binary.png', 'Install Node.js using the official macOS installer', { maxWidth: 700 }  %}
+
+With the binary distribution, it is up to you to copy the necessary files in the right place. Version manager tools like `nvm` and `n` are actually downloading the correct binary releases for the desired version, making sure to select the correct build for your operative system and CPU architecture, then they place the files in the correct path as expected by your operative system.
+
+While installing Node.js using the official installers is probably the simplest option, doing it using the binaries is a lot more complicated and definitely more complicated then using a version manager.
+
+If you still want to go down this path, make sure to checkout the [official tutorial for installing from Node.js pre-compiled binaries](https://github.com/nodejs/help/wiki/Installation).
+
+It is definitely worth mentioning that the official installer is not the only option. [NodeSource](https://nodesource.com/) maintains alternative installers for Debian, Red Hat, macOS and Windows. If you are interested in this approach checkout [NodeSource Node.js Binary distributions page](https://node.dev/node-binary).
+
+To summarise, these are the main pros and cons of intallers and binary distributions:
+
+  - 👍 Installers are quite easy to use and they don't require specific POSIX experience.
+  - 👎 Hard to change version. If you want to do that, you basically have to download the specific installer for the desired version and run through the full process again.
+  - 👎 Installer often will install Node.js as admin, which means that you can't install global packages unsless you do that as admin.
+  - 👎 Binary packages require you to manually manage all the files and configuration.
 
 
 ## Install Node.js using a package manager
 
-TODO
+TODO: ...
+
+Reference: https://nodejs.org/en/download/package-manager/
 
 
 ## Install Node.js from source
 
-TODO
+TODO: ...
 
 
 ## Node.js with Docker
 
-...
+TODO: ...
+
+## Node.js online
+
+  - Code sandbox
+  - etc.
+
+TODO: ...
 
 
 ## Conclusion
 
-...
+TODO: ...
