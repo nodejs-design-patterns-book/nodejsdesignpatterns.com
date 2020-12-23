@@ -28,7 +28,7 @@ There are many different ways to install Node.js and every one of them comes wit
 
 ### What other people seem to like
 
-Before writing this article, I was actually curious to find out what are the options that most folks in my network prefer, so I run a [poll on Twitter](https://twitter.com/loige/status/1340999569807712257). In this poll I asked how you prefer to install Node.js and provided 4 options:
+Before writing this article, I was actually curious to find out what are the options that most folks in my network prefer. For this reason, I run a [poll on Twitter](https://twitter.com/loige/status/1340999569807712257). In this poll I asked how you prefer to install Node.js and provided 4 options:
 
   - Official Installer
   - Version manager (`nvm` or `n`)
@@ -68,7 +68,7 @@ If you are still wondering which release should you use, going with the *Active 
 
 ## Install Node.js using n
 
-Since installing Node.js using a version manager seems to be the favourite option (and it's also my personal favorite!) let's start with it.
+Since installing Node.js using a version manager seems to be the favourite option (and it's also my personal favourite!) let's start with it.
 
 My favourite Node.js version manager is [`n` by TJ Holowaychuk](https://github.com/tj/n). The reason why I like it is because it is quite simple to install and use and it is generally up to date with the latest releases of Node.js.
 The main issue with it is that it does not support Windows, so if Windows is your operative system, this is not an option for you!
@@ -81,7 +81,7 @@ If you are on macOS and you have `brew` (Homebrew) installed, the simplest way t
 brew install n
 ```
 
-Alternatively you can use the custom install script:
+Alternatively, you can use the custom install script:
 
 ```bash
 curl -L https://git.io/n-install | bash
@@ -89,7 +89,7 @@ curl -L https://git.io/n-install | bash
 
 If all goes well, you should now be able to use the `n` executable from your shell.
 
-This are some of the commands you can run:
+These are some of the commands you can run:
 
 ```bash
 # shows the version of `n` installed in your system
@@ -120,7 +120,7 @@ In summary, this is where `n` shines or falls short:
   - 👎 No official support for Windows
   - 👍 Very easy to install on macOS and unix systems
   - 👍 Very easy to keep your Node.js install up to date and switch version on demand
-  - 👍 It keeps all the installed versions cached, so you can switch quicly between versions (no full re-install)
+  - 👍 It keeps all the installed versions cached, so you can switch quickly between versions (no full re-install)
   - 👍 Allows to keep the setup local to the user so you don't have to use admin permission to install global packages
 
 
@@ -139,7 +139,7 @@ curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/${VERSION}/install.sh" | 
 
 **Note**: At the time of writing, version `v0.37.2` is the latest version available. Make sure to check out if there is any new version available if you are installing `nvm` following this tutorial.
 
-Once `nvm` is installed in your system, here's some examples showing what you can do with it:
+Once `nvm` is installed in your system, here are some examples showing what you can do with it:
 
 ```bash
 # installs the latest version of Node.js
@@ -164,7 +164,7 @@ nvm which "4.2"
 nvm ls
 ```
 
-One great thing about `nvm` is that it allows to easily specify the Node.js version you want to use for a given project.
+One great thing about `nvm` is that it allows to specify the Node.js version you want to use for a given project.
 
 For instance, if you are working on a project that requires you to use Node.js `10.10` you can do the following (in the root folder of the project):
 
@@ -187,7 +187,7 @@ Now using node v10.10.1 (npm v6.7.3)
 
 At this point, you can be sure that you working using the correct Node.js version for your project.
 
-If you don't want to do manually, you can enable [deeper shell integration](https://github.com/nvm-sh/nvm#deeper-shell-integration) to make this appen automatically when you `cd` into a folder that has a `.nvmrc` file.
+If you don't want to do manually, you can enable [deeper shell integration](https://github.com/nvm-sh/nvm#deeper-shell-integration) to make this happen automatically when you `cd` into a folder that has a `.nvmrc` file.
 
 **PRO tip**: You can also do that by using [`asdf`](https://asdf-vm.com/), a *meta* version manager that offers a unified interface for various programming languages and version managers (including Node.js, of course).
 
@@ -207,15 +207,15 @@ The second most common way to install Node.js is through one of the official ins
 
 [Official installers](https://nodejs.org/en/download/) are available on the official Node.js website for Windows and macOS and they cover the latest *Active LTS* release and the latest *Current* release.
 
-The installe for Windows is an executable *.msi* installer, while the one for macOS is a *.pkg* one.
+The installer for Windows is an executable *.msi* installer, while the one for macOS is a *.pkg* one.
 
 These installers behave and look like most of the installers you see while installing software on Windows or macOS. You will be presented with clickable UI which will allow you to customise and install Node.js into your system.
 
 {% responsiveImage './blog/articles/installing-node-js/node-js-macos-installer-screenshot.png', 'Install Node.js using the official macOS installer', { maxWidth: 732 }  %}
 
-This is probably the easiest way to install Node.js as you don't need to be a POSIX expert or do any kind of manual configuration. The installer will suggest sensible defaults to you and allow you to customise the main paramters (e.g. installation path).
+This is probably the easiest way to install Node.js as you don't need to be a POSIX expert or do any kind of manual configuration. The installer will suggest sensible defaults to you and allow you to customise the main parameters (e.g. installation path).
 
-If you are running a unix system, there is no official graphical installer avaiable, but the [official Node.js dowload page](https://nodejs.org/dist/) offers a set of pre-compiled binaries for most architectures (32-bit, 64-bit, ARMv7 and ARMv8) for Linux, Windows and macOS.
+If you are running a unix system, there is no official graphical installer available, but the [official Node.js download page](https://nodejs.org/dist/) offers a set of pre-compiled binaries for most architectures (32-bit, 64-bit, ARMv7 and ARMv8) for Linux, Windows and macOS.
 
 {% responsiveImage './blog/articles/installing-node-js/node-js-macos-precompiled-binary.png', 'Install Node.js using the official macOS installer', { maxWidth: 700 }  %}
 
