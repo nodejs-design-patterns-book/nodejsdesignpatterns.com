@@ -4,16 +4,17 @@ og_description: ~
 og_type: ~
 date: Last Modified
 eleventyComputed:
-  title: "{{ site.title | safe }}"
-  description: "{{ site.description | safe }}"
+  title: "{{ title | default (site.title) | safe }}"
+  description: "{{ description | default(site.description) | safe }}"
   og_site_name: "{{ site.name | safe }}"
   lang: "{{ site.lang | safe }}"
   og_locale: "{{ site.locale | safe }}"
-  og_image: "{{ site.image }}"
-  og_image_width: "{{ site.imageWidth }}"
-  og_image_height: "{{ site.imageHeight }}"
+  og_image: "{{ og_image | default(site.image) }}"
+  og_image_width: "{{ og_image_width | default(site.imageWidth) }}"
+  og_image_height: "{{ og_image_height | default(site.imageHeight) }}"
   fb_app_id: "{{ site.facebookAppId }}"
 ---
+{% from "analytics.njk" import track with context %}
 <!doctype html>
 <html lang="{{ lang }}" class="has-navbar-fixed-top">
   <head>
@@ -32,7 +33,7 @@ eleventyComputed:
     {% if og_image_height %}<meta property="og:image:height" content="{{ og_image_height }}">{% endif %}
     {% if fb_app_id %}<meta property="fb:app_id" content="{{ fb_app_id }}">{% endif %}
     <meta property="og:locale" content="{{ og_locale }}">
-    <meta property="og:site_name" content="{{ og_site_name }}" />
+    <meta property="og:site_name" content="{{ og_site_name }}"/>
     {% if og_type %}
       {% for attr, val in og_type %}
         {% if val | is_array %}
@@ -51,6 +52,7 @@ eleventyComputed:
     <meta name="generator" content="{{ site.generator }}">
     <meta http-equiv="last-modified" content="{{ page.date.toUTCString() }}">
     <meta name="date" content="{{ page.date.toUTCString() }}">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for {{ site.domain }}" href="/blog/rss.xml"/>
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -59,21 +61,188 @@ eleventyComputed:
     {% for style in webpack.styles %}
       <link rel="stylesheet" href="{{ style.href }}">
     {% endfor %}
-    <script type="application/ld+json">
-      {% include "meta-book-jsonld.json" %}
-    </script>
+    {% if bookJsonLd %}
+      <script type="application/ld+json">
+        {% include "meta-book-jsonld.json" %}
+      </script>
+    {% endif %}
     {% if site.analyticsId %}
       <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.analyticsId }}"></script>
       <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+        function gtag() {
+          dataLayer.push(arguments);
+        }
         gtag('js', new Date());
         gtag('config', 'UA-42283801-2');
       </script>
     {% endif %}
+    {% if highlight %}
+      <style type="text/css">
+        code[class*="language-"],
+        pre[class*="language-"] {
+          color: #ccc;
+          background: none;
+          font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+          font-size: 1em;
+          text-align: left;
+          white-space: pre;
+          word-spacing: normal;
+          word-break: normal;
+          word-wrap: normal;
+          line-height: 1.5;
+
+          -moz-tab-size: 4;
+          -o-tab-size: 4;
+          tab-size: 4;
+
+          -webkit-hyphens: none;
+          -moz-hyphens: none;
+          -ms-hyphens: none;
+          hyphens: none;
+
+        }
+
+        /* Code blocks */
+        pre[class*="language-"] {
+          padding: 1em;
+          margin: 0.5em 0;
+          overflow: auto;
+        }
+
+        :not(pre) > code[class*="language-"],
+        pre[class*="language-"] {
+          background: #2d2d2d;
+        }
+
+        /* Inline code */
+        :not(pre) > code[class*="language-"] {
+          padding: 0.1em;
+          border-radius: 0.3em;
+          white-space: normal;
+        }
+
+        .token.block-comment,
+        .token.cdata,
+        .token.comment,
+        .token.doctype,
+        .token.prolog {
+          color: #999;
+        }
+
+        .token.punctuation {
+          color: #ccc;
+        }
+
+        .token.attr-name,
+        .token.deleted,
+        .token.namespace,
+        .token.tag {
+          color: #e2777a;
+        }
+
+        .token.function-name {
+          color: #6196cc;
+        }
+
+        .token.boolean,
+        .token.function,
+        .token.number {
+          color: #f08d49;
+        }
+
+        .token.class-name,
+        .token.constant,
+        .token.property,
+        .token.symbol {
+          color: #f8c555;
+        }
+
+        .token.atrule,
+        .token.builtin,
+        .token.important,
+        .token.keyword,
+        .token.selector {
+          color: #cc99cd;
+        }
+
+        .token.attr-value,
+        .token.char,
+        .token.regex,
+        .token.string,
+        .token.variable {
+          color: #7ec699;
+        }
+
+        .token.entity,
+        .token.operator,
+        .token.url {
+          color: #67cdcc;
+        }
+
+        .token.bold,
+        .token.important {
+          font-weight: bold;
+        }
+        .token.italic {
+          font-style: italic;
+        }
+
+        .token.entity {
+          cursor: help;
+        }
+
+        .token.inserted {
+          color: green;
+        }
+      </style>
+    {% endif %}
   </head>
   <body>
+    <nav class="navbar is-fixed-top has-shadow" role="navigation" aria-label="main navigation">
+      <div class="container">
+        <div class="navbar-brand">
+          <div class="navbar-item">
+            {% if page.url == "/" %}
+              <a href="/#buy" class="button is-primary" {{ track("click_nav_buy") }}>
+                <strong>Buy Node.js Design Patterns</strong>
+              </a>
+            {% else %}
+              <a href="/">
+                <h1 class="title is-5">Node.js Design Patterns</h1>
+              </a>
+            {% endif %}
+          </div>
+          <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbar">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+        <div id="navbar" class="navbar-menu">
+          <div class="navbar-end">
+            <a href="/#reviews" class="navbar-item" {{ track("click_nav_reviews") }}>Reviews</a>
+            <a href="/#book-content" class="navbar-item" {{ track("click_nav_book_content") }}>Content</a>
+            <a href="/#sample-chapter" class="navbar-item" {{ track("click_nav_sample_chapter") }}>Sample chapter</a>
+            <a href="/#authors" class="navbar-item" {{ track("click_nav_authors") }}>Authors</a>
+            <a href="/#faq" class="navbar-item" {{ track("click_nav_faq") }}>FAQs</a>
+            <a href="/blog" class="navbar-item">Blog</a>
+          </div>
+        </div>
+      </div>
+    </nav>
     {{ content | safe }}
+    <footer class="footer">
+      <div class="container">
+        <p class="is-size-7">Copyright © 2014-{% currentYear %}
+          {{ site.copyright }}.</p>
+        <p class="is-size-7">All trademarks and registered trademarks are the property of their respective owners.</p>
+        <p class="is-size-7 mt-1">Icons <strong>Unicons</strong> by <a href="https://iconscout.com" rel="nofollow noreferer">Iconscout</a>
+        </p>
+        <hr/>
+        <p class="mt-2">Found an error or something that can be improved? You can help us make this website better on <a href="https://github.com/nodejs-design-patterns-book/nodejsdesignpatterns.com">GitHub</a>!</p>
+      </div>
+    </footer>
     {% for script in webpack.scripts %}
       {{ script.html | safe }}
     {% endfor %}

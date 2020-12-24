@@ -1,0 +1,126 @@
+---
+layout: layout
+highlight: true
+og_image_width: 1200
+og_image_height: 669
+og_type:
+  "og:type": article
+eleventyComputed:
+  og_image: "{% generateShareImage title %}"
+---
+{% from "analytics.njk" import track with context %}
+
+<section class="hero is-medium bg-green bd-rd">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        {{ title }}
+      </h1>
+    </div>
+  </div>
+</section>
+
+<div class="bg-green article">
+  <section class="section bd-lt bg-white is-medium">
+    <div class="container">
+      <div class="columns is-variable is-8">
+        <article class="column is-three-quarters">
+          <div class="author-info">
+            <p>
+              <span class="written-by-icon is-hidden-mobile">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                  aria-label="Written by" role="img"
+                  viewBox="0 0 24 24"
+                  width="1em" height="1em">
+                  <path fill="currentColor" d="M19 20H5a1 1 0 0 0 0 2h14a1 1 0 0 0 0-2z"/>
+                  <path fill="currentColor" d="M5 18h.09l4.17-.38a2 2 0 0 0 1.21-.57l9-9a1.92 1.92 0 0 0-.07-2.71L16.66 2.6A2 2 0 0 0 14 2.53l-9 9a2 2 0 0 0-.57 1.21L4 16.91a1 1 0 0 0 .29.8A1 1 0 0 0 5 18zM15.27 4L18 6.73l-2 1.95L13.32 6z"/>
+                </svg>
+              </span>
+              <span class="is-hidden-mobile">Published by </span>
+              <a href="{{ author_link }}">
+                <img alt="{{ author }}'s profile picture" src="{{ author_profile_pic }}"/>
+                {{ author }}
+              </a>
+              <span class="is-hidden-mobile">on</span>
+              &nbsp;{{ page.date.toUTCString() }}
+            </p>
+          </div>
+          <main class="content">
+            {{ content | safe }}
+          </main>
+        </article>
+
+        <aside class="column is-one-quarter">
+          <div class="wrapper-sticky">
+            <div class="aside-ad-block">
+              <a href="/" {{ track("click_blog_sidebar_ad", "blog") }}>
+                {% responsiveImage './img/book-stack.png', 'Node.js Design Patterns book cover', { class: 'book', maxWidth: 380 }  %}
+                <h5>Take your Node.js knowledge to the next level.</h5>
+                <p>Get <em>Node.js Design Patterns</em> today to learn how to design and implement production-grade Node.js applications using proven patterns and techniques.</p>
+              </a>
+            </div>
+
+            <h3 class="title is-4">Sections</h3>
+            {{ content | toc | safe }}
+
+            <h3 class="title is-4">Share</h3>
+
+            <a title="Share this article on Twitter" class="share-btn twitter" href="https://twitter.com/share?url={{ (site.url + page.url) | urlencode}}&text={{ title | urlencode }}&hashtags=nodejs" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                aria-label="Twitter" role="img"
+                viewBox="0 0 512 512"
+                width="32px" height="32px">
+                <rect width="512" height="512" rx="15%" fill="#1da1f2"/>
+                <path fill="#fff" d="M437 152a72 72 0 0 1-40 12 72 72 0 0 0 32-40 72 72 0 0 1-45 17 72 72 0 0 0-122 65 200 200 0 0 1-145-74 72 72 0 0 0 22 94 72 72 0 0 1-32-7 72 72 0 0 0 56 69 72 72 0 0 1-32 1 72 72 0 0 0 67 50 200 200 0 0 1-105 29 200 200 0 0 0 309-179 200 200 0 0 0 35-37"/>
+              </svg>
+            </a>
+
+            <a title="Share this article on Facebook" class="share-btn facebook" href="https://www.facebook.com/sharer.php?u={{ (site.url + page.url) | urlencode}}" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                aria-label="Facebook" role="img"
+                viewBox="0 0 512 512"
+                width="32px" height="32px">
+                <rect width="512" height="512" rx="15%" fill="#1877f2"/>
+                <path d="M355.6 330l11.4-74h-71v-48c0-20.2 9.9-40 41.7-40H370v-63s-29.3-5-57.3-5c-58.5 0-96.7 35.4-96.7 99.6V256h-65v74h65v182h80V330h59.6z" fill="#fff"/>
+              </svg>
+            </a>
+
+            <a title="Share this article on LinkedIn" class="share-btn linkedin" href="https://www.linkedin.com/shareArticle?url={{ (site.url + page.url) | urlencode}}&title={{ title | urlencode }}" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                aria-label="LinkedIn" role="img"
+                viewBox="0 0 512 512"
+                fill="#fff"
+                width="32px" height="32px">
+                <rect width="512" height="512" rx="15%" fill="#0077b5"/>
+                <circle cx="142" cy="138" r="37"/>
+                <path stroke="#fff" stroke-width="66" d="M244 194v198M142 194v198"/>
+                <path d="M276 282c0-20 13-40 36-40 24 0 33 18 33 45v105h66V279c0-61-32-89-76-89-34 0-51 19-59 32"/>
+              </svg>
+            </a>
+
+            <a title="Share this article on Pinterest" class="share-btn pinterest" href="https://pinterest.com/pin/create/bookmarklet/?url={{ (site.url + page.url) | urlencode }}&description={{ title | urlencode }}" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                aria-label="Pinterest" role="img"
+                viewBox="0 0 512 512"
+                width="32px" height="32px">
+                <rect width="512" height="512" rx="15%" fill="#bd081b"/>
+                <path d="m265 65c-104 0-157 75-157 138 0 37 14 71 45 83 5 2 10 0 12-5l3-18c2-6 1-7-2-12-9-11-15-24-15-43 0-56 41-106 108-106 60 0 92 37 92 85 0 64-28 116-70 116-23 0-40-18-34-42 6-27 19-57 19-77 0-18-9-34-30-34-24 0-42 25-42 58 0 20 7 34 7 34l-29 120a249 249 0 0 0 2 86l3-1c2-3 31-37 40-72l16-61c7 15 29 28 53 28 71 0 119-64 119-151 0-66-56-126-140-126z" fill="#fff"/>
+              </svg>
+            </a>
+
+            <a title="Share this article by email" class="share-btn email" href="mailto:?&body={{ ("Check out " + '"' + title + '"' + "(" + site.url + page.url + ")") | urlencode  }}&subject={{ title | urlencode }}" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                aria-label="Email" role="img"
+                viewBox="0 0 512 512"
+                width="32px" height="32px" >
+                <rect width="512" height="512" rx="15%" fill="teal"/>
+                <rect width="356" height="256" x="78" y="128" fill="#fff" rx="8%"/>
+                <path fill="none" stroke="teal" stroke-width="20" d="M434 128L269 292c-7 8-19 8-26 0L78 128m0 256l129-128m227 128L305 256"/>
+              </svg>
+            </a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</div>
