@@ -52,6 +52,7 @@ eleventyComputed:
     <meta name="generator" content="{{ site.generator }}">
     <meta http-equiv="last-modified" content="{{ page.date.toUTCString() }}">
     <meta name="date" content="{{ page.date.toUTCString() }}">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for {{ site.domain }}" href="/blog/rss.xml"/>
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -60,9 +61,11 @@ eleventyComputed:
     {% for style in webpack.styles %}
       <link rel="stylesheet" href="{{ style.href }}">
     {% endfor %}
-    <script type="application/ld+json">
-      {% include "meta-book-jsonld.json" %}
-    </script>
+    {% if bookJsonLd %}
+      <script type="application/ld+json">
+        {% include "meta-book-jsonld.json" %}
+      </script>
+    {% endif %}
     {% if site.analyticsId %}
       <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.analyticsId }}"></script>
       <script>

@@ -1,4 +1,5 @@
 ---
+date: 2020-12-24T18:30:00
 title: 5 Ways to install Node.js
 permalink: /blog/5-ways-to-install-node-js/
 description: Learn what are the most common ways to install Node.js in your development machine
@@ -219,19 +220,19 @@ If you are running a unix system, there is no official graphical installer avail
 
 {% responsiveImage './blog/articles/installing-node-js/node-js-macos-precompiled-binary.png', 'Install Node.js using the official macOS installer', { maxWidth: 700 }  %}
 
-With the binary distribution, it is up to you to copy the necessary files in the right place. Version manager tools like `nvm` and `n` are actually downloading the correct binary releases for the desired version, making sure to select the correct build for your operative system and CPU architecture, then they place the files in the correct path as expected by your operative system.
+With the binary distribution, it is up to you to copy the necessary files in the right place. A version manager tool such as `nvm` and `n` makes things simple, because it takes care of downloading the correct binary release for the desired version (and for your system), then it places the files in the correct folder as expected by your operative system. If you choose to download the binaries manually, all the wiring is up to you.
 
-While installing Node.js using the official installers is probably the simplest option, doing it using the binaries is a lot more complicated and definitely more complicated then using a version manager.
+While installing Node.js using the official installers is probably the simplest option, doing it using the binaries is a lot more complicated and definitely more complicated than using a version manager.
 
-If you still want to go down this path, make sure to checkout the [official tutorial for installing from Node.js pre-compiled binaries](https://github.com/nodejs/help/wiki/Installation).
+If you still want to go down this path, make sure to check out the [official tutorial for installing from Node.js pre-compiled binaries](https://github.com/nodejs/help/wiki/Installation).
 
 It is definitely worth mentioning that the official installer is not the only option. [NodeSource](https://nodesource.com/) maintains alternative installers for Debian, Red Hat, macOS and Windows. If you are interested in this approach checkout [NodeSource Node.js Binary distributions page](https://node.dev/node-binary).
 
-To summarise, these are the main pros and cons of intallers and binary distributions:
+To summarise, these are the main pros and cons of Node.js installers and binary distributions:
 
   - 👍 Installers are quite easy to use and they don't require specific POSIX experience.
-  - 👎 Hard to change version. If you want to do that, you basically have to download the specific installer for the desired version and run through the full process again.
-  - 👎 Installer often will install Node.js as admin, which means that you can't install global packages unsless you do that as admin.
+  - 👎 Hard to switch between version or upgrade. If you want to do that, you basically have to download the specific installer for the desired version and run through the full process again.
+  - 👎 Installer often will install Node.js as admin, which means that you can't install global packages unless you do that as admin.
   - 👎 Binary packages require you to manually manage all the files and configuration.
 
 
@@ -274,7 +275,7 @@ cinst nodejs.install
 scoop install nodejs
 ```
 
-In short, this is the good and bad of following this approach:
+In short, this is "the good" and "the bad" of following this approach:
 
   - 👍 Familiar approach if you install software often using your system package manager.
   - 👎 Latest Node.js versions might not be immediately available in your package manager of choice. Some versions might not be available at all.
@@ -327,7 +328,7 @@ If you want to run a shell in a container with Node.js and `npm` installed, then
 docker run -it node bash
 ```
 
-This way you can install third party modules using `npm`, create your own scripts and run them with `node`. When you close the session the container and all the generated files will be destroyed.
+This way you can install third-party modules using `npm`, create your own scripts and run them with `node`. When you close the session the container and all the generated files will be destroyed.
 
 This is the perfect environment for quick and dirty experiments.
 
@@ -340,19 +341,19 @@ Well, there is no shortage of platforms online that will give you a Node.js envi
 
 These environments often offer delightful additional features like collaborative edit and the possibility to host and share your applications.
 
-Here's a non-exaustive list of services that you might want to try if you just need a quick way to write and share some Node.js examples:
+Here's a non-exhaustive list of services that you might want to try if you just need a quick way to write and share some Node.js examples:
 
   - [CodeSandbox](https://codesandbox.io/)
   - [Repl.it](https://repl.it/)
   - [Glitch](https://glitch.com/)
   - [Stackblitz](https://stackblitz.com/)
 
-Most of these services offer a quite generous free plan, so you just need to sign up to start coding!
+Most of these services offer a quite generous free plan, so you only need to sign up to start coding!
 
 
 ## Conclusion
 
-This concludes our list of ways to install Node.js. At this point, I hope you feel comfortable enough picking one of options suggested here and that along the way you learned a trick or two.
+This concludes our list of ways to install Node.js. At this point, I hope you feel comfortable enough picking one of the options suggested here and that along the way you learned a trick or two.
 
 If you enjoyed this article please consider sharing it and don't hesitate to reach out to me [on Twitter](https://twitter.com/loige). I am quite curious to find out what is your favourite way to install Node.js and why!
 
