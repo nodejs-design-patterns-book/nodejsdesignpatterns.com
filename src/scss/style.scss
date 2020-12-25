@@ -601,7 +601,7 @@ nav.navbar {
         color: $black;
         display: block;
         font-size: 1.25rem;
-        padding: 1.5rem 1.5rem 1.5rem 8rem;
+        padding: 3rem 1.5rem 1.5rem 1.5rem;
         position: relative;
         transition-duration: 86ms;
         transition-property: background-color,color;
@@ -614,8 +614,8 @@ nav.navbar {
 
       .date {
         position: absolute;
-        left: 1em;
-        top: 1.5em;
+        left: 1.5em;
+        top: 1em;
         text-align: center;
         min-width: 1em;
         font-size: .75em;
@@ -688,6 +688,19 @@ nav.navbar {
         text-align: center;
         color: $black;
       }
+    }
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .blog .article-list .article {
+    .date {
+      left: 1em;
+      top: 1.5em;
+    }
+
+    a {
+      padding: 1.5rem 1.5rem 1.5rem 8rem;
     }
   }
 }
