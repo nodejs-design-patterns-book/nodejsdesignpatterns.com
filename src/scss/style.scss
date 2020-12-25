@@ -70,11 +70,10 @@ html {
 }
 
 .title.underline span {
-  display: inline-block;
-  background-image: linear-gradient(transparent 55%,#b9eec5 0,#b9eec5 80%,transparent 0,transparent);
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  background-position: 0 .5rem;
+  background-size: 2px 1em ;
+  box-shadow: inset 0 -0.175em #b9eec5, inset 0 -0.2em #b9eec5;;
+  display: inline;
+  box-shadow: inset 0 -0.175em #b9eec5, inset 0 -0.2em #b9eec5;
 }
 
 .container {
