@@ -3,10 +3,12 @@ layout: layout
 highlight: true
 og_image_width: 1200
 og_image_height: 669
-og_type:
-  "og:type": article
 eleventyComputed:
   og_image: "{% generateShareImage title %}"
+  og_type:
+    "og:type": article
+    "og:publish_date": "{{ date | date }}"
+  "og:type": article"
 ---
 {% from "analytics.njk" import track with context %}
 
