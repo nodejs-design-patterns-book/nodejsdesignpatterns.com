@@ -4,6 +4,7 @@ highlight: true
 og_image_width: 1200
 og_image_height: 669
 eleventyComputed:
+  og_site_name: "{{ site.name | safe }}"
   og_image: "{% generateShareImage title %}"
   og_type:
     "og:type": article
