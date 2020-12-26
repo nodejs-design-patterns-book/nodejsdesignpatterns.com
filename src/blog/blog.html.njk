@@ -5,6 +5,11 @@ eleventyComputed:
   og_image: "{% generateShareImage site.blogTitle %}"
   title: "{{ site.blogTitle }}"
   description: "{{ site.blogDescription }}"
+  eleventyComputed:
+  og_type:
+    "og:type": website
+  og_locale: "{{ site.locale | safe }}"
+  fb_app_id: "{{ site.facebookAppId }}"
 ---
 <div class="blog">
   <section class="hero is-medium bg-green bd-rd">

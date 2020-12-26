@@ -9,6 +9,8 @@ eleventyComputed:
     "og:type": article
     "og:publish_date": "{{ date | date }}"
   "og:type": article"
+  og_locale: "{{ site.locale | safe }}"
+  fb_app_id: "{{ site.facebookAppId }}"
 ---
 {% from "analytics.njk" import track with context %}
 
