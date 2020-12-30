@@ -337,7 +337,7 @@ This way you can install third-party modules using `npm`, create your own script
 
 This is the perfect environment for quick and dirty experiments.
 
-Note, that you can also use Doccker as a full environment for development and not just for quick tests. Docker is actually great for keeping different Node.js version and other dependencies isolated on a per-project basis. Exploring this opportunity goes beyond the scope of this article, but there is ton of reference on the web on how you might use Docker for this.
+Note, that you can also use Docker as a complete environment for development and not just for quick tests. Docker is actually great for keeping different Node.js version and other dependencies isolated on a per-project basis. Exploring this setup goes beyond the scope of this article, but there is ton of reference on the web about how you might use Docker for Node.js development.
 
 
 ## Node.js online
