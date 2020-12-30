@@ -4,6 +4,7 @@ module.exports = function copyStaticFiles (config) {
   // Pass-through files
   config.addPassthroughCopy('src/CNAME')
   config.addPassthroughCopy({ 'src/_includes/assets': 'assets' })
+  config.addPassthroughCopy({ 'src/_includes/static': 'static' })
   config.addPassthroughCopy({ 'src/node-js-design-patterns.jpg': 'img/node-js-design-patterns.jpg' })
   // favicons
   const favicons = [

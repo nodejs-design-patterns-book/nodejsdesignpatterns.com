@@ -14,6 +14,11 @@ module.exports = function nunjucksFilters (config) {
     return format(date, dateFormat)
   })
 
+  config.addFilter('dateToUTC', function (date) {
+    const d = new Date(date)
+    return d.toUTCString()
+  })
+
   // Add markdown filter
   config.addFilter('markdown', function (value) {
     const markdown = markdownIt({

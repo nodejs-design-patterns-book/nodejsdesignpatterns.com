@@ -50,7 +50,7 @@ eleventyComputed:
     <meta name="author" content="{{ site.author }}">
     <meta name="copyright" content="{{ site.copyright }}">
     <meta name="generator" content="{{ site.generator }}">
-    <meta http-equiv="last-modified" content="{{ page.date.toUTCString() }}">
+    <meta http-equiv="last-modified" content="{% if updatedAt %}{{ updatedAt | dateToUTC }}{% else %}{{ page.date.toUTCString() }}{% endif %}">
     <meta name="date" content="{{ page.date.toUTCString() }}">
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for {{ site.domain }}" href="/blog/rss.xml"/>
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">

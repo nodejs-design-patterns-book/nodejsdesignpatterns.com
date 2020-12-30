@@ -1,11 +1,12 @@
 ---
 date: 2020-12-24T18:30:00
+updatedAt: 2020-12-30T16:00:00
 title: 5 Ways to install Node.js
 permalink: /blog/5-ways-to-install-node-js/
 description: Learn what are the most common ways to install Node.js in your development machine
 layout: article
 author: Luciano Mammino
-author_profile_pic: https://api.microlink.io/?url=https://twitter.com/loige&embed=image.url
+author_profile_pic: /static/luciano-mammino-avatar-small.jpg
 author_link: https://loige.co
 tags: ["blog"]
 ---
@@ -88,6 +89,8 @@ Alternatively, you can use the custom install script:
 curl -L https://git.io/n-install | bash
 ```
 
+**Note:** if you are concerned about running a script downloaded from the web (as you should because [`curl | bash` might be dangerous](https://www.idontplaydarts.com/2016/04/detecting-curl-pipe-bash-server-side/)), you can always download the script first, READ IT, and then run it locally...
+
 If all goes well, you should now be able to use the `n` executable from your shell.
 
 These are some of the commands you can run:
@@ -129,7 +132,7 @@ In summary, this is where `n` shines or falls short:
 
 With more than 45 thousand stars on GitHub, [`nvm`](https://github.com/nvm-sh/nvm), which stands for "Node.js Version Manager" (no surprises!), is probably the most famous Node.js version manager currently available.
 
-`nvm` works on any POSIX-compliant shell (`sh`, `dash`, `ksh`, `zsh`, `bash`, etc.) and it has been strongly tested against the following systems: unix, macOS, and windows WSL.
+`nvm` works on any POSIX-compliant shell (`sh`, `dash`, `ksh`, `zsh`, `bash`, etc.) and it has been strongly tested against the following systems: unix, macOS, and windows WSL (if you are on Windows, you can also check out [`nvm-windows`](https://github.com/coreybutler/nvm-windows)).
 
 The easiest way to install `nvm` on your system is to use the official installer script:
 
@@ -200,6 +203,8 @@ Finally, here are some pros and cons of `nvm`:
   - 👍 It keeps all the installed versions cached, so you can switch quicly between versions (no full re-install)
   - 👍 You can run once off commands on a given version of Node.js without having to switch the entire system to that version.
   - 👎 You might have to take a bit of time to go through the documentation and make sure you install it and use it correctly.
+
+**Note**: if you like to use version managers like `n` or `nvm`, you can also check out [`volta.sh`](https://volta.sh/), another interesting alternative in this space, which defines itself as _"The Hassle-Free JavaScript Tool Manager"_.
 
 
 ## Install Node.js using the official installer
@@ -332,6 +337,8 @@ This way you can install third-party modules using `npm`, create your own script
 
 This is the perfect environment for quick and dirty experiments.
 
+Note, that you can also use Doccker as a full environment for development and not just for quick tests. Docker is actually great for keeping different Node.js version and other dependencies isolated on a per-project basis. Exploring this opportunity goes beyond the scope of this article, but there is ton of reference on the web on how you might use Docker for this.
+
 
 ## Node.js online
 
@@ -358,3 +365,8 @@ This concludes our list of ways to install Node.js. At this point, I hope you fe
 If you enjoyed this article please consider sharing it and don't hesitate to reach out to me [on Twitter](https://twitter.com/loige). I am quite curious to find out what is your favourite way to install Node.js and why!
 
 Until next time!
+
+
+### Credits
+
+This article was possible only thanks to the great support and feedback of some amazing engineers. Here are some of the names that helped me (and sorry if I am forgetting someone): [@\_Don\_Quijote\_](https://twitter.com/_Don_Quijote_), [@GiuseppeMorelli](https://twitter.com/giuseppemorelli), [@oliverturner](https://twitter.com/oliverturner), [@aetheon](https://twitter.com/aetheon), [@dottorblaster](https://twitter.com/dottorblaster), [@bcomnes](https://twitter.com/bcomnes) & [@wa7son](https://twitter.com/wa7son).
