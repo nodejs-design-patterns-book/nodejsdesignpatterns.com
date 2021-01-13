@@ -42,13 +42,26 @@ If we implement this in a naive way, we might have the two components performing
 
 Since the two components are running in parallel, without any synchronisation mechanism, the following case could happen:
 
-{% responsiveImage './blog/articles/node-js-race-conditions/aurei-race-condition-node-js.png', 'A race condition example showing 2 processes trying to update a balance', { maxWidth: 1000 }  %}
+{% responsiveImage './blog/articles/node-js-race-conditions/aurei-race-condition-node-js.png', 'A race condition example showing 2 processes trying to update a balance', { maxWidth: 848 }  %}
+
+In the picture above you can see that **Component 2** ends up having a _stale_ view of the balance (the balance gets changed by **Component 1** after **Component 2** has read the balance). For this reason, when **Component 2** performs its own update, it is effectively overriding any change previously made by **Component 1**. This is why we have a race condition: the two components are effectively racing for completing their own tasks and they might end up stepping onto each other toes!
+
+One way to solve this problem is to isolate the 2 concurrent operations into _transactions_ and make sure that there is only one transaction running at a given time. This idea might look like this:
+
+{% responsiveImage './blog/articles/node-js-race-conditions/aurei-fixed-race-condition-node-js.png', 'Fixing a race condition using a transaction', { maxWidth: 848 }  %}
+
+In the last picture, we are using transactions to make sure that all the steps of **Component 1** happen in order before all the steps of **Component 2**. This avoids any _stale read_ and makes sure that every component always has an up to date view of the world before doing any change.
+
+In the rest of this article, we will zoom in more on race conditions in the context of Node.js and we will see some other approaches that can allow to deal with them.
+
 
 ## Can we have race conditions in Node.js?
 
-differences around parallelism and concurrency.
+It is a common misconception that Node.js does not have race conditions because of its single-threaded nature. While it is true that in Node.js you would not have multiple threads competing for resources, you might still end up with events belonging to different logical transactions being executed in a order that might result in _stale reads_ and generate a race condition.
 
-explain the event loop quickly.
+In the example that we illustrated above, we intentionally represented the various events (_read_, _increase_ and _save_) as discrete units. Note how the system is never executing more than one event at the same time. This is a simple but accurate representation of how the Node.js event loop processes events on a single thread. Nonetheless, you can see that there migt be situations where multiple logical transactions (multiple deposits) are scheduled on the event loop and the discrete events might end up being intermigled resulting in a race condition.
+
+TODO: differences around parallelism and concurrency.
 
 
 ## A Node.js example with a race condition
