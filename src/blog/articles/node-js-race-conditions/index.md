@@ -30,7 +30,7 @@ A classic example is when 2 threads are trying to update the same data source an
 
 Let's pretend we are building a Roman Empire simulation game in which we can manage some cash flow and we have a global balance in [_aureus_](https://en.wiktionary.org/wiki/aureus) (a currency used in the Roman Empire around 100 B.C.E.). Now, let's say that our initial balance is `0` _aurei_ and that there are two independent game components (possibly running on separate threads) that are trying to increase the balance by `50` _aurei_ each, we should expect that in the end the balance is `100` _aurei_, right?
 
-```
+```text
 0 + 50 + 50 = 100 🤑
 ```
 
@@ -59,52 +59,99 @@ In the rest of this article, we will zoom in more on race conditions in the cont
 
 It is a common misconception that Node.js does not have race conditions because of its single-threaded nature. While it is true that in Node.js you would not have multiple threads competing for resources, you might still end up with events belonging to different logical transactions being executed in a order that might result in _stale reads_ and generate a race condition.
 
-In the example that we illustrated above, we intentionally represented the various events (_read_, _increase_ and _save_) as discrete units. Note how the system is never executing more than one event at the same time. This is a simple but accurate representation of how the Node.js event loop processes events on a single thread. Nonetheless, you can see that there migt be situations where multiple logical transactions (multiple deposits) are scheduled on the event loop and the discrete events might end up being intermigled resulting in a race condition.
+In the example that we illustrated above, we intentionally represented the various events (_read_, _increase_ and _save_) as discrete units. Note how the system is never executing more than one event at the same time. This is a simple but accurate representation of how the Node.js event loop processes events on a single thread. Nonetheless, you can see that there migt be situations where multiple logical transactions (multiple deposits) are scheduled concurrently on the event loop and the discrete events might end up being intermigled resulting in a race condition.
 
-TODO: differences around parallelism and concurrency.
+So... **Yes**, we can have race conditions in Node.js!
 
 
 ## A Node.js example with a race condition
 
+Now, let's talk some code! Let's try to re-create the Roman Empire simulation game example that we discussed above.
+
+In the ancient Rome, Romans used to export olives and grapes (no wonders Italy is still famous world wide for olive oil and wine!), so we are going to have two functions that can increase the balance by `50` _aurei_ which we are going to call `sellOlives()` and `sellGrapes()`. We will also assume that every time the balance is changed, it is persisted to a data storage of sort (e.g. a database). For the sake of this example, we won't be implementing the data storage for reals, but we will just simulate some random asynchronous delay. This will be enough to illustrate how we can end up with a race condition.
+
+For starting, let's see what a buggy implementation might look like:
+
 
 ```javascript
-const delay = (m) => new Promise(resolve => setTimeout(resolve, m))
+// Utility function to simulates some delay (e.g. reading from or writing to a database).
+// It will take from 0 to 50ms in a random fashion.
+const randomDelay = () => new Promise(resolve =>
+  setTimeout(resolve, Math.random() * 100)
+)
 
-let accountBalance = 0
+// Our global balance.
+// In a more complete implementation, this will live in the persistent data storage.
+let balance = 0
 
-async function getAccountBalance () {
-  // simulates random delay to retrieve data from a remote source (e.g. a DB)
-  await delay(Math.random() * 100)
-  return accountBalance
-};
+async function loadBalance () {
+  // simulates random delay to retrieve data from data storage
+  await randomDelay()
+  return balance
+}
 
-async function setAccountBalance (value) {
-  // simulates random delay to retrieve data from a remote source (e.g. a DB)
-  await delay(Math.random() * 100)
-  accountBalance = value
-};
+async function saveBalance (value) {
+  // simulates random delay to write the data to the data storage
+  await randomDelay()
+  balance = value
+}
 
-async function add$50 (label) {
-  const balance = await getAccountBalance()
-  console.log(`${label}: get balance`)
+async function sellGrapes () {
+  const balance = await loadBalance()
+  console.log(`sellGrapes - balance loaded: ${balance}`)
   const newBalance = balance + 50
-  await setAccountBalance(newBalance)
-  console.log(`${label}: set balance`)
-};
+  await saveBalance(newBalance)
+  console.log(`sellGrapes - balance updated: ${newBalance}`)
+}
+
+async function sellOlives () {
+  const balance = await loadBalance()
+  console.log(`sellOlives - balance loaded: ${balance}`)
+  const newBalance = balance + 50
+  await saveBalance(newBalance)
+  console.log(`sellOlives - balance updated: ${newBalance}`)
+}
 
 async function main () {
-  const transaction1 = add$50('transaction1') // NOTE no `await`
-  const transaction2 = add$50('transaction2') // NOTE no `await`
-  await transaction1 // awaiting here does not stop `transaction2` from being scheduled before transaction 1 is completed
+  const transaction1 = sellGrapes() // NOTE: no `await`
+  const transaction2 = sellOlives() // NOTE: no `await`
+  await transaction1 // NOTE: awaiting here does not stop `transaction2` 
+                     // from being scheduled before transaction 1 is completed
   await transaction2
-  const balance = await getAccountBalance()
-  console.log(`$${balance}`)
-};
+  const balance = await loadBalance()
+  console.log(`Final balance: ${balance}`)
+}
 
 main()
 ```
 
-provide simple solution.
+If we execute this code we might end up with different results. In one case we might get the correct outcome:
+
+```text
+sellOlives - balance loaded: 0
+sellOlives - balance updated: 50
+sellGrapes - balance loaded: 50
+sellGrapes - balance updated: 100
+Final balance: 100
+```
+
+But in other cases we might end up in a bad state:
+
+```text
+sellGrapes - balance loaded: 0
+sellOlives - balance loaded: 0
+sellGrapes - balance updated: 50
+sellOlives - balance updated: 50
+Final balance: 50
+```
+
+Note how in this last case, `sellOlives` is essentially a stale read and therefore it will end up overriding the balance after the previous update caused by `sellGrapes`.
+
+Now, this example is quite simple ad it is not too hard to pinpoint exactly where the race condition is originated by just looking at the code.
+
+Take a minute to read the code and the output from the 2 cases again. Pay attention to the notes and the log messages and try to imagine how the Node.js runtime might execute this code in the 2 different scenarios.
+
+Ok, now that you have done that, let's discuss together what happens.
 
 
 ## Using a mutex in Node.js
@@ -114,3 +161,6 @@ example...
 
 
 
+## References
+
+If you are curious to understand better the difference between **Parallelism** and **Concurrency** I recommend you to read this great essay titled [parallelism and concurrency need different tools](http://yosefk.com/blog/parallelism-and-concurrency-need-different-tools.html).
