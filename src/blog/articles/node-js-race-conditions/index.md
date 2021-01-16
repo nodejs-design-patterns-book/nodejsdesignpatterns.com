@@ -13,14 +13,14 @@ tags: ["blog"]
 
 A single-threaded event loop like the one used by JavaScript and Node.js, makes it somewhat harder to have race conditions, but, SPOILER ALERT: race conditions are still possible!
 
-In this article we will explore the topic of race conditions in Node.js. We will discuss some examples and present a few different solutions that can help to make our code _race-conditions free_.
+In this article, we will explore the topic of race conditions in Node.js. We will discuss some examples and present a few different solutions that can help to make our code _race-conditions free_.
 
 
 ## What is a race condition?
 
 First of all, let's try to clarify what a _race condition_ actually is.
 
-A race condition is a type of _programming error_ that can occur when multiple processes or threads are accessing the same shared resource, for instance a file on a file system or a record in a database, and at least one of them is trying to modify the resource.
+A race condition is a type of _programming error_ that can occur when multiple processes or threads are accessing the same shared resource, for instance, a file on a file system or a record in a database, and at least one of them is trying to modify the resource.
 
 Let's try to present an example. Imagine that while a thread is trying to rename a file, another thread is trying to delete the same file. In this case, the system will crash because, when it's trying to delete the file, the file has already been moved to another location. Or, the other way around, while one thread is trying to rename the file, the file was already deleted by the other thread and it's not available on the filesystem anymore.
 
@@ -28,7 +28,7 @@ In other cases, race conditions can be even more subtle, because they wouldn't r
 
 A classic example is when 2 threads are trying to update the same data source and the new information is a function of the current value.
 
-Let's pretend we are building a Roman Empire simulation game in which we can manage some cash flow and we have a global balance in [_aureus_](https://en.wiktionary.org/wiki/aureus) (a currency used in the Roman Empire around 100 B.C.E.). Now, let's say that our initial balance is `0` _aurei_ and that there are two independent game components (possibly running on separate threads) that are trying to increase the balance by `50` _aurei_ each, we should expect that in the end the balance is `100` _aurei_, right?
+Let's pretend we are building a Roman Empire simulation game in which we can manage some cash flow and we have a global balance in [_aureus_](https://en.wiktionary.org/wiki/aureus) (a currency used in the Roman Empire around 100 B.C.E.). Now, let's say that our initial balance is `0` _aurei_ and that there are two independent game components (possibly running on separate threads) that are trying to increase the balance by `50` _aurei_ each, we should expect that in the end, the balance is `100` _aurei_, right?
 
 ```text
 0 + 50 + 50 = 100 🤑
@@ -52,14 +52,14 @@ One way to solve this problem is to isolate the 2 concurrent operations into _tr
 
 In the last picture, we are using transactions to make sure that all the steps of **Component 1** happen in order before all the steps of **Component 2**. This avoids any _stale read_ and makes sure that every component always has an up to date view of the world before doing any change. You can stop holding your breath now, Julius!
 
-In the rest of this article, we will zoom in more on race conditions in the context of Node.js and we will see some other approaches that can allow to deal with them.
+In the rest of this article, we will zoom in more on race conditions in the context of Node.js and we will see some other approaches that can allow dealing with them.
 
 
 ## Can we have race conditions in Node.js?
 
-It is a common misconception to think that Node.js does not have race conditions because of its single-threaded nature. While it is true that in Node.js you would not have multiple threads competing for resources, you might still end up with events belonging to different logical transactions being executed in a order that might result in _stale reads_ and generate a race condition.
+It is a common misconception to think that Node.js does not have race conditions because of its single-threaded nature. While it is true that in Node.js you would not have multiple threads competing for resources, you might still end up with events belonging to different logical transactions being executed in an order that might result in _stale reads_ and generate a race condition.
 
-In the example that we illustrated above, we intentionally represented the various events (_read_, _increase_ and _save_) as discrete units. Note how the system is never executing more than one event at the same time. This is a simple but accurate representation of how the Node.js event loop processes events on a single thread. Nonetheless, you can see that there migt be situations where multiple logical transactions (e.g. multiple deposits) are scheduled concurrently on the event loop and the discrete events might end up being intermigled, which results in a race condition.
+In the example that we illustrated above, we intentionally represented the various events (_read_, _increase_ and _save_) as discrete units. Note how the system is never executing more than one event at the same time. This is a simple but accurate representation of how the Node.js event loop processes events on a single thread. Nonetheless, you can see that there might be situations where multiple logical transactions (e.g. multiple deposits) are scheduled concurrently on the event loop and the discrete events might end up being intermingled, which results in a race condition.
 
 So... **Yes**, we can have race conditions in Node.js!
 
@@ -68,7 +68,7 @@ So... **Yes**, we can have race conditions in Node.js!
 
 Now, let's talk some code! Let's try to re-create the Roman Empire simulation game example that we discussed above.
 
-In the ancient Rome, Romans used to export olives and grapes (no wonders Italy is still famous world wide for olive oil and wine!). In our game we want to be able to sell olives and grapes as a mean to acquire more _aurei_. 
+In ancient Rome, Romans used to export olives and grapes (no wonders Italy is still famous worldwide for olive oil and wine!). In our game, we want to be able to sell olives and grapes as a mean to acquire more _aurei_. 
 
 We are going to have two functions that can increase the balance by `50` _aurei_ which we are going to call `sellOlives()` and `sellGrapes()`. We will also assume that every time the balance is changed, it is persisted to a data storage of sort (e.g. a database). For the sake of this example, we won't be implementing the data storage for real, but we will just simulate some random asynchronous delay before reading or modifying a global value. This will be enough to illustrate how we can end up with a race condition.
 
@@ -149,7 +149,7 @@ Final balance: 50
 
 Note how in this last case, `sellOlives` is essentially a stale read and therefore it will end up overriding the balance disregarding any work already done by `sellGrapes`. Yes, we do have a race condition, unfortunately!
 
-Now, this example is quite simple ad it is not too hard to pinpoint exactly where the race condition is originated by just looking at the code.
+Now, this example is simple ad it is not too hard to pinpoint exactly where the race condition is originated by just looking at the code.
 
 Take a minute or two to read the code again. Check out the output from the 2 cases as well. Pay attention to the notes and the log messages and try to imagine how the Node.js runtime might execute this code in the 2 different scenarios.
 
@@ -165,11 +165,11 @@ This is pretty much equivalent to the following code:
 await Promise.all([sellGrapes(), sellOlives()])
 ```
 
-Using `Promise.all` might make a little more obvious that we are effectively scheduling some different pieces of work to run concurrently.
+Using `Promise.all()` might make a little more obvious that we are scheduling some different pieces of work to run concurrently.
 
 But now that we understand the problem, how do we fix the race condition?
 
-Well it turns out that in this simple case, we might make things right quite easily:
+Well, it turns out that in this simple case, we might make things right quite easily:
 
 ```javascript
 async function main () {
@@ -190,7 +190,7 @@ sellOlives - balance updated: 100
 Final balance: 100
 ```
 
-As we can observe, `sellGrapes` is always started and completed _before_ we start `sellOlives`. This makes the two logical transaction isoleted and makes sure their event won't end up being mixed together in random order.
+As we can observe, `sellGrapes` is always started and completed _before_ we start `sellOlives`. This makes the two logical transactions isolated and makes sure their event won't end up being mixed together in random order.
 
 Problem solved... _vade in pacem_ dear race condition!
 
@@ -199,7 +199,7 @@ Problem solved... _vade in pacem_ dear race condition!
 
 OK, the previous example was illustrative, but if we are building a real game, chances are things will end up being a lot more complicated. We will probably end up having many different actions that might cause a change of balance. Those actions might be the result of a particular sequence of events and it might become hard to track down the discrete logical transactions that we have to _serialize_ in order to avoid race conditions.
 
-Ideally we don't want to think in terms of transactions, we just need to make sure that we never read the balance if there is another event that is ready to change its value.
+Ideally, we don't want to think in terms of transactions, we just need to make sure that we never read the balance if there is another event that is ready to change its value.
 
 To be able to do this we need two things:
 
@@ -210,9 +210,9 @@ We could say that when _we are about to change_ the balance we enter a _critical
 
 One way to achieve this is by using a *Mutex* (which stands for [**mut**ual **ex**clusion](https://en.wikipedia.org/wiki/Mutual_exclusion)).
 
-A mutex is a mechanism that allows to synchronise access to a shared resource.
+A mutex is a mechanism that allows synchronising access to a shared resource.
 
-We can see a mutex as a shared object that allows us to mark when the code execution is entering and exiting from a critical path. In addition to that, a mutex can help us to queue other logical transactions that want to acess the same critical path while one transaction is being processed.
+We can see a mutex as a shared object that allows us to mark when the code execution is entering and exiting from a critical path. In addition to that, a mutex can help us to queue other logical transactions that want to access the same critical path while one transaction is being processed.
 
 
 ## Using `async-mutex`
@@ -330,17 +330,17 @@ Final balance: 300
 
 Some of the code has been truncated for simplicity. You can find all the examples in [this repository](https://github.com/lmammino/node-js-race-conditions).
 
-From the example above, you can see how mutexes can provide a convenient way of thinking about exclusive access and how they can help to avoid race conditions. We are intentionally triggering multiple calls to `sellGraps` and `sellOlives` concurrently, to make obvious that we don't have to think about potential race conditions at the _calling point_. This means that, as our game grows more complicated, we can keep invoking these functions without having to worry about generating new race conditions.
+From the example above, you can see how mutexes can provide a convenient way of thinking about exclusive access and how they can help to avoid race conditions. We are intentionally triggering multiple calls to `sellGraps()` and `sellOlives()` concurrently, to make obvious that we don't have to think about potential race conditions at the _calling point_. This means that, as our game grows more complicated, we can keep invoking these functions without having to worry about generating new race conditions.
 
 One mandatory word of warning though is not to abuse mutexes. Make sure you use them only when absolutely necessary. Keep in mind that since mutexes will make events wait in line, this will cause additional spins of the event loop which, if abused, might result in performance degradation.
 
 
 ## Conclusion
 
-In this article we have explored race conditions and learned how they can be harmful. We showed how race conditions can happen in Node.js and several techniques to address them including the usage of mutexes.
+In this article, we have explored race conditions and learned how they can be harmful. We showed how race conditions can happen in Node.js and several techniques to address them including the usage of mutexes.
 
-This is an interesting topic which often gets explored in the context of multi-threaded languages. The theory isn't much different but there are some important differences when dealing with concurrent, single threaded languages like Node.js. If you are curious to understand better the difference between **Parallelism** and **Concurrency** I strongly recommend you to read this great essay titled [parallelism and concurrency need different tools](http://yosefk.com/blog/parallelism-and-concurrency-need-different-tools.html).
+This is an interesting topic which often gets explored in the context of multi-threaded languages. The theory isn't much different but there are some important differences when dealing with concurrent, single-threaded languages like Node.js. If you are curious to understand better the difference between **Parallelism** and **Concurrency** I strongly recommend you to read this great essay titled [parallelism and concurrency need different tools](http://yosefk.com/blog/parallelism-and-concurrency-need-different-tools.html).
 
-I really hope you enjoyed this article. Make sure to [reach out ot me on Twitter](https://twitter.com/loige) and let me know what you think!
+I really hope you enjoyed this article. Make sure to [reach out to me on Twitter](https://twitter.com/loige) and let me know what you think!
 
 Bye 😋
