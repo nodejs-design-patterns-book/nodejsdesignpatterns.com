@@ -344,3 +344,8 @@ This is an interesting topic which often gets explored in the context of multi-t
 I really hope you enjoyed this article. Make sure to [reach out to me on Twitter](https://twitter.com/loige) and let me know what you think!
 
 Bye 😋
+
+
+## Credits
+
+Thanks to [Jack Barry](https://github.com/Jack-Barry) for the inspiration for this post on the [Node.js Design Patterns discussion board](https://github.com/PacktPublishing/Node.js-Design-Patterns-Third-Edition/discussions/25).
