@@ -328,6 +328,8 @@ sellOlives - balance updated: 300
 Final balance: 300
 ```
 
+Some of the code has been truncated for simplicity. You can find all the examples in [this repository](https://github.com/lmammino/node-js-race-conditions).
+
 From the example above, you can see how mutexes can provide a convenient way of thinking about exclusive access and how they can help to avoid race conditions. We are intentionally triggering multiple calls to `sellGraps` and `sellOlives` concurrently, to make obvious that we don't have to think about potential race conditions at the _calling point_. This means that, as our game grows more complicated, we can keep invoking these functions without having to worry about generating new race conditions.
 
 One mandatory word of warning though is not to abuse mutexes. Make sure you use them only when absolutely necessary. Keep in mind that since mutexes will make events wait in line, this will cause additional spins of the event loop which, if abused, might result in performance degradation.
@@ -337,6 +339,8 @@ One mandatory word of warning though is not to abuse mutexes. Make sure you use 
 
 In this article we have explored race conditions and learned how they can be harmful. We showed how race conditions can happen in Node.js and several techniques to address them including the usage of mutexes.
 
-This is an interesting topic which often gets explored in the context of multi-threaded languages. The theory isn't much different but there are some important differences. If you are curious to understand better the difference between **Parallelism** and **Concurrency** I strongly recommend you to read this great essay titled [parallelism and concurrency need different tools](http://yosefk.com/blog/parallelism-and-concurrency-need-different-tools.html).
+This is an interesting topic which often gets explored in the context of multi-threaded languages. The theory isn't much different but there are some important differences when dealing with concurrent, single threaded languages like Node.js. If you are curious to understand better the difference between **Parallelism** and **Concurrency** I strongly recommend you to read this great essay titled [parallelism and concurrency need different tools](http://yosefk.com/blog/parallelism-and-concurrency-need-different-tools.html).
+
+I really hope you enjoyed this article. Make sure to [reach out ot me on Twitter](https://twitter.com/loige) and let me know what you think!
 
 Bye 😋
