@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "My webpack project",
   "main": "index.js",
+  "engines": {
+    "node": ">=12"
+  },
+  "engineStrict": true,
   "scripts": {
     "clean": "rm -rf build",
     "test": "eslint src",
