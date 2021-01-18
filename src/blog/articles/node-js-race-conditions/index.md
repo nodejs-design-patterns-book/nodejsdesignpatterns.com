@@ -13,7 +13,7 @@ tags: ["blog"]
 
 A single-threaded event loop like the one used by JavaScript and Node.js, makes it somewhat harder to have race conditions, but, SPOILER ALERT: race conditions are still possible!
 
-In this article, we will explore the topic of race conditions in Node.js. We will discuss some examples and present a few different solutions that can help to make our code _race-conditions free_.
+In this article, we will explore the topic of race conditions in Node.js. We will discuss some examples and present a few different solutions that can help us to make our code _race conditions free_.
 
 
 ## What is a race condition?
@@ -22,11 +22,11 @@ First of all, let's try to clarify what a _race condition_ actually is.
 
 A race condition is a type of _programming error_ that can occur when multiple processes or threads are accessing the same shared resource, for instance, a file on a file system or a record in a database, and at least one of them is trying to modify the resource.
 
-Let's try to present an example. Imagine that while a thread is trying to rename a file, another thread is trying to delete the same file. In this case, the system will crash because, when it's trying to delete the file, the file has already been moved to another location. Or, the other way around, while one thread is trying to rename the file, the file was already deleted by the other thread and it's not available on the filesystem anymore.
+Let's try to present an example. Imagine that while a thread is trying to rename a file, another thread is trying to delete the same file. In this case, the second thread will receive an error because, when it's trying to delete the file, the file has already been renamed. Or, the other way around, while one thread is trying to rename the file, the file was already deleted by the other thread and it's not available on the filesystem anymore.
 
 In other cases, race conditions can be even more subtle, because they wouldn't result in the program crashing, but they might just be the source of an incorrect or inconsistent behaviour. In these cases, since there is no explicit error and no stack trace, the issue is generally much harder to troubleshoot and fix.
 
-A classic example is when 2 threads are trying to update the same data source and the new information is a function of the current value.
+A classic example is when 2 threads are trying to update the same data source and the new information is the result of a function applied to the current value.
 
 Let's pretend we are building a Roman Empire simulation game in which we can manage some cash flow and we have a global balance in [_aureus_](https://en.wiktionary.org/wiki/aureus) (a currency used in the Roman Empire around 100 B.C.E.). Now, let's say that our initial balance is `0` _aurei_ and that there are two independent game components (possibly running on separate threads) that are trying to increase the balance by `50` _aurei_ each, we should expect that in the end, the balance is `100` _aurei_, right?
 
@@ -44,7 +44,7 @@ Since the two components are running in parallel, without any synchronisation me
 
 {% responsiveImage './blog/articles/node-js-race-conditions/aurei-race-condition-node-js.png', 'A race condition example showing 2 processes trying to update a balance', { maxWidth: 848 }  %}
 
-In the picture above you can see that **Component 2** ends up having a _stale_ view of the balance: the balance gets changed by **Component 1** after **Component 2** has read the balance. For this reason, when **Component 2** performs its own update, it is effectively overriding any change previously made by **Component 1**. This is why we have a race condition: the two components are effectively racing for completing their own tasks and they might end up stepping onto each other toes! This doesn't make [Julius](https://en.wikipedia.org/wiki/Julius_Caesar) happy I am afraid...
+In the picture above you can see that **Component 2** ends up having a _stale_ view of the balance: the balance gets changed by **Component 1** after **Component 2** has read the balance. For this reason, when **Component 2** performs its own update, it is effectively overriding any change previously made by **Component 1**. This is why we have a race condition: the two components are effectively racing for completing their own tasks and they might end up stepping onto each other's toes! This doesn't make [Julius](https://en.wikipedia.org/wiki/Julius_Caesar) happy I am afraid...
 
 One way to solve this problem is to isolate the 2 concurrent operations into _transactions_ and make sure that there is only one transaction running at a given time. This idea might look like this:
 
@@ -52,7 +52,7 @@ One way to solve this problem is to isolate the 2 concurrent operations into _tr
 
 In the last picture, we are using transactions to make sure that all the steps of **Component 1** happen in order before all the steps of **Component 2**. This avoids any _stale read_ and makes sure that every component always has an up to date view of the world before doing any change. You can stop holding your breath now, Julius!
 
-In the rest of this article, we will zoom in more on race conditions in the context of Node.js and we will see some other approaches that can allow dealing with them.
+In the rest of this article, we will zoom in more on race conditions in the context of Node.js and we will see some other approaches to deal with them.
 
 
 ## Can we have race conditions in Node.js?
