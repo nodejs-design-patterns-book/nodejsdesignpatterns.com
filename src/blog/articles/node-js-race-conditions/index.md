@@ -348,4 +348,4 @@ Bye 😋
 
 ## Credits
 
-Thanks to [Jack Barry](https://github.com/Jack-Barry) for the inspiration for this post on the [Node.js Design Patterns discussion board](https://github.com/PacktPublishing/Node.js-Design-Patterns-Third-Edition/discussions/25).
+Thanks to [Jack Barry](https://github.com/Jack-Barry) for the inspiration for this post on the [Node.js Design Patterns discussion board](https://github.com/PacktPublishing/Node.js-Design-Patterns-Third-Edition/discussions/25). Thanks to [Peter Caulfield](https://twitter.com/quasi_modal), [Stefano Abalsamo](https://twitter.com/StefanoAbalsamo), [Roberto Gambuzzi](https://twitter.com/gbinside) and [Mario Casciaro](https://twitter.com/mariocasciaro) for kindly reviewing this post.
