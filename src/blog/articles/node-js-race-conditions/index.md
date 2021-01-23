@@ -13,7 +13,7 @@ tags: ["blog"]
 
 A single-threaded event loop like the one used by JavaScript and Node.js, makes it somewhat harder to have race conditions, but, SPOILER ALERT: race conditions are still possible!
 
-In this article, we will explore the topic of race conditions in Node.js. We will discuss some examples and present a few different solutions that can help us to make our code _race conditions free_.
+In this article, we will explore the topic of race conditions in Node.js. We will discuss some examples and present a few different solutions that can help us to make our code _race condition free_.
 
 
 ## What is a race condition?
@@ -44,7 +44,7 @@ Since the two components are running in parallel, without any synchronisation me
 
 {% responsiveImage './blog/articles/node-js-race-conditions/aurei-race-condition-node-js.png', 'A race condition example showing 2 processes trying to update a balance', { maxWidth: 848 }  %}
 
-In the picture above you can see that **Component 2** ends up having a _stale_ view of the balance: the balance gets changed by **Component 1** after **Component 2** has read the balance. For this reason, when **Component 2** performs its own update, it is effectively overriding any change previously made by **Component 1**. This is why we have a race condition: the two components are effectively racing for completing their own tasks and they might end up stepping onto each other's toes! This doesn't make [Julius](https://en.wikipedia.org/wiki/Julius_Caesar) happy I am afraid...
+In the picture above you can see that **Component 2** ends up having a _stale_ view of the balance: the balance gets changed by **Component 1** after **Component 2** has read the balance. For this reason, when **Component 2** performs its own update, it is effectively overriding any change previously made by **Component 1**. This is why we have a race condition: the two components are effectively racing to complete their own tasks and they might end up stepping onto each other's toes! This doesn't make [Julius](https://en.wikipedia.org/wiki/Julius_Caesar) happy I am afraid...
 
 One way to solve this problem is to isolate the 2 concurrent operations into _transactions_ and make sure that there is only one transaction running at a given time. This idea might look like this:
 
@@ -68,15 +68,15 @@ So... **Yes**, we can have race conditions in Node.js!
 
 Now, let's talk some code! Let's try to re-create the Roman Empire simulation game example that we discussed above.
 
-In ancient Rome, Romans used to export olives and grapes (no wonders Italy is still famous worldwide for olive oil and wine!). In our game, we want to be able to sell olives and grapes as a mean to acquire more _aurei_. 
+In ancient Rome, Romans used to export olives and grapes (no wonder Italy is still famous worldwide for olive oil and wine!). In our game, we want to be able to sell olives and grapes as a means to acquire more _aurei_. 
 
 We are going to have two functions that can increase the balance by `50` _aurei_ which we are going to call `sellOlives()` and `sellGrapes()`. We will also assume that every time the balance is changed, it is persisted to a data storage of sort (e.g. a database). For the sake of this example, we won't be implementing the data storage for real, but we will just simulate some random asynchronous delay before reading or modifying a global value. This will be enough to illustrate how we can end up with a race condition.
 
-For starting, let's see what a buggy implementation might look like:
+For starts, let's see what a buggy implementation might look like:
 
 
 ```javascript
-// Utility function to simulates some delay (e.g. reading from or writing to a database).
+// Utility function to simulate some delay (e.g. reading from or writing to a database).
 // It will take from 0 to 50ms in a random fashion.
 const randomDelay = () => new Promise(resolve =>
   setTimeout(resolve, Math.random() * 100)
@@ -149,7 +149,7 @@ Final balance: 50
 
 Note how in this last case, `sellOlives` is essentially a stale read and therefore it will end up overriding the balance disregarding any work already done by `sellGrapes`. Yes, we do have a race condition, unfortunately!
 
-Now, this example is simple ad it is not too hard to pinpoint exactly where the race condition is originated by just looking at the code.
+Now, this example is simple ad it is not too hard to pinpoint exactly where the race condition has originated by just looking at the code.
 
 Take a minute or two to read the code again. Check out the output from the 2 cases as well. Pay attention to the notes and the log messages and try to imagine how the Node.js runtime might execute this code in the 2 different scenarios.
 
@@ -159,7 +159,7 @@ In our `main` function, when we execute `sellGrapes()` and `sellOlives()`, since
 
 We only await the two transactions after they have been already scheduled, which means that they will work concurrently. After the two transactions have been scheduled, we wait for `transaction1` to finish and only then we wait for `transaction2` to complete. Note that `transaction2` might complete even before `transaction1`. In other words, awaiting for `transaction1` doesn't block `transaction2` in any way.
 
-This is pretty much equivalent to the following code:
+This approach is similar to writing the following code:
 
 ```javascript
 await Promise.all([sellGrapes(), sellOlives()])
@@ -167,7 +167,9 @@ await Promise.all([sellGrapes(), sellOlives()])
 
 Using `Promise.all()` might make a little more obvious that we are scheduling some different pieces of work to run concurrently.
 
-But now that we understand the problem, how do we fix the race condition?
+Note that with `Promise.all()`, the resulting promise will reject as soon as any of the promises rejects. In our previous code, since we await the promises independently, we will always catch errors in `transaction1` before `transaction2`.
+
+But let's not digress too much into this. Now that we understand the problem, how do we fix the race condition?
 
 Well, it turns out that in this simple case, we might make things right quite easily:
 
@@ -190,7 +192,7 @@ sellOlives - balance updated: 100
 Final balance: 100
 ```
 
-As we can observe, `sellGrapes` is always started and completed _before_ we start `sellOlives`. This makes the two logical transactions isolated and makes sure their event won't end up being mixed together in random order.
+As we can observe, `sellGrapes` is always started and completed _before_ we start `sellOlives`. This makes the two logical transactions isolated and makes sure their operations won't end up being mixed together in random order.
 
 Problem solved... _vade in pacem_ dear race condition!
 
@@ -199,7 +201,7 @@ Problem solved... _vade in pacem_ dear race condition!
 
 OK, the previous example was illustrative, but if we are building a real game, chances are things will end up being a lot more complicated. We will probably end up having many different actions that might cause a change of balance. Those actions might be the result of a particular sequence of events and it might become hard to track down the discrete logical transactions that we have to _serialize_ in order to avoid race conditions.
 
-Ideally, we don't want to think in terms of transactions, we just need to make sure that we never read the balance if there is another event that is ready to change its value.
+Ideally, we don't want to think in terms of transactions, we just need to make sure that we never read the balance if there is another concurrent operation that is ready to change its value.
 
 To be able to do this we need two things:
 
@@ -244,7 +246,7 @@ async function doingSomethingCritical() {
 
 In this example, we are using a global mutex instance to mark the beginning and the end of a critical path which happens inside our `doingSomethingCritical()` function.
 
-When we call `mutex.acquire()`, this method will return a promise. If no other event is currently on the same critical path, the promise resolves to a function that we call `release`. In this situation, we are essentially granted exclusive access to the critical path. If some event is on the critical path already, the promise won't resolve until the vent on the critical path has completed. This is how events _wait in line_ for our exclusive access to the critical path.
+When we call `mutex.acquire()`, this method will return a promise. If no other concurrent operation is currently on the same critical path, the promise resolves to a function that we call `release`. In this situation, we are essentially granted exclusive access to the critical path. If some concurrent operation is on the critical path already, the promise won't resolve until the concurrent operation already on the critical path has completed. This is how concurrent operations _wait in line_ for our exclusive access to the critical path.
 
 The `release` function must be invoked to mark the completion of the work on the critical path. It effectively _releases_ the exclusive access to the critical path and makes it available to the next task in line. Note that we are using a `try`/`finally` block here to make sure that `release` is called even in case of an exception. It is very important to do so. In fact, failing to call `release`, will leave all the other events waiting in line forever!
 
