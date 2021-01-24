@@ -1,6 +1,6 @@
 ---
-date: 2021-01-13T18:30:00
-updatedAt: 2021-01-13T18:30:00
+date: 2021-01-24T18:35:00
+updatedAt: 2021-01-24T18:35:00
 title: Node.js race conditions
 permalink: /blog/node-js-race-conditions/
 description: Can there be race conditions with Node.js? Actually yes, let's see some examples and some solutions.
@@ -359,7 +359,7 @@ async function doingSomethingCritical() {
   mutex = mutex.then(() => {
     // ... do stuff on the critical path
   })
-  mutex.catch(() => {
+  .catch(() => {
     // ... manage errors on the critical path
   })
   return mutex
@@ -394,8 +394,7 @@ async function sellGrapes () {
     const newBalance = balance + 50
     await saveBalance(newBalance)
     console.log(`sellGrapes - balance updated: ${newBalance}`)
-  })
-  mutex.catch(() => {})
+  }).catch(() => {})
   return mutex
 }
 
@@ -406,8 +405,7 @@ async function sellOlives () {
     const newBalance = balance + 50
     await saveBalance(newBalance)
     console.log(`sellOlives - balance updated: ${newBalance}`)
-  })
-  mutex.catch(() => {})
+  }).catch(() => {})
   return mutex
 }
 
@@ -436,7 +434,7 @@ So, here we have it, a simple mutex implementation in just few lines of code lev
 
 It is important to mention that the solutions presented in this article only work in a Node.js application running on a single process.
 
-If you are running your application on multiple processes (for instance, by using the [`cluster` module](https://nodejs.org/api/cluster.html), [worker threads](https://nodejs.org/api/worker_threads.html) or a multi-process runner like [`pm2`](https://pm2.keymetrics.io/)) using a mutex within our code is not going to solve race conditions across processes. This is also the case if you are running your application your application on multiple servers.
+If you are running your application on multiple processes (for instance, by using the [`cluster` module](https://nodejs.org/api/cluster.html), [worker threads](https://nodejs.org/api/worker_threads.html) or a multi-process runner like [`pm2`](https://pm2.keymetrics.io/)) using a mutex within our code is not going to solve race conditions across processes. This is also the case if you are running your application on multiple servers.
 
 In these cases you have to rely on more complicated solutions like [distributed locks](https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html) or, if you are using a central database, you can rely on solutions provided by your own database systems. We will discuss a simple example in the next section.
 
@@ -447,7 +445,7 @@ We already mentioned that using a mutex might have a relevant performance impact
 
 To try to visualize why a mutex has a performance impact in your application let's try to think about the case when an operation is trying to acquire a lock on a mutex but the mutex is already locked. In this case, our operation is simply waiting without doing nothing, while for instance it could be doing some IO operation like connecting to the database or sending a query. It will probably take the event loop several spins before the lock is released and the operation that is waiting in line can acquire the lock. This get worse with a high number of operations waiting in line.
 
-With a mutex we are effectively serializing tasks, making sure that they happen in line and non-concurrently. If you abuse this pattern, you might end up in a situation where you could effectively eliminate all concurrency from your application.
+With a mutex we are effectively serializing tasks, making sure that executed in sequence and non-concurrently. If you abuse this pattern, you might end up in a situation where you could effectively eliminate all concurrency from your application.
 
 Measuring how a mutex might impact your specific application is not something that can be done holistically and we recommend you to run your own benchmarks to find out what is the effect of introducing one or more mutex instances in your application.
 
