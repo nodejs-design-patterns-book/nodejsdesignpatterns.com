@@ -217,7 +217,7 @@ A mutex is a mechanism that allows synchronising access to a shared resource.
 
 We can see a mutex as a shared object that allows us to mark when the code execution is entering and exiting from a critical path. In addition to that, a mutex can help us to queue other logical transactions that want to access the same critical path while one transaction is being processed.
 
-As a quick note, keep in mind that using mutexes might have a performance impact in your application. More on this later.
+Before talking code, be aware that using a mutex might have a performance impact in your application and that this solution won't work if you use a distributed or a multi-process setup. More details on this later.
 
 
 ## Using `async-mutex`
@@ -340,11 +340,96 @@ From the example above, you can see how mutexes can provide a convenient way of 
 
 ## Let's implement a mutex
 
-But what if we are dealing with a race condition in only one place in our entire application? Is it worth to include and manage and external dependecy just because of that? Can we come up with a simpler alternative that does not require to install a new dependency?
+But what if we are dealing with a race condition only in one place in our entire application? Is it worth to include and manage an external dependecy just because of that? Can we come up with a simpler alternative that does not require us to install a new dependency?
 
 It turns out that we can easily do that! Let's see how we can implement our own mutex.
 
-TODO: COMPLETE THIS SECTION
+Note that the solution we are going to present here is effectively a variation of the **sequential execution pattern** using promises that is presented in _Chapter 5_ of [Node.js Design Patterns](/).
+
+The idea is to inizialize our global mutex as an instance of a resolved promise:
+
+```javascript
+let mutex = Promise.resolve()
+```
+
+Then in our critical path we can do something like this:
+
+```javascript
+async function doingSomethingCritical() {
+  mutex = mutex.then(() => {
+    // ... do stuff on the critical path
+  })
+  mutex.catch(() => {
+    // ... manage errors on the critical path
+  })
+  return mutex
+}
+```
+
+The idea is that every time we are invoking the function `doingSomethingCritical()` we are effectively "queueing" the execution of the code on the critical path using `mutex.then()`. If this is the first call, our initial instance of the `mutex` promise is a resolved promise, so the code on the critical path will be executed straight away on the next cycle of the event loop.
+
+Calling `.then()` on a promise returns a new promise instance that is used to replace the original `mutex` instance and it's also returned by the `doingSomethingCritical()` function.
+
+This allows us to have concurrent calls to `doingSomethingCritical()` being queued to be executed sequentially.
+
+Note that we also specify a `mutex.catch()`. This allows us to catch and react to specific errors, but it also allows us not to break the chain of sequential execution in case an operation fails.
+
+Ok, now that we have explored this idea, let's apply it to our example.
+
+This is how our code is going to look like:
+
+```javascript
+const randomDelay = () => {/* ... */}
+
+let balance = 0
+let mutex = Promise.resolve() // global mutex instance
+
+async function loadBalance () {/* ... */}
+async function saveBalance (value) {/* ... */}
+
+async function sellGrapes () {
+  mutex = mutex.then(async () => {
+    const balance = await loadBalance()
+    console.log(`sellGrapes - balance loaded: ${balance}`)
+    const newBalance = balance + 50
+    await saveBalance(newBalance)
+    console.log(`sellGrapes - balance updated: ${newBalance}`)
+  })
+  mutex.catch(() => {})
+  return mutex
+}
+
+async function sellOlives () {
+  mutex = mutex.then(async () => {
+    const balance = await loadBalance()
+    console.log(`sellOlives - balance loaded: ${balance}`)
+    const newBalance = balance + 50
+    await saveBalance(newBalance)
+    console.log(`sellOlives - balance updated: ${newBalance}`)
+  })
+  mutex.catch(() => {})
+  return mutex
+}
+
+async function main () {
+  await Promise.all([
+    sellGrapes(),
+    sellOlives(),
+    sellGrapes(),
+    sellOlives(),
+    sellGrapes(),
+    sellOlives()
+  ])
+  const balance = await loadBalance()
+  console.log(`Final balance: ${balance}`)
+}
+
+main()
+```
+
+If you try to run this code, you will see that it consistently prints the same output as per our previous implementation using `async-mutex`!
+
+So, here we have it, a simple mutex implementation in just few lines of code leveraging promise chainability!
 
 
 ## Mutex with multiple processes
