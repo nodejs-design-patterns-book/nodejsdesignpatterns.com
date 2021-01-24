@@ -24,7 +24,7 @@ A race condition is a type of _programming error_ that can occur when multiple p
 
 Let's try to present an example. Imagine that while a thread is trying to rename a file, another thread is trying to delete the same file. In this case, the second thread will receive an error because, when it's trying to delete the file, the file has already been renamed. Or, the other way around, while one thread is trying to rename the file, the file was already deleted by the other thread and it's not available on the filesystem anymore.
 
-In other cases, race conditions can be even more subtle, because they wouldn't result in the program crashing, but they might just be the source of an incorrect or inconsistent behaviour. In these cases, since there is no explicit error and no stack trace, the issue is generally much harder to troubleshoot and fix.
+In other cases, race conditions can be more subtle, because they wouldn't result in the program crashing, but they might just be the source of an incorrect or inconsistent behaviour. In these cases, since there is no explicit error and no stack trace, the issue is generally much harder to troubleshoot and fix.
 
 A classic example is when 2 threads are trying to update the same data source and the new information is the result of a function applied to the current value.
 
@@ -44,22 +44,22 @@ Since the two components are running in parallel, without any synchronisation me
 
 {% responsiveImage './blog/articles/node-js-race-conditions/aurei-race-condition-node-js.png', 'A race condition example showing 2 processes trying to update a balance', { maxWidth: 848 }  %}
 
-In the picture above you can see that **Component 2** ends up having a _stale_ view of the balance: the balance gets changed by **Component 1** after **Component 2** has read the balance. For this reason, when **Component 2** performs its own update, it is effectively overriding any change previously made by **Component 1**. This is why we have a race condition: the two components are effectively racing to complete their own tasks and they might end up stepping onto each other's toes! This doesn't make [Julius](https://en.wikipedia.org/wiki/Julius_Caesar) happy I am afraid...
+In the picture above you can see that **Component 2** ends up having a _stale_ view of the balance: the balance gets changed by **Component 1** after **Component 2** has read the balance. For this reason, when **Component 2** performs its own update, it is effectively overriding any change previously made by **Component 1**. This is why we have a race condition: the two components are effectively racing to complete their own tasks and they might end up stepping onto each other's toes! This doesn't make _Julius_ happy I am afraid...
 
 One way to solve this problem is to isolate the 2 concurrent operations into _transactions_ and make sure that there is only one transaction running at a given time. This idea might look like this:
 
 {% responsiveImage './blog/articles/node-js-race-conditions/aurei-fixed-race-condition-node-js.png', 'Fixing a race condition using a transaction', { maxWidth: 848 }  %}
 
-In the last picture, we are using transactions to make sure that all the steps of **Component 1** happen in order before all the steps of **Component 2**. This avoids any _stale read_ and makes sure that every component always has an up to date view of the world before doing any change. You can stop holding your breath now, Julius!
+In the last picture, we are using transactions to make sure that all the steps of **Component 1** happen in order before all the steps of **Component 2**. This prevents any _stale read_ and makes sure that every component always has an up to date view of the world before doing any change. You can stop holding your breath now, Julius!
 
 In the rest of this article, we will zoom in more on race conditions in the context of Node.js and we will see some other approaches to deal with them.
 
 
 ## Can we have race conditions in Node.js?
 
-It is a common misconception to think that Node.js does not have race conditions because of its single-threaded nature. While it is true that in Node.js you would not have multiple threads competing for resources, you might still end up with events belonging to different logical transactions being executed in an order that might result in _stale reads_ and generate a race condition.
+It is a common misconception to think that Node.js does not have race conditions because of its single-threaded nature. While it is true that in Node.js you would not have multiple threads competing for resources, you might still end up with tasks belonging to different logical transactions being executed in an order that might result in _stale reads_ and generate a race condition.
 
-In the example that we illustrated above, we intentionally represented the various events (_read_, _increase_ and _save_) as discrete units. Note how the system is never executing more than one event at the same time. This is a simple but accurate representation of how the Node.js event loop processes events on a single thread. Nonetheless, you can see that there might be situations where multiple logical transactions (e.g. multiple deposits) are scheduled concurrently on the event loop and the discrete events might end up being intermingled, which results in a race condition.
+In the example that we illustrated above, we intentionally represented the various tasks (_read_, _increase_ and _save_) as discrete units. Note how the system is never executing more than one task at the same time. This is a simple but accurate representation of how the Node.js event loop processes tasks on a single thread. Nonetheless, you can see that there might be situations where multiple logical transactions (e.g. multiple deposits) are scheduled concurrently on the event loop and the discrete tasks might end up being intermingled, which results in a race condition.
 
 So... **Yes**, we can have race conditions in Node.js!
 
@@ -68,9 +68,9 @@ So... **Yes**, we can have race conditions in Node.js!
 
 Now, let's talk some code! Let's try to re-create the Roman Empire simulation game example that we discussed above.
 
-In ancient Rome, Romans used to export olives and grapes (no wonder Italy is still famous worldwide for olive oil and wine!). In our game, we want to be able to sell olives and grapes as a means to acquire more _aurei_. 
+In ancient Rome, Romans used to export olives and grapes. No wonder Italy is still famous worldwide for olive oil and wine! In our game, we want to be able to harvest olives and grapes and then sell them as a means to acquire more _aurei_. 
 
-We are going to have two functions that can increase the balance by `50` _aurei_ which we are going to call `sellOlives()` and `sellGrapes()`. We will also assume that every time the balance is changed, it is persisted to a data storage of sort (e.g. a database). For the sake of this example, we won't be implementing the data storage for real, but we will just simulate some random asynchronous delay before reading or modifying a global value. This will be enough to illustrate how we can end up with a race condition.
+We are going to have two functions that can increase the balance by `50` _aurei_ which we are going to call `sellOlives()` and `sellGrapes()`. We will also assume that every time the balance is changed, it is persisted to a data storage of sort (e.g. a database). For the sake of this example, we won't be using a real data storage, but we will just simulate some random asynchronous delay before reading or modifying a global value. This will be enough to illustrate how we can end up with a race condition.
 
 For starts, let's see what a buggy implementation might look like:
 
@@ -157,7 +157,7 @@ Ok, now that you have done that, let's discuss together what happens.
 
 In our `main` function, when we execute `sellGrapes()` and `sellOlives()`, since we are not awaiting the two operations independently, we are essentially scheduling both operations onto the event loop.
 
-We only await the two transactions after they have been already scheduled, which means that they will work concurrently. After the two transactions have been scheduled, we wait for `transaction1` to finish and only then we wait for `transaction2` to complete. Note that `transaction2` might complete even before `transaction1`. In other words, awaiting for `transaction1` doesn't block `transaction2` in any way.
+We only await the two transactions after they have been already scheduled, which means that they will work concurrently. After the two transactions have been scheduled, we wait for `transaction1` to complete and only then we wait for `transaction2` to complete. Note that `transaction2` might complete even before `transaction1`. In other words, awaiting for `transaction1` doesn't block `transaction2` in any way.
 
 This approach is similar to writing the following code:
 
@@ -165,9 +165,9 @@ This approach is similar to writing the following code:
 await Promise.all([sellGrapes(), sellOlives()])
 ```
 
-Using `Promise.all()` might make a little more obvious that we are scheduling some different pieces of work to run concurrently.
+Using `Promise.all()` is a more commonly used way to schedule different tasks to run concurrently.
 
-Note that with `Promise.all()`, the resulting promise will reject as soon as any of the promises rejects. In our previous code, since we await the promises independently, we will always catch errors in `transaction1` before `transaction2`.
+Note that with `Promise.all()`, the resulting promise will reject as soon as any of the promises rejects. In our previous example, since we await the two promises independently, we will always catch errors in `transaction1` before `transaction2`.
 
 But let's not digress too much into this. Now that we understand the problem, how do we fix the race condition?
 
@@ -175,8 +175,9 @@ Well, it turns out that in this simple case, we might make things right quite ea
 
 ```javascript
 async function main () {
-  await sellGrapes()
-  await sellOlives()
+  await sellGrapes() // <- schedule the first transaction and wait for completion
+  await sellOlives() // <- when it's completed, we start the second transaction 
+                     //    and wait for completion
   const balance = await loadBalance()
   console.log(`Final balance: ${balance}`)
 }
@@ -192,7 +193,7 @@ sellOlives - balance updated: 100
 Final balance: 100
 ```
 
-As we can observe, `sellGrapes` is always started and completed _before_ we start `sellOlives`. This makes the two logical transactions isolated and makes sure their operations won't end up being mixed together in random order.
+As we can observe, `sellGrapes` is always started and completed _before_ we start `sellOlives`. This makes the two logical transactions isolated and makes sure their tasks won't end up being mixed together in random order.
 
 Problem solved... _vade in pacem_ dear race condition!
 
@@ -216,10 +217,12 @@ A mutex is a mechanism that allows synchronising access to a shared resource.
 
 We can see a mutex as a shared object that allows us to mark when the code execution is entering and exiting from a critical path. In addition to that, a mutex can help us to queue other logical transactions that want to access the same critical path while one transaction is being processed.
 
+As a quick note, keep in mind that using mutexes might have a performance impact in your application. More on this later.
+
 
 ## Using `async-mutex`
 
-A very nice library that we can use here is [`async-mutex`](https://npm.im/async-mutex). This library provides a promise-based implementation of the mutex pattern.
+A very useful library that we can useg is [`async-mutex`](https://npm.im/async-mutex). This library provides a promise-based implementation of the mutex pattern.
 
 You can install this library from `npm`:
 
@@ -332,16 +335,57 @@ Final balance: 300
 
 Some of the code has been truncated for simplicity. You can find all the examples in [this repository](https://github.com/lmammino/node-js-race-conditions).
 
-From the example above, you can see how mutexes can provide a convenient way of thinking about exclusive access and how they can help to avoid race conditions. We are intentionally triggering multiple calls to `sellGraps()` and `sellOlives()` concurrently, to make obvious that we don't have to think about potential race conditions at the _calling point_. This means that, as our game grows more complicated, we can keep invoking these functions without having to worry about generating new race conditions.
+From the example above, you can see how mutexes can provide a convenient way of thinking about exclusive access and how they can help to avoid race conditions. We are intentionally triggering multiple calls to `sellGrapes()` and `sellOlives()` concurrently, to make obvious that we don't have to think about potential race conditions at the _calling point_. This means that, as our game grows more complicated, we can keep invoking these functions without having to worry about generating new race conditions.
 
-One mandatory word of warning though is not to abuse mutexes. Make sure you use them only when absolutely necessary. Keep in mind that since mutexes will make events wait in line, this will cause additional spins of the event loop which, if abused, might result in performance degradation.
+
+## Let's implement a mutex
+
+But what if we are dealing with a race condition in only one place in our entire application? Is it worth to include and manage and external dependecy just because of that? Can we come up with a simpler alternative that does not require to install a new dependency?
+
+It turns out that we can easily do that! Let's see how we can implement our own mutex.
+
+TODO: COMPLETE THIS SECTION
+
+
+## Mutex with multiple processes
+
+It is important to mention that the solutions presented in this article only work in a Node.js application running on a single process.
+
+If you are running your application on multiple processes (for instance, by using the [`cluster` module](https://nodejs.org/api/cluster.html), [worker threads](https://nodejs.org/api/worker_threads.html) or a multi-process runner like [`pm2`](https://pm2.keymetrics.io/)) using a mutex within our code is not going to solve race conditions across processes. This is also the case if you are running your application your application on multiple servers.
+
+In these cases you have to rely on more complicated solutions like [distributed locks](https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html) or, if you are using a central database, you can rely on solutions provided by your own database systems. We will discuss a simple example in the next section.
+
+
+## Mutex performance
+
+We already mentioned that using a mutex might have a relevant performance impact in your application.
+
+To try to visualize why a mutex has a performance impact in your application let's try to think about the case when an operation is trying to acquire a lock on a mutex but the mutex is already locked. In this case, our operation is simply waiting without doing nothing, while for instance it could be doing some IO operation like connecting to the database or sending a query. It will probably take the event loop several spins before the lock is released and the operation that is waiting in line can acquire the lock. This get worse with a high number of operations waiting in line.
+
+With a mutex we are effectively serializing tasks, making sure that they happen in line and non-concurrently. If you abuse this pattern, you might end up in a situation where you could effectively eliminate all concurrency from your application.
+
+Measuring how a mutex might impact your specific application is not something that can be done holistically and we recommend you to run your own benchmarks to find out what is the effect of introducing one or more mutex instances in your application.
+
+Our general recommendation is to use a mutex only when you are sure you have to protect your code from a race condition and to try to make the critical path as short as possible.
+
+Be aware that a mutex is not the only solution to race conditions. For instance, in our example, if we were to use a real relational database as a data storage, we could have avoided any race condition (at the application level) by letting the database itself do the increment using a SQL query:
+
+```sql
+UPDATE game SET aurei = aurei + 50;
+```
+
+With this approach, we are trusting the database to do the right thing and we are not slowing down our application.
+
+And there are other alternative approches. Just to name one, [optimistic locks](https://en.wikipedia.org/wiki/Optimistic_concurrency_control) might provide a great alternative if race conditions are possible but they actually happen only in rare occasions.
 
 
 ## Conclusion
 
-In this article, we have explored race conditions and learned how they can be harmful. We showed how race conditions can happen in Node.js and several techniques to address them including the usage of mutexes.
+In this article, we have explored race conditions and learned why they can be harmful. We showed how race conditions can happen in Node.js and several techniques to address them including the adoptopm of a mutex.
 
-This is an interesting topic which often gets explored in the context of multi-threaded languages. The theory isn't much different but there are some important differences when dealing with concurrent, single-threaded languages like Node.js. If you are curious to understand better the difference between **Parallelism** and **Concurrency** I strongly recommend you to read this great essay titled [parallelism and concurrency need different tools](http://yosefk.com/blog/parallelism-and-concurrency-need-different-tools.html).
+This is an interesting topic which often gets explored in the context of multi-threaded languages. The theory isn't much different but there are some important differences when dealing with concurrent, single-threaded languages like Node.js.
+
+If you are curious to understand better the difference between **Parallelism** and **Concurrency** I strongly recommend you to read this great essay titled [parallelism and concurrency need different tools](http://yosefk.com/blog/parallelism-and-concurrency-need-different-tools.html). You can also watch this wonderful talk by [Steve Klabnik](https://twitter.com/steveklabnik) called [Rust's Journey to Async/Await](https://www.youtube.com/watch?v=lJ3NC-R3gSI) (yes, it's not only about Rust, trust me).
 
 I really hope you enjoyed this article. Make sure to [reach out to me on Twitter](https://twitter.com/loige) and let me know what you think!
 
