@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "My webpack project",
   "main": "index.js",
+  "engines": {
+    "node": ">=12"
+  },
+  "engineStrict": true,
   "scripts": {
     "clean": "rm -rf build",
     "test": "eslint src",
@@ -52,6 +56,8 @@
     "hasha": "^5.2.0",
     "html-minifier": "^4.0.0",
     "html-webpack-plugin": "^4.3.0",
+    "husky": "^4.3.7",
+    "lint-staged": "^10.5.3",
     "markdown-it": "^11.0.1",
     "markdown-it-anchor": "^6.0.0",
     "mini-css-extract-plugin": "^0.11.0",
@@ -65,5 +71,13 @@
     "webpack-cli": "^3.3.12",
     "webpack-manifest-plugin": "^2.2.0"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix"
+  }
 }

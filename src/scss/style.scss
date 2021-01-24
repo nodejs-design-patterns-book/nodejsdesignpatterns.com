@@ -490,8 +490,15 @@ nav.navbar {
 
 .article {
   article {
-    h2, h3 {
+    h2, h3, h4 {
       margin-top: 1.25em;
+
+      code {
+        font-size: inherit;
+        padding: inherit;
+        background: none;
+        color: inherit;
+      }
     }
     
     p {

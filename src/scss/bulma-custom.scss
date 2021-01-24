@@ -27,3 +27,19 @@ $input-shadow: none;
 @import "../../node_modules/bulma/sass/grid/_all.sass";
 @import "../../node_modules/bulma/sass/helpers/_all.sass";
 @import "../../node_modules/bulma/sass/layout/_all.sass";
+
+// reset .number to avoid conflicts with prism.js
+code .number {
+  align-items: normal;
+  background-color: transparent;
+  border-radius: 0;
+  display: inline;
+  height: auto;
+  justify-content: normal;
+  margin-right: auto;
+  min-width: auto;
+  padding: 0;
+  text-align: left;
+  vertical-align: baseline;
+  font-size: inherit;
+}
