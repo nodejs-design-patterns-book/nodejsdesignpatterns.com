@@ -1,9 +1,9 @@
 ---
-date: 2021-04-07T18:35:00
-updatedAt: 2021-04-07T18:35:00
+date: 2021-04-07T18:00:00
+updatedAt: 2021-04-07T18:00:00
 title: Node.js development with Docker and Docker Compose
 permalink: /blog/node-js-development-with-docker-and-docker-compose/
-description: Can there be race conditions with Node.js? Actually yes, let's see some examples and some solutions.
+description: Using Docker and Docker Compose to develop Node.js projects can be a good option, especially if working in a team. This article provides a walk-through a possible setup and discuss pros and cons of this approach
 layout: article
 author: Giuseppe Morelli
 author_profile_pic: /static/giuseppe-morelli-avatar-small.jpg
