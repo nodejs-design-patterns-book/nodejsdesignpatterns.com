@@ -24,7 +24,7 @@ eleventyComputed:
 </section>
 
 <div class="bg-green article">
-  <section class="section bd-lt bg-white is-medium">
+  <section class="section bd-lt bg-white is-small">
     <div class="container">
       <div class="columns is-variable is-8">
         <article class="column is-three-quarters">
@@ -127,3 +127,23 @@ eleventyComputed:
     </div>
   </section>
 </div>
+
+<section id="sample-chapter" class="section is-small">
+  <div class="container bg-green px-6 py-6 bd-all-small">
+    <div class="columns is-gapless">
+      <div class="column is-half">
+        <h2 class="title is-2">Node.js Design Patterns</h2>
+        <h3 class="subtitle is-3">Get the FREE chapter!</h3>
+        <p>With this <strong>54 pages</strong> long chapter you will learn how to implement and leverage some of the most well known behavioural design patterns in the context of Node.js:
+            the <strong>Strategy pattern</strong>, the <strong>State pattern</strong>, the <strong>Template pattern</strong>, the <strong>Iterator pattern</strong>, the <strong>Middleware pattern</strong>, and the <strong>Command pattern</strong>.
+          </p>
+        <div class="mt-4">
+          {% include "convert-kit-form.njk" %}
+        </div>
+      </div>
+      <div class="column is-half">
+        {% responsiveImage './img/node-js-design-patterns-open-chapter9.png', 'Node.js Design Patterns chapter 9 behavioral design patterns', { class: "chapter9" }  %}
+      </div>
+    </div>
+  </div>
+</section>

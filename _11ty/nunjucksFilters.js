@@ -27,6 +27,16 @@ module.exports = function nunjucksFilters (config) {
     return markdown.render(value)
   })
 
+  // Add custom filter to remove a content with a given URL from a list of pages
+  config.addFilter('removeUrl', function matchUrl (elements, url) {
+    return elements.filter((el) => el.url !== url)
+  })
+
+  // Add custom filter to keep the top X elements of an array
+  config.addFilter('keep', function keep (arr, n) {
+    return arr.slice(0, n)
+  })
+
   // Add currentYear helper
   config.addNunjucksShortcode('currentYear', function () {
     return `${new Date().getFullYear()}`

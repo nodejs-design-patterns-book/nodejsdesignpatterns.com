@@ -234,11 +234,27 @@ eleventyComputed:
     {{ content | safe }}
     <footer class="footer">
       <div class="container">
-        <p class="is-size-7">Copyright © 2014-{% currentYear %}
-          {{ site.copyright }}.</p>
-        <p class="is-size-7">All trademarks and registered trademarks are the property of their respective owners.</p>
-        <p class="is-size-7 mt-1">Icons <strong>Unicons</strong> by <a href="https://iconscout.com" rel="nofollow noreferer">Iconscout</a>
-        </p>
+        <div class="columns">
+          <div class="column is-half">
+            <p class="is-size-7">Copyright © 2014-{% currentYear %}
+              {{ site.copyright }}.</p>
+            <p class="is-size-7">All trademarks and registered trademarks are the property of their respective owners.</p>
+            <p class="is-size-7 mt-1">Icons <strong>Unicons</strong> by <a href="https://iconscout.com" rel="nofollow noreferer">Iconscout</a>
+            </p>
+          </div>
+          <div class="column">
+            <div class="content">
+              <h2 class="title is-4">Fresh from the blog</h2>
+              <ul>
+                {% for post in collections.blog | removeUrl(page.url) | reverse | keep(5) %}
+                  <li>
+                    <a href="{{ post.url }}">{{ post.data.title }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
         <hr/>
         <p class="mt-2">Found an error or something that can be improved? You can help us make this website better on <a href="https://github.com/nodejs-design-patterns-book/nodejsdesignpatterns.com">GitHub</a>!</p>
       </div>
