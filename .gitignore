@@ -40,3 +40,4 @@ build/
 src/_includes/assets/
 .idea/
 .cache/
+.eslintcache
