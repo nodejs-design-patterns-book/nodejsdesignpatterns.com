@@ -369,7 +369,73 @@ In general, generators can be considered great syntactic sugars to write iterato
 
 ## The JavaScript async iterator protocol
 
-...
+Ok, so far we have explored only synchronous iteration protocols. What about async?
+
+Unsurprisingly, both the iterator protocol and the iterable protocol have their async counterparts!
+
+Let's start with the **async iterator protocol**:
+
+> An object is an **async iterator** if it has a `next()` method. Every time you call it, it returns **a promise that resolves** to an object with the keys `done` (boolean) and `value`.
+
+Note how this is quite similar to the synchronous version of the iterator protocol. The main difference here is that the `next()` function won't return an object straight away. Instead it will return a promise that will eventually resolve to an object.
+
+Let's now revisit our countdown example and let's say we want some time to pass before numbers are _produced_:
+
+```javascript
+import { setTimeout } from 'timers/promises'
+
+function createAsyncCountdown (from, delay = 1000) {
+  let nextVal = from
+  return {
+    async next () {
+      await setTimeout(delay)
+      if (nextVal < 0) {
+        return { done: true }
+      }
+
+      return { done: false, value: nextVal-- }
+    }
+  }
+}
+```
+
+Note that this time we are using an _async_ function to implement `next()`. This will make this method immediately return a promise, that will later resolve when we run one of the `return` statements from within the _async_ function.
+
+Also, note that here we are using `setTimeout` from `timers/promises`, a new core module available from Node.js 16.
+
+Ok, now we are ready to use this iterator:
+
+```javascript
+const countdown = createAsyncCountdown(3)
+console.log(await countdown.next()) // { done: false, value: 3 }
+console.log(await countdown.next()) // { done: false, value: 2 }
+console.log(await countdown.next()) // { done: false, value: 1 }
+console.log(await countdown.next()) // { done: false, value: 0 }
+console.log(await countdown.next()) // { done: true }
+```
+
+This works very similarly as it's syncrhonous counterpart with two notable exceptions:
+
+  - We need to use `await` to wait for the next element to be produced.
+  - Between one element and another about 1 second will pass, so this iteration is much slower.
+
+{% image './blog/articles/javascript-async-iterators/javascript-async-iterator-countdown.gif', 'An example of JavaScript async iterator', { maxWidth: 600 }  %}
+
+Of course, here we can use generators as well as a nice syntactic sugar:
+
+```javascript
+import { setTimeout } from 'timers/promises'
+
+async function * createAsyncCountdown (from, delay = 1000) {
+  for (let i = from; i >= 0; i--) {
+    await setTimeout(delay)
+    yield i
+  }
+}
+```
+
+This code is more concise and probably more readable to those accustomed with async functions and generator functions.
+
 
 ## The JavaScript async iterable protocol
 
@@ -379,17 +445,17 @@ In general, generators can be considered great syntactic sugars to write iterato
 
 ...
 
+
+### Node.js streams are async iterators
+
+...
+
+
+### Converting a Node.js event emitter to an async iterator
+
+...
+
 ## Consuming paginated data with async iterators
-
-...
-
-
-## Node.js streams are async iterators
-
-...
-
-
-## Converting a Node.js event emitter to an async iterator
 
 ...
 
