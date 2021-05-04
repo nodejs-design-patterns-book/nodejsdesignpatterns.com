@@ -1,6 +1,6 @@
 ---
-date: 2021-05-04T18:00:00
-updatedAt: 2021-05-04T18:00:00
+date: 2021-05-04T13:10:00
+updatedAt: 2021-05-04T13:10:00
 title: JavaScript async iterators
 permalink: /blog/javascript-async-iterators/
 description: An in-depth exploration of JavaScript iteration protocols with a special focus on async iterators
