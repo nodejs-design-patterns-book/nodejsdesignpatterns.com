@@ -1,6 +1,6 @@
 ---
-date: 2021-05-03T18:00:00
-updatedAt: 2021-05-03T18:00:00
+date: 2021-05-04T18:00:00
+updatedAt: 2021-05-04T18:00:00
 title: JavaScript async iterators
 permalink: /blog/javascript-async-iterators/
 description: An in-depth exploration of JavaScript iteration protocols with a special focus on async iterators
@@ -11,18 +11,18 @@ author_link: https://loige.co/
 tags: ["blog"]
 ---
 
-Did you know that JavaScript offers a few protocols to allow iteration over certain objects? Of course, we know we can easily iterate over arrays, but with these protocols you can make your own custom objects iterable as well.
+Did you know that JavaScript offers a few protocols to allow iteration over certain objects? Of course, we know we can easily iterate over arrays, but with these protocols, you can make your own custom objects iterable as well.
 
-When you have an iterable objects representing a collection, you can use the `for...of` syntax to iterate over every single item of the collection.
+When you have an iterable object representing a collection, you can use the `for...of` syntax to iterate over every single item of the collection.
 
-But what if an object abstracts data generated asyncrhonously? For instance, think of an abstraction that allows us to fetch data from a paginated API, or records consumed in batches from a database, or something as simple as a countdown timer. Well in these cases you can use the `for await...of` syntax!
+But what if an object abstracts data generated asynchronously? For instance, think of an abstraction that allows us to fetch data from a paginated API, or records consumed in batches from a database, or something as simple as a countdown timer. Well in these cases you can use the `for await...of` syntax!
 
-In this article we will learn more about the _iterator_ and the _iterable_ protocol (and their async counterparts) and we will see how to create custom objects that can expose their internal data in an ergonomic and idiomatic way.
+In this article, we will learn more about the _iterator_ and the _iterable_ protocol (and their async counterparts) and we will see how to create custom objects that can expose their internal data in an ergonomic and idiomatic way.
 
 
 ## JavaScript iteration with `for...of`
 
-With EcmaScript 2015, JavaScript got the `for...of` syntax. This syntax provides a very easy way to iterate over collections, like arrays, string, sets and maps.
+With ECMAScript 2015, JavaScript got the `for...of` syntax. This syntax provides a very easy way to iterate over collections, like arrays, string, sets, and maps.
 
 If you have never seen this syntax in action here are some examples:
 
@@ -95,7 +95,7 @@ silver
 bronze
 ```
 
-`Map` is especially interesting, because we can use _destructuring_ to easily iterate over key-value pairs:
+`Map` is especially interesting because we can use _destructuring_ to iterate over key-value pairs:
 
 ```javascript
 const medallists = new Map([
@@ -154,16 +154,16 @@ TypeError: medallists is not iterable
 
 Let's read this error once again: `medallists is not iterable`!
 
-Yeah, the error is clear: a regular JavaScript object is not _iterable_, while arrays, strings, maps and sets are!
+Yeah, the error is clear: a regular JavaScript object is not _iterable_, while arrays, strings, maps, and sets are!
 
 But what does it mean for an object to be _iterable_?
 
-During the rest of this article we will learn how JavaScript knows if a given object is **iterable** and how we can make our own custom _iterable_ objects.
+During the rest of this article, we will learn how JavaScript knows if a given object is **iterable** and how we can make our own custom _iterable_ objects.
 
 
 ## JavaScript iteration with `for await...of`
 
-EcmaScript 2018 introduced a new syntax called `for await...of`. This syntax is somewhat similar to `for...of` but it allows us to iterate over _asynchronous collections_ where data becomes available over time in an asynchronous fashion.
+ECMAScript 2018 introduced a new syntax called `for await...of`. This syntax is somewhat similar to `for...of` but it allows us to iterate over _asynchronous collections_ where data becomes available over time in an asynchronous fashion.
 
 A good use case for this syntax is reading data from a remote source like a database.
 
@@ -184,25 +184,24 @@ for await (const page of paginateListTables({ client }, {})) {
 
 In the example above, `paginateListTables` will _produce_ pages over time, and every page will contain a portion of the data (information about all the available tables).
 
-This approach allow us to list hundreds or even thousands of table names efficiently. In fact, the data can be printed as soon as it is available and we don't have to wait for the entire data set to be received.
+This approach allows us to list hundreds or even thousands of table names efficiently. In fact, the data can be printed as soon as it is available and we don't have to wait for the entire data set to be received.
 
-Note how we are combining here `for await...of` and `for...of`. Pages comes over time asynchronously, so we need to use `for await...of` to iterate over this data. Every page contains an array of table names, so in this case, to iterate over every single table name we can simply use `for...of`.
+Note how we are combining here `for await...of` and `for...of`. Pages become available over time asynchronously, so we need to use `for await...of` to iterate over this data. Every page contains an array of table names, so in this case, to iterate over every single table name we can simply use `for...of`.
 
-In general, we can use the `for await...of` syntax with objects that are **async iterables**.
+In general, we can use the `for await...of` syntax with objects that are **async iterable**.
 
-In the next few sections we will see how JavaScript classifies a given object as _async iterables_ and how we can build our custom _async iterables_.
+In the next few sections, we will see how JavaScript classifies a given object as _async iterable_ and how we can build our custom _async iterable_ objects.
 
 
 ## The JavaScript iterator protocol
 
-JavaScript defines a number of protocols that are used to make object iterables (and async iterables).
+JavaScript defines a number of protocols that are used to make objects iterable (or async iterable).
 
 The first one we are going to start with is the **iterator protocol**.
 
 > In JavaScript, an object is **an iterator** if it has a `next()` method. Every time you call it, it returns an object with the keys `done` (boolean) and `value`.
 
-
-Let's see an example. Let's say we want to build a countdown. This countdown can be initialized with a positive integer and it will produce all the numbers from that value to `0`:
+Let's see an example. Let's say we want to build a countdown. This countdown is initialized with a positive integer and it will produce all the numbers from that value down to `0`:
 
 ```javascript
 function createCountdown (from) {
@@ -222,7 +221,7 @@ function createCountdown (from) {
 }
 ```
 
-In this example, `createCountdown` is a simple factory function. From this function we return an _iterator_ object. In fact, the object implements the _iterator protocol_ defined above. Note that the returned object implements a `next()` method and that this method returns either `{done: true}` or `{done: false, value: someNumber}`.
+In this example, `createCountdown` is a simple factory function. From this function, we return an _iterator_ object. In fact, the object implements the _iterator protocol_ defined above. Note that the returned object implements a `next()` method and that this method returns either `{done: true}` or `{done: false, value: someNumber}`.
 
 Let's see now how can we use this object to extract all the values:
 
@@ -246,7 +245,7 @@ while (!result.done) {
 }
 ```
 
-This will produce:
+This will produce the following output:
 
 ```text
 3
@@ -263,7 +262,7 @@ As we said, the _iterable protocol_ builds on top of the _iterator protocol_ tha
 
 > An object is **iterable** if it implements the `@@iterator` method, a zero-argument function that **returns an iterator**.
 
-Note that with `@@iterator` we indicate a symbol that can be accessed with the global value `Symbol.iterator`.
+Note that with `@@iterator` we indicate a symbol that is accessed with the global value `Symbol.iterator`.
 
 Can we make our countdown example _iterable_? We certainly can!
 
@@ -369,7 +368,7 @@ In general, generators can be considered great syntactic sugars to write iterato
 
 ### The spread syntax for iterable objects
 
-Another interesting detail is that all iterable object can be used with the _spread syntax_.
+Another interesting detail is that all iterable objects can be used with the _spread syntax_.
 
 The spread syntax looks like `...someIterable` and it basically allows us to apply every single element from the iterable to a given context.
 
@@ -400,7 +399,7 @@ Let's start with the **async iterator protocol**:
 
 > An object is an **async iterator** if it has a `next()` method. Every time you call it, it returns **a promise that resolves** to an object with the keys `done` (boolean) and `value`.
 
-Note how this is quite similar to the synchronous version of the iterator protocol. The main difference here is that the `next()` function won't return an object straight away. Instead it will return a promise that will eventually resolve to an object.
+Note how this is quite similar to the synchronous version of the iterator protocol. The main difference here is that the `next()` function won't return an object straight away. Instead, it will return a promise that will eventually resolve to an object.
 
 Let's now revisit our countdown example and let's say we want some time to pass before numbers are _produced_:
 
@@ -437,7 +436,7 @@ console.log(await countdown.next()) // { done: false, value: 0 }
 console.log(await countdown.next()) // { done: true }
 ```
 
-This works very similarly as it's syncrhonous counterpart with two notable exceptions:
+This works very similarly to its synchronous counterpart with two notable exceptions:
 
   - We need to use `await` to wait for the next element to be produced.
   - Between one element and another about 1 second will pass, so this iteration is much slower.
@@ -457,7 +456,7 @@ async function * createAsyncCountdown (from, delay = 1000) {
 }
 ```
 
-This code is more concise and probably more readable, at least to those accustomed with async functions and generator functions.
+This code is more concise and probably more readable, at least to those accustomed to async functions and generator functions.
 
 
 ## The JavaScript async iterable protocol
@@ -503,29 +502,29 @@ As you might expect, this will produce `3`, `2`, `1` and `0` with a delay:
 
 Great!
 
-At this point we know how the JavaScript iteration protocol work and how to create custom iterator and iterables in a synchronous and asynchronous fashion!
+At this point, we know how the JavaScript iteration protocol work and how to create iterator and iterable objects in a synchronous and asynchronous fashion!
 
 
 ## Using JavaScript iteration protocols with Node.js
 
 Everything we have been discussing so far is part of the JavaScript specification, but what about Node.js?
 
-Actually support for these features looks quite good in Node.js!
+Actually, support for these features looks quite good in Node.js!
 
 Synchronous iteration protocols have been supported in Node.js for a long time (since Node.js 0.12).
 
 Recent versions of Node.js (Node.js 10.3) introduced support for async iterators and the `for await...of` syntax.
 
-Synchronous iterables and the `for...of` syntax are quite widespread, so in the next sections we will focus on providing some examples of how you can take advantage of it's asyncrhonous counterpart and the `for await...of` syntax.
+Synchronous iterable objects and the `for...of` syntax are quite widespread, so in the next sections, we will focus on providing some examples of how you can take advantage of its asynchronous counterpart and the `for await...of` syntax.
 
 
 ### Node.js readable streams and async iterators
 
-One interesting detail that certainly needs a bit more visibility is that Node.js _Readable_ streams are async iterables since Node.js 11.14.
+One interesting detail that needs a bit more visibility is that Node.js _Readable_ streams are async iterable since Node.js 11.14.
 
 This basically means that we can consume data from a Readable stream using `for await...of`.
 
-Let's see a simple of a CLI utility that allows us to read the content of a given file and count the number of bytes:
+Let's see a simple example of a CLI utility that allows us to read the content of a given file and count the number of bytes:
 
 ```javascript
 import { createReadStream } from 'fs'
@@ -591,14 +590,16 @@ As you can see, we are using `on(matcher, 'match')` to create an async iterable 
 
 Note that the value produced by this async iterable at every iteration is an array containing all the values contained in the original `match` event. This is the reason why we need to use destructuring to extract the `filePath`.
 
+> TODO: **add a section explaining that this loop is "endless" and mention the abort controller. Maybe provide an example as well**
+
 
 ## Consuming paginated data with async iterators
 
-As we mentioned before with out DynamoDB examples, another great use case for async iteration is when we need to fetch data from a remote paginated dataset. Even more so when we cannot determine how to access the next page until we have fetched the previous one. This is a typical example of asynchronous sequential iteration and it's probably the most adequate use case for async iterators.
+As we mentioned before with the DynamoDB examples, another great use case for async iteration is when we need to fetch data from a remote paginated dataset. Even more so when we cannot determine how to access the next page until we have fetched the previous one. This is a typical example of asynchronous sequential iteration and it's probably the most adequate use case for async iterators.
 
-Just to present a very simple example, let's use [a free and open source Star Wars API](https://swapi.dev/) which allows us to access all the Star Wars characters in a paginated fashion.
+Just to present a very simple example, let's use [a free and open-source Star Wars API](https://swapi.dev/) which allows us to access all the Star Wars characters in a paginated fashion.
 
-In order to use this API we can make a GET request to:
+To get data from this API, we can make a GET request to the following endpoint:
 
 ```text
 https://swapi.dev/api/people
@@ -673,7 +674,7 @@ Leia Organa
 
 ## Wrapping up
 
-This concludes our exploration of JavaScript iteration protocols. At this point you should feel confortable understanding what the various protocols are and how to use the `for...of` and `for await...of` constructs effectively in both JavaScript and Node.js.
+This concludes our exploration of JavaScript iteration protocols. At this point, you should feel comfortable understanding what the various protocols are and how to use `for...of` and `for await...of` effectively in both JavaScript and Node.js.
 
 These techniques are often ideal to implement synchronous and asynchronous sequential iteration patterns, which makes them very effective tools in our toolbelt.
 
