@@ -590,14 +590,61 @@ As you can see, we are using `on(matcher, 'match')` to create an async iterable 
 
 Note that the value produced by this async iterable at every iteration is an array containing all the values contained in the original `match` event. This is the reason why we need to use destructuring to extract the `filePath`.
 
-> TODO: **add a section explaining that this loop is "endless" and mention the abort controller. Maybe provide an example as well**
+At this point you might ask: "wait a second, but how do we know, with this approach, when there are no more events to process?"
+
+And that's a great question... we don't!
+
+In fact, we are only listening for `match` events and we don't really have a way to stop the loop.
+
+If we put any code just after the `for await...of` loop, that code will never be executed.
+
+One solution to this problem is the `AbortController`, which allows us to create an Async Iterable that can be aborted.
+
+With that, we could listen for the `end` event on our `matcher` instance and, once that happens, we can use the `AbortController` to stop the iteration.
+
+Let's see some code:
+
+```javascript
+import { on } from 'events'
+import glob from 'glob'
+
+const matcher = glob('**/*.js')
+const ac = new global.AbortController()
+
+matcher.once('end', () => ac.abort())
+
+try {
+  for await (const [filePath] of on(matcher, 'match', { signal: ac.signal })) {
+    console.log(`./${filePath}`)
+  }
+} catch (err) {
+  if (!ac.signal.aborted) {
+    console.error(err)
+    process.exit(1)
+  }
+}
+
+console.log('NOW WE GETTING HERE! :)')
+```
+
+In the code example above, you can see that we are creating a new instance of `AbortController` by using `new global.AbortController()`.
+
+Then, we listen for the `end` event on our `matcher` and when that happens we invoke `abort()` on our `AbortController` instance.
+
+The last step is to pass the `AbortController` instance to the `on()` function. We do that by passing an options object and using the `signal` option.
+
+You might have noticed that we also added a `try/catch` block. This is actually very important. When we stop the iteration using an `AbortController` this will not simply stop the iteration, but it will raise an exception.
+
+In this case the exception is expected, so we handle it gracefully. We also want to distinguish the abort exception from other unintended exceptions, so we make sure to check wheter our abort signal was raised, otherwise we exit the program with an error.
+
+Note that this is a lot of work, so this pattern, while it's cute, might not always give you great benefits compared to simply handling events using regular listeners.
 
 
 ## Consuming paginated data with async iterators
 
 As we mentioned before with the DynamoDB examples, another great use case for async iteration is when we need to fetch data from a remote paginated dataset. Even more so when we cannot determine how to access the next page until we have fetched the previous one. This is a typical example of asynchronous sequential iteration and it's probably the most adequate use case for async iterators.
 
-Just to present a very simple example, let's use [a free and open-source Star Wars API](https://swapi.dev/) which allows us to access all the Star Wars characters in a paginated fashion.
+Just to present a very simple example, let's use [a free and open-source Star Wars API](https://swapi.dev/) (happy May 4th everyone!) which allows us to access all the Star Wars characters in a paginated fashion.
 
 To get data from this API, we can make a GET request to the following endpoint:
 
