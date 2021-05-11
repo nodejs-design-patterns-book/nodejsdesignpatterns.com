@@ -785,4 +785,4 @@ CIAO 👋
 
 P.S. All the examples presented in this article are available on GitHub at [lmammino/javascript-iteration-protocols](https://github.com/lmammino/javascript-iteration-protocols).
 
-<small>Thanks to [Mario Casciaro](https://twitter.com/mariocasciaro) for the kind review of this article.</small>
+<small>Thanks to [Mario Casciaro](https://twitter.com/mariocasciaro) for the kind review of this article and to [Kelvin Omereshone](https://twitter.com/Dominus_Kelvin) for finding and fixing a few typos.</small>
