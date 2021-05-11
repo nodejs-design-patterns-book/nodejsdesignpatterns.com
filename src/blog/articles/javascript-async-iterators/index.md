@@ -488,7 +488,7 @@ function createAsyncCountdown (from, delay = 1000) {
 }
 ```
 
-At this point, our `createAsyncCountdown` is return a valid async iterator, so we can finally use the `for await...of` syntax:
+At this point, our `createAsyncCountdown` returns a valid async iterator, so we can finally use the `for await...of` syntax:
 
 ```javascript
 const countdown = createAsyncCountdown(3)
@@ -718,12 +718,12 @@ This request will respond with a JSON message that looks like this:
 		{
 			"name": "Sly Moore",
 			"height": "178",
-      "...": "mode fields...",
+      "...": "more fields...",
     },
     {
       "name": "Another character",
 			"height": "whatever",
-      "...": "mode fields...",
+      "...": "more fields...",
     },
     {
       "...": "more characters"
