@@ -12,7 +12,7 @@ patterns and techniques presented in this book.`
   {
     id: 'faq-is-this-book-for-me',
     question: 'I am new to JavaScript and Node.js, is this book for me?',
-    answer: `This book assumes that you have an intermediate understanding of JavasScript, web application development,
+    answer: `This book assumes that you have an intermediate understanding of JavaScript, web application development,
 databases, and software design principles. If you are new to JavaScript but you are familiar with other languages and
 technologies this book can still be a valuable resource for you but we do recommend you to get familiar with the
 basics of JavaScript first.
@@ -33,7 +33,7 @@ technologies such as Redis, RabbitMQ, ZeroMQ, and LevelDB.`
   {
     id: 'faq-download-for-free',
     question: 'Can I download Node.js Design Patterns for FREE?',
-    answer: `**No**. Node.js Design Patterns is the result of countless hours of hard work by the authors, the reviewers and 
+    answer: `**No**. Node.js Design Patterns is the result of countless hours of hard work by the authors, the reviewers, and 
 many professionals at Packt, so we simply can't afford to give it away for free. If you want to have a feeling about the
 quality of the content in the book, you can [download Chapter 9: Behavioural Design Patterns](#sample-chapter) for FREE.
 You can also check out for FREE all the code examples available in the book on
