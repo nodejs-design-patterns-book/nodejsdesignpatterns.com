@@ -100,7 +100,7 @@ If we execute this code, we will see the following output:
 You can see that all the binary data (~300Kb) was loaded in the buffer, but also that this feature (as of v17.7.1) is still experimental and therefore we get a warning. You will get a similar warning also when trying to use `consumers.arrayBuffer` and `consumers.blob`. This will be the case until `buffer.Blob` is stabilised.
 
 
-## Reading a JSON file from a Readable stream
+## Reading a JSON object from a Readable stream
 
 Similarly to what we just saw in the previous section, we can use the `stream/consumers` library to consume the entire content of a `ReadableStream` as a JSON encoded string. For instance, we could use this to process the response body from an HTTP request:
 
@@ -144,7 +144,7 @@ Here we are using the awesome (and free) [The Rick and Morty API](https://rickan
 It's also worth mentioning that `consumers.json` does not produce any warning, so this feature can be considered stable in Node.js 16.
 
 
-## Reading a text file from a Readable stream
+## Reading a text from a Readable stream
 
 Let's discuss one more example. Let's try to consume an entire readable stream as text, which means that we will be consuming the stream assuming it's a valid UTF-8 encoded string and save the result into a string variable.
 
