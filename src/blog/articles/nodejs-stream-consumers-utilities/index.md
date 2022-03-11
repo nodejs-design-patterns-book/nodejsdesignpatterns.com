@@ -1,6 +1,6 @@
 ---
 date: 2022-03-11T12:30:00
-updatedAt: 2022-03-11T12:30:00
+updatedAt: 2022-03-11T21:20:00
 title: Node.js stream consumer utilities
 permalink: /blog/node-js-stream-consumer/
 description: How to easily read all the content of a readable stream using async await
@@ -42,7 +42,9 @@ If you wish there was an easier way, well keep reading, this article is for you!
 
 Since Node.js version 16, there is a new built in stream utility library called `stream/consumers` which offers a bunch of useful utilities to consume the entire content of a `ReadableStream`.
 
-At the time of writing this article, `stream/consumers` does not even appear in the official Node.js documentation, so it's still of a hidden gem. Hopefully this article will help to spread the word a little bit.
+~~At the time of writing this article, `stream/consumers` does not even appear in the official Node.js documentation, so it's still of a hidden gem. Hopefully this article will help to spread the word a little bit.~~
+
+**UPDATE**: It turns out that this module is documented under the [Web Streams API section](https://nodejs.org/api/webstreams.html#streamconsumersjsonstream) and in fact these utilities are both compatible with Node.js streams and web streams.
 
 Without further ado, let's see what's inside this module:
 
