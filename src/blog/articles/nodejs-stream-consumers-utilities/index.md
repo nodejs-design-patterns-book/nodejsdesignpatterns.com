@@ -214,6 +214,6 @@ When we accumulate an entire stream we are effectively defeating all the advanta
 
 This is all for this article, feel free to [reach out to me on Twitter](https://twitter.com/loige) if you found this article interesting and if you think you learned something useful.
 
-If you are curious, you can also [read the code of the `stream/consumers` module](https://github.com/nodejs/node/blob/master/lib/stream/consumers.js), it's actually a really thin layer (less than 100 lines) and you can learn a trick or two by doing that.
+If you are curious, you can also [read the code of the `stream/consumers` module](https://github.com/nodejs/node/blob/main/lib/stream/consumers.js), it's actually a really thin layer (less than 100 lines) and you can learn a trick or two by doing that.
 
 See you in the next article!

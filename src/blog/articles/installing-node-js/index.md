@@ -289,7 +289,7 @@ In short, this is "the good" and "the bad" of following this approach:
 
 ## Install Node.js from source
 
-If you are brave enough to be willing to build and install Node.js from source, your first stop should be the [official documentation on how to build Node.js from source](https://github.com/nodejs/node/blob/master/BUILDING.md).
+If you are brave enough to be willing to build and install Node.js from source, your first stop should be the [official documentation on how to build Node.js from source](https://github.com/nodejs/node/blob/main/BUILDING.md).
 
 Here is a brief summary of all the steps involved:
 
