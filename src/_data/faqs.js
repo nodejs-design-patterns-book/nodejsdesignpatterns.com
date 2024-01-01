@@ -89,7 +89,7 @@ into practice. Node.js Design Patterns contains 50 exercises in total.`
   {
     id: 'faq-more-questions',
     question: 'I have more questions!',
-    answer: `You are more than welcome to reach out to the authors on Twitter 
+    answer: `You are more than welcome to reach out to the authors on X 
 ([@mariocasciaro](https://twitter.com/mariocasciaro) and [@loige](https://twitter.com/loige)) or you can write an email to 
 [authors@nodejsdesignpatterns.com](mailto:authors@nodejsdesignpatterns.com).`
   }

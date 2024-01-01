@@ -2,41 +2,41 @@
 
 // palette
 $black: #323232;
-$blackD1: darken( $black, 10% );
-$blackD2: darken( $black, 20% );
-$blackD3: darken( $black, 30% );
-$blackL1: lighten( $black, 10% );
-$blackL2: lighten( $black, 20% );
-$blackL3: lighten( $black, 30% );
+$blackD1: darken($black, 10%);
+$blackD2: darken($black, 20%);
+$blackD3: darken($black, 30%);
+$blackL1: lighten($black, 10%);
+$blackL2: lighten($black, 20%);
+$blackL3: lighten($black, 30%);
 $orange: #da8f4c;
-$orangeD1: darken( $orange, 10% );
-$orangeD2: darken( $orange, 20% );
-$orangeD3: darken( $orange, 30% );
-$orangeL1: lighten( $orange, 10% );
-$orangeL2: lighten( $orange, 20% );
-$orangeL3: lighten( $orange, 30% );
+$orangeD1: darken($orange, 10%);
+$orangeD2: darken($orange, 20%);
+$orangeD3: darken($orange, 30%);
+$orangeL1: lighten($orange, 10%);
+$orangeL2: lighten($orange, 20%);
+$orangeL3: lighten($orange, 30%);
 $green: #b9eec5;
-$greenD1: darken( $green, 10% );
-$greenD2: darken( $green, 20% );
-$greenD3: darken( $green, 30% );
-$greenD4: darken( $green, 40% );
-$greenL1: lighten( $green, 10% );
-$greenL2: lighten( $green, 20% );
-$greenL3: lighten( $green, 30% );
+$greenD1: darken($green, 10%);
+$greenD2: darken($green, 20%);
+$greenD3: darken($green, 30%);
+$greenD4: darken($green, 40%);
+$greenL1: lighten($green, 10%);
+$greenL2: lighten($green, 20%);
+$greenL3: lighten($green, 30%);
 $gray: #e5e5e5;
-$grayD1: darken( $gray, 10% );
-$grayD2: darken( $gray, 20% );
-$grayD3: darken( $gray, 30% );
-$grayL1: lighten( $gray, 10% );
-$grayL2: lighten( $gray, 20% );
-$grayL3: lighten( $gray, 30% );
+$grayD1: darken($gray, 10%);
+$grayD2: darken($gray, 20%);
+$grayD3: darken($gray, 30%);
+$grayL1: lighten($gray, 10%);
+$grayL2: lighten($gray, 20%);
+$grayL3: lighten($gray, 30%);
 $white: #ffffff;
-$whiteD1: darken( $white, 10% );
-$whiteD2: darken( $white, 20% );
-$whiteD3: darken( $white, 30% );
-$whiteL1: lighten( $white, 10% );
-$whiteL2: lighten( $white, 20% );
-$whiteL3: lighten( $white, 30% );
+$whiteD1: darken($white, 10%);
+$whiteD2: darken($white, 20%);
+$whiteD3: darken($white, 30%);
+$whiteL1: lighten($white, 10%);
+$whiteL2: lighten($white, 20%);
+$whiteL3: lighten($white, 30%);
 
 @import "./fonts.scss";
 
@@ -48,11 +48,13 @@ $family-sans-serif: 'Open Sans', sans-serif;
 html {
   scroll-behavior: smooth;
 }
+
 @media(prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  #faq p.desc  {
+
+  #faq p.desc {
     transition: none;
   }
 }
@@ -61,7 +63,7 @@ html {
   width: 3rem;
 }
 
-.svg-icon svg  {
+.svg-icon svg {
   fill: $orange;
 }
 
@@ -70,8 +72,9 @@ html {
 }
 
 .title.underline span {
-  background-size: 2px 1em ;
-  box-shadow: inset 0 -0.175em #b9eec5, inset 0 -0.2em #b9eec5;;
+  background-size: 2px 1em;
+  box-shadow: inset 0 -0.175em #b9eec5, inset 0 -0.2em #b9eec5;
+  ;
   display: inline;
   box-shadow: inset 0 -0.175em #b9eec5, inset 0 -0.2em #b9eec5;
 }
@@ -85,26 +88,25 @@ html {
   content: '"';
   font-size: 3rem;
   line-height: 100%;
-  font-family: "Coustard",serif;
+  font-family: "Coustard", serif;
   position: relative;
   bottom: -.75rem;
   margin-right: .25rem;
   color: $orange;
 }
 
-p, h1, h2, h3, h4, div {
-  line-height: 1.5rem;;
+p,
+h1,
+h2,
+h3,
+h4,
+div {
+  line-height: 1.5rem;
+  ;
 }
 
 img.avatar {
   border: 4px solid $green;
-}
-
-.floating-label {
-  position: absolute;
-  z-index: 999;
-  right: 1rem;
-  top: 2rem;
 }
 
 nav a.navbar-item {
@@ -159,12 +161,15 @@ nav.navbar {
     line-height: 4.5rem;
     font-size: 3.5rem;
   }
+
   h2 {
     line-height: 3rem;
     font-size: 1.8rem;
   }
+
   .buttons {
     margin: 1.5rem 0 0 0;
+
     .button {
       height: 3rem;
     }
@@ -187,20 +192,25 @@ nav.navbar {
   .column {
     padding: 0 0.75rem;
   }
+
   h2 {
     margin: 0;
     padding: 1.5rem 0 1.5rem 0;
     line-height: 3rem;
   }
+
   h3 {
     line-height: 3rem;
     font-size: 1.8rem;
   }
+
   p {
     margin: 1.5rem 0 0 0;
   }
+
   .buttons {
     margin: 1.5rem 0 0 0;
+
     .button {
       height: 3rem;
     }
@@ -208,7 +218,9 @@ nav.navbar {
 }
 
 #book-content {
-  h2, h3 {
+
+  h2,
+  h3 {
     margin: 0;
     padding: 0;
     line-height: 3rem;
@@ -235,13 +247,17 @@ nav.navbar {
 }
 
 #sample-chapter {
-  h2, h3 {
+
+  h2,
+  h3 {
     line-height: 3rem;
     margin: 0;
   }
+
   p {
     margin-top: 1.5rem;
   }
+
   .buttons {
     .button {
       height: 3rem;
@@ -388,7 +404,7 @@ nav.navbar {
     width: 100%;
     cursor: pointer;
     position: relative;
-  
+
 
     &:active {
       border: none;
@@ -490,7 +506,10 @@ nav.navbar {
 
 .article {
   article {
-    h2, h3, h4 {
+
+    h2,
+    h3,
+    h4 {
       margin-top: 1.25em;
 
       code {
@@ -500,7 +519,7 @@ nav.navbar {
         color: inherit;
       }
     }
-    
+
     p {
       margin-top: .75em;
     }
@@ -519,13 +538,13 @@ nav.navbar {
       p {
         color: #616161;
         display: flex;
-        align-items:center;
+        align-items: center;
         font-size: 1em;
       }
 
       a {
         display: flex;
-        align-items:center;
+        align-items: center;
         margin: 0 .75em 0 0;
       }
 
@@ -611,7 +630,7 @@ nav.navbar {
         padding: 3rem 1.5rem 1.5rem 1.5rem;
         position: relative;
         transition-duration: 86ms;
-        transition-property: background-color,color;
+        transition-property: background-color, color;
       }
 
       a:hover {
@@ -648,7 +667,7 @@ nav.navbar {
     justify-content: space-around;
     flex-wrap: wrap;
     margin: 3em 0 3em 0;
-  
+
     .resource {
       width: 33%;
       min-width: 300px;
@@ -668,7 +687,7 @@ nav.navbar {
           }
         }
       }
-  
+
       figure {
         text-align: center;
         padding: 1em 0;
@@ -676,20 +695,20 @@ nav.navbar {
         span.icon {
           width: 2.5em;
         }
-  
+
         svg {
           font-size: 2em;
           height: 48px;
         }
       }
-  
+
       h4 {
         text-align: center;
         color: $primary;
         font-weight: bold;
         font-size: 1.5em;
       }
-  
+
       p {
         padding: 1em;
         text-align: center;

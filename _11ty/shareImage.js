@@ -10,6 +10,10 @@ export default function shareImage (config) {
       throw new Error('Missing `title` on generateShareImage')
     }
 
+    if (typeof this.page.fileSlug === 'undefined') {
+      return 'https://www.nodejsdesignpatterns.com/img/node-js-design-patterns.jpg'
+    }
+
     const filename = `og_${this.page.fileSlug}.jpg`
     const destFolder = dirname(this.page.outputPath)
     await mkdirp(destFolder)

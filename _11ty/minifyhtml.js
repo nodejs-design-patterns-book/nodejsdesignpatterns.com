@@ -15,7 +15,7 @@ const banner = `<!--
 
 
 > Hey, it seems you are a curious one and that you like to hack! :) 
-> Maybe you should follow us on Twitter at @mariocasciaro & @loige
+> Maybe you should follow us on X at @mariocasciaro & @loige
 
 > Did you know that this website is open source?
 > Check out https://github.com/nodejs-design-patterns-book/nodejsdesignpatterns.com
