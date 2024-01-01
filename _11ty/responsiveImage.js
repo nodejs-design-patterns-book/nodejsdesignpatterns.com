@@ -1,13 +1,15 @@
 'use strict'
 
-const { cpus } = require('os')
-const { join, extname, basename } = require('path')
-const { access } = require('fs').promises
-const Image = require('@11ty/eleventy-img')
+import { cpus } from 'node:os'
+import { join, extname, basename } from 'node:path'
+import { access } from 'node:fs/promises'
+import * as url from 'node:url'
+import Image from '@11ty/eleventy-img'
 
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 Image.concurrency = (cpus()).length
 
-module.exports = function responsiveImage (config) {
+export default function responsiveImage (config) {
   // Add responsive image helper
   config.addNunjucksAsyncShortcode('responsiveImage', async function (src, alt, options = {}) {
     if (typeof alt === 'undefined') {
@@ -45,8 +47,8 @@ module.exports = function responsiveImage (config) {
     const html = `<span style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: ${maxWidth}px; ">
 <picture>
   ${Object.values(stats).map(imageFormat => {
-  return `<source type="image/${imageFormat[0].format}" srcset="${imageFormat.map(entry => `${entry.url} ${entry.width}w`).join(', ')}" sizes="${sizes}">`
-}).join('\n')}
+      return `<source type="image/${imageFormat[0].format}" srcset="${imageFormat.map(entry => `${entry.url} ${entry.width}w`).join(', ')}" sizes="${sizes}">`
+    }).join('\n')}
 <img loading="lazy" decoding="async" style="max-width: 100%; width: 100%; margin: 0px; vertical-align: middle;" ${options.class ? `class="${options.class}"` : ''} alt="${alt}" src="${lowestSrc.url}" width="${lowestSrc.width}" height="${lowestSrc.height}">
 </picture>
 </span>`

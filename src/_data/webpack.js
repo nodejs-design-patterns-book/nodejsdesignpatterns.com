@@ -1,10 +1,11 @@
-'use strict'
+import path from 'node:path'
+import * as url from 'node:url'
+import { readFile } from 'fs/promises'
+import { hashFile } from 'hasha'
 
-const path = require('path')
-const { readFile } = require('fs').promises
-const hasha = require('hasha')
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 
-module.exports = async function () {
+export default async function () {
   // Add webpack assets as globals
   const assetsPath = path.join(__dirname, '..', '_includes', 'assets')
   const manifestPath = path.join(assetsPath, 'manifest.json')
@@ -14,7 +15,7 @@ module.exports = async function () {
   const styles = []
   const assets = []
   for await (const [originalName, compiledName] of Object.entries(manifest)) {
-    const hash = await hasha.fromFile(path.join(assetsPath, compiledName), { algorithm: 'sha256', encoding: 'base64' })
+    const hash = await hashFile(path.join(assetsPath, compiledName), { algorithm: 'sha256', encoding: 'base64' })
     const integrity = `sha256-${hash}`
     const entry = { originalName, compiledName, href: `/assets/${compiledName}`, hash, integrity, html: '' }
     if (compiledName.endsWith('.css')) {

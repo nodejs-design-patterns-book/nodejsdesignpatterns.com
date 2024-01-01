@@ -1,6 +1,4 @@
-'use strict'
-
-module.exports = function copyStaticFiles (config) {
+export default function copyStaticFiles (config) {
   // Pass-through files
   config.addPassthroughCopy('src/CNAME')
   config.addPassthroughCopy({ 'src/static/*': '.' })

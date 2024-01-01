@@ -1,8 +1,9 @@
-'use strict'
+import Module from 'node:module'
+const require = Module.createRequire(import.meta.url)
 
 const eleventyPackage = require('@11ty/eleventy/package.json')
 
-module.exports = function () {
+export default function () {
   return {
     domain: 'www.nodejsdesignpatterns.com',
     url: 'https://www.nodejsdesignpatterns.com',

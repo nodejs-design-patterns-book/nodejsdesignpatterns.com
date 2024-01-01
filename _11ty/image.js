@@ -1,9 +1,10 @@
-'use strict'
+import { join, extname, basename } from 'node:path'
+import { createReadStream, createWriteStream } from 'node:fs'
+import { access } from 'node:fs/promises'
+import { createHash } from 'node:crypto'
+import * as url from 'node:url'
 
-const { join, extname, basename } = require('path')
-const { createReadStream, createWriteStream } = require('fs')
-const { access } = require('fs').promises
-const { createHash } = require('crypto')
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 
 function hashFile (fileStream) {
   return new Promise((resolve, reject) => {
@@ -26,7 +27,7 @@ function copyFile (fileStream, dest) {
   })
 }
 
-module.exports = function image (config) {
+export default function image (config) {
   config.addNunjucksAsyncShortcode('image', async function (src, alt, options) {
     if (typeof alt === 'undefined') {
       throw new Error(`Missing \`alt\` on image from: ${src}`)

@@ -1,8 +1,6 @@
-'use strict'
-
-require('../scss/style.scss')
-const navbar = require('./navbar')
-const faqs = require('./faqs')
+import '../scss/style.scss'
+import navbar from './navbar.js'
+import faqs from './faqs.js'
 
 document.addEventListener('DOMContentLoaded', () => {
   navbar() // init navbar

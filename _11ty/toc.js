@@ -1,8 +1,6 @@
-'use strict'
+import pluginTOC from 'eleventy-plugin-toc'
 
-const pluginTOC = require('eleventy-plugin-toc')
-
-module.exports = function toc (config) {
+export default function toc (config) {
   config.addPlugin(pluginTOC, {
     tags: ['h2'],
     wrapper: 'div'

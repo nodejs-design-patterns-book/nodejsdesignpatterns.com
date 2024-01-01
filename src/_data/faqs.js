@@ -1,6 +1,4 @@
-'use strict'
-
-module.exports = [
+const faq = [
   {
     id: 'faq-who-is-this-book-for',
     question: 'Who is this book for?',
@@ -96,3 +94,5 @@ into practice. Node.js Design Patterns contains 50 exercises in total.`
 [authors@nodejsdesignpatterns.com](mailto:authors@nodejsdesignpatterns.com).`
   }
 ]
+
+export default faq

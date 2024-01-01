@@ -1,6 +1,4 @@
-'use strict'
-
-const htmlmin = require('html-minifier')
+import htmlmin from 'html-minifier'
 
 const banner = `<!--
 888b    888               888              d8b               8888888b.                    d8b                        8888888b.          888    888                                      
@@ -24,7 +22,7 @@ const banner = `<!--
 
 -->`
 
-module.exports = function minifyhtml (config) {
+export default function minifyhtml (config) {
   // Add HTML minification transform
   config.addTransform('htmlmin', function (content, outputPath) {
     if (outputPath.endsWith('.html')) {

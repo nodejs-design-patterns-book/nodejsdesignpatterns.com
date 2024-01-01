@@ -1,11 +1,12 @@
-'use strict'
+import { join } from 'node:path'
+import { readFile } from 'node:fs/promises'
+import * as url from 'node:url'
+import { PurgeCSS } from 'purgecss'
+import { minify } from 'csso'
 
-const { join } = require('path')
-const { readFile } = require('fs').promises
-const PurgeCSS = require('purgecss').PurgeCSS
-const csso = require('csso')
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 
-module.exports = function purifycss (config) {
+export default function purifycss (config) {
   // optimize css - removes unused css and inlines css
   config.addTransform('purifyCss', async function (content, outputPath) {
     if (outputPath.endsWith('.html')) {
@@ -35,7 +36,7 @@ module.exports = function purifycss (config) {
           variables: true
         })
 
-        const after = csso.minify(purged[0].css).css
+        const after = minify(purged[0].css).css
         newContent = newContent.replace(match, `<style>${after}</style>`)
       }
 

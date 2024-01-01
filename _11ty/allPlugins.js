@@ -1,20 +1,17 @@
-'use strict'
+import rss from '@11ty/eleventy-plugin-rss'
+import syntaxHighlight from '@11ty/eleventy-plugin-syntaxhighlight'
+import copyStaticFiles from './copyStaticFiles.js'
+import configureMarkdown from './configureMarkdown.js'
+import toc from './toc.js'
+import purifycss from './purifycss.js'
+import minifyhtml from './minifyhtml.js'
+import nunjucksFilters from './nunjucksFilters.js'
+import shareImage from './shareImage.js'
+import responsiveImage from './responsiveImage.js'
+import image from './image.js'
 
-const rss = require('@11ty/eleventy-plugin-rss')
-const syntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight')
-const copyStaticFiles = require('./copyStaticFiles')
-const configureMarkdown = require('./configureMarkdown')
-const toc = require('./toc')
-const purifycss = require('./purifycss')
-const minifyhtml = require('./minifyhtml')
-const nunjucksFilters = require('./nunjucksFilters')
-const shareImage = require('./shareImage')
-const responsiveImage = require('./responsiveImage')
-const image = require('./image')
-
-module.exports = function allPlugins (config) {
+export default function allPlugins (config) {
   config.setUseGitIgnore(false)
-
   config.addPlugin(rss)
   config.addPlugin(syntaxHighlight)
   config.addPlugin(copyStaticFiles)

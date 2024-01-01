@@ -1,6 +1,4 @@
-'use strict'
-
-module.exports = [
+const quotes = [
   {
     name: 'Joe Karlsson',
     role: 'Software Engineer at MongoDB',
@@ -87,3 +85,5 @@ module.exports = [
     text: 'I have "Node.js Design Patterns" always at hand both when I start quick new projects and when the time comes to refactor the larger and mature ones. It\'s an invaluable and well-structured source of patterns, best practices, and guidelines.  Also, it’s always good to know that particular features are in use in well-known projects - thanks to the “In the wild” section. As a full-stack developer focused on the front-end, I especially enjoyed a chapter about universal JavaScript.'
   }
 ]
+
+export default quotes

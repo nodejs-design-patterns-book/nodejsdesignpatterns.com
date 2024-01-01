@@ -1,11 +1,9 @@
-'use strict'
+import { join, dirname } from 'node:path'
+import { writeFile } from 'node:fs/promises'
+import { mkdirp } from 'mkdirp'
+import EleventyFetch from '@11ty/eleventy-fetch'
 
-const { join, dirname } = require('path')
-const { writeFile } = require('fs').promises
-const mkdirp = require('mkdirp')
-const Cache = require('@11ty/eleventy-cache-assets')
-
-module.exports = function shareImage (config) {
+export default function shareImage (config) {
   // Generates blog share images
   config.addNunjucksAsyncShortcode('generateShareImage', async function (title) {
     if (typeof title === 'undefined') {
@@ -30,7 +28,7 @@ module.exports = function shareImage (config) {
       // base image
       '/nodejsdesignpatterns/fsb-bg-share-fb.png'
 
-    const image = await Cache(imageUrl, { duration: '1d', type: 'buffer' })
+    const image = await EleventyFetch(imageUrl, { duration: '1d', type: 'buffer' })
     await writeFile(destPath, image)
 
     return destUrl

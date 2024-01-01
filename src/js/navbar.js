@@ -1,6 +1,4 @@
-'use strict'
-
-module.exports = () => {
+export default function navbar () {
   // Get all "navbar-burger" elements
   const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0)
 

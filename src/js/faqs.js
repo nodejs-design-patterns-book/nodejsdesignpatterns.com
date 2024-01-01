@@ -1,6 +1,4 @@
-'use strict'
-
-module.exports = () => {
+export default function faqs () {
   const buttons = document.querySelectorAll('dl.faq button')
 
   function toggle (btn, skipIfAnchor = false) {

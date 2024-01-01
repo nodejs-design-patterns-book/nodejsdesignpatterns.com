@@ -1,9 +1,7 @@
-'use strict'
+import format from 'date-fns/format'
+import markdownIt from 'markdown-it'
 
-const format = require('date-fns/format')
-const markdownIt = require('markdown-it')
-
-module.exports = function nunjucksFilters (config) {
+export default function nunjucksFilters (config) {
   // Add is_array filter
   config.addFilter('is_array', function (value) {
     return Array.isArray(value)

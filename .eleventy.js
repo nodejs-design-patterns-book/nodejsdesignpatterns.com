@@ -1,8 +1,6 @@
-'use strict'
+import allPlugins from './_11ty/allPlugins.js'
 
-const allPlugins = require('./_11ty/allPlugins')
-
-module.exports = function (config) {
+export default function (config) {
   config.addPlugin(allPlugins)
 
   return {

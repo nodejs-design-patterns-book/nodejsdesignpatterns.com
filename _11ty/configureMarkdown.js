@@ -1,10 +1,8 @@
-'use strict'
+import markdownIt from 'markdown-it'
+import markdownItAnchor from 'markdown-it-anchor'
+import markdownItClass from '@toycode/markdown-it-class'
 
-const markdownIt = require('markdown-it')
-const markdownItAnchor = require('markdown-it-anchor')
-const markdownItClass = require('@toycode/markdown-it-class')
-
-module.exports = function configureMarkdown (config) {
+export default function configureMarkdown (config) {
   // configure markdown
   const mdClassesMapping = {
     h2: ['title', 'is-2'],
