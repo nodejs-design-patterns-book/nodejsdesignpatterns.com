@@ -18,12 +18,13 @@ og_type:
     <div class="hero-body">
       <div class="container">
         <div class="columns is-vcentered is-gapless">
-          <div class="column">
-            <h1 class="title is-1">Take your Node.js knowledge to the next level</h1>
-            <h2 class="subtitle is-4 mt-1">Design and implement production-grade Node.js applications using proven patterns and techniques</h2>
+          <div class="column pr-4">
+            <h1 class="title is-1">
+              <em>Node.js Design Patterns</em>: the ultimate guide to take your Node.js coding to the next level</h1>
+            <h2 class="subtitle is-4 mt-1">The <strong>top-tier book</strong> for Node.js that will guide you from A to Z through the design and implementation of production-grade <strong>Node.js applications</strong> with <strong>tested patterns</strong> and <strong>techniques</strong>.</h2>
             <div class="buttons">
-              <a class="button is-primary" href="#buy" {{ track("click_hero_buy") }}>Buy</a>
-              <a class="button" href="#sample-chapter" {{ track("click_hero_sample_chapter") }}>Download sample chapter</a>
+              <a class="button is-primary" href="https://nodejsdp.link/buy" {{ track("click_buy_print") }}>Buy Print edition</a>
+              <a class="button" href="https://nodejsdp.link/buy-kindle" {{ track("click_buy_kindle") }}>Buy Kindle edition</a>
             </div>
           </div>
           <div class="column pos-rel">
@@ -35,75 +36,41 @@ og_type:
   </section>
 
   <div class="bg-green">
-    <section id="credibility" class="section bd-lt bg-white is-medium">
-      <div class="container">
-        <div class="columns">
+    <section id="key-characteristics" class="section bd-lt bd-rd bg-white is-medium">
+      <div class="container is-max-desktop">
+        <div class="container" style="max-width: 800px;">
+          <h2 class="title is-2 has-text-centered mb-6">
+            The most practical and comprehensive Node.js book on the market
+          </h2>
+        </div>
 
-          <div class="column is-3">
-            <p class="svg-icon has-text-centered">{% include "svg/books.svg" %}</p>
-            <p class="has-text-centered">
-              <strong>+60,000</strong> Copies sold World wide</p>
+        <div class="columns is-variable is-6">
+          <div class="column is-one-third">
+            <h4 class="title is-4 is-green">150 Working examples &amp; 50 exercises</h4>
+            <p>Put into practice everything you learn. Step-by-step explanation of code samples and engaging coding challenges at the end of every chapter. </p>
           </div>
 
-          <div class="column is-3">
-            <p class="svg-icon has-text-centered">{% include "svg/english-to-chinese.svg" %}</p>
-            <p class="has-text-centered">Translated in <strong>8 languages</strong>
-            </p>
+          <div class="column is-one-third">
+            <h4 class="title is-4 is-green">13 Exquisitely crafted chapters</h4>
+            <p>From the basics of the Node.js architecture to how to scale and distribute your application.</p>
           </div>
 
-          <div class="column is-3">
-            <p class="svg-icon has-text-centered">{% include "svg/star.svg" %}</p>
-            <p class="has-text-centered">Rated <strong>4.7</strong> on Amazon</p>
+          <div class="column is-one-third">
+            <h4 class="title is-4 is-green">660 Pages packed with knowledge</h4>
+            <p>In-depth explanations and examples, so that even if you are a novice you can follow and immediately apply advanced techniques.</p>
           </div>
-
-          <div class="column is-3">
-            <p class="svg-icon has-text-centered">{% include "svg/brush-alt.svg" %}</p>
-            <p class="has-text-centered">Perfected throughout <strong>3 editions</strong>
-            </p>
-          </div>
-
         </div>
       </div>
     </section>
   </div>
 
-  <div id="reviews" class="bg-green">
-    <section class="section bg-white bd-rd is-medium">
-      <div class="container">
-        <h2 class="title is-2 underline has-text-centered">
-          <span>What people say</span></h2>
-        <div class="columns is-multiline">
-          {% for quote in quotes -%}
-            {% set alt %}{{ quote.name }}'s profile picture{% endset %}
-            <div class="column is-half">
-              <div class="media">
-                <figure class="media-left">
-                  <p class="image is-64x64">
-                    {% responsiveImage quote.picture, alt, { class: 'is-rounded avatar', maxWidth: 64 } %}
-                  </p>
-                </figure>
-                <div class="media-content">
-                  <p>
-                    <strong>{{ quote.name }}</strong>
-                    <small>{{ quote.role }}</small>
-                  </p>
-                  <p class="quote">{{ quote.text }}</p>
-                </div>
-              </div>
-            </div>
-          {% endfor -%}
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <section id="book-abstract" class="section bg-green bd-lt-rd is-medium">
+  <section id="the-problem" class="section bg-green bd-lt-rd is-medium">
     <div class="container">
       <article>
         <div class="columns is-centered">
           <div class="column is-half"></div>
           <div class="column is-half">
-            <h2 class="title is-2">Learn proven patterns, techniques, and tricks to take full advantage of the Node.js platform</h2>
+            <h2 class="title is-2">Looking for a reliable source to learn how to create extensible modern web applications?</h2>
           </div>
         </div>
         <div class="columns is-centered">
@@ -111,91 +78,87 @@ og_type:
             {% responsiveImage './img/book-unboxed.png', 'Node.js Design Patterns book cover'  %}
           </div>
           <div class="column is-half">
-            <h3 class="subtitle is-4">Master well-known design principles to create modern applications that are readable, extensible, and that can grow big</h3>
-            <p>This book will teach you how to implement a series of best practices and design patterns to create efficient and robust Node.js applications.</p>
-            <p>The first chapters of the book are designed to explore the basics of Node.js, analyzing its <strong>asynchronous event driven architecture</strong> and its fundamental design patterns including control flow patterns with <strong>callbacks</strong>, <strong>promises</strong> and <strong>async/await</strong>.</p>
-            <p>The second part of the book dives into Node.js <strong>streams</strong> and explores some of the most famous Gang of Four <strong>design patterns</strong> reinterpreted in the context of Node.js plus some original patterns that are specific to JavaScript and Node.js.</p>
-            <p>In the last section this book covers more advanced topics such as <strong>Universal JavaScript</strong> with Node.js, <strong>React</strong> and <strong>Webpack</strong>, best practices to <strong>scale Node.js</strong> services, <strong>microservices</strong> and <strong>messaging patterns</strong> for enterprise-grade <strong>distributed applications</strong>.</p>
-            <p>Throughout the book you will see Node.js in action with the help of several real-life examples leveraging great technologies such as <strong>LevelDB</strong>, <strong>Redis</strong>, <strong>RabbitMQ</strong>, <strong>ZeroMQ</strong> and many others. They will be used to demonstrate a pattern or a technique, but they will also give you a great introduction to the <strong>Node.js ecosystem</strong> and its set of solutions.</p>
+            <p>If you are here, you have probably wandered a lot around the internet to find a <strong>valuable source</strong> to deepen your Node.js knowledge.</p>
+
+            <p>Maybe you have already used Node.js but you feel like you have <strong>not yet fully understood</strong> its key concepts.</p>
+
+            <p>You have read articles, and watched videos and webinars, but none of this content has offered you a Node.js course that seems <strong>complete</strong>.</p>
+
+            <p>What if we tell you that after a long search, you have finally landed on the <strong>right page</strong>?</p>
+
+            <p>You don&apos;t need to search for different sources and then put them together to obtain a detailed guide.</p>
+
+            <p>You need a <strong>comprehensive manual</strong> with TESTED content that <strong>guides you from A to Z</strong> in deepening Node.js theory while applying it with practical exercises.</p>
+
             <div class="buttons">
-              <a class="button is-primary" href="#buy" {{ track("click_abstract_buy") }}>Buy the book</a>
-              <a class="button" href="#sample-chapter" {{ track("click_abstract_sample_chapter") }}>Download the sample chapter</a>
+              <a class="button is-primary" href="https://nodejsdp.link/buy" {{ track("click_buy_print") }}>Buy Print edition</a>
+              <a class="button" href="https://nodejsdp.link/buy-kindle" {{ track("click_buy_kindle") }}>Buy Kindle edition</a>
             </div>
           </div>
-
         </div>
       </article>
     </div>
   </section>
 
-  <div id="book-content" class="bg-green">
+  <div id="alternative-solution" class="bg-green">
     <section class="section bd-lt bg-white is-medium">
       <div class="container">
 
-        <h2 class="title is-2 underline has-text-centered">
-          <span>What's in the book</span>
-        </h2>
-
-        <div class="columns is-centered is-gapless">
-          <div class="column is-10">
-            <h3 class="subtitle is-3">Node.js Design Patterns is the book for software engineers who want to <strong>master Node.js</strong> and <strong>implement production applications</strong> with confidence.</h3>
-          </div>
+        <div class="container" style="max-width: 800px;">
+          <h2 class="title is-2 underline has-text-centered">
+            <span>A Complete book that makes you confident with implementing scalable Node.js applications</span>
+          </h2>
         </div>
 
-        <div class="columns is-variable is-8">
-          <div class="column is-one-third">
-            <h4 class="title is-4 is-green">150 Working examples &amp; 50 exercises</h4>
-            <p>With hundreds of working examples, you immediately put into practice everything you learn. Every code sample comes with a full step-by-step explanation, so you don't have to spend time to guess how things work. At the end of every chapter you will find engaging coding challenges to test your understanding of the various topics and gain more confidence with them.</p>
+        <div class="columns is-centered">
+          <div class="column is-half">
+            <p>Are you keen to <strong>understand</strong> how Node.js works <strong>under the hood</strong>?</p>
+            <p>A guide that teaches you all the <strong>best practices</strong> that you need to know to grow your career.</p>
+            <p>You will finally understand how JavaScript and Node.js work and how to build <strong>performant</strong> and <strong>scalabale web applications</strong>.</p>
+            <p>You will deal with <strong>clear writing</strong>, <strong>diagrams</strong>, and <strong>real-world code examples</strong>, taking a deep dive into projects using libraries like <strong>React</strong> or <strong>Fastify</strong> and instantly understanding how they work.</p>
+            <p>All this will be possible thanks to <em>Node.js Design Patterns</em>: the first book that covers <strong>all the Node.js topics that you need to become a professional</strong>.</p>
+            <p>From theory to practice, from real-world exercises to useful best practices. </p>
+            <p>Start now your journey to become a Node.js pro!</p>
+            <div class="buttons">
+              <a class="button is-primary" href="https://nodejsdp.link/buy" {{ track("click_buy_print") }}>Buy Print edition</a>
+              <a class="button" href="https://nodejsdp.link/buy-kindle" {{ track("click_buy_kindle") }}>Buy Kindle edition</a>
+            </div>
           </div>
-
-          <div class="column is-one-third">
-            <h4 class="title is-4 is-green">13 Exquisitely crafted chapters</h4>
-            <p>Every chapter will bring you one step closer to becoming a Node.js expert. From the basics of the Node.js architecture to how to scale and distribute your application, the book covers almost every aspect of professional Node.js development.</p>
-          </div>
-
-          <div class="column is-one-third">
-            <h4 class="title is-4 is-green">660 Pages packed with knowledge</h4>
-            <p>A good learning experience can't be achieved by only throwing code and notions at the reader. Node.js Design Patterns comes with in-depth explanations and examples, so that even a novice can follow and immediately take advantage of advanced techniques.</p>
+          <div class="column is-half">
+            {% responsiveImage './img/man-with-node-js-design-patterns.png', 'Node.js Design Patterns book cover'  %}
           </div>
         </div>
       </div>
     </section>
   </div>
 
-  <section id="sample-chapter" class="section is-medium">
-    <div class="container bg-green px-6 py-6 bd-all-small">
-      <div class="columns is-gapless">
-        <div class="column is-half">
-          <h2 class="title is-2">Get the free chapter</h2>
-          <h3 class="subtitle is-3">Behavioural Design Patterns</h3>
-          <p>With this <strong>54 pages</strong> long chapter you will learn how to implement and leverage some of the most well known behavioural design patterns in the context of Node.js:
-            the <strong>Strategy pattern</strong>, the <strong>State pattern</strong>, the <strong>Template pattern</strong>, the <strong>Iterator pattern</strong>, the <strong>Middleware pattern</strong>, and the <strong>Command pattern</strong>.
-          </p>
-          <div class="mt-4">
-            {% include "convert-kit-form.njk" %}
+  <div class="bg-green">
+    <section id="complete-description" class="section bg-white is-medium">
+      <div class="container is-max-desktop">
+        <div class="container bg-green px-6 py-6 bd-all-small" style="max-width: 800px;">
+          <h2 class="title is-2 has-text-centered mb-6">
+            More than just Design Patterns: a book with Everything you need to know about Node.js
+          </h2>
+          <h3 class="subtitle is-4 has-text-centered">13 chapters carefully crafted to explore and <strong>master each particular area of Node.js</strong> professional development</h3>
+          <div style="max-width: 600px; margin: 0 auto;">
+            <div class="content">
+              <ul>
+                <li>Explore the <strong>basics of Node.js</strong>, analyzing its asynchronous event-driven architectures and design patterns (including event emitters, callbacks, promises and async/await);</li>
+                <li>Dive into <strong>Node.js streams</strong> and some of the <strong>most famous Gang of Four design patterns</strong> reinterpreted in the context of Node.js plus some <strong>novel patterns</strong> that are unique to JavaScript and Node.js;</li>
+                <li>Explore <strong>advanced topics</strong> such as <strong>Universal JavaScript with Node.js</strong>, <strong>React</strong> and <strong>Webpack</strong>;</li>
+                <li>Discover <strong>best practices to scale Node.js services</strong>, microservices and messaging patterns for enterprise-grade distributed applications;</li>
+              </ul>
+            </div>
           </div>
         </div>
-        <div class="column is-half">
-          {% responsiveImage './img/node-js-design-patterns-open-chapter9.png', 'Node.js Design Patterns chapter 9 behavioral design patterns', { class: "chapter9" }  %}
-        </div>
       </div>
-    </div>
-  </section>
 
-  <section id="book-chapters" class="section bg-white is-medium">
-    <div class="container">
-      <h2 class="title is-2 underline has-text-centered">
-        <span>Table of Contents</span>
+      <h2 class="title is-2 underline has-text-centered mt-6">
+        <span>What you will find in the book:</span>
       </h2>
 
-      <div class="columns is-centered">
-        <div class="column is-10">
-          <h3 class="subtitle has-text-centered">Every chapter has been carefully crafted to explore and master a particular area of 	Node.js professional development.</h3>
-        </div>
-      </div>
-
-      <div class="columns is-centered">
-        <div class="column is-8">
+      <div id="chapters" class="columns is-centered">
+        <div class="column is-6">
 
           <ol>
             <li>
@@ -269,134 +232,452 @@ og_type:
           </ol>
         </div>
       </div>
+
+      <div class="mt-6">
+        <div class="buttons is-justify-content-center">
+          <a class="button is-primary" href="https://nodejsdp.link/buy" {{ track("click_buy_print") }}>Buy Print edition</a>
+          <a class="button" href="https://nodejsdp.link/buy-kindle" {{ track("click_buy_kindle") }}>Buy Kindle edition</a>
+        </div>
+      </div>
+
     </div>
   </section>
+</div>
 
-  <div id="authors" class="bg-green">
-    <section class="section bd-rd bg-white is-medium">
-      <div class="container">
-        <h2 class="title is-2 underline has-text-centered">
-          <span>Meet the authors</span>
-        </h2>
+<div id="benefits" class="bg-green">
+  <section class="section bg-white is-medium">
+    <div class="container">
 
-        <div class="columns is-centered">
-          <div class="column is-10">
-            <h3 class="subtitle has-text-centered">Meet Mario and Luciano, two passionate software engineers with a shared passion for Node.js and more than 20 years of collective experience on the field!</h3>
+      <div class="container is-max-desktop">
+        <div class="container" style="max-width: 800px;">
+          <h2 class="title is-2 underline has-text-centered mb-6">
+            <span>What are the Benefits of choosing <em>Node.js Design Patterns</em>?</span>
+          </h2>
+        </div>
+        <div class="columns is-variable is-6">
+          <div class="column is-one-third">
+            <h4 class="title is-4 is-green">Reach a 360° knowledge of the Node.js ecosystem</h4>
+            <p>660 pages packed with deep knowledge of Node.js from a theoretical and practical point of view, to become a Node.js pro and apply what you discover to real-world projects.</p>
+          </div>
+
+          <div class="column is-one-third">
+            <h4 class="title is-4 is-green">Thoroughly test your understanding</h4>
+            <p>You will find practical exercises at the end of each chapter to test what you have previously learnt with the theory.</p>
+          </div>
+
+          <div class="column is-one-third">
+            <h4 class="title is-4 is-green">Join a thriving Node.js dev community</h4>
+            <p>Enter a prolific and active community on GitHub, where other developers who are reading the book share ideas, comments, and correct exercises together.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6">
+      <div class="buttons is-justify-content-center">
+        <a class="button is-primary" href="https://nodejsdp.link/buy" {{ track("click_buy_print") }}>Buy Print edition</a>
+        <a class="button" href="https://nodejsdp.link/buy-kindle" {{ track("click_buy_kindle") }}>Buy Kindle edition</a>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+<div id="authors" class="bg-green">
+  <section class="section bg-white is-medium">
+    <div class="container">
+      <h2 class="title is-2 underline has-text-centered">
+        <span>Meet the authors</span>
+      </h2>
+
+      <div class="columns is-centered">
+        <div class="column is-10">
+          <h3 class="subtitle has-text-centered">Meet Mario and Luciano, two passionate software engineers with a shared passion for Node.js and more than 30 years of collective experience on the field!</h3>
+        </div>
+      </div>
+
+      <div class="columns">
+        <div class="column is-half">
+          <div class="columns">
+            <div class="column is-one-third"></div>
+            <div class="column is-two-third">
+              <h3 class="title is-3">Mario Casciaro</h3>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column is-one-third">
+              {% responsiveImage './img/mario-casciaro.jpg', "Mario Casciaro's picture", {class: 'avatar', maxWidth: 300}  %}
+            </div>
+            <div class="column is-two-third">
+              <p>Mario is a software engineer and entrepreneur who worked at IBM for a number of years. He currently splits his time between Var7 Technologies (his own software company) and its role as CTO at D4H Technologies where he creates software for emergency response teams.</p>
+              <ul>
+                <li>
+                  <a title="Visit Mario's blog" target="_blank" rel="me noopener" href="https://mario.fyi/">Blog</a>
+                </li>
+                <li>
+                  <a title="Visit Mario's X profile" target="_blank" rel="me noopener noreferrer" href="https://twitter.com/mariocasciaro">X</a>
+                </li>
+                <li>
+                  <a title="Visit Mario's GitHub profile" target="_blank" rel="me noopener noreferrer" href="https://github.com/mariocasciaro">GitHub</a>
+                </li>
+                <li>
+                  <a title="Visit Mario's LinkedIn profile" target="_blank" rel="me noopener noreferrer" href="https://www.linkedin.com/in/mariocasciaro/">LinkedIn</a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
-        <div class="columns">
-          <div class="column is-half">
-            <div class="columns">
-              <div class="column is-one-third"></div>
-              <div class="column is-two-third">
-                <h3 class="title is-3">Mario Casciaro</h3>
-              </div>
-            </div>
-            <div class="columns">
-              <div class="column is-one-third">
-                {% responsiveImage './img/mario-casciaro.jpg', "Mario Casciaro's picture", {class: 'avatar', maxWidth: 300}  %}
-              </div>
-              <div class="column is-two-third">
-                <p>Mario is a software engineer and entrepreneur who worked at IBM for a number of years. He currently splits his time between Var7 Technologies (his own software company) and its role as CTO at D4H Technologies where he creates software for emergency response teams.</p>
-                <ul>
-                  <li>
-                    <a title="Visit Mario's blog" target="_blank" rel="me noopener" href="https://mario.fyi/">Blog</a>
-                  </li>
-                  <li>
-                    <a title="Visit Mario's X profile" target="_blank" rel="me noopener noreferrer" href="https://twitter.com/mariocasciaro">X</a>
-                  </li>
-                  <li>
-                    <a title="Visit Mario's GitHub profile" target="_blank" rel="me noopener noreferrer" href="https://github.com/mariocasciaro">GitHub</a>
-                  </li>
-                  <li>
-                    <a title="Visit Mario's LinkedIn profile" target="_blank" rel="me noopener noreferrer" href="https://www.linkedin.com/in/mariocasciaro/">LinkedIn</a>
-                  </li>
-                </ul>
-              </div>
+        <div class="column is-half">
+          <div class="columns">
+            <div class="column is-one-third"></div>
+            <div class="column is-two-third">
+              <h3 class="title is-3">Luciano Mammino</h3>
             </div>
           </div>
-
-          <div class="column is-half">
-            <div class="columns">
-              <div class="column is-one-third"></div>
-              <div class="column is-two-third">
-                <h3 class="title is-3">Luciano Mammino</h3>
-              </div>
+          <div class="columns">
+            <div class="column is-one-third">
+              {% responsiveImage './img/luciano-mammino.jpg', "Luciano Mammino's picture", {class: 'avatar', maxWidth: 300}  %}
             </div>
-            <div class="columns">
-              <div class="column is-one-third">
-                {% responsiveImage './img/luciano-mammino.jpg', "Luciano Mammino's picture", {class: 'avatar', maxWidth: 300}  %}
-              </div>
-              <div class="column is-two-third">
-                <p>Luciano wrote his first line of code at the age of 12 on his father's old i386. Since then, he has never stopped coding. He is working at fourTheorem as a Senior Architect where he is helping companies to get the best out of the Cloud and AWS. He is an active speaker and in the last few years he has delivered more than 130 talks.</p>
-                <ul>
-                  <li>
-                    <a title="Visit Luciano's blog" target="_blank" rel="me noopener" href="https://loige.co/">Blog</a>
-                  </li>
-                  <li>
-                    <a title="Visit Luciano's X profile" target="_blank" rel="me noopener noreferrer" href="https://twitter.com/loige">X</a>
-                  </li>
-                  <li>
-                    <a title="Visit Luciano's GitHub profile" target="_blank" rel="me noopener noreferrer" href="https://github.com/lmammino">GitHub</a>
-                  </li>
-                  <li>
-                    <a title="Visit Luciano's LinkedIn profile" target="_blank" rel="me noopener noreferrer" href="https://www.linkedin.com/in/lucianomammino/">LinkedIn</a>
-                  </li>
-                </ul>
-              </div>
+            <div class="column is-two-third">
+              <p>Luciano is a Senior Architect at fourTheorem where he is helping companies to get the best out of the Cloud and AWS. He is an active speaker and in the last few years he has delivered more than 130 talks in conferences and meetups around the World.</p>
+              <ul>
+                <li>
+                  <a title="Visit Luciano's blog" target="_blank" rel="me noopener" href="https://loige.co/">Blog</a>
+                </li>
+                <li>
+                  <a title="Visit Luciano's X profile" target="_blank" rel="me noopener noreferrer" href="https://twitter.com/loige">X</a>
+                </li>
+                <li>
+                  <a title="Visit Luciano's GitHub profile" target="_blank" rel="me noopener noreferrer" href="https://github.com/lmammino">GitHub</a>
+                </li>
+                <li>
+                  <a title="Visit Luciano's LinkedIn profile" target="_blank" rel="me noopener noreferrer" href="https://www.linkedin.com/in/lucianomammino/">LinkedIn</a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
-    </section>
-  </div>
+    </div>
+  </section>
+</div>
 
-  <section id="buy" class="section bg-green bd-lt-rd is-medium">
+<div id="reviews" class="bg-green">
+  <section class="section bg-white bd-rd is-medium">
     <div class="container">
-      <div class="columns is-vcentered">
-        <div class="column is-half">
-          <h2 class="title is-2 has-text-centered">Buy Node.js Design Patterns third edition</h2>
-          <h3 class="subtitle is-4 has-text-centered">Node.js Design Patterns third edition is available in Print and Kindle editions</h3>
-          <p class="buttons is-centered">
-            <a class="button is-primary" href="https://nodejsdp.link/buy" {{ track("click_buy_print") }}>Buy Print edition</a>
-            <a class="button" href="https://nodejsdp.link/buy-kindle" {{ track("click_buy_kindle") }}>Buy Kindle edition</a>
+      <h2 class="title is-2 underline has-text-centered">
+        <span>What the experts say</span></h2>
+      <div class="columns is-multiline">
+        {% for quote in quotes -%}
+          {% set alt %}{{ quote.name }}'s profile picture{% endset %}
+          <div class="column is-half">
+            <div class="media">
+              <figure class="media-left">
+                <p class="image is-64x64">
+                  {% responsiveImage quote.picture, alt, { class: 'is-rounded avatar', maxWidth: 64 } %}
+                </p>
+              </figure>
+              <div class="media-content">
+                <p>
+                  <strong>{{ quote.name }}</strong>
+                  <small>{{ quote.role }}</small>
+                </p>
+                <p class="quote">{{ quote.text }}</p>
+              </div>
+            </div>
+          </div>
+        {% endfor -%}
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- FROM HERE -->
+
+<div class="bg-green">
+  <section id="credibility" class="section bd-lt bg-white is-medium">
+    <div class="container">
+      <div class="columns">
+
+        <div class="column is-3">
+          <p class="svg-icon has-text-centered">{% include "svg/books.svg" %}</p>
+          <p class="has-text-centered">
+            <strong>+60,000</strong> Copies sold World wide</p>
+        </div>
+
+        <div class="column is-3">
+          <p class="svg-icon has-text-centered">{% include "svg/english-to-chinese.svg" %}</p>
+          <p class="has-text-centered">Translated in <strong>8 languages</strong>
           </p>
         </div>
+
+        <div class="column is-3">
+          <p class="svg-icon has-text-centered">{% include "svg/star.svg" %}</p>
+          <p class="has-text-centered">Rated <strong>4.7</strong> on Amazon</p>
+        </div>
+
+        <div class="column is-3">
+          <p class="svg-icon has-text-centered">{% include "svg/brush-alt.svg" %}</p>
+          <p class="has-text-centered">Perfected throughout <strong>3 editions</strong>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="reviews" class="bg-green">
+  <section class="section bg-white bd-rd is-medium">
+    <div class="container">
+      <h2 class="title is-2 underline has-text-centered">
+        <span>What people say</span></h2>
+      <div class="columns is-multiline">
+        {% for quote in quotes -%}
+          {% set alt %}{{ quote.name }}'s profile picture{% endset %}
+          <div class="column is-half">
+            <div class="media">
+              <figure class="media-left">
+                <p class="image is-64x64">
+                  {% responsiveImage quote.picture, alt, { class: 'is-rounded avatar', maxWidth: 64 } %}
+                </p>
+              </figure>
+              <div class="media-content">
+                <p>
+                  <strong>{{ quote.name }}</strong>
+                  <small>{{ quote.role }}</small>
+                </p>
+                <p class="quote">{{ quote.text }}</p>
+              </div>
+            </div>
+          </div>
+        {% endfor -%}
+      </div>
+    </div>
+  </section>
+</div>
+
+<section id="book-abstract" class="section bg-green bd-lt-rd is-medium">
+  <div class="container">
+    <article>
+      <div class="columns is-centered">
+        <div class="column is-half"></div>
         <div class="column is-half">
-          {% responsiveImage './img/node-js-design-patterns-print-ebook-kindle.png', "Mario Casciaro's picture", {maxWidth: 600}  %}
+          <h2 class="title is-2">Learn proven patterns, techniques, and tricks to take full advantage of the Node.js platform</h2>
+        </div>
+      </div>
+      <div class="columns is-centered">
+        <div class="column is-half">
+          {% responsiveImage './img/book-unboxed.png', 'Node.js Design Patterns book cover'  %}
+        </div>
+        <div class="column is-half">
+          <h3 class="subtitle is-4">Master well-known design principles to create modern applications that are readable, extensible, and that can grow big</h3>
+          <p>This book will teach you how to implement a series of best practices and design patterns to create efficient and robust Node.js applications.</p>
+          <p>The first chapters of the book are designed to explore the basics of Node.js, analyzing its <strong>asynchronous event driven architecture</strong> and its fundamental design patterns including control flow patterns with <strong>callbacks</strong>, <strong>promises</strong> and <strong>async/await</strong>.</p>
+          <p>The second part of the book dives into Node.js <strong>streams</strong> and explores some of the most famous Gang of Four <strong>design patterns</strong> reinterpreted in the context of Node.js plus some original patterns that are specific to JavaScript and Node.js.</p>
+          <p>In the last section this book covers more advanced topics such as <strong>Universal JavaScript</strong> with Node.js, <strong>React</strong> and <strong>Webpack</strong>, best practices to <strong>scale Node.js</strong> services, <strong>microservices</strong> and <strong>messaging patterns</strong> for enterprise-grade <strong>distributed applications</strong>.</p>
+          <p>Throughout the book you will see Node.js in action with the help of several real-life examples leveraging great technologies such as <strong>LevelDB</strong>, <strong>Redis</strong>, <strong>RabbitMQ</strong>, <strong>ZeroMQ</strong> and many others. They will be used to demonstrate a pattern or a technique, but they will also give you a great introduction to the <strong>Node.js ecosystem</strong> and its set of solutions.</p>
+          <div class="buttons">
+            <a class="button is-primary" href="#buy" {{ track("click_abstract_buy") }}>Buy the book</a>
+            <a class="button" href="#sample-chapter" {{ track("click_abstract_sample_chapter") }}>Download the sample chapter</a>
+          </div>
+        </div>
+
+      </div>
+    </article>
+  </div>
+</section>
+
+<div id="book-content" class="bg-green">
+  <section class="section bd-lt bg-white is-medium">
+    <div class="container">
+
+      <h2 class="title is-2 underline has-text-centered">
+        <span>What's in the book</span>
+      </h2>
+
+      <div class="columns is-centered is-gapless">
+        <div class="column is-10">
+          <h3 class="subtitle is-3">Node.js Design Patterns is the book for software engineers who want to <strong>master Node.js</strong> and <strong>implement production applications</strong> with confidence.</h3>
+        </div>
+      </div>
+
+      <div class="columns is-variable is-8">
+        <div class="column is-one-third">
+          <h4 class="title is-4 is-green">150 Working examples &amp; 50 exercises</h4>
+          <p>With hundreds of working examples, you immediately put into practice everything you learn. Every code sample comes with a full step-by-step explanation, so you don't have to spend time to guess how things work. At the end of every chapter you will find engaging coding challenges to test your understanding of the various topics and gain more confidence with them.</p>
+        </div>
+
+        <div class="column is-one-third">
+          <h4 class="title is-4 is-green">13 Exquisitely crafted chapters</h4>
+          <p>Every chapter will bring you one step closer to becoming a Node.js expert. From the basics of the Node.js architecture to how to scale and distribute your application, the book covers almost every aspect of professional Node.js development.</p>
+        </div>
+
+        <div class="column is-one-third">
+          <h4 class="title is-4 is-green">660 Pages packed with knowledge</h4>
+          <p>A good learning experience can't be achieved by only throwing code and notions at the reader. Node.js Design Patterns comes with in-depth explanations and examples, so that even a novice can follow and immediately take advantage of advanced techniques.</p>
         </div>
       </div>
     </div>
   </section>
+</div>
 
-  <div id="faq" class="bg-green">
-    <section class="section bd-lt bg-white is-medium">
-      <div class="container">
-        <h2 class="title is-2 underline has-text-centered">
-          <span>FAQs</span>
-        </h2>
-
-        <dl class="faq">
-          {% for faq in faqs %}
-            <dt id="{{ faq.id }}">
-              <button aria-expanded="true" aria-controls="{{ faq.id }}-answer" data-faq-id="{{ faq.id }}">
-                <h3 class="subtitle is-4">
-                  {{ faq.question }}</h3>
-              </button>
-            </dt>
-            <dd>
-              <div id="{{ faq.id }}-answer" class="desc">
-                <p class="is-size-7 has-text-right mb-1">
-                  <a title="Permalink to this FAQ" href="#{{ faq.id }}">{{ '&para;' | safe }}</a>
-                </p>
-                {{ faq.answer | markdown | safe }}
-              </div>
-            </dd>
-          {% endfor %}
-        </dl>
-
+<section id="sample-chapter" class="section is-medium">
+  <div class="container bg-green px-6 py-6 bd-all-small">
+    <div class="columns is-gapless">
+      <div class="column is-half">
+        <h2 class="title is-2">Get the free chapter</h2>
+        <h3 class="subtitle is-3">Behavioural Design Patterns</h3>
+        <p>With this <strong>54 pages</strong> long chapter you will learn how to implement and leverage some of the most well known behavioural design patterns in the context of Node.js:
+            the <strong>Strategy pattern</strong>, the <strong>State pattern</strong>, the <strong>Template pattern</strong>, the <strong>Iterator pattern</strong>, the <strong>Middleware pattern</strong>, and the <strong>Command pattern</strong>.
+          </p>
+        <div class="mt-4">
+          {% include "convert-kit-form.njk" %}
+        </div>
       </div>
-    </section>
+      <div class="column is-half">
+        {% responsiveImage './img/node-js-design-patterns-open-chapter9.png', 'Node.js Design Patterns chapter 9 behavioral design patterns', { class: "chapter9" }  %}
+      </div>
+    </div>
   </div>
+</section>
+
+<section id="book-chapters" class="section bg-white is-medium">
+  <div class="container">
+    <h2 class="title is-2 underline has-text-centered">
+      <span>Table of Contents</span>
+    </h2>
+
+    <div class="columns is-centered">
+      <div class="column is-10">
+        <h3 class="subtitle has-text-centered">Every chapter has been carefully crafted to explore and master a particular area of 	Node.js professional development.</h3>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-8">
+
+        <ol>
+          <li>
+            <h3 class="title is-4">The Node.js Platform</h3>
+            <p>Learn about the Node.js philosophy, the reactor patterns and the differences between JavaScript on the browser and Node.js on the server.</p>
+          </li>
+
+          <li>
+            <h3 class="title is-4">The Module System</h3>
+            <p>Learn how to leverage the powerful Node.js module system and discover the main differences between CommonJS and ESM.</p>
+          </li>
+
+          <li>
+            <h3 class="title is-4">Callbacks and Events</h3>
+            <p>Discover the callback pattern, how it works and the conventions used in Node.js. Learn how to avoid pitfalls and when to take advantage of the observer pattern using Node.js built-in event emitter.</p>
+          </li>
+
+          <li>
+            <h3 class="title is-4">Asynchronous Control Flow Patterns with Callbacks</h3>
+            <p>Lean how to avoid callback hell and explore common asynchronous patterns such as sequential execution, sequential iteration, parallel execution and limited parallel execution.</p>
+          </li>
+
+          <li>
+            <h3 class="title is-4">Asynchronous Control Flow Patterns with Promises and Async/Await</h3>
+            <p>Find out how promises work and how to use them effectively to implement various asynchronous control flow patterns. Explore the modern async/await syntax, the main tool today for dealing with asynchronous code in Node.js</p>
+          </li>
+
+          <li>
+            <h3 class="title is-4">Coding with Streams</h3>
+            <p>Understand why streams are so important in Node.js. Learn how to use standard streams and how to create custom ones. Explore various streaming patterns and learn how to build powerful streaming pipelines.</p>
+          </li>
+
+          <li>
+            <h3 class="title is-4">Creational Design Patterns</h3>
+            <p>Learn about the most famous creational design patterns in Node.js: the Factory pattern, the Revealing Constructor pattern, the Builder pattern. Finally, explore the Singleton pattern and the Dependency Injection pattern.</p>
+          </li>
+
+          <li>
+            <h3 class="title is-4">Structural Design Patterns</h3>
+            <p>Discover how to implement and use the Proxy, the Decorator and the Adapter pattern in Node.js.</p>
+          </li>
+
+          <li>
+            <h3 class="title is-4">Behavioural Design Patterns</h3>
+            <p>Learn how to implement and leverage some of the most well known behavioural design patterns in the context of Node.js: the Strategy pattern, the State pattern, the Template pattern, the Iterator pattern, the Middleware pattern, and the Command pattern.</p>
+            <p>
+              <a href="#sample-chapter">
+                <span class="tag is-primary">Free Chapter!</span></a>
+            </p>
+          </li>
+
+          <li>
+            <h3 class="title is-4">Universal JavaScript</h3>
+            <p>Explore the fundamentals of JavaScript cross-platform development and learn how to share code between the browser and Node.js. Learn how to leverage React.js to build a complete universal JavaScript application.</p>
+          </li>
+
+          <li>
+            <h3 class="title is-4">Advanced Recipes</h3>
+            <p>Discover well-known recipes to deal with some more advanced Node.js intricacies such as dealing with asynchronously initialized components, performing asynchronous request batching and caching, canceling asynchronous operations and running CPU-bound tasks.</p>
+          </li>
+
+          <li>
+            <h3 class="title is-4">Scalability and Architectural Patterns</h3>
+            <p>Master the art of Node.js scalability by learning about the "Scale Cube", discover how to run multiple instances of the same application and how to use load balancers and service registers. Learn how to use containers and containers orchestration platforms such as Kubernetes. Finally, find out how to design and build microservices architectures.</p>
+          </li>
+
+          <li>
+            <h3 class="title is-4">Messaging and Integration Patterns</h3>
+            <p>Learn how to integrate complex distributed Node.js applications using the most popular messaging systems. Learn how to implement the most common messaging patterns on top of ZeroMQ, RabbitMQ and Redis Streams.</p>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="buy" class="section bg-green bd-lt-rd is-medium">
+  <div class="container">
+    <div class="columns is-vcentered">
+      <div class="column is-half">
+        <h2 class="title is-2 has-text-centered">Buy Node.js Design Patterns third edition</h2>
+        <h3 class="subtitle is-4 has-text-centered">Node.js Design Patterns third edition is available in Print and Kindle editions</h3>
+        <p class="buttons is-centered">
+          <a class="button is-primary" href="https://nodejsdp.link/buy" {{ track("click_buy_print") }}>Buy Print edition</a>
+          <a class="button" href="https://nodejsdp.link/buy-kindle" {{ track("click_buy_kindle") }}>Buy Kindle edition</a>
+        </p>
+      </div>
+      <div class="column is-half">
+        {% responsiveImage './img/node-js-design-patterns-print-ebook-kindle.png', "Mario Casciaro's picture", {maxWidth: 600}  %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="faq" class="bg-green">
+  <section class="section bd-lt bg-white is-medium">
+    <div class="container">
+      <h2 class="title is-2 underline has-text-centered">
+        <span>FAQs</span>
+      </h2>
+
+      <dl class="faq">
+        {% for faq in faqs %}
+          <dt id="{{ faq.id }}">
+            <button aria-expanded="true" aria-controls="{{ faq.id }}-answer" data-faq-id="{{ faq.id }}">
+              <h3 class="subtitle is-4">
+                {{ faq.question }}</h3>
+            </button>
+          </dt>
+          <dd>
+            <div id="{{ faq.id }}-answer" class="desc">
+              <p class="is-size-7 has-text-right mb-1">
+                <a title="Permalink to this FAQ" href="#{{ faq.id }}">{{ '&para;' | safe }}</a>
+              </p>
+              {{ faq.answer | markdown | safe }}
+            </div>
+          </dd>
+        {% endfor %}
+      </dl>
+
+    </div>
+  </section>
+</div>
 </main>

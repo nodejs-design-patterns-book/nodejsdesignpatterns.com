@@ -158,13 +158,50 @@ nav.navbar {
 
 #hero {
   h1 {
-    line-height: 4.5rem;
-    font-size: 3.5rem;
+    line-height: 3.5rem;
+    font-size: 2.5rem;
   }
 
   h2 {
-    line-height: 3rem;
-    font-size: 1.8rem;
+    line-height: 2rem;
+    font-size: 1.2rem;
+  }
+
+  .buttons {
+    margin: 1.5rem 0 0 0;
+
+    .button {
+      height: 3rem;
+    }
+  }
+}
+
+#the-problem {
+  p {
+    margin: 1.5rem 0 0 0;
+  }
+
+  .buttons {
+    margin: 1.5rem 0 0 0;
+
+    .button {
+      height: 3rem;
+    }
+  }
+}
+
+#alternative-solution {
+  picture {
+    display: block;
+    margin: 1.5rem 0 0 0;
+  }
+
+  img {
+    border-radius: 20px;
+  }
+
+  p {
+    margin: 1.5rem 0 0 0;
   }
 
   .buttons {
@@ -217,13 +254,18 @@ nav.navbar {
   }
 }
 
-#book-content {
+@counter-style chapter {
+  system: extends decimal;
+  prefix: "Chapter ";
+}
+
+#chapters {
 
   h2,
   h3 {
     margin: 0;
     padding: 0;
-    line-height: 3rem;
+    line-height: 2rem;
   }
 
   h3 {
@@ -242,6 +284,12 @@ nav.navbar {
     .column {
       padding-top: 0;
       padding-bottom: 0;
+    }
+  }
+
+  @media screen and (min-width: 769px) {
+    ol {
+      list-style: chapter;
     }
   }
 }
@@ -310,7 +358,7 @@ nav.navbar {
 #authors {
 
   section {
-    padding-bottom: 24rem;
+    padding-bottom: 12rem;
   }
 
   h2 {
