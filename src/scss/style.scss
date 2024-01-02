@@ -356,6 +356,112 @@ nav.navbar {
   }
 }
 
+#final-cta {
+  section {
+    padding: 4.5rem;
+  }
+}
+
+#amazon-reviews {
+  section {
+    padding: 4.5rem;
+  }
+}
+
+#faq {
+  section {
+    padding: 4.5rem;
+  }
+
+  dt {
+    padding-top: 1em
+  }
+
+  button {
+    border: none;
+    text-align: left;
+    background: transparent;
+    width: 100%;
+    cursor: pointer;
+    position: relative;
+
+
+    &:active {
+      border: none;
+    }
+
+    &:focus {
+      border: none;
+      outline: 0;
+    }
+
+    h3 {
+      font-size: 1rem;
+      line-height: 1.5rem;
+      margin: 1.5rem 0 0 0;
+      text-align: left;
+      font-weight: bold;
+      padding-left: 2em;
+    }
+
+    &[aria-expanded=false] h3::before {
+      content: "+ ";
+      font-weight: bold;
+      color: $greenD3;
+      display: inline-block;
+      position: absolute;
+      left: 0;
+    }
+
+    &[aria-expanded=true] h3::before {
+      content: "- ";
+      font-weight: bold;
+      color: $greenD3;
+      display: inline-block;
+      position: absolute;
+      left: 0;
+    }
+  }
+
+  div.desc {
+    padding: 1.5rem 0 1.5rem 3.2rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5rem;
+    overflow: hidden;
+    transition: all 0.1s linear;
+
+    ul {
+      list-style: disc;
+      padding: 1.5em 0 1.5em 3em;
+    }
+  }
+
+  dd {
+    border-bottom: 1px solid $green;
+    margin: 0 0;
+  }
+}
+
+#sample-chapter {
+  padding: 4.5rem;
+
+  h2,
+  h3 {
+    line-height: 3rem;
+    margin: 0;
+  }
+
+  p {
+    margin-top: 1.5rem;
+  }
+
+  .buttons {
+    .button {
+      height: 3rem;
+    }
+  }
+}
+
 #book-abstract {
   .column {
     padding: 0 0.75rem;
@@ -425,25 +531,6 @@ nav.navbar {
   }
 }
 
-#sample-chapter {
-
-  h2,
-  h3 {
-    line-height: 3rem;
-    margin: 0;
-  }
-
-  p {
-    margin-top: 1.5rem;
-  }
-
-  .buttons {
-    .button {
-      height: 3rem;
-    }
-  }
-}
-
 #book-chapters {
   h2 {
     margin: 0 0 1.5rem 0;
@@ -506,76 +593,6 @@ nav.navbar {
   .buttons .button {
     height: 3rem;
     line-height: 3rem;
-  }
-}
-
-#faq {
-  dt {
-    padding-top: 3em
-  }
-
-  button {
-    border: none;
-    text-align: left;
-    background: transparent;
-    width: 100%;
-    cursor: pointer;
-    position: relative;
-
-
-    &:active {
-      border: none;
-    }
-
-    &:focus {
-      border: none;
-      outline: 0;
-    }
-
-    h3 {
-      font-size: 1rem;
-      line-height: 1.5rem;
-      margin: 1.5rem 0 0 0;
-      text-align: left;
-      font-weight: bold;
-      padding-left: 3em;
-    }
-
-    &[aria-expanded=false] h3::before {
-      content: "+ ";
-      font-weight: bold;
-      color: $greenD3;
-      display: inline-block;
-      position: absolute;
-      left: 0;
-    }
-
-    &[aria-expanded=true] h3::before {
-      content: "- ";
-      font-weight: bold;
-      color: $greenD3;
-      display: inline-block;
-      position: absolute;
-      left: 0;
-    }
-  }
-
-  div.desc {
-    padding: 1.5rem 0 1.5rem 3.2rem;
-    margin-bottom: 1.5rem;
-    line-height: 1.5rem;
-    overflow: hidden;
-    transition: all 0.1s linear;
-
-    ul {
-      list-style: disc;
-      padding: 1.5em 0 1.5em 3em;
-    }
-  }
-
-  dd {
-    border-bottom: 1px solid $green;
-    margin: 0 0;
   }
 }
 
