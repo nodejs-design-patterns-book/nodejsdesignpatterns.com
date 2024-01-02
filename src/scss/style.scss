@@ -74,9 +74,15 @@ html {
 .title.underline span {
   background-size: 2px 1em;
   box-shadow: inset 0 -0.175em #b9eec5, inset 0 -0.2em #b9eec5;
-  ;
   display: inline;
   box-shadow: inset 0 -0.175em #b9eec5, inset 0 -0.2em #b9eec5;
+}
+
+.title.underline-bright span {
+  background-size: 2px 1em;
+  box-shadow: inset 0 -0.175em #f2fff5, inset 0 -0.2em #f2fff5;
+  display: inline;
+  box-shadow: inset 0 -0.175em #f2fff5, inset 0 -0.2em #f2fff5;
 }
 
 .container {
@@ -130,16 +136,6 @@ nav a.navbar-item {
   position: relative;
 }
 
-.book-cover {
-  transform: translateX(-60px);
-}
-
-@media screen and (min-width: 769px) {
-  .book-cover {
-    transform: translateX(-100px);
-  }
-}
-
 .chapter9 {
   transform: rotate(-10deg) translateY(30px);
   margin-bottom: -20px !important;
@@ -158,7 +154,7 @@ nav.navbar {
 
 #hero {
   h1 {
-    line-height: 3.5rem;
+    line-height: 2.75rem;
     font-size: 2.5rem;
   }
 
@@ -174,9 +170,19 @@ nav.navbar {
       height: 3rem;
     }
   }
+
+  .book-cover {
+    transform: translateX(-60px);
+  }
+}
+
+#key-characteristics {
+  padding: 4.5rem;
 }
 
 #the-problem {
+  padding: 4.5rem;
+
   p {
     margin: 1.5rem 0 0 0;
   }
@@ -191,6 +197,14 @@ nav.navbar {
 }
 
 #alternative-solution {
+  section {
+    padding: 4.5rem;
+  }
+
+  h2 {
+    margin: 0 0 2rem 0;
+  }
+
   picture {
     display: block;
     margin: 1.5rem 0 0 0;
@@ -213,7 +227,106 @@ nav.navbar {
   }
 }
 
+#complete-description {
+  padding: 0 4.5rem 4.5rem 4.5rem;
+
+  h2 {
+    font-size: 2rem;
+    margin: 0 0 3rem 0;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    margin: 0 0 3rem 0;
+  }
+
+  ul li {
+    font-size: 1.25rem;
+    margin: 0 0 1.5rem 0;
+  }
+
+  ol li:first-child h3 {
+    padding: 0 0 1.5rem 0;
+  }
+
+  div.container.bg-green {
+    background-image: linear-gradient(to right bottom, #b9eec5, #b1e8be, #aae1b6, #a2dbaf, #9bd5a8);
+  }
+}
+
+#benefits {
+  section {
+    padding: 4.5rem;
+  }
+}
+
+#authors {
+
+  section {
+    padding: 4.5rem;
+  }
+
+  h2 {
+    line-height: 3rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  h3.subtitle {
+    line-height: 3rem;
+    font-size: 1.5rem;
+    padding: 3rem 0 0 0;
+  }
+
+  h3.title {
+    margin: 3rem 0 1.5rem 0;
+    padding: 0;
+    line-height: 3rem;
+    text-align: left;
+  }
+
+  p {
+    line-height: 1.5rem;
+  }
+
+  .column {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .avatar {
+    border-radius: 50%;
+    margin-bottom: 1.5rem !important;
+  }
+
+  ul {
+    margin: 1.5rem 0 1.5rem 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    justify-content: left;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    li a {
+      color: $orange;
+      fill: $orangeD3;
+      vertical-align: baseline;
+      font-weight: bold;
+
+      &:hover {
+        color: $orangeD3;
+        fill: $black;
+      }
+    }
+  }
+}
+
 #reviews {
+  section {
+    padding: 4.5rem;
+  }
+
   h2 {
     margin: 0 0 3rem 0;
     padding: 0;
@@ -222,6 +335,24 @@ nav.navbar {
 
   .column {
     padding: 1.5rem 1rem;
+  }
+}
+
+#who-is-it-for {
+  padding: 4.5rem;
+
+  ul li {
+    font-size: 1.25rem;
+    margin: 0 0 1.5rem 0;
+  }
+
+  div.container.bg-green {
+    background-image: linear-gradient(to right bottom, #b9eec5, #b1e8be, #aae1b6, #a2dbaf, #9bd5a8);
+  }
+
+  .container p {
+    font-size: 1.25rem;
+    margin: 2rem 0 0 0;
   }
 }
 
@@ -351,68 +482,6 @@ nav.navbar {
       color: $black;
       padding: 0 0 1.5em 0;
       margin: 0;
-    }
-  }
-}
-
-#authors {
-
-  section {
-    padding-bottom: 12rem;
-  }
-
-  h2 {
-    line-height: 3rem;
-    margin: 0;
-    padding: 0;
-  }
-
-  h3.subtitle {
-    line-height: 3rem;
-    font-size: 1.8rem;
-    padding: 3rem 0 0 0;
-  }
-
-  h3.title {
-    margin: 3rem 0 1.5rem 0;
-    padding: 0;
-    line-height: 3rem;
-    text-align: center;
-  }
-
-  p {
-    line-height: 1.5rem;
-  }
-
-  .column {
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-
-  .avatar {
-    border-radius: 50%;
-    margin-bottom: 1.5rem !important;
-  }
-
-  ul {
-    margin: 1.5rem 0 1.5rem 0;
-    padding: 0;
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-
-    li a {
-      color: $orange;
-      fill: $orangeD3;
-      vertical-align: baseline;
-      font-weight: bold;
-
-      &:hover {
-        color: $orangeD3;
-        fill: $black;
-      }
     }
   }
 }
