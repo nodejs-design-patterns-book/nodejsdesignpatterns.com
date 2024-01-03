@@ -254,6 +254,46 @@ nav.navbar {
   }
 }
 
+@counter-style chapter {
+  system: extends decimal;
+  prefix: "Chapter ";
+}
+
+#chapters {
+
+  h2,
+  h3 {
+    margin: 0;
+    padding: 0;
+    line-height: 2rem;
+  }
+
+  h3 {
+    padding: 3rem 0 0 0;
+  }
+
+  h4 {
+    margin: 3rem 0 1.5rem 0;
+    line-height: 1.5rem;
+    font-size: 1.3rem;
+  }
+
+  .columns {
+    margin: 0 0 0 0;
+
+    .column {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+
+  @media screen and (min-width: 769px) {
+    ol {
+      list-style: chapter;
+    }
+  }
+}
+
 #benefits {
   section {
     padding: 4.5rem;
@@ -360,6 +400,14 @@ nav.navbar {
   section {
     padding: 4.5rem;
   }
+
+  h2 {
+    line-height: 3rem;
+  }
+
+  h3 {
+    line-height: 2rem;
+  }
 }
 
 #amazon-reviews {
@@ -459,140 +507,6 @@ nav.navbar {
     .button {
       height: 3rem;
     }
-  }
-}
-
-#book-abstract {
-  .column {
-    padding: 0 0.75rem;
-  }
-
-  h2 {
-    margin: 0;
-    padding: 1.5rem 0 1.5rem 0;
-    line-height: 3rem;
-  }
-
-  h3 {
-    line-height: 3rem;
-    font-size: 1.8rem;
-  }
-
-  p {
-    margin: 1.5rem 0 0 0;
-  }
-
-  .buttons {
-    margin: 1.5rem 0 0 0;
-
-    .button {
-      height: 3rem;
-    }
-  }
-}
-
-@counter-style chapter {
-  system: extends decimal;
-  prefix: "Chapter ";
-}
-
-#chapters {
-
-  h2,
-  h3 {
-    margin: 0;
-    padding: 0;
-    line-height: 2rem;
-  }
-
-  h3 {
-    padding: 3rem 0 0 0;
-  }
-
-  h4 {
-    margin: 3rem 0 1.5rem 0;
-    line-height: 1.5rem;
-    font-size: 1.3rem;
-  }
-
-  .columns {
-    margin: 0 0 0 0;
-
-    .column {
-      padding-top: 0;
-      padding-bottom: 0;
-    }
-  }
-
-  @media screen and (min-width: 769px) {
-    ol {
-      list-style: chapter;
-    }
-  }
-}
-
-#book-chapters {
-  h2 {
-    margin: 0 0 1.5rem 0;
-  }
-
-  h3.subtitle {
-    line-height: 3rem;
-    font-size: 1.8rem;
-  }
-
-
-  ol {
-    list-style-type: decimal-leading-zero;
-    padding-left: 3.8rem;
-    font-family: $family-serif;
-    color: $greenD3;
-    font-size: 1.5rem;
-    margin-bottom: 3rem;
-
-    li {
-      margin: 0;
-      padding: 0;
-    }
-
-    h3 {
-      margin: 1.5rem 0 1.5rem 0;
-      padding: 0;
-      line-height: 1.5rem;
-      font-size: 1.5rem;
-    }
-
-    p {
-      line-height: 1.5rem;
-      font-family: $family-sans-serif;
-      font-size: 1rem;
-      color: $black;
-      padding: 0 0 1.5em 0;
-      margin: 0;
-    }
-  }
-}
-
-#buy {
-  h2 {
-    line-height: 3rem;
-    margin: 0 0 3rem 0;
-    padding: 0;
-  }
-
-  h3 {
-    line-height: 3rem;
-    margin: 0 0 3rem 0;
-    padding: 0;
-  }
-
-  .buttons {
-    margin: 0 0 3rem 0;
-  }
-
-  .buttons .button {
-    height: 3rem;
-    line-height: 3rem;
   }
 }
 
