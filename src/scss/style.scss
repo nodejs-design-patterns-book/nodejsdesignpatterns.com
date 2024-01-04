@@ -74,9 +74,15 @@ html {
 .title.underline span {
   background-size: 2px 1em;
   box-shadow: inset 0 -0.175em #b9eec5, inset 0 -0.2em #b9eec5;
-  ;
   display: inline;
   box-shadow: inset 0 -0.175em #b9eec5, inset 0 -0.2em #b9eec5;
+}
+
+.title.underline-bright span {
+  background-size: 2px 1em;
+  box-shadow: inset 0 -0.175em #f2fff5, inset 0 -0.2em #f2fff5;
+  display: inline;
+  box-shadow: inset 0 -0.175em #f2fff5, inset 0 -0.2em #f2fff5;
 }
 
 .container {
@@ -130,16 +136,6 @@ nav a.navbar-item {
   position: relative;
 }
 
-.book-cover {
-  transform: translateX(-60px);
-}
-
-@media screen and (min-width: 769px) {
-  .book-cover {
-    transform: translateX(-100px);
-  }
-}
-
 .chapter9 {
   transform: rotate(-10deg) translateY(30px);
   margin-bottom: -20px !important;
@@ -158,13 +154,37 @@ nav.navbar {
 
 #hero {
   h1 {
-    line-height: 4.5rem;
-    font-size: 3.5rem;
+    line-height: 2.75rem;
+    font-size: 2.5rem;
   }
 
   h2 {
-    line-height: 3rem;
-    font-size: 1.8rem;
+    line-height: 2rem;
+    font-size: 1.2rem;
+  }
+
+  .buttons {
+    margin: 1.5rem 0 0 0;
+
+    .button {
+      height: 3rem;
+    }
+  }
+
+  .book-cover {
+    transform: translateX(-60px);
+  }
+}
+
+#key-characteristics {
+  padding: 4.5rem;
+}
+
+#the-problem {
+  padding: 4.5rem;
+
+  p {
+    margin: 1.5rem 0 0 0;
   }
 
   .buttons {
@@ -176,32 +196,22 @@ nav.navbar {
   }
 }
 
-#reviews {
-  h2 {
-    margin: 0 0 3rem 0;
-    padding: 0;
-    line-height: 3rem;
-  }
-
-  .column {
-    padding: 1.5rem 1rem;
-  }
-}
-
-#book-abstract {
-  .column {
-    padding: 0 0.75rem;
+#alternative-solution {
+  section {
+    padding: 4.5rem;
   }
 
   h2 {
-    margin: 0;
-    padding: 1.5rem 0 1.5rem 0;
-    line-height: 3rem;
+    margin: 0 0 2rem 0;
   }
 
-  h3 {
-    line-height: 3rem;
-    font-size: 1.8rem;
+  picture {
+    display: block;
+    margin: 1.5rem 0 0 0;
+  }
+
+  img {
+    border-radius: 20px;
   }
 
   p {
@@ -217,13 +227,45 @@ nav.navbar {
   }
 }
 
-#book-content {
+#complete-description {
+  padding: 0 4.5rem 4.5rem 4.5rem;
+
+  h2 {
+    font-size: 2rem;
+    margin: 0 0 3rem 0;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    margin: 0 0 3rem 0;
+  }
+
+  ul li {
+    font-size: 1.25rem;
+    margin: 0 0 1.5rem 0;
+  }
+
+  ol li:first-child h3 {
+    padding: 0;
+  }
+
+  div.container.bg-green {
+    background-image: linear-gradient(to right bottom, #b9eec5, #b1e8be, #aae1b6, #a2dbaf, #9bd5a8);
+  }
+}
+
+@counter-style chapter {
+  system: extends decimal;
+  prefix: "Chapter ";
+}
+
+#chapters {
 
   h2,
   h3 {
     margin: 0;
     padding: 0;
-    line-height: 3rem;
+    line-height: 2rem;
   }
 
   h3 {
@@ -244,73 +286,24 @@ nav.navbar {
       padding-bottom: 0;
     }
   }
-}
 
-#sample-chapter {
-
-  h2,
-  h3 {
-    line-height: 3rem;
-    margin: 0;
-  }
-
-  p {
-    margin-top: 1.5rem;
-  }
-
-  .buttons {
-    .button {
-      height: 3rem;
+  @media screen and (min-width: 769px) {
+    ol {
+      list-style: chapter;
     }
   }
 }
 
-#book-chapters {
-  h2 {
-    margin: 0 0 1.5rem 0;
-  }
-
-  h3.subtitle {
-    line-height: 3rem;
-    font-size: 1.8rem;
-  }
-
-
-  ol {
-    list-style-type: decimal-leading-zero;
-    padding-left: 3.8rem;
-    font-family: $family-serif;
-    color: $greenD3;
-    font-size: 1.5rem;
-    margin-bottom: 3rem;
-
-    li {
-      margin: 0;
-      padding: 0;
-    }
-
-    h3 {
-      margin: 1.5rem 0 1.5rem 0;
-      padding: 0;
-      line-height: 1.5rem;
-      font-size: 1.5rem;
-    }
-
-    p {
-      line-height: 1.5rem;
-      font-family: $family-sans-serif;
-      font-size: 1rem;
-      color: $black;
-      padding: 0 0 1.5em 0;
-      margin: 0;
-    }
+#benefits {
+  section {
+    padding: 4.5rem;
   }
 }
 
 #authors {
 
   section {
-    padding-bottom: 24rem;
+    padding: 4.5rem;
   }
 
   h2 {
@@ -321,7 +314,7 @@ nav.navbar {
 
   h3.subtitle {
     line-height: 3rem;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     padding: 3rem 0 0 0;
   }
 
@@ -329,7 +322,7 @@ nav.navbar {
     margin: 3rem 0 1.5rem 0;
     padding: 0;
     line-height: 3rem;
-    text-align: center;
+    text-align: left;
   }
 
   p {
@@ -351,7 +344,7 @@ nav.navbar {
     padding: 0;
     list-style: none;
     display: flex;
-    justify-content: center;
+    justify-content: left;
     flex-wrap: wrap;
     gap: 1rem;
 
@@ -369,32 +362,67 @@ nav.navbar {
   }
 }
 
-#buy {
+#reviews {
+  section {
+    padding: 4.5rem;
+  }
+
   h2 {
-    line-height: 3rem;
     margin: 0 0 3rem 0;
     padding: 0;
+    line-height: 3rem;
+  }
+
+  .column {
+    padding: 1.5rem 1rem;
+  }
+}
+
+#who-is-it-for {
+  padding: 4.5rem;
+
+  ul li {
+    font-size: 1.25rem;
+    margin: 0 0 1.5rem 0;
+  }
+
+  div.container.bg-green {
+    background-image: linear-gradient(to right bottom, #b9eec5, #b1e8be, #aae1b6, #a2dbaf, #9bd5a8);
+  }
+
+  .container p {
+    font-size: 1.25rem;
+    margin: 2rem 0 0 0;
+  }
+}
+
+#final-cta {
+  section {
+    padding: 4.5rem;
+  }
+
+  h2 {
+    line-height: 3rem;
   }
 
   h3 {
-    line-height: 3rem;
-    margin: 0 0 3rem 0;
-    padding: 0;
+    line-height: 2rem;
   }
+}
 
-  .buttons {
-    margin: 0 0 3rem 0;
-  }
-
-  .buttons .button {
-    height: 3rem;
-    line-height: 3rem;
+#amazon-reviews {
+  section {
+    padding: 4.5rem;
   }
 }
 
 #faq {
+  section {
+    padding: 4.5rem;
+  }
+
   dt {
-    padding-top: 3em
+    padding-top: 1em
   }
 
   button {
@@ -421,7 +449,7 @@ nav.navbar {
       margin: 1.5rem 0 0 0;
       text-align: left;
       font-weight: bold;
-      padding-left: 3em;
+      padding-left: 2em;
     }
 
     &[aria-expanded=false] h3::before {
@@ -459,6 +487,26 @@ nav.navbar {
   dd {
     border-bottom: 1px solid $green;
     margin: 0 0;
+  }
+}
+
+#sample-chapter {
+  padding: 4.5rem;
+
+  h2,
+  h3 {
+    line-height: 3rem;
+    margin: 0;
+  }
+
+  p {
+    margin-top: 1.5rem;
+  }
+
+  .buttons {
+    .button {
+      height: 3rem;
+    }
   }
 }
 
