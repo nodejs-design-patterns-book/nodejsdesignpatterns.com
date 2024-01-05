@@ -20,7 +20,7 @@ og_type:
         <div class="columns is-vcentered is-gapless">
           <div class="column pr-4">
             <h1 class="title is-1">
-              <em>Node.js Design Patterns</em>: the ultimate guide to becoming a Node.js expert</h1>
+              Node.js Design Patterns: the ultimate guide to becoming a Node.js expert</h1>
             <h2 class="subtitle is-4 mt-1">The <strong>top-tier book</strong> for Node.js that will guide you from A to Z through the design and implementation of production-grade <strong>Node.js applications</strong> with <strong>tested patterns</strong> and <strong>techniques</strong>.</h2>
             <div class="buttons">
               <a class="button is-primary" href="https://nodejsdp.link/buy" {{ track("click_buy_print") }}>Buy Print edition</a>
@@ -135,7 +135,7 @@ og_type:
   <div class="bg-green">
     <section id="complete-description" class="section bg-white is-medium">
       <div class="container is-max-desktop">
-        <div class="container bg-green px-6 py-6 bd-all-small" style="max-width: 800px;">
+        <div id="complete-description-features" class="container bg-green bd-all-small" style="max-width: 800px;">
           <h2 class="title underline-bright is-2 has-text-centered mb-6">
             <span>More than just Design Patterns: a book with Everything you need to know about Node.js</span>
           </h2>
@@ -153,83 +153,85 @@ og_type:
         </div>
       </div>
 
-      <h2 class="title is-2 underline has-text-centered mt-6">
-        <span>What you will find in the book:</span>
-      </h2>
+      <div id="chapters-container">
+        <h2 class="title is-2 underline has-text-centered mt-6">
+          <span>What you will find in the book:</span>
+        </h2>
 
-      <div id="chapters" class="columns is-centered">
-        <div class="column is-6">
+        <div id="chapters" class="columns is-centered">
+          <div class="column is-6">
 
-          <ol>
-            <li>
-              <h3 class="title is-4">The Node.js Platform</h3>
-              <p>Learn about the Node.js philosophy, the reactor patterns and the differences between JavaScript on the browser and Node.js on the server.</p>
-            </li>
+            <ol>
+              <li>
+                <h3 class="title is-4">The Node.js Platform</h3>
+                <p>Learn about the Node.js philosophy, the reactor patterns and the differences between JavaScript on the browser and Node.js on the server.</p>
+              </li>
 
-            <li>
-              <h3 class="title is-4">The Module System</h3>
-              <p>Learn how to leverage the powerful Node.js module system and discover the main differences between CommonJS and ESM.</p>
-            </li>
+              <li>
+                <h3 class="title is-4">The Module System</h3>
+                <p>Learn how to leverage the powerful Node.js module system and discover the main differences between CommonJS and ESM.</p>
+              </li>
 
-            <li>
-              <h3 class="title is-4">Callbacks and Events</h3>
-              <p>Discover the callback pattern, how it works and the conventions used in Node.js. Learn how to avoid pitfalls and when to take advantage of the observer pattern using Node.js built-in event emitter.</p>
-            </li>
+              <li>
+                <h3 class="title is-4">Callbacks and Events</h3>
+                <p>Discover the callback pattern, how it works and the conventions used in Node.js. Learn how to avoid pitfalls and when to take advantage of the observer pattern using Node.js built-in event emitter.</p>
+              </li>
 
-            <li>
-              <h3 class="title is-4">Asynchronous Control Flow Patterns with Callbacks</h3>
-              <p>Lean how to avoid callback hell and explore common asynchronous patterns such as sequential execution, sequential iteration, parallel execution and limited parallel execution.</p>
-            </li>
+              <li>
+                <h3 class="title is-4">Asynchronous Control Flow Patterns with Callbacks</h3>
+                <p>Lean how to avoid callback hell and explore common asynchronous patterns such as sequential execution, sequential iteration, parallel execution and limited parallel execution.</p>
+              </li>
 
-            <li>
-              <h3 class="title is-4">Asynchronous Control Flow Patterns with Promises and Async/Await</h3>
-              <p>Find out how promises work and how to use them effectively to implement various asynchronous control flow patterns. Explore the modern async/await syntax, the main tool today for dealing with asynchronous code in Node.js</p>
-            </li>
+              <li>
+                <h3 class="title is-4">Asynchronous Control Flow Patterns with Promises and Async/Await</h3>
+                <p>Find out how promises work and how to use them effectively to implement various asynchronous control flow patterns. Explore the modern async/await syntax, the main tool today for dealing with asynchronous code in Node.js</p>
+              </li>
 
-            <li>
-              <h3 class="title is-4">Coding with Streams</h3>
-              <p>Understand why streams are so important in Node.js. Learn how to use standard streams and how to create custom ones. Explore various streaming patterns and learn how to build powerful streaming pipelines.</p>
-            </li>
+              <li>
+                <h3 class="title is-4">Coding with Streams</h3>
+                <p>Understand why streams are so important in Node.js. Learn how to use standard streams and how to create custom ones. Explore various streaming patterns and learn how to build powerful streaming pipelines.</p>
+              </li>
 
-            <li>
-              <h3 class="title is-4">Creational Design Patterns</h3>
-              <p>Learn about the most famous creational design patterns in Node.js: the Factory pattern, the Revealing Constructor pattern, the Builder pattern. Finally, explore the Singleton pattern and the Dependency Injection pattern.</p>
-            </li>
+              <li>
+                <h3 class="title is-4">Creational Design Patterns</h3>
+                <p>Learn about the most famous creational design patterns in Node.js: the Factory pattern, the Revealing Constructor pattern, the Builder pattern. Finally, explore the Singleton pattern and the Dependency Injection pattern.</p>
+              </li>
 
-            <li>
-              <h3 class="title is-4">Structural Design Patterns</h3>
-              <p>Discover how to implement and use the Proxy, the Decorator and the Adapter pattern in Node.js.</p>
-            </li>
+              <li>
+                <h3 class="title is-4">Structural Design Patterns</h3>
+                <p>Discover how to implement and use the Proxy, the Decorator and the Adapter pattern in Node.js.</p>
+              </li>
 
-            <li>
-              <h3 class="title is-4">Behavioural Design Patterns</h3>
-              <p>Learn how to implement and leverage some of the most well known behavioural design patterns in the context of Node.js: the Strategy pattern, the State pattern, the Template pattern, the Iterator pattern, the Middleware pattern, and the Command pattern.</p>
-              <p>
-                <a href="#sample-chapter">
-                  <span class="tag is-primary">Free Chapter!</span></a>
-              </p>
-            </li>
+              <li>
+                <h3 class="title is-4">Behavioural Design Patterns</h3>
+                <p>Learn how to implement and leverage some of the most well known behavioural design patterns in the context of Node.js: the Strategy pattern, the State pattern, the Template pattern, the Iterator pattern, the Middleware pattern, and the Command pattern.</p>
+                <p>
+                  <a href="#sample-chapter">
+                    <span class="tag is-primary">Free Chapter!</span></a>
+                </p>
+              </li>
 
-            <li>
-              <h3 class="title is-4">Universal JavaScript</h3>
-              <p>Explore the fundamentals of JavaScript cross-platform development and learn how to share code between the browser and Node.js. Learn how to leverage React.js to build a complete universal JavaScript application.</p>
-            </li>
+              <li>
+                <h3 class="title is-4">Universal JavaScript</h3>
+                <p>Explore the fundamentals of JavaScript cross-platform development and learn how to share code between the browser and Node.js. Learn how to leverage React.js to build a complete universal JavaScript application.</p>
+              </li>
 
-            <li>
-              <h3 class="title is-4">Advanced Recipes</h3>
-              <p>Discover well-known recipes to deal with some more advanced Node.js intricacies such as dealing with asynchronously initialized components, performing asynchronous request batching and caching, canceling asynchronous operations and running CPU-bound tasks.</p>
-            </li>
+              <li>
+                <h3 class="title is-4">Advanced Recipes</h3>
+                <p>Discover well-known recipes to deal with some more advanced Node.js intricacies such as dealing with asynchronously initialized components, performing asynchronous request batching and caching, canceling asynchronous operations and running CPU-bound tasks.</p>
+              </li>
 
-            <li>
-              <h3 class="title is-4">Scalability and Architectural Patterns</h3>
-              <p>Master the art of Node.js scalability by learning about the "Scale Cube", discover how to run multiple instances of the same application and how to use load balancers and service registers. Learn how to use containers and containers orchestration platforms such as Kubernetes. Finally, find out how to design and build microservices architectures.</p>
-            </li>
+              <li>
+                <h3 class="title is-4">Scalability and Architectural Patterns</h3>
+                <p>Master the art of Node.js scalability by learning about the "Scale Cube", discover how to run multiple instances of the same application and how to use load balancers and service registers. Learn how to use containers and containers orchestration platforms such as Kubernetes. Finally, find out how to design and build microservices architectures.</p>
+              </li>
 
-            <li>
-              <h3 class="title is-4">Messaging and Integration Patterns</h3>
-              <p>Learn how to integrate complex distributed Node.js applications using the most popular messaging systems. Learn how to implement the most common messaging patterns on top of ZeroMQ, RabbitMQ and Redis Streams.</p>
-            </li>
-          </ol>
+              <li>
+                <h3 class="title is-4">Messaging and Integration Patterns</h3>
+                <p>Learn how to integrate complex distributed Node.js applications using the most popular messaging systems. Learn how to implement the most common messaging patterns on top of ZeroMQ, RabbitMQ and Redis Streams.</p>
+              </li>
+            </ol>
+          </div>
         </div>
       </div>
 
