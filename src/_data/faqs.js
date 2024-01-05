@@ -51,6 +51,12 @@ you can easily skim through the chapters and focus only on the content that matt
 [Table of Contents](#book-chapters) if you want to have a better feeling on how the book is structured.`
   },
   {
+    id: 'faq-full-list-of-patterns',
+    question: 'What are all the patterns discussed in the book?',
+    answer: `The central part of the book covers the most traditional design patterns from the gang of four book, but it also covers many other design patterns that are specific to JavaScript and Node.js.
+    This is the full list of patterns covered in the book: **Factory**, **Builder**, **Revealing Constructor**, **Singleton**, **Dependency Injection**, **Proxy**, **Decorator**, **Adapter**, **Strategy**, **State**, **Template**, **Iterator** (including generators and async iterators), **Middleware**, and **Command**.`
+  },
+  {
     id: 'faq-is-it-up-to-date',
     question: 'How up to date is this book?',
     answer: `The third edition of this book (released in **July 2020**) has been updated to cover the features of the most 
