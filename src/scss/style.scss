@@ -177,11 +177,53 @@ nav.navbar {
 }
 
 #key-characteristics {
-  padding: 4.5rem;
+  padding: 4.5rem 1rem;
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  h4 {
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0 0 1.5rem 0;
+  }
+
+  @media screen and (min-width: 769px) {
+    padding: 4.5rem;
+
+    h2 {
+      font-size: 2.5rem;
+    }
+
+    h4 {
+      margin-bottom: 1.25rem;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
 }
 
 #the-problem {
-  padding: 4.5rem;
+  padding: 4.5rem 1rem;
+
+  h2 {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  @media screen and (min-width: 769px) {
+    padding: 4.5rem;
+
+    h2 {
+      font-size: 2.5rem;
+      text-align: left;
+    }
+  }
 
   p {
     margin: 1.5rem 0 0 0;
@@ -198,11 +240,24 @@ nav.navbar {
 
 #alternative-solution {
   section {
-    padding: 4.5rem;
+    padding: 4.5rem 1rem;
   }
 
   h2 {
+    font-size: 2rem;
+    text-align: center;
     margin: 0 0 2rem 0;
+  }
+
+  @media screen and (min-width: 769px) {
+    section {
+      padding: 4.5rem;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      text-align: left;
+    }
   }
 
   picture {
@@ -228,11 +283,39 @@ nav.navbar {
 }
 
 #complete-description {
-  padding: 0 4.5rem 4.5rem 4.5rem;
+  padding: 0;
 
   h2 {
-    font-size: 2rem;
-    margin: 0 0 3rem 0;
+    font-size: 1.5rem;
+  }
+
+  #complete-description-features {
+    padding: 2rem 1rem;
+  }
+
+  #chapters-container {
+    margin: 0 1rem;
+
+    ol {
+      padding-left: 2rem;
+    }
+
+    li p {
+      max-width: 600px;
+    }
+  }
+
+  @media screen and (min-width: 769px) {
+    padding: 0 4.5rem 4.5rem 4.5rem;
+
+    #complete-description-features {
+      padding: 3rem;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin: 0 0 3rem 0;
+    }
   }
 
   h3 {
@@ -296,33 +379,69 @@ nav.navbar {
 
 #benefits {
   section {
-    padding: 4.5rem;
+    padding: 4.5rem 1rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  @media screen and (min-width: 769px) {
+    section {
+      padding: 4.5rem;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+    }
   }
 }
 
 #authors {
-
   section {
-    padding: 4.5rem;
+    padding: 4.5rem 1rem;
   }
 
   h2 {
-    line-height: 3rem;
+    line-height: 2.5rem;
     margin: 0;
     padding: 0;
-  }
-
-  h3.subtitle {
-    line-height: 3rem;
-    font-size: 1.5rem;
-    padding: 3rem 0 0 0;
   }
 
   h3.title {
     margin: 3rem 0 1.5rem 0;
     padding: 0;
     line-height: 3rem;
-    text-align: left;
+    text-align: center;
+  }
+
+  h3.subtitle {
+    line-height: 2rem;
+    font-size: 1.5rem;
+    padding: 3rem 0 0 0;
+  }
+
+
+  @media screen and (min-width: 769px) {
+    section {
+      padding: 4.5rem;
+    }
+
+    h2 {
+      line-height: 2.5rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    h3.title {
+      text-align: left;
+    }
+
+    h3.subtitle {
+      line-height: 2.5rem;
+      font-size: 1.5rem;
+      padding: 3rem 0 0 0;
+    }
   }
 
   p {
@@ -364,7 +483,13 @@ nav.navbar {
 
 #reviews {
   section {
-    padding: 4.5rem;
+    padding: 4.5rem 1rem;
+  }
+
+  @media screen and (min-width: 769px) {
+    section {
+      padding: 4.5rem;
+    }
   }
 
   h2 {
@@ -379,7 +504,32 @@ nav.navbar {
 }
 
 #who-is-it-for {
-  padding: 4.5rem;
+  padding: 4.5rem 0rem;
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  #who-is-it-for-main {
+    padding: 2rem 1rem;
+  }
+
+  #who-is-it-for-why {
+    padding: 2rem 1rem;
+  }
+
+
+  @media screen and (min-width: 769px) {
+    padding: 4.5rem;
+
+    h2 {
+      font-size: 2.5rem;
+    }
+
+    #who-is-it-for-main {
+      padding: 3rem;
+    }
+  }
 
   ul li {
     font-size: 1.25rem;
@@ -398,27 +548,58 @@ nav.navbar {
 
 #final-cta {
   section {
-    padding: 4.5rem;
+    padding: 4.5rem 1rem;
   }
 
   h2 {
-    line-height: 3rem;
+    font-size: 2rem;
   }
 
-  h3 {
-    line-height: 2rem;
+  @media screen and (min-width: 769px) {
+    section {
+      padding: 4.5rem;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      line-height: 3rem;
+    }
+
+    h3 {
+      line-height: 2rem;
+    }
   }
 }
 
 #amazon-reviews {
   section {
-    padding: 4.5rem;
+    padding: 4.5rem 1rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  @media screen and (min-width: 769px) {
+    section {
+      padding: 4.5rem;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+    }
   }
 }
 
 #faq {
   section {
-    padding: 4.5rem;
+    padding: 4.5rem 1rem;
+  }
+
+  @media screen and (min-width: 769px) {
+    section {
+      padding: 4.5rem;
+    }
   }
 
   dt {
@@ -491,7 +672,11 @@ nav.navbar {
 }
 
 #sample-chapter {
-  padding: 4.5rem;
+  padding: 4.5rem 1rem;
+
+  @media screen and (min-width: 769px) {
+    padding: 4.5rem;
+  }
 
   h2,
   h3 {
