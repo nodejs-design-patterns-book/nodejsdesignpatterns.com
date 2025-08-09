@@ -1,0 +1,737 @@
+<!doctype html><!--
+888b    888               888              d8b               8888888b.                    d8b                        8888888b.          888    888                                      
+8888b   888               888              Y8P               888  "Y88b                   Y8P                        888   Y88b         888    888                                      
+88888b  888               888                                888    888                                              888    888         888    888                                      
+888Y88b 888  .d88b.   .d88888  .d88b.     8888 .d8888b       888    888  .d88b.  .d8888b  888  .d88b.  88888b.       888   d88P 8888b.  888888 888888 .d88b.  888d888 88888b.  .d8888b  
+888 Y88b888 d88""88b d88" 888 d8P  Y8b    "888 88K           888    888 d8P  Y8b 88K      888 d88P"88b 888 "88b      8888888P"     "88b 888    888   d8P  Y8b 888P"   888 "88b 88K      
+888  Y88888 888  888 888  888 88888888     888 "Y8888b.      888    888 88888888 "Y8888b. 888 888  888 888  888      888       .d888888 888    888   88888888 888     888  888 "Y8888b. 
+888   Y8888 Y88..88P Y88b 888 Y8b.    d8b  888      X88      888  .d88P Y8b.          X88 888 Y88b 888 888  888      888       888  888 Y88b.  Y88b. Y8b.     888     888  888      X88 
+888    Y888  "Y88P"   "Y88888  "Y8888 Y8P  888  88888P'      8888888P"   "Y8888   88888P' 888  "Y88888 888  888      888       "Y888888  "Y888  "Y888 "Y8888  888     888  888  88888P' 
+                                           888                                                     888                                                                                  
+                                          d88P                                                Y8b d88P                                                                                  
+                                        888P"                                                  "Y88P"                                                                                   
+
+
+> Hey, it seems you are a curious one and that you like to hack! :) 
+> Maybe you should follow us on X at @mariocasciaro & @loige
+
+> Did you know that this website is open source?
+> Check out https://github.com/nodejs-design-patterns-book/nodejsdesignpatterns.com
+
+--><html lang="en" class="has-navbar-fixed-top"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Node.js development with Docker and Docker Compose</title><meta property="og:title" content="Node.js development with Docker and Docker Compose"><meta name="description" content="Using Docker and Docker Compose to develop Node.js projects can be a good option, especially if working in a team. This article provides a walk-through a possible setup and discuss pros and cons of this approach"><meta property="og:description" content="Using Docker and Docker Compose to develop Node.js projects can be a good option, especially if working in a team. This article provides a walk-through a possible setup and discuss pros and cons of this approach"><meta property="og:url" content="https://www.nodejsdesignpatterns.com/blog/node-js-development-with-docker-and-docker-compose/"><meta name="url" content="https://www.nodejsdesignpatterns.com/blog/node-js-development-with-docker-and-docker-compose/"><meta name="pageKey" content="blogarticlesnode-js-development-with-docker-and-docker-composeindex"><meta property="og:image" content="https://www.nodejsdesignpatterns.com/blog/node-js-development-with-docker-and-docker-compose/og_node-js-development-with-docker-and-docker-compose.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="669"><meta property="fb:app_id" content="765341910910483"><meta property="og:locale" content="en_US"><meta property="og:site_name" content="Node.js Design Patterns"><meta property="og:type" content="article"><meta name="twitter:card" content="summary_large_image"><meta name="robots" content="index, follow"><meta name="author" content="Luciano Mammino and Mario Casciaro, authors@nodejsdesignpatterns.com"><meta name="copyright" content="Mario Casciaro, Luciano Mammino, Packt Publishing"><meta name="generator" content="@11ty/eleventy v3.0.0-alpha.3"><meta http-equiv="last-modified" content="Wed, 07 Apr 2021 18:00:00 GMT"><meta name="date" content="Wed, 07 Apr 2021 18:00:00 GMT"><link rel="alternate" type="application/rss+xml" title="RSS Feed for www.nodejsdesignpatterns.com" href="/blog/rss.xml"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="manifest" href="/site.webmanifest"><meta name="theme-color" content="#FFFFFF"><style>@font-face{font-family:"Playfair Display";font-style:normal;font-weight:600;src:url(/assets/5ad1fe7e8556951d2118.eot);src:local(""),url(/assets/5ad1fe7e8556951d2118.eot?#iefix)format("embedded-opentype"),url(/assets/a16393948d50476b3f93.woff2)format("woff2"),url(/assets/54da969939e02da4ef8a.woff)format("woff"),url(/assets/b92844af222958865654.ttf)format("truetype"),url(/assets/128aef13e266ee58a02b.svg#PlayfairDisplay)format("svg")}.button,.input,.select select{-moz-appearance:none;-webkit-appearance:none;align-items:center;border:3px solid transparent;border-radius:4px;box-shadow:none;display:inline-flex;font-size:1rem;height:2.5em;justify-content:flex-start;line-height:1.5;padding:calc(.5em - 3px) calc(.75em - 3px);position:relative;vertical-align:top}.button:active,.button:focus,.input:active,.input:focus,.select select:active,.select select:focus{outline:0}.button,.file{-webkit-touch-callout:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.select:not(.is-multiple):not(.is-loading)::after{border:3px solid transparent;border-radius:2px;border-right:0;border-top:0;content:" ";display:block;height:.625em;margin-top:-.4375em;pointer-events:none;position:absolute;top:50%;transform:rotate(-45deg);transform-origin:center;width:.625em}.block:not(:last-child),.content:not(:last-child),.level:not(:last-child),.message:not(:last-child),.subtitle:not(:last-child),.table:not(:last-child),.title:not(:last-child){margin-bottom:1.5rem}.modal{bottom:0;left:0;position:absolute;right:0;top:0}
+/*! minireset.css v0.0.6 | MIT License | github.com/jgthms/minireset.css */
+@keyframes spinAround{0%{transform:rotate(0deg)}to{transform:rotate(359deg)}}@keyframes moveIndeterminate{0%{background-position:200%0}to{background-position:-200%0}}blockquote,body,fieldset,h1,h2,h3,h4,h5,h6,hr,html,legend,li,ol,p,pre,ul{margin:0;padding:0}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:400}ul{list-style:none}button,input,select{margin:0}html{box-sizing:border-box;background-color:#fff;font-size:16px;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;min-width:300px;overflow-x:hidden;overflow-y:scroll;text-rendering:optimizeLegibility;text-size-adjust:100%;scroll-behavior:smooth}*,::after,::before{box-sizing:inherit}img{height:auto;max-width:100%}table{border-collapse:collapse;border-spacing:0}article,aside,footer,hr,section{display:block}body,button,input,select{font-family:"Open Sans",sans-serif}code,pre{-moz-osx-font-smoothing:auto;-webkit-font-smoothing:auto;font-family:monospace}body,code{font-weight:400}body{color:#999;font-size:1em;line-height:1.5}a{color:#da8f4c;cursor:pointer;text-decoration:none}.message strong,a strong,pre code{color:currentColor}a:hover,strong{color:#363636}code{color:#da1039;padding:.25em .5em}hr{height:2px;margin:1.5rem 0}input[type=checkbox]{vertical-align:baseline}code,pre,small{font-size:.875em}span{font-style:inherit;font-weight:inherit}strong{font-weight:700}fieldset,hr{border:0}code,hr,pre{background-color:#f5f5f5}pre{-webkit-overflow-scrolling:touch;color:#999;overflow-x:auto;padding:1.25rem 1.5rem;white-space:pre;word-wrap:normal}pre code{background-color:transparent;font-size:1em;padding:0}.card,.dropdown{position:relative}.card{background-color:#fff;border-radius:.25rem;box-shadow:0 .5em 1em -.125em rgba(50,50,50,.1),0 0 0 1px rgba(50,50,50,.02);color:#999;max-width:100%}.dropdown{display:inline-flex;vertical-align:top}.level{align-items:center;justify-content:space-between}.level code{border-radius:4px}.level img{display:inline-block;vertical-align:top}@media screen and (min-width:769px),print{.level{display:flex}}.message{background-color:#f5f5f5;border-radius:4px;font-size:1rem}.message a:not(.button):not(.tag):not(.dropdown-item){color:currentColor;text-decoration:underline}.message.is-small{font-size:.75rem}.message.is-medium{font-size:1.25rem}.modal{align-items:center;display:none;flex-direction:column;justify-content:center;overflow:hidden;position:fixed;z-index:40}.navbar{background-color:#fff;min-height:3.25rem;position:relative;z-index:30}.navbar-brand,.navbar>.container{align-items:stretch;display:flex;min-height:3.25rem}.navbar>.container{width:100%}.navbar.has-shadow{box-shadow:0 2px 0 0#f5f5f5}.navbar.is-fixed-top{left:0;position:fixed;right:0;z-index:30;top:0}body.has-navbar-fixed-top,html.has-navbar-fixed-top{padding-top:3.25rem}.navbar-brand{flex-shrink:0}.navbar-brand a.navbar-item:focus,.navbar-brand a.navbar-item:hover{background-color:transparent}.navbar-item{color:#999;display:block;line-height:1.5;padding:.5rem .75rem;position:relative;flex-grow:0;flex-shrink:0}.navbar-item .icon:only-child{margin-left:-.25rem;margin-right:-.25rem}.checkbox input,a.navbar-item{cursor:pointer}a.navbar-item:focus,a.navbar-item:focus-within,a.navbar-item:hover{background-color:#fafafa;color:#da8f4c}.navbar-item img{max-height:1.75rem}@media screen and (max-width:1023px){.navbar>.container{display:block}.navbar-brand .navbar-item{align-items:center;display:flex}}@media screen and (min-width:1024px){.navbar{align-items:stretch;display:flex;min-height:3.25rem}.navbar-item{align-items:center;display:flex}.container>.navbar .navbar-brand,.navbar>.container .navbar-brand{margin-left:-.75rem}}.button{background-color:#fff;border-color:#dbdbdb;border-width:3px;color:#363636;cursor:pointer;justify-content:center;padding-bottom:calc(.5em - 3px);padding-left:1em;padding-right:1em;padding-top:calc(.5em - 3px);text-align:center;white-space:nowrap}.button strong{color:inherit}.button .icon,.button .icon.is-medium,.button .icon.is-small{height:1.5em;width:1.5em}.button .icon:first-child:not(:last-child){margin-left:calc(-.5em - 3px);margin-right:.25em}.button .icon:last-child:not(:first-child){margin-left:.25em;margin-right:calc(-.5em - 3px)}.button .icon:first-child:last-child{margin-left:calc(-.5em - 3px);margin-right:calc(-.5em - 3px)}.button:hover{border-color:#da8f4c;color:#363636}.button:focus{border-color:#754418;color:#363636}.button:focus:not(:active){box-shadow:0 0 0 .125em rgba(218,143,76,.25)}.button:active{border-color:#da8f4c;color:#363636}.button.is-small{font-size:.75rem}.button.is-small:not(.is-rounded){border-radius:2px}.button.is-medium{font-size:1.25rem}.container{flex-grow:1;margin:0 auto;position:relative;width:auto}@media screen and (min-width:1024px){.container{max-width:960px}}@media screen and (min-width:1216px){.container:not(.is-max-desktop){max-width:1152px}}.content li+li{margin-top:.25em}.content blockquote:not(:last-child),.content ol:not(:last-child),.content p:not(:last-child),.content pre:not(:last-child),.content table:not(:last-child),.content ul:not(:last-child){margin-bottom:1em}.content h1,.content h2,.content h3,.content h4,.content h5,.content h6{color:#363636;font-weight:600;line-height:1.125}.content h1{font-size:2em;margin-bottom:.5em}.content h1:not(:first-child){margin-top:1em}.content h2{font-size:1.75em;margin-bottom:.5714em}.content h2:not(:first-child){margin-top:1.1428em}.content h3{font-size:1.5em;margin-bottom:.6666em}.content h3:not(:first-child){margin-top:1.3333em}.content h4{font-size:1.25em;margin-bottom:.8em}.content h5{font-size:1.125em;margin-bottom:.8888em}.content h6{font-size:1em;margin-bottom:1em}.content blockquote{background-color:#f5f5f5;border-left:5px solid #dbdbdb;padding:1.25em 1.5em}.content ol{list-style-position:outside;margin-left:2em;margin-top:1em}.content ol:not([type]){list-style-type:decimal}.content ul{list-style:disc outside;margin-left:2em;margin-top:1em}.content ul ul{list-style-type:circle;margin-top:.5em}.content ul ul ul{list-style-type:square}.content pre{-webkit-overflow-scrolling:touch;overflow-x:auto;padding:1.25em 1.5em;white-space:pre;word-wrap:normal}.content table{width:100%}.content.is-small{font-size:.75rem}.content.is-medium{font-size:1.25rem}.icon{align-items:center;display:inline-flex;justify-content:center;height:1.5rem;width:1.5rem}.icon.is-small{height:1rem;width:1rem}.icon.is-medium{height:2rem;width:2rem}.image{display:block;position:relative}.image img{display:block;height:auto;width:100%}.table{background-color:#fff;color:#363636}.tags{align-items:center;display:flex;flex-wrap:wrap;justify-content:flex-start}.tags .tag{margin-bottom:.5rem}.tags .tag:not(:last-child){margin-right:.5rem}.tags:last-child{margin-bottom:-.5rem}.tags:not(:last-child){margin-bottom:1rem}.tag:not(body){align-items:center;background-color:#f5f5f5;border-radius:4px;color:#999;display:inline-flex;font-size:.75rem;height:2em;justify-content:center;line-height:1.5;padding-left:.75em;padding-right:.75em;white-space:nowrap}.tag:not(body).is-medium{font-size:1rem}.tag:not(body) .icon:first-child:not(:last-child){margin-left:-.375em;margin-right:.1875em}.tag:not(body) .icon:last-child:not(:first-child){margin-left:.1875em;margin-right:-.375em}.tag:not(body) .icon:first-child:last-child{margin-left:-.375em;margin-right:-.375em}a.tag:hover{text-decoration:underline}.subtitle,.title{word-break:break-word}.subtitle em,.subtitle span,.title em,.title span,.title strong{font-weight:inherit}.subtitle .tag,.title .tag{vertical-align:middle}.title{color:#363636;font-size:2rem;font-weight:600;line-height:1.125}.title strong{color:inherit}.subtitle:not(.is-spaced)+.title,.title:not(.is-spaced)+.subtitle{margin-top:-1.25rem}.title.is-2{font-size:2.5rem}.title.is-3{font-size:2rem}.title.is-4{font-size:1.5rem}.subtitle,.title.is-5{font-size:1.25rem}.subtitle{font-weight:400;line-height:1.25}.subtitle strong{color:#363636;font-weight:600}.subtitle.is-2{font-size:2.5rem}.subtitle.is-3{font-size:2rem}.subtitle.is-4{font-size:1.5rem}.number,.subtitle.is-5{font-size:1.25rem}.number{align-items:center;background-color:#f5f5f5;border-radius:9999px;display:inline-flex;height:2em;justify-content:center;margin-right:1.5rem;min-width:2.5em;padding:.25rem .5rem;text-align:center;vertical-align:top}.input,.select select{background-color:#fff;border-color:#999;border-radius:4px;color:#363636}.input::-moz-placeholder,.select select::-moz-placeholder{color:rgba(54,54,54,.3)}.input::-webkit-input-placeholder,.select select::-webkit-input-placeholder{color:rgba(54,54,54,.3)}.input:-moz-placeholder,.select select:-moz-placeholder{color:rgba(54,54,54,.3)}.input:-ms-input-placeholder,.select select:-ms-input-placeholder{color:rgba(54,54,54,.3)}.input:hover,.select select:hover{border-color:#fff}.input:active,.input:focus,.select select:active,.select select:focus{border-color:#da8f4c;box-shadow:0 0 0 .125em rgba(218,143,76,.25)}.input{box-shadow:none;max-width:100%;width:100%}.is-small.input{border-radius:2px;font-size:.75rem}.is-medium.input{font-size:1.25rem}.checkbox,.select{display:inline-block;position:relative}.checkbox{cursor:pointer;line-height:1.25}.checkbox:hover{color:#363636}.select{max-width:100%;vertical-align:top}.select:not(.is-multiple){height:2.5em}.select:not(.is-multiple):not(.is-loading)::after{border-color:#da8f4c;right:1.125em;z-index:4}.select select{cursor:pointer;display:block;font-size:1em;max-width:100%;outline:0}.select select::-ms-expand{display:none}.select select:not([multiple]){padding-right:2.5em}.select select[multiple]{height:auto;padding:0}.select select[multiple] option{padding:.5em 1em}.select:not(.is-multiple):not(.is-loading):hover::after{border-color:#363636}.select.is-small{border-radius:2px;font-size:.75rem}.select.is-medium{font-size:1.25rem}.file{align-items:stretch;display:flex;justify-content:flex-start;position:relative}.file.is-small{font-size:.75rem}.file.is-medium{font-size:1.25rem}.label{color:#363636;display:block;font-size:1rem;font-weight:700}.label:not(:last-child){margin-bottom:.5em}.help,.label.is-small{font-size:.75rem}.label.is-medium{font-size:1.25rem}.help{display:block;margin-top:.25rem}.column{display:block;flex-basis:0;flex-grow:1;flex-shrink:1;padding:.75rem}@media screen and (min-width:769px),print{.column.is-three-quarters{flex:none;width:75%}.column.is-half{flex:none;width:50%}.column.is-one-quarter{flex:none;width:25%}.column.is-2{flex:none;width:16.66666674%}.column.is-3{flex:none;width:25%}.column.is-4{flex:none;width:33.33333337%}.column.is-5{flex:none;width:41.66666674%}.column.is-8{flex:none;width:66.66666674%}}.columns{margin-left:-.75rem;margin-right:-.75rem;margin-top:-.75rem}.columns:last-child{margin-bottom:-.75rem}.columns:not(:last-child){margin-bottom:calc(1.5rem - .75rem)}.columns.is-gapless{margin-left:0;margin-right:0;margin-top:0}.columns.is-gapless>.column{margin:0;padding:0!important}.columns.is-gapless:not(:last-child){margin-bottom:1.5rem}.columns.is-gapless:last-child{margin-bottom:0}@media screen and (min-width:769px),print{.columns:not(.is-desktop){display:flex}}.columns.is-variable{--columnGap:0.75rem;margin-left:calc(-1*var(--columnGap));margin-right:calc(-1*var(--columnGap))}.columns.is-variable>.column{padding-left:var(--columnGap);padding-right:var(--columnGap)}.columns.is-variable.is-2{--columnGap:0.5rem}.columns.is-variable.is-3{--columnGap:0.75rem}.columns.is-variable.is-4{--columnGap:1rem}.columns.is-variable.is-5{--columnGap:1.25rem}.columns.is-variable.is-8{--columnGap:2rem}.mt-1{margin-top:.25rem!important}.mt-2{margin-top:.5rem!important}.mt-4{margin-top:1rem!important}.px-6{padding-left:3rem!important;padding-right:3rem!important}.py-6{padding-top:3rem!important;padding-bottom:3rem!important}.is-size-7{font-size:.75rem!important}@media screen and (max-width:768px){.is-hidden-mobile{display:none!important}}.hero{align-items:stretch;display:flex;flex-direction:column;justify-content:space-between}.hero .navbar{background:0 0}.hero.is-small .hero-body{padding:1.5rem}@media screen and (min-width:769px),print{.hero.is-medium .hero-body{padding:9rem 4.5rem}}.hero-body{flex-grow:1;flex-shrink:0;padding:3rem 1.5rem}@media screen and (min-width:769px),print{.hero-body{padding:3rem}}.section{padding:3rem 1.5rem}@media screen and (min-width:1024px){.section{padding:3rem}.section.is-medium{padding:9rem 4.5rem}}.footer{background-color:#fafafa;padding:3rem 1.5rem 6rem}code .number{align-items:normal;background-color:transparent;border-radius:0;display:inline;height:auto;justify-content:normal;margin-right:auto;min-width:auto;padding:0;text-align:left;vertical-align:baseline;font-size:inherit}@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}.title{font-family:"Playfair Display",serif}.container{color:#4c4c4c}#authors p,div,h1,h2,h3,h4,p{line-height:1.5rem}nav a.navbar-item{color:#656565;font-weight:700}.bg-green{background-color:#b9eec5}.bg-white{background-color:#fff}.subtitle{color:#656565}.chapter9{transform:rotate(-10deg) translateY(30px);margin-bottom:-20px!important}@media screen and (min-width:769px){.chapter9{transform:rotate(-10deg) translate(30px,-30px);margin:0 auto}}nav.navbar{z-index:99999!important}#hero h1{line-height:2.75rem;font-size:2.5rem}#hero h2{line-height:2rem;font-size:1.2rem}@counter-style chapter{system:extends decimal;prefix:"Chapter "}#benefits section{padding:4.5rem 1rem}#benefits h2{font-size:2rem}@media screen and (min-width:769px){#benefits section{padding:4.5rem}#benefits h2{font-size:2.5rem}}#authors section,#sample-chapter{padding:4.5rem 1rem}#authors h2{line-height:2.5rem;margin:0;padding:0}#authors h3.title{margin:3rem 0 1.5rem;padding:0;line-height:3rem;text-align:center}#authors h3.subtitle{line-height:2rem;font-size:1.5rem;padding:3rem 0 0}@media screen and (min-width:769px){#authors section{padding:4.5rem}#authors h2{line-height:2.5rem;margin:0;padding:0}#authors h3.title{text-align:left}#authors h3.subtitle{line-height:2.5rem;font-size:1.5rem;padding:3rem 0 0}}#authors .column{padding-top:0;padding-bottom:0}#authors ul{margin:1.5rem 0;padding:0;list-style:none;display:flex;justify-content:left;flex-wrap:wrap;gap:1rem}#authors ul li a{color:#da8f4c;fill:#754418;vertical-align:baseline;font-weight:700}#authors ul li a:hover{color:#754418;fill:#323232}@media screen and (min-width:769px){#sample-chapter{padding:4.5rem}}#sample-chapter h2,#sample-chapter h3{line-height:3rem;margin:0}#sample-chapter p{margin-top:1.5rem}.bd-lt{border-radius:6rem 0 0 0}.bd-rd{border-radius:0 0 6rem 0}.bd-all-small{border-radius:3rem}.article article h2,.article article h3,.article article h4{margin-top:1.25em}.article article h2 code,.article article h3 code,.article article h4 code{font-size:inherit;padding:inherit;background:0 0;color:inherit}.article article p{margin-top:.75em}.article article p:first-child{margin-top:0;font-size:1.25em;line-height:1.5em}.article article .author-info{padding:0 0 1em;margin:0 0 1em;border-bottom:1px solid #eee}.article article .author-info p{color:#616161;display:flex;align-items:center;font-size:1em}.article article .author-info a{display:flex;align-items:center;margin:0 .75em 0 0}.article article .author-info img{width:2em;border-radius:50%;margin:0 .75em}.article article .author-info svg{margin:0 .75em 0 0}.article aside .wrapper-sticky{position:-webkit-sticky;position:sticky;top:80px}.article aside .aside-ad-block .book{transform:translateX(-1em)}.article aside .aside-ad-block a{background:#b9eec5;padding:1em;border-radius:1em;margin:0 0 2em;color:#323232;display:block;border:3px solid transparent}.article aside .aside-ad-block a:hover{border:3px solid #2bb049}.article aside .aside-ad-block h5{font-weight:700;font-size:.8em;padding:0 0 .2em}.article aside .aside-ad-block p{font-size:.8em}.article aside h3{margin-bottom:1em}.article aside .toc{margin:0 0 2em}.article aside .toc ol{padding:0 0 0 2em;list-style:decimal-leading-zero}.blog .resources{display:flex;justify-content:space-around;flex-wrap:wrap;margin:3em 0}</style><script async src="https://www.googletagmanager.com/gtag/js?id=UA-42283801-2"></script><script>window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'UA-42283801-2');</script><style type="text/css">code[class*="language-"],
+        pre[class*="language-"] {
+          color: #ccc;
+          background: none;
+          font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+          font-size: 1em;
+          text-align: left;
+          white-space: pre;
+          word-spacing: normal;
+          word-break: normal;
+          word-wrap: normal;
+          line-height: 1.5;
+
+          -moz-tab-size: 4;
+          -o-tab-size: 4;
+          tab-size: 4;
+
+          -webkit-hyphens: none;
+          -moz-hyphens: none;
+          -ms-hyphens: none;
+          hyphens: none;
+
+        }
+
+        /* Code blocks */
+        pre[class*="language-"] {
+          padding: 1em;
+          margin: 0.5em 0;
+          overflow: auto;
+        }
+
+        :not(pre) > code[class*="language-"],
+        pre[class*="language-"] {
+          background: #2d2d2d;
+        }
+
+        /* Inline code */
+        :not(pre) > code[class*="language-"] {
+          padding: 0.1em;
+          border-radius: 0.3em;
+          white-space: normal;
+        }
+
+        .token.block-comment,
+        .token.cdata,
+        .token.comment,
+        .token.doctype,
+        .token.prolog {
+          color: #999;
+        }
+
+        .token.punctuation {
+          color: #ccc;
+        }
+
+        .token.attr-name,
+        .token.deleted,
+        .token.namespace,
+        .token.tag {
+          color: #e2777a;
+        }
+
+        .token.function-name {
+          color: #6196cc;
+        }
+
+        .token.boolean,
+        .token.function,
+        .token.number {
+          color: #f08d49;
+        }
+
+        .token.class-name,
+        .token.constant,
+        .token.property,
+        .token.symbol {
+          color: #f8c555;
+        }
+
+        .token.atrule,
+        .token.builtin,
+        .token.important,
+        .token.keyword,
+        .token.selector {
+          color: #cc99cd;
+        }
+
+        .token.attr-value,
+        .token.char,
+        .token.regex,
+        .token.string,
+        .token.variable {
+          color: #7ec699;
+        }
+
+        .token.entity,
+        .token.operator,
+        .token.url {
+          color: #67cdcc;
+        }
+
+        .token.bold,
+        .token.important {
+          font-weight: bold;
+        }
+        .token.italic {
+          font-style: italic;
+        }
+
+        .token.entity {
+          cursor: help;
+        }
+
+        .token.inserted {
+          color: green;
+        }</style></head><body><nav id="navbar" class="navbar is-fixed-top has-shadow" role="navigation" aria-label="main navigation"><div class="container"><div class="navbar-brand"><div class="navbar-item"><a href="/"><h1 class="title is-5">Node.js Design Patterns</h1></a></div></div></div></nav><section class="hero is-medium bg-green bd-rd"><div class="hero-body"><div class="container"><h1 class="title">Node.js development with Docker and Docker Compose</h1></div></div></section><div class="bg-green article"><section class="section bd-lt bg-white is-small"><div class="container"><div class="columns is-variable is-8"><article class="column is-three-quarters"><div class="author-info"><p><span class="written-by-icon is-hidden-mobile"><svg xmlns="http://www.w3.org/2000/svg" aria-label="Written by" role="img" viewBox="0 0 24 24" width="1em" height="1em"><path fill="currentColor" d="M19 20H5a1 1 0 0 0 0 2h14a1 1 0 0 0 0-2z"/><path fill="currentColor" d="M5 18h.09l4.17-.38a2 2 0 0 0 1.21-.57l9-9a1.92 1.92 0 0 0-.07-2.71L16.66 2.6A2 2 0 0 0 14 2.53l-9 9a2 2 0 0 0-.57 1.21L4 16.91a1 1 0 0 0 .29.8A1 1 0 0 0 5 18zM15.27 4L18 6.73l-2 1.95L13.32 6z"/></svg> </span><span class="is-hidden-mobile">Published by </span><a href="https://www.giuseppemorelli.net/"><img alt="Giuseppe Morelli's profile picture" src="/static/giuseppe-morelli-avatar-small.jpg"> Giuseppe Morelli </a><span class="is-hidden-mobile">on</span> &nbsp;Wed, 07 Apr 2021 18:00:00 GMT</p></div><main class="content"><p>In this article, we are going to learn how to use Docker and Docker Compose for Node.js development. We will discuss the main benefits of this approach and explore some interesting examples. While doing that we will also learn what Docker is and why you should consider it, especially if you are developing multiple projects or if you are working in a team.</p><h2 id="what-is-a-docker-container-in-simple-terms%3F" tabindex="-1" class="title is-2">What is a Docker container in simple terms?</h2><p>To explain what a Docker container is, let's just start by imagining a virtual machine or a virtual server provisioned to run a specific program.</p><p>Virtual machines are great because they allow you to run some useful software in an isolated way and they are easy to distribute. You can create an image and run it in different environments. You can even run it in your own desktop machine or share it with your own colleagues. It's a consistent medium to develop and deploy software.</p><p>In many ways, Docker containers, are very similar to virtual machines. Docker containers are another way to package (or &quot;containerise&quot;) software and run it across different environments.</p><p>But there's a fundamental difference with virtual machines. With Docker containers, you don't have the overhead of having to include an entire operating system as part of your image, but only the basic dependencies needed to run some programs.</p><span style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 800px;"><picture><source type="image/png" srcset="/img/docker-vs-virtual-machines-m-F-bSuk1W-64.png 64w, /img/docker-vs-virtual-machines-m-F-bSuk1W-128.png 128w, /img/docker-vs-virtual-machines-m-F-bSuk1W-256.png 256w, /img/docker-vs-virtual-machines-m-F-bSuk1W-512.png 512w, /img/docker-vs-virtual-machines-m-F-bSuk1W-2900.png 2900w" sizes="(max-width: 800px) 100vw, 800px"><source type="image/webp" srcset="/img/docker-vs-virtual-machines-m-F-bSuk1W-64.webp 64w, /img/docker-vs-virtual-machines-m-F-bSuk1W-128.webp 128w, /img/docker-vs-virtual-machines-m-F-bSuk1W-256.webp 256w, /img/docker-vs-virtual-machines-m-F-bSuk1W-512.webp 512w, /img/docker-vs-virtual-machines-m-F-bSuk1W-2900.webp 2900w" sizes="(max-width: 800px) 100vw, 800px"><img loading="lazy" decoding="async" style="max-width: 100%; width: 100%; margin: 0px; vertical-align: middle;" alt="Docker VS virtual machines" src="/img/docker-vs-virtual-machines-m-F-bSuk1W-64.png" width="64" height="23"></picture></span><p>From the image above you can see that the <strong>Container Engine</strong> runs on top of the operative system and that you don't have to include a guest operative system into your container images. For this reason, containers are much more lightweight than traditional virtual machines, while still providing the benefits of isolation and portability.</p><p>But how can we create a new Docker image?</p><p>This is generally done by using a special configuration file called <code>Dockerfile</code>. Let's not indulge with more theory and let's see an example instead!</p><p>Before getting started let's make sure that you have Docker installed in your machine. You can get docker for most platform using the installers available on the <a href="https://docs.docker.com/get-docker/">official Docker website</a>.</p><p>Ok, if you are ready, let's create our first <code>Dockerfile</code>:</p><pre class="language-bash"><code class="language-bash"><span class="token function">touch</span> Dockerfile</code></pre><p>What do we want to put into our Dockerfile? Let's keep things simple for now and let's say that we want to create a container that just run <code>npm</code>. To achieve this, this is what we can write into our <code>Dockerfile</code>:</p><pre class="language-dockerfile"><code class="language-dockerfile"><span class="token instruction"><span class="token keyword">FROM</span> debian:buster</span>
+<span class="token instruction"><span class="token keyword">RUN</span> apt-get update &amp;&amp; apt-get install nodejs npm -y</span>
+<span class="token instruction"><span class="token keyword">CMD</span> [<span class="token string">'npm'</span>]</span></code></pre><p>Ok, let's stop for a second... there's a lot to unpack here!</p><p>The first thing that we can see is that a <code>Dockerfile</code> is a file with a specific syntax. It is somewhat similar to a Bash script, but there's also something different about it...</p><p>The order of lines is important and every line starts with a keyword that defines the type of instruction: in our example, <code>FROM</code>, <code>RUN</code> and <code>CMD</code>.</p><ul><li><code>FROM</code> is generally the first line of any <code>Dockerfile</code> and it is used to define which <em>base image</em> do we want to extend. A base image provides a sort of a starting point that can make our life easier. For instance, here by specifying <code>debian:buster</code>, we are inheriting all the binaries and libraries that can be found in the <em>Buster</em> version of <em>Debian</em>. This includes the package manager <code>apt</code> that we can use to install additional software.</li><li><code>RUN</code> is used to run some scripting. This is generally done to install additional software, create configuration files, generate keys, download remote resources, etc. You can see <code>RUN</code> instructions as provisioning steps, in other words, instructions you need to run to configure your image. It is quite common to have multiple <code>RUN</code> instructions in a <code>Dockerfile</code>.</li><li><code>CMD</code> generally appears only once per <code>Dockerfile</code> and it indicates which command should be executed when the container runs. In our case, we are using it to specify that we want <code>npm</code> to be executed.</li></ul><p>There are other commands like <code>ENV</code> (define environment variables) and <code>COPY</code> (copy a file from your system into the image), but providing a comprehensive guide on how to write a <code>Dockerfile</code> goes beyond the scope of this article. If you want to find out more, check out the <a href="https://docs.docker.com/engine/reference/builder/">official <code>Dockerfile</code> reference</a>.</p><p>Ok, now that we have defined our <code>Dockerfile</code>, how do we build a container image?</p><p>That's easy, we just need to execute <code>docker build .</code> (where <code>.</code> means &quot;look for a <code>Dockerfile</code> in the current folder). We can also give a name to our image by using tags, so the final command we want to execute is actually going to look like this:</p><pre class="language-bash"><code class="language-bash"><span class="token function">docker</span> build <span class="token parameter variable">-t</span> demo-docker/npmdemo <span class="token builtin class-name">.</span></code></pre><p>With this command we are &quot;tagging&quot; our image with the name <code>demo-docker/npmdemo</code>. We can use this name later to run our container.</p><p>So ok, let's run the container then!</p><pre class="language-bash"><code class="language-bash"><span class="token function">docker</span> run demo-docker/npmdemo</code></pre><p>If everything went as expected we should see the following output:</p><pre class="language-text"><code class="language-text">Usage: npm <command>
+
+where <command> is one of:
+    access, adduser, audit, bin, bugs, c, cache, ci, cit,
+    clean-install, clean-install-test, completion, config,
+    create, ddp, dedupe, deprecate, dist-tag, docs, doctor,
+    edit, explore, fund, get, help, help-search, hook, i, init,
+    install, install-ci-test, install-test, it, link, list, ln,
+    login, logout, ls, org, outdated, owner, pack, ping, prefix,
+    profile, prune, publish, rb, rebuild, repo, restart, root,
+    run, run-script, s, se, search, set, shrinkwrap, star,
+    stars, start, stop, t, team, test, token, tst, un,
+    uninstall, unpublish, unstar, up, update, v, version, view,
+    whoami
+
+npm <command> -h  quick help on <command>
+npm -l            display full usage info
+npm help <term>   search for help on <term>
+npm help npm      involved overview
+
+...</term></term></command></command></command></command></code></pre><p>After showing this output, the container is stopped (simply because <code>npm</code> exits after showing the help message) and we are back to our prompt.</p><p>Remember that we specified in our <code>CMD</code> instruction that we just wanted to run <code>npm</code> at container start? This is why we are seeing the <code>npm</code> help message when we start the container. What if we want to run the container again but this time we want to run a different command? Can we override the default command? We can easily do that! For instance, we can run the following:</p><pre class="language-bash"><code class="language-bash"><span class="token function">docker</span> run demo-docker/npmdemo <span class="token function">npm</span> <span class="token parameter variable">--version</span></code></pre><p>As you might expect, this is going to print something like this:</p><pre class="language-text"><code class="language-text">6.14.11</code></pre><p>I know this is not super useful just yet! But hold on for few other minutes so we can discuss why you might want to use Docker in your team. After that, we will actually go building a Docker image for a Node.js HTTP server! I promise that will be interesting :)</p><h2 id="why-docker-and-docker-compose-can-help-you-and-your-team" tabindex="-1" class="title is-2">Why Docker and Docker Compose can help you and your team</h2><p>Any active project will be constantly updated with new features, bug fixes or security patches. This is true for our project as well for the dependencies of our project. Of course, it is desirable to keep the dependencies of our project as much up to date as possible. But, inevitably, different projects might end up using different versions of the same dependency.</p><p>Keep in mind that, when we talk about dependencies, we don't mean only libraries but also other systems the project relies on, like a database. Let's take for example MySQL. In 2021 it is common to see project using <strong>MySQL 5.6, MySQL 5.7</strong> or <strong>MySQL 8</strong>.</p><p>Now, if we are working on multiple projects that require different versions of MySQL, how can we manage different versions of MySQL in our development machines? Is it always possible to switch from one version to another without messing up our configuration or corrupting the data?</p><p>With Docker you can avoid to spend hours to find a solution to this problem and run your entire stack on containers. Different projects can run locally by spinning up a different MySQL container and since every container is isolated, you won't have any issue when switching from one project to another: you won't accidentally corrupt MySQL configuration or its data.</p><p>So, the idea is to use Docker to manage every single &quot;process&quot; that is needed to run your application. Every process will run in its own container. For instance, in a regular web application, you might have a container for the web server process and a container for the database.</p><p>To manage and integrate many containers together, Docker offers a utility called Docker Compose. Docker Compose looks for a file called <code>docker-compose.yml</code> where you can define all the necessary configuration and containers you want to run for your project.</p><p>If you work in a team, you don't have to agree in advance on every single configuration detail with your teammates or make sure that everyone has exactly the same setup. In fact, with Docker compose, you can just share the <code>docker-compose.yml</code> configuration as part of your project and Docker will take care to spin up the same containers in every machine.</p><p>At any point in time, if someone on the team decides to update a dependency or introduce a new dependency, they will do so by updating the <code>docker-compose.yml</code> and everyone else will easily be able to get the latest changes.</p><p>Even if you have a new joiner in the team, they don't have to understand and install all the necessary dependencies one by one, they can simply install Docker rely on the latest version of <code>docker-compose.yml</code> to run the project on their development machine.</p><p>This is one of the main advantages that you can get by using Docker and Docker Compose for development.</p><p>Let's now see an example of a <code>docker-compose.yml</code>:</p><pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'3'</span>
+
+<span class="token comment">################################################################################</span>
+<span class="token comment"># SERVICES</span>
+<span class="token comment">################################################################################</span>
+<span class="token key atrule">services</span><span class="token punctuation">:</span>
+
+  <span class="token comment"># ------------------------------------------------------------</span>
+  <span class="token comment"># MySQL Database</span>
+  <span class="token comment"># ------------------------------------------------------------</span>
+  <span class="token key atrule">mysqlserver</span><span class="token punctuation">:</span>
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> myproject_mysql
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> mysql<span class="token punctuation">:</span><span class="token number">5.7</span>
+
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token key atrule">MYSQL_ROOT_PASSWORD</span><span class="token punctuation">:</span> <span class="token string">"docker"</span>
+      <span class="token key atrule">MYSQL_USER</span><span class="token punctuation">:</span> <span class="token string">"local"</span>
+      <span class="token key atrule">MYSQL_PASSWORD</span><span class="token punctuation">:</span> <span class="token string">"local"</span>
+
+    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+      <span class="token comment"># ---- Format: ----</span>
+      <span class="token comment"># HOST-DIRECTORY : DOCKER-DIRECTORY</span>
+      <span class="token punctuation">-</span> $<span class="token punctuation">{</span>MYSQL_BACKUP_FOLDER<span class="token punctuation">}</span><span class="token punctuation">:</span>/backup/
+
+    <span class="token key atrule">networks</span><span class="token punctuation">:</span>
+      <span class="token key atrule">app_net</span><span class="token punctuation">:</span>
+        <span class="token key atrule">ipv4_address</span><span class="token punctuation">:</span> $<span class="token punctuation">{</span>IP_MYSQL_SERVER<span class="token punctuation">}</span>
+
+<span class="token comment">################################################################################</span>
+<span class="token comment"># NETWORK</span>
+<span class="token comment">################################################################################</span>
+<span class="token key atrule">networks</span><span class="token punctuation">:</span>
+  <span class="token key atrule">app_net</span><span class="token punctuation">:</span>
+    <span class="token key atrule">driver</span><span class="token punctuation">:</span> bridge
+    <span class="token key atrule">ipam</span><span class="token punctuation">:</span>
+      <span class="token key atrule">driver</span><span class="token punctuation">:</span> default
+      <span class="token key atrule">config</span><span class="token punctuation">:</span>
+        <span class="token punctuation">-</span>   <span class="token key atrule">subnet</span><span class="token punctuation">:</span> $<span class="token punctuation">{</span>IP_SUBNET<span class="token punctuation">}</span></code></pre><p>What is inside this this file?</p><ul><li><code>services</code> : this is the list of the containers (and their settings) that we want to run in our project</li><li><code>mysqlserver</code> : the name of the service. This name is used when you use <code>docker-compose</code> command and you want to refer to this specific service (container).</li><li><code>container_name</code> : overrides the default alias of the container. It's a good practice to use something like <code>&lt;name of the project&gt;_&lt;name of the service&gt;</code> to avoid conflict with other projects.</li><li><code>image</code> : the name of the Docker image that we want to use (as defined in the Docker registry).</li><li><code>environment</code> : environment variables used inside the container.</li><li><code>volumes</code> : shared folder between your computer and the container. You can crate a mapping of your destination folder even if doesn't exist. In our example we map our backup folder with <code>/backup</code> folder inside the container. Very useful if we want to crate a standard script for restoring the data into the database (e.g. standard seed data shared across devs).</li><li><code>networks</code> : add specific ipv4 IP to our container. Setting up a specific IP for your container (service) is very useful when you have to work with different projects or you want to create local DNS aliases for your project.</li><li><code>networks → app_net → driver: bridge</code> this is a default configuration to allow the container to connect to the internet through the host system. The name <code>app_net</code> is a the name we want to give to the Docker network, so you can name it wathever makes sense to you. Refer to the <a href="https://docs.docker.com/compose/networking/#specify-custom-networks">official documentation on custom networks</a> for more information.</li></ul><p>Now let's see our <code>.env</code> file that we are going to use to store the enviornment variables needed for this project:</p><pre class="language-bash"><code class="language-bash"><span class="token comment">################################################################################</span>
+<span class="token comment">### MySQL Settings</span>
+<span class="token comment">################################################################################</span>
+<span class="token assign-left variable">MYSQL_BACKUP_FOLDER</span><span class="token operator">=</span>/home/user/backup_db/project_x/
+
+<span class="token comment">################################################################################</span>
+<span class="token comment">### IP Settings</span>
+<span class="token comment">################################################################################</span>
+<span class="token assign-left variable">IP_SUBNET</span><span class="token operator">=</span><span class="token number">172.16</span>.250.0/24
+<span class="token assign-left variable">IP_LOCAL_COMPUTER</span><span class="token operator">=</span><span class="token number">172.16</span>.250.1
+<span class="token assign-left variable">IP_MYSQL_SERVER</span><span class="token operator">=</span><span class="token number">172.16</span>.250.11</code></pre><p>It is not always necessary to use an <code>.env</code> file, especially in simple examples like this one. It is a good practice to use one, though. The main advantage is when you have to share the <code>docker-compose.yml</code> and the <code>.env</code> with the team.</p><p>Generally the <code>.env</code> file is not committed to the repository. The idea is to use it to provide &quot;user specific&quot; configuration, so every member of the team can choose your own range of IPs or reference their own work folders.</p><p>Let's see an example. If we add in <code>docker-compose</code> a service for Node.js we can add some &quot;link&quot; to other services. (official docker documentation: <a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#extra_hosts">https://docs.docker.com/compose/compose-file/compose-file-v3/#extra_hosts</a>)</p><pre class="language-yaml"><code class="language-yaml"><span class="token comment"># ...</span>
+    
+    <span class="token comment"># ------------------------------------------------------------</span>
+    <span class="token comment"># Node.js Server</span>
+    <span class="token comment"># ------------------------------------------------------------</span>
+    <span class="token key atrule">nodejs</span><span class="token punctuation">:</span>
+        <span class="token comment"># ...</span>
+
+        <span class="token key atrule">extra_hosts</span><span class="token punctuation">:</span>
+            <span class="token punctuation">-</span> mysql<span class="token punctuation">-</span>server<span class="token punctuation">-</span>service<span class="token punctuation">:</span>$<span class="token punctuation">{</span>IP_MYSQL_SERVER<span class="token punctuation">}</span>
+
+<span class="token comment"># ...</span></code></pre><p>In <code>extra_hosts</code> we can add all entries that are stored in our <code>/etc/hosts</code> file so we can create &quot;custom domain&quot; via local configuration without have a real domain.</p><p>In this specific case in our Node.js app we can refer to mysql server not via IP but via &quot;mysql-server-service&quot; name.</p><p>Let's go back to our docker-compose file. At this point we can run <code>docker-compose</code> to start all the docker services specified in our project:</p><pre class="language-bash"><code class="language-bash"><span class="token function">docker-compose</span> up <span class="token parameter variable">-d</span></code></pre><p>Note that the <code>-d</code> option will start all the services in background.</p><p>After a few seconds, all our services should be running. So let's see, for example, how we can access the MySQL shell and run a query:</p><pre class="language-bash"><code class="language-bash"><span class="token function">docker-compose</span> <span class="token builtin class-name">exec</span> mysqlserver /bin/bash
+root@2f88599b3b1f:/<span class="token comment"># mysql -u root -pdocker (...enter root password)</span>
+mysql<span class="token operator">></span> SHOW DATABASES<span class="token punctuation">;</span></code></pre><p>First of all: we need to &quot;open&quot; a bash shell inside the container so we can run any command. We can do that with: <code>docker-compose exec mysqlserver /bin/bash</code>.</p><p>These are the arguments of this <code>docker-compose</code> command:</p><ul><li><code>exec</code> : Docker searches for a running container (with the name <code>mysqlserver</code>) to run a given command. If you don't run <code>docker-compose up -d</code> before, this command will fail.</li><li><code>/bin/bash</code> : is the name of the command we want to run inside the container.</li></ul><p>Once we are &quot;inside&quot; the container we can do anything we want. In this case we want open a mysql terminal, so we run <code>mysql -u root -pdocker</code>.</p><p>Note that the root password is defined by environment variable <code>MYSQL_ROOT_PASSWORD</code>.</p><h2 id="create-and-configure-a-node.js-project-with-docker" tabindex="-1" class="title is-2">Create and configure a Node.js project with Docker</h2><p>Based on the complexity of the project we might decide to use Docker directly one or more containers or to rely on Docker Compose to orchestrate multiple containers.</p><p>Let's take a look at this simple &quot;Hello World&quot; web server (file <code>app.js</code>).</p><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">const</span> http <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'http'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> hostname <span class="token operator">=</span> <span class="token string">'0.0.0.0'</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> port <span class="token operator">=</span> <span class="token number">4040</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> server <span class="token operator">=</span> http<span class="token punctuation">.</span><span class="token function">createServer</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">req<span class="token punctuation">,</span> res</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  res<span class="token punctuation">.</span>statusCode <span class="token operator">=</span> <span class="token number">200</span><span class="token punctuation">;</span>
+  res<span class="token punctuation">.</span><span class="token function">setHeader</span><span class="token punctuation">(</span><span class="token string">'Content-Type'</span><span class="token punctuation">,</span> <span class="token string">'text/plain'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  res<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token string">'Hello World'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+server<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span>port<span class="token punctuation">,</span> hostname<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Server running at http://</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>hostname<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>port<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre><p>Nothing particularly complicated here, we are simply creating a web server that responds to every request with an &quot;Hello World!&quot;.</p><p>But pay special attention to <code>hostname</code>! With docker you can have connectivity problems if you use <code>&quot;localhost&quot;</code> or <code>&quot;127.0.0.1&quot;</code>, because it refers to the docker container and not to your local machine, therefore the container will only listen for connections from inside the container itself. It's better to use use <code>&quot;0.0.0.0&quot;</code> or directly the ip associated to the container so that we can issue requests from our local machine or from other containers.</p><h3 id="work-with-docker-directly-(no-configuration-file)" tabindex="-1" class="title is-3">Work with Docker directly (no configuration file)</h3><p>To start this application with Docker, we don't necessarily need to create a <code>Dockerfile</code> or a <code>docker-compose.yml</code>. We can simply run (in the same folder of <code>app.js</code>) the following command:</p><pre class="language-bash"><code class="language-bash"><span class="token function">docker</span> run <span class="token punctuation">\</span>
+  <span class="token parameter variable">--rm</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-p</span> <span class="token string">"4040:4040"</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-v</span> <span class="token variable">${<span class="token environment constant">PWD</span>}</span>:/home/node/project <span class="token punctuation">\</span>
+  node:14 <span class="token punctuation">\</span>
+  <span class="token function">node</span> /home/node/project/app.js</code></pre><p>At this point we should be able to connect to our web server using a browser by simply visiting <code>http://127.0.01:4040</code>.</p><span style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 600px;"><picture><source type="image/png" srcset="/img/node-js-hello-world-http-server-from-browser-yCAvls1S5S-64.png 64w, /img/node-js-hello-world-http-server-from-browser-yCAvls1S5S-128.png 128w, /img/node-js-hello-world-http-server-from-browser-yCAvls1S5S-256.png 256w, /img/node-js-hello-world-http-server-from-browser-yCAvls1S5S-512.png 512w, /img/node-js-hello-world-http-server-from-browser-yCAvls1S5S-564.png 564w" sizes="(max-width: 600px) 100vw, 600px"><source type="image/webp" srcset="/img/node-js-hello-world-http-server-from-browser-yCAvls1S5S-64.webp 64w, /img/node-js-hello-world-http-server-from-browser-yCAvls1S5S-128.webp 128w, /img/node-js-hello-world-http-server-from-browser-yCAvls1S5S-256.webp 256w, /img/node-js-hello-world-http-server-from-browser-yCAvls1S5S-512.webp 512w, /img/node-js-hello-world-http-server-from-browser-yCAvls1S5S-564.webp 564w" sizes="(max-width: 600px) 100vw, 600px"><img loading="lazy" decoding="async" style="max-width: 100%; width: 100%; margin: 0px; vertical-align: middle;" alt="A simple Node.js web server seen from the browser" src="/img/node-js-hello-world-http-server-from-browser-yCAvls1S5S-64.png" width="64" height="18"></picture></span><p>Let's discuss in more detail what's happening when we run the command above:</p><ul><li><code>--rm</code> means &quot;destroy the container once it is stopped&quot;.</li><li><code>-p</code> maps a port of your pc to a port in the container (in this case we are saying map the local port <code>4040</code> to the port <code>4040</code> inside the container).</li><li><code>-v</code> stands for &quot;volume&quot; and it is used to map the folder (<code>$PWD</code>) in the development machine to the <code>/home/node/project</code> folder inside the container.</li><li><code>node:14</code> is the name and version of the docker image we want to use (this comes from the <a href="https://hub.docker.com/">official Docker Registry</a>)</li><li><code>node /home/node/project/app.js</code> is the command we want to run once the container starts. We are simply executing <code>node</code> and running our app file.</li></ul><p>Note that <code>/home/node/project/app.js</code> refers to the mapping of the local folder to volume in the container. Remember that Docker runs isolated processes, so by default they don't have access to our filesystem and we can only share files by explicitly defining and attaching volumes to running containers.</p><h3 id="work-with-docker-compose.yml-and-the-docker-compose-command" tabindex="-1" class="title is-3">Work with docker-compose.yml and the docker-compose command</h3><p>Let's now look at doing the same thing but with a different approach. By using an <code>.env</code> file, a <code>docker-compose.yml</code> file and <code>docker-compose</code>, we can define all the necessary settings there so we can keep our command line as lean as possible.</p><p>This is how we can define our <code>docker-compose.yml</code>:</p><pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'3'</span>
+<span class="token key atrule">services</span><span class="token punctuation">:</span>
+    <span class="token key atrule">nodejs</span><span class="token punctuation">:</span>
+        <span class="token key atrule">container_name</span><span class="token punctuation">:</span> $<span class="token punctuation">{</span>COMPOSE_PROJECT_NAME<span class="token punctuation">}</span>_$<span class="token punctuation">{</span>NODEJS_SERVER_NAME<span class="token punctuation">}</span>
+        <span class="token key atrule">image</span><span class="token punctuation">:</span> $<span class="token punctuation">{</span>NODEJS_CONTAINER_IMAGE<span class="token punctuation">}</span>
+        <span class="token key atrule">user</span><span class="token punctuation">:</span> $<span class="token punctuation">{</span>NODEJS_USER<span class="token punctuation">}</span>
+        <span class="token key atrule">command</span><span class="token punctuation">:</span> $<span class="token punctuation">{</span>NODEJS_COMMAND<span class="token punctuation">}</span>
+        <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+            <span class="token punctuation">-</span> <span class="token string">"4040:4040"</span>
+        <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+            <span class="token key atrule">NODE_ENV</span><span class="token punctuation">:</span> $<span class="token punctuation">{</span>NODEJS_ENV<span class="token punctuation">}</span>
+        <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+            <span class="token punctuation">-</span> $<span class="token punctuation">{</span>PWD<span class="token punctuation">}</span><span class="token punctuation">:</span>/home/node/project
+        <span class="token key atrule">working_dir</span><span class="token punctuation">:</span> /home/node/project
+        <span class="token key atrule">networks</span><span class="token punctuation">:</span>
+            <span class="token key atrule">app_net</span><span class="token punctuation">:</span>
+                <span class="token key atrule">ipv4_address</span><span class="token punctuation">:</span> $<span class="token punctuation">{</span>IP_NODE_SERVER<span class="token punctuation">}</span>
+<span class="token key atrule">networks</span><span class="token punctuation">:</span>
+    <span class="token key atrule">app_net</span><span class="token punctuation">:</span>
+        <span class="token key atrule">driver</span><span class="token punctuation">:</span> bridge
+        <span class="token key atrule">ipam</span><span class="token punctuation">:</span>
+            <span class="token key atrule">driver</span><span class="token punctuation">:</span> default
+            <span class="token key atrule">config</span><span class="token punctuation">:</span>
+                <span class="token punctuation">-</span>   <span class="token key atrule">subnet</span><span class="token punctuation">:</span> $<span class="token punctuation">{</span>IP_SUBNET<span class="token punctuation">}</span></code></pre><p>And this is how we can define our <code>.env</code> file:</p><pre class="language-bash"><code class="language-bash"><span class="token assign-left variable">COMPOSE_PROJECT_NAME</span><span class="token operator">=</span>nodetest
+<span class="token assign-left variable">NODEJS_CONTAINER_IMAGE</span><span class="token operator">=</span>node:14
+<span class="token assign-left variable">NODEJS_SERVER_NAME</span><span class="token operator">=</span>nodejs
+<span class="token assign-left variable">NODEJS_USER</span><span class="token operator">=</span>node
+<span class="token assign-left variable">NODEJS_ENV</span><span class="token operator">=</span>development
+<span class="token assign-left variable">NODEJS_COMMAND</span><span class="token operator">=</span>node app.js
+<span class="token assign-left variable">IP_SUBNET</span><span class="token operator">=</span><span class="token number">172.16</span>.250.0/24
+<span class="token assign-left variable">IP_LOCAL_COMPUTER</span><span class="token operator">=</span><span class="token number">172.16</span>.250.1
+<span class="token assign-left variable">IP_NODE_SERVER</span><span class="token operator">=</span><span class="token number">172.16</span>.250.10</code></pre><p>At this point we just need to run <code>docker-compose up</code> and we should have the same result as the command described before.</p><p>If you want to run in background mode (so you can close the terminal) just add <code>-d</code> to the command like <code>docker-compose up -d</code>.</p><p>If you want to change something like node version, just edit the <code>.env</code> file in the same folder and done!</p><p>Once you are finished working on the project and you want to stop the containers, you can simply run:</p><pre class="language-bash"><code class="language-bash"><span class="token function">docker-compose</span> down</code></pre><h2 id="pros-and-cons-of-using-docker-with-node.js" tabindex="-1" class="title is-2">Pros and cons of using Docker with Node.js</h2><p>It might seem that Docker is like magic for your project but, as with many things, &quot;all that glitters is not gold&quot;. Of course, Docker is great, but it can have its fair share of unexpected &quot;surprises&quot; that can be tedious to resolve.</p><p>Let's conclude this article, by discussing some of the main pros and cons of using Docker for Node.js development.</p><h3 id="pros" tabindex="-1" class="title is-3">PROS</h3><ul><li>You can manage multiple version of Node.js without having to install all of them or needing complicated setup to be able to switch version on demand.</li><li>You can use different version of Node.js at the same time. Imagine you have a microservice-oriented architecture and 2 different services need to use 2 different versions of Node.js!</li><li>It is easier to share a consistent setup with the members of your team. Docker becomes the only shared dependency that needs to be pre-installed.</li></ul><h3 id="cons" tabindex="-1" class="title is-3">CONS</h3><ul><li>For small projects running only one monolithic service setting up Docker and Docker Compose can be a bit of over-engineering.</li><li>With more advanced projects, you might need to setup some bash scripts to run some Docker command (because they might be long and difficult to remember).</li><li>For Mac OS and Windows you can have some setup problems and degraded performances because Docker is not running natively in these platforms.</li></ul><p>That's all! Hopefully you found this article interesting and you will decide to give Docker a shot for your Node.js development.</p><p>You can check out the code examples in the following repository: <a href="https://github.com/giuseppemorelli/docker-node-example">https://github.com/giuseppemorelli/docker-node-example</a>. If you liked this article, please consider giving it a star, everyone needs some vanity metrics, after all! :)</p><h2 id="about-the-author" tabindex="-1" class="title is-2">About the author</h2><p>Giuseppe Morelli is the guest author of this post. This is Giuseppe's bio.</p><p>Since I was a baby I came to love technology and programming. Today I am a remote worker for Italian and European companies. I like to work with Agile and Time-Material practices. I have been a PHP Developer by trade since 2006, and I am particularly experienced with e-commerce development. Every day I try to learn something new by being a part of the open-source community. In 2020 I've started to study Node.js by reading Mario and Luciano's book :)</p><p>If you want to connect with me, check out <a href="https://giuseppemorelli.net">my personal website</a> or my <a href="https://twitter.com/giuseppemorelli">Twitter account</a>.</p></main></article><aside class="column is-one-quarter"><div class="wrapper-sticky"><div class="aside-ad-block"><a href="/" onclick="gtag('event', 'click', { 'event_category': 'blog', 'event_label': 'click_blog_sidebar_ad', 'value': 1 });"><span style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 380px;"><picture><source type="image/png" srcset="/img/book-stack-LOzEKLkbLm-64.png 64w, /img/book-stack-LOzEKLkbLm-128.png 128w, /img/book-stack-LOzEKLkbLm-256.png 256w, /img/book-stack-LOzEKLkbLm-1338.png 1338w" sizes="(max-width: 380px) 100vw, 380px"><source type="image/webp" srcset="/img/book-stack-LOzEKLkbLm-64.webp 64w, /img/book-stack-LOzEKLkbLm-128.webp 128w, /img/book-stack-LOzEKLkbLm-256.webp 256w, /img/book-stack-LOzEKLkbLm-1338.webp 1338w" sizes="(max-width: 380px) 100vw, 380px"><img loading="lazy" decoding="async" style="max-width: 100%; width: 100%; margin: 0px; vertical-align: middle;" class="book" alt="Node.js Design Patterns book cover" src="/img/book-stack-LOzEKLkbLm-64.png" width="64" height="51"></picture></span><h5>Take your Node.js knowledge to the next level.</h5><p>Get <em>Node.js Design Patterns</em> today to learn how to design and implement production-grade Node.js applications using proven patterns and techniques.</p></a></div><h3 class="title is-4">Sections</h3><div class="toc"><ol><li><a href="#what-is-a-docker-container-in-simple-terms%3F">What is a Docker container in simple terms?</a></li><li><a href="#why-docker-and-docker-compose-can-help-you-and-your-team">Why Docker and Docker Compose can help you and your team</a></li><li><a href="#create-and-configure-a-node.js-project-with-docker">Create and configure a Node.js project with Docker</a></li><li><a href="#pros-and-cons-of-using-docker-with-node.js">Pros and cons of using Docker with Node.js</a></li><li><a href="#about-the-author">About the author</a></li></ol></div><h3 class="title is-4">Share</h3><a title="Share this article on X" class="share-btn twitter" href="https://twitter.com/share?url=https%3A%2F%2Fwww.nodejsdesignpatterns.com%2Fblog%2Fnode-js-development-with-docker-and-docker-compose%2F&text=Node.js%20development%20with%20Docker%20and%20Docker%20Compose&hashtags=nodejs" target="_blank"><svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><path d="M27.2,32L4.8,32C2.151,32 0,29.849 0,27.2L0,4.8C0,2.151 2.151,0 4.8,0L27.2,0C29.849,0 32,2.151 32,4.8L32,15.815C32.001,15.95 32.001,16.086 32,16.221L32,27.2C32,29.849 29.849,32 27.2,32ZM14.495,10.027L12.012,6.711L9.082,6.711C7.466,6.711 6.15,6.722 6.15,6.743C6.15,6.764 7.862,9.065 9.948,11.846C12.034,14.638 13.735,16.959 13.724,17.003C13.703,17.034 11.992,18.906 9.926,21.142C7.851,23.378 6.15,25.24 6.15,25.272C6.15,25.303 6.525,25.325 6.984,25.325L7.808,25.325L11.071,21.784C12.868,19.838 14.388,18.2 14.452,18.147C14.537,18.082 15.415,19.163 17.287,21.677L20.004,25.314L22.924,25.325C24.519,25.325 25.834,25.293 25.834,25.24C25.834,25.196 24.026,22.758 21.823,19.816L17.811,14.478L18.324,13.932C18.613,13.643 20.068,12.071 21.555,10.455C23.042,8.84 24.433,7.331 24.647,7.107L25.021,6.711L23.277,6.711L20.207,10.027C18.528,11.846 17.105,13.344 17.062,13.344C17.019,13.344 15.863,11.846 14.495,10.027Z"/><path d="M14.495,10.027C15.863,11.846 17.019,13.344 17.062,13.344C17.105,13.344 18.528,11.846 20.207,10.027L23.277,6.711L25.021,6.711L24.647,7.107C24.433,7.331 23.042,8.84 21.555,10.455C20.068,12.071 18.613,13.643 18.324,13.932L17.811,14.478L21.823,19.816C24.026,22.758 25.834,25.196 25.834,25.24C25.834,25.293 24.519,25.325 22.924,25.325L20.004,25.314L17.287,21.677C15.415,19.163 14.537,18.082 14.452,18.147C14.388,18.2 12.868,19.838 11.071,21.784L7.808,25.325L6.984,25.325C6.525,25.325 6.15,25.303 6.15,25.272C6.15,25.24 7.851,23.378 9.926,21.142C11.992,18.906 13.703,17.034 13.724,17.003C13.735,16.959 12.034,14.638 9.948,11.846C7.862,9.065 6.15,6.764 6.15,6.743C6.15,6.722 7.466,6.711 9.082,6.711L12.012,6.711L14.495,10.027ZM8.793,8.145C8.836,8.219 11.531,11.835 14.762,16.157L20.646,24.03L21.961,24.041C22.774,24.041 23.267,23.999 23.245,23.934C23.235,23.881 20.55,20.265 17.298,15.911L11.37,7.995L10.044,7.995C8.943,7.995 8.718,8.017 8.793,8.145Z" style="fill:white;"/><g transform="matrix(0.213955,0,0,0.213955,-0.0543541,-0.0285703)"><path d="M41.353,38.2C41.551,38.55 54.148,55.45 69.25,75.648L96.75,112.449L102.898,112.5C106.699,112.5 109,112.3 108.898,112C108.852,111.75 96.301,94.852 81.102,74.5L53.398,37.5L47.2,37.5C42.052,37.5 41.001,37.602 41.353,38.2Z"/></g></svg> </a><a title="Share this article on Facebook" class="share-btn facebook" href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fwww.nodejsdesignpatterns.com%2Fblog%2Fnode-js-development-with-docker-and-docker-compose%2F" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" aria-label="Facebook" role="img" viewBox="0 0 512 512" width="32px" height="32px"><rect width="512" height="512" rx="15%" fill="#1877f2"/><path d="M355.6 330l11.4-74h-71v-48c0-20.2 9.9-40 41.7-40H370v-63s-29.3-5-57.3-5c-58.5 0-96.7 35.4-96.7 99.6V256h-65v74h65v182h80V330h59.6z" fill="#fff"/></svg> </a><a title="Share this article on LinkedIn" class="share-btn linkedin" href="https://www.linkedin.com/shareArticle?url=https%3A%2F%2Fwww.nodejsdesignpatterns.com%2Fblog%2Fnode-js-development-with-docker-and-docker-compose%2F&title=Node.js%20development%20with%20Docker%20and%20Docker%20Compose" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" aria-label="LinkedIn" role="img" viewBox="0 0 512 512" fill="#fff" width="32px" height="32px"><rect width="512" height="512" rx="15%" fill="#0077b5"/><circle cx="142" cy="138" r="37"/><path stroke="#fff" stroke-width="66" d="M244 194v198M142 194v198"/><path d="M276 282c0-20 13-40 36-40 24 0 33 18 33 45v105h66V279c0-61-32-89-76-89-34 0-51 19-59 32"/></svg> </a><a title="Share this article on Pinterest" class="share-btn pinterest" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3A%2F%2Fwww.nodejsdesignpatterns.com%2Fblog%2Fnode-js-development-with-docker-and-docker-compose%2F&description=Node.js%20development%20with%20Docker%20and%20Docker%20Compose" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" aria-label="Pinterest" role="img" viewBox="0 0 512 512" width="32px" height="32px"><rect width="512" height="512" rx="15%" fill="#bd081b"/><path d="m265 65c-104 0-157 75-157 138 0 37 14 71 45 83 5 2 10 0 12-5l3-18c2-6 1-7-2-12-9-11-15-24-15-43 0-56 41-106 108-106 60 0 92 37 92 85 0 64-28 116-70 116-23 0-40-18-34-42 6-27 19-57 19-77 0-18-9-34-30-34-24 0-42 25-42 58 0 20 7 34 7 34l-29 120a249 249 0 0 0 2 86l3-1c2-3 31-37 40-72l16-61c7 15 29 28 53 28 71 0 119-64 119-151 0-66-56-126-140-126z" fill="#fff"/></svg> </a><a title="Share this article by email" class="share-btn email" href="mailto:?&body=Check%20out%20%22Node.js%20development%20with%20Docker%20and%20Docker%20Compose%22(https%3A%2F%2Fwww.nodejsdesignpatterns.com%2Fblog%2Fnode-js-development-with-docker-and-docker-compose%2F)&subject=Node.js%20development%20with%20Docker%20and%20Docker%20Compose" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" aria-label="Email" role="img" viewBox="0 0 512 512" width="32px" height="32px"><rect width="512" height="512" rx="15%" fill="teal"/><rect width="356" height="256" x="78" y="128" fill="#fff" rx="8%"/><path fill="none" stroke="teal" stroke-width="20" d="M434 128L269 292c-7 8-19 8-26 0L78 128m0 256l129-128m227 128L305 256"/></svg></a></div></aside></div></div></section></div><section id="sample-chapter" class="section is-small"><div class="container bg-green px-6 py-6 bd-all-small"><div class="columns is-gapless"><div class="column is-half"><h2 class="title is-2">Node.js Design Patterns</h2><h3 class="subtitle is-3">Get the FREE chapter!</h3><p>With this <strong>54 pages</strong> long chapter you will learn how to implement and leverage some of the most well known behavioural design patterns in the context of Node.js: the <strong>Strategy pattern</strong>, the <strong>State pattern</strong>, the <strong>Template pattern</strong>, the <strong>Iterator pattern</strong>, the <strong>Middleware pattern</strong>, and the <strong>Command pattern</strong>.</p><div class="mt-4"><script src="https://f.convertkit.com/ckjs/ck.5.js"></script><form action="https://app.convertkit.com/forms/1625692/subscriptions" class="seva-form formkit-form" method="post" data-sv-form="1625692" data-uid="831f119429" data-format="inline" data-version="5" data-options="{&quot;settings&quot;:{&quot;after_subscribe&quot;:{&quot;action&quot;:&quot;message&quot;,&quot;success_message&quot;:&quot;Success! Chapter 9 is on its way to your email.&quot;,&quot;redirect_url&quot;:&quot;&quot;},&quot;analytics&quot;:{&quot;google&quot;:&quot;UA-42283801-2&quot;,&quot;facebook&quot;:null,&quot;segment&quot;:null,&quot;pinterest&quot;:null},&quot;modal&quot;:{&quot;trigger&quot;:&quot;timer&quot;,&quot;scroll_percentage&quot;:null,&quot;timer&quot;:5,&quot;devices&quot;:&quot;all&quot;,&quot;show_once_every&quot;:15},&quot;powered_by&quot;:{&quot;show&quot;:true,&quot;url&quot;:&quot;https://convertkit.com?utm_source=dynamic&amp;utm_medium=referral&amp;utm_campaign=poweredby&amp;utm_content=form&quot;},&quot;recaptcha&quot;:{&quot;enabled&quot;:false},&quot;return_visitor&quot;:{&quot;action&quot;:&quot;show&quot;,&quot;custom_content&quot;:&quot;&quot;},&quot;slide_in&quot;:{&quot;display_in&quot;:&quot;bottom_right&quot;,&quot;trigger&quot;:&quot;timer&quot;,&quot;scroll_percentage&quot;:null,&quot;timer&quot;:5,&quot;devices&quot;:&quot;all&quot;,&quot;show_once_every&quot;:15},&quot;sticky_bar&quot;:{&quot;display_in&quot;:&quot;top&quot;,&quot;trigger&quot;:&quot;timer&quot;,&quot;scroll_percentage&quot;:null,&quot;timer&quot;:5,&quot;devices&quot;:&quot;all&quot;,&quot;show_once_every&quot;:15}},&quot;version&quot;:&quot;5&quot;}" min-width="400 500 600 700 800"><div data-style="clean"><ul class="formkit-alert formkit-alert-error" data-element="errors" data-group="alert"></ul><div data-element="fields" data-stacked="false" class="seva-fields formkit-fields"><div class="formkit-field"><input class="formkit-input" name="email_address" aria-label="Your email address" placeholder="Your email address" required="" type="email" style="color: rgb(139, 139, 139); border-color: rgb(221, 224, 228); font-weight: 400; border-radius: 4px;"></div><button data-element="submit" class="formkit-submit formkit-submit" style="color: rgb(255, 255, 255); background-color: rgb(218, 143, 76); border-radius: 3px; font-weight: 700;"><div class="formkit-spinner"><div></div><div></div><div></div></div><span>Download the FREE chapter</span></button></div></div><style>.formkit-form[data-uid="831f119429"] * {
+      box-sizing: border-box;
+    }
+    .formkit-form[data-uid="831f119429"] {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .formkit-form[data-uid="831f119429"] legend {
+      border: none;
+      font-size: inherit;
+      margin-bottom: 10px;
+      padding: 0;
+      position: relative;
+      display: table;
+    }
+    .formkit-form[data-uid="831f119429"] fieldset {
+      border: 0;
+      padding: 0.01em 0 0;
+      margin: 0;
+      min-width: 0;
+    }
+    .formkit-form[data-uid="831f119429"] body:not(:-moz-handler-blocked) fieldset {
+      display: table-cell;
+    }
+    .formkit-form[data-uid="831f119429"] h1,
+    .formkit-form[data-uid="831f119429"] h2,
+    .formkit-form[data-uid="831f119429"] h3,
+    .formkit-form[data-uid="831f119429"] h4,
+    .formkit-form[data-uid="831f119429"] h5,
+    .formkit-form[data-uid="831f119429"] h6 {
+      color: inherit;
+      font-size: inherit;
+      font-weight: inherit;
+    }
+    .formkit-form[data-uid="831f119429"] p {
+      color: inherit;
+      font-size: inherit;
+      font-weight: inherit;
+    }
+    .formkit-form[data-uid="831f119429"] blockquote:not([template-default]),
+    .formkit-form[data-uid="831f119429"] ol:not([template-default]),
+    .formkit-form[data-uid="831f119429"] ul:not([template-default]) {
+      text-align: left;
+    }
+    .formkit-form[data-uid="831f119429"] blockquote:not([template-default]),
+    .formkit-form[data-uid="831f119429"] hr:not([template-default]),
+    .formkit-form[data-uid="831f119429"] ol:not([template-default]),
+    .formkit-form[data-uid="831f119429"] p:not([template-default]),
+    .formkit-form[data-uid="831f119429"] ul:not([template-default]) {
+      color: inherit;
+      font-style: initial;
+    }
+    .formkit-form[data-uid="831f119429"] .ordered-list,
+    .formkit-form[data-uid="831f119429"] .unordered-list {
+      list-style-position: outside !important;
+      padding-left: 1em;
+    }
+    .formkit-form[data-uid="831f119429"] .list-item {
+      padding-left: 0;
+    }
+    .formkit-form[data-uid="831f119429"][data-format="modal"] {
+      display: none;
+    }
+    .formkit-form[data-uid="831f119429"][data-format="slide in"] {
+      display: none;
+    }
+    .formkit-form[data-uid="831f119429"][data-format="sticky bar"] {
+      display: none;
+    }
+    .formkit-sticky-bar .formkit-form[data-uid="831f119429"][data-format="sticky bar"] {
+      display: block;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-input,
+    .formkit-form[data-uid="831f119429"] .formkit-select,
+    .formkit-form[data-uid="831f119429"] .formkit-checkboxes {
+      width: 100%;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-button,
+    .formkit-form[data-uid="831f119429"] .formkit-submit {
+      border: 0;
+      border-radius: 5px;
+      color: #ffffff;
+      cursor: pointer;
+      display: inline-block;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-bottom: 15px;
+      overflow: hidden;
+      padding: 0;
+      position: relative;
+      vertical-align: middle;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-button:hover,
+    .formkit-form[data-uid="831f119429"] .formkit-submit:hover,
+    .formkit-form[data-uid="831f119429"] .formkit-button:focus,
+    .formkit-form[data-uid="831f119429"] .formkit-submit:focus {
+      outline: none;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-button:hover > span,
+    .formkit-form[data-uid="831f119429"] .formkit-submit:hover > span,
+    .formkit-form[data-uid="831f119429"] .formkit-button:focus > span,
+    .formkit-form[data-uid="831f119429"] .formkit-submit:focus > span {
+      background-color: rgba(0,0,0,0.1);
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-button > span,
+    .formkit-form[data-uid="831f119429"] .formkit-submit > span {
+      display: block;
+      -webkit-transition: all 300ms ease-in-out;
+      transition: all 300ms ease-in-out;
+      padding: 12px 24px;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-input {
+      background: #ffffff;
+      font-size: 15px;
+      padding: 12px;
+      border: 1px solid #e3e3e3;
+      -webkit-flex: 1 0 auto;
+      -ms-flex: 1 0 auto;
+      flex: 1 0 auto;
+      line-height: 1.4;
+      margin: 0;
+      -webkit-transition: border-color ease-out 300ms;
+      transition: border-color ease-out 300ms;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-input:focus {
+      outline: none;
+      border-color: #1677be;
+      -webkit-transition: border-color ease 300ms;
+      transition: border-color ease 300ms;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-input::-webkit-input-placeholder {
+      color: inherit;
+      opacity: 0.8;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-input::-moz-placeholder {
+      color: inherit;
+      opacity: 0.8;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-input:-ms-input-placeholder {
+      color: inherit;
+      opacity: 0.8;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-input::placeholder {
+      color: inherit;
+      opacity: 0.8;
+    }
+    .formkit-form[data-uid="831f119429"] [data-group="dropdown"] {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+    .formkit-form[data-uid="831f119429"] [data-group="dropdown"]::before {
+      content: "";
+      top: calc(50% - 2.5px);
+      right: 10px;
+      position: absolute;
+      pointer-events: none;
+      border-color: #4f4f4f transparent transparent transparent;
+      border-style: solid;
+      border-width: 6px 6px 0 6px;
+      height: 0;
+      width: 0;
+      z-index: 999;
+    }
+    .formkit-form[data-uid="831f119429"] [data-group="dropdown"] select {
+      height: auto;
+      width: 100%;
+      cursor: pointer;
+      color: #333333;
+      line-height: 1.4;
+      margin-bottom: 0;
+      padding: 0 6px;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      font-size: 15px;
+      padding: 12px 25px 12px 12px;
+      border: 1px solid #e3e3e3;
+      background: #ffffff;
+    }
+    .formkit-form[data-uid="831f119429"] [data-group="dropdown"] select:focus {
+      outline: none;
+    }
+    .formkit-form[data-uid="831f119429"] [data-group="checkboxes"] {
+      text-align: left;
+      margin: 0;
+    }
+    .formkit-form[data-uid="831f119429"] [data-group="checkboxes"] [data-group="checkbox"] {
+      margin-bottom: 10px;
+    }
+    .formkit-form[data-uid="831f119429"] [data-group="checkboxes"] [data-group="checkbox"] * {
+      cursor: pointer;
+    }
+    .formkit-form[data-uid="831f119429"] [data-group="checkboxes"] [data-group="checkbox"]:last-of-type {
+      margin-bottom: 0;
+    }
+    .formkit-form[data-uid="831f119429"] [data-group="checkboxes"] [data-group="checkbox"] input[type="checkbox"] {
+      display: none;
+    }
+    .formkit-form[data-uid="831f119429"] [data-group="checkboxes"] [data-group="checkbox"] input[type="checkbox"] + label::after {
+      content: none;
+    }
+    .formkit-form[data-uid="831f119429"] [data-group="checkboxes"] [data-group="checkbox"] input[type="checkbox"]:checked + label::after {
+      border-color: #ffffff;
+      content: "";
+    }
+    .formkit-form[data-uid="831f119429"] [data-group="checkboxes"] [data-group="checkbox"] input[type="checkbox"]:checked + label::before {
+      background: #10bf7a;
+      border-color: #10bf7a;
+    }
+    .formkit-form[data-uid="831f119429"] [data-group="checkboxes"] [data-group="checkbox"] label {
+      position: relative;
+      display: inline-block;
+      padding-left: 28px;
+    }
+    .formkit-form[data-uid="831f119429"] [data-group="checkboxes"] [data-group="checkbox"] label::before,
+    .formkit-form[data-uid="831f119429"] [data-group="checkboxes"] [data-group="checkbox"] label::after {
+      position: absolute;
+      content: "";
+      display: inline-block;
+    }
+    .formkit-form[data-uid="831f119429"] [data-group="checkboxes"] [data-group="checkbox"] label::before {
+      height: 16px;
+      width: 16px;
+      border: 1px solid #e3e3e3;
+      background: #ffffff;
+      left: 0;
+      top: 3px;
+    }
+    .formkit-form[data-uid="831f119429"] [data-group="checkboxes"] [data-group="checkbox"] label::after {
+      height: 4px;
+      width: 8px;
+      border-left: 2px solid #4d4d4d;
+      border-bottom: 2px solid #4d4d4d;
+      -webkit-transform: rotate(-45deg);
+      -ms-transform: rotate(-45deg);
+      transform: rotate(-45deg);
+      left: 4px;
+      top: 8px;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-alert {
+      background: #f9fafb;
+      border: 1px solid #e3e3e3;
+      border-radius: 5px;
+      -webkit-flex: 1 0 auto;
+      -ms-flex: 1 0 auto;
+      flex: 1 0 auto;
+      list-style: none;
+      margin: 25px auto;
+      padding: 12px;
+      text-align: center;
+      width: 100%;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-alert:empty {
+      display: none;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-alert-success {
+      background: #d3fbeb;
+      border-color: #10bf7a;
+      color: #0c905c;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-alert-error {
+      background: #fde8e2;
+      border-color: #f2643b;
+      color: #ea4110;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-spinner {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      height: 0;
+      width: 0;
+      margin: 0 auto;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 0;
+      overflow: hidden;
+      text-align: center;
+      -webkit-transition: all 300ms ease-in-out;
+      transition: all 300ms ease-in-out;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-spinner > div {
+      margin: auto;
+      width: 12px;
+      height: 12px;
+      background-color: #fff;
+      opacity: 0.3;
+      border-radius: 100%;
+      display: inline-block;
+      -webkit-animation: formkit-bouncedelay-formkit-form-data-uid-831f119429- 1.4s infinite ease-in-out both;
+      animation: formkit-bouncedelay-formkit-form-data-uid-831f119429- 1.4s infinite ease-in-out both;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-spinner > div:nth-child(1) {
+      -webkit-animation-delay: -0.32s;
+      animation-delay: -0.32s;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-spinner > div:nth-child(2) {
+      -webkit-animation-delay: -0.16s;
+      animation-delay: -0.16s;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-submit[data-active] .formkit-spinner {
+      opacity: 1;
+      height: 100%;
+      width: 50px;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-submit[data-active] .formkit-spinner ~ span {
+      opacity: 0;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-powered-by[data-active="false"] {
+      opacity: 0.35;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-powered-by-convertkit-container {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      width: 100%;
+      z-index: 5;
+      margin: 10px 0;
+      position: relative;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-powered-by-convertkit-container[data-active="false"] {
+      opacity: 0.35;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-powered-by-convertkit {
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      background-color: #ffffff;
+      border: 1px solid #dce1e5;
+      border-radius: 4px;
+      color: #373f45;
+      cursor: pointer;
+      display: block;
+      height: 36px;
+      margin: 0 auto;
+      opacity: 0.95;
+      padding: 0;
+      -webkit-text-decoration: none;
+      text-decoration: none;
+      text-indent: 100%;
+      -webkit-transition: ease-in-out all 200ms;
+      transition: ease-in-out all 200ms;
+      white-space: nowrap;
+      overflow: hidden;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      width: 190px;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-image: url("data:image/svg+xml;charset=utf8,%3Csvg width='162' height='20' viewBox='0 0 162 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M83.0561 15.2457C86.675 15.2457 89.4722 12.5154 89.4722 9.14749C89.4722 5.99211 86.8443 4.06563 85.1038 4.06563C82.6801 4.06563 80.7373 5.76407 80.4605 8.28551C80.4092 8.75244 80.0387 9.14403 79.5686 9.14069C78.7871 9.13509 77.6507 9.12841 76.9314 9.13092C76.6217 9.13199 76.3658 8.88106 76.381 8.57196C76.4895 6.38513 77.2218 4.3404 78.618 2.76974C80.1695 1.02445 82.4289 0 85.1038 0C89.5979 0 93.8406 4.07791 93.8406 9.14749C93.8406 14.7608 89.1832 19.3113 83.1517 19.3113C78.8502 19.3113 74.5179 16.5041 73.0053 12.5795C72.9999 12.565 72.9986 12.5492 73.0015 12.534C73.0218 12.4179 73.0617 12.3118 73.1011 12.2074C73.1583 12.0555 73.2143 11.907 73.2062 11.7359L73.18 11.1892C73.174 11.0569 73.2075 10.9258 73.2764 10.8127C73.3452 10.6995 73.4463 10.6094 73.5666 10.554L73.7852 10.4523C73.9077 10.3957 74.0148 10.3105 74.0976 10.204C74.1803 10.0974 74.2363 9.97252 74.2608 9.83983C74.3341 9.43894 74.6865 9.14749 75.0979 9.14749C75.7404 9.14749 76.299 9.57412 76.5088 10.1806C77.5188 13.1 79.1245 15.2457 83.0561 15.2457Z' fill='%23373F45'/%3E%3Cpath d='M155.758 6.91365C155.028 6.91365 154.804 6.47916 154.804 5.98857C154.804 5.46997 154.986 5.06348 155.758 5.06348C156.53 5.06348 156.712 5.46997 156.712 5.98857C156.712 6.47905 156.516 6.91365 155.758 6.91365ZM142.441 12.9304V9.32833L141.415 9.32323V8.90392C141.415 8.44719 141.786 8.07758 142.244 8.07986L142.441 8.08095V6.55306L144.082 6.09057V8.08073H145.569V8.50416C145.569 8.61242 145.548 8.71961 145.506 8.81961C145.465 8.91961 145.404 9.01047 145.328 9.08699C145.251 9.16351 145.16 9.2242 145.06 9.26559C144.96 9.30698 144.853 9.32826 144.745 9.32822H144.082V12.7201C144.082 13.2423 144.378 13.4256 144.76 13.4887C145.209 13.5629 145.583 13.888 145.583 14.343V14.9626C144.029 14.9626 142.441 14.8942 142.441 12.9304Z' fill='%23373F45'/%3E%3Cpath d='M110.058 7.92554C108.417 7.88344 106.396 8.92062 106.396 11.5137C106.396 14.0646 108.417 15.0738 110.058 15.0318C111.742 15.0738 113.748 14.0646 113.748 11.5137C113.748 8.92062 111.742 7.88344 110.058 7.92554ZM110.07 13.7586C108.878 13.7586 108.032 12.8905 108.032 11.461C108.032 10.1013 108.878 9.20569 110.071 9.20569C111.263 9.20569 112.101 10.0995 112.101 11.459C112.101 12.8887 111.263 13.7586 110.07 13.7586Z' fill='%23373F45'/%3E%3Cpath d='M118.06 7.94098C119.491 7.94098 120.978 8.33337 120.978 11.1366V14.893H120.063C119.608 14.893 119.238 14.524 119.238 14.0689V10.9965C119.238 9.66506 118.747 9.16047 117.891 9.16047C117.414 9.16047 116.797 9.52486 116.502 9.81915V14.069C116.502 14.1773 116.481 14.2845 116.44 14.3845C116.398 14.4845 116.337 14.5753 116.261 14.6519C116.184 14.7284 116.093 14.7891 115.993 14.8305C115.893 14.8719 115.786 14.8931 115.678 14.8931H114.847V8.10918H115.773C115.932 8.10914 116.087 8.16315 116.212 8.26242C116.337 8.36168 116.424 8.50033 116.46 8.65577C116.881 8.19328 117.428 7.94098 118.06 7.94098ZM122.854 8.09713C123.024 8.09708 123.19 8.1496 123.329 8.2475C123.468 8.34541 123.574 8.48391 123.631 8.64405L125.133 12.8486L126.635 8.64415C126.692 8.48402 126.798 8.34551 126.937 8.2476C127.076 8.1497 127.242 8.09718 127.412 8.09724H128.598L126.152 14.3567C126.091 14.5112 125.986 14.6439 125.849 14.7374C125.711 14.831 125.549 14.881 125.383 14.8809H124.333L121.668 8.09713H122.854Z' fill='%23373F45'/%3E%3Cpath d='M135.085 14.5514C134.566 14.7616 133.513 15.0416 132.418 15.0416C130.496 15.0416 129.024 13.9345 129.024 11.4396C129.024 9.19701 130.451 7.99792 132.191 7.99792C134.338 7.99792 135.254 9.4378 135.158 11.3979C135.139 11.8029 134.786 12.0983 134.38 12.0983H130.679C130.763 13.1916 131.562 13.7662 132.615 13.7662C133.028 13.7662 133.462 13.7452 133.983 13.6481C134.535 13.545 135.085 13.9375 135.085 14.4985V14.5514ZM133.673 10.949C133.785 9.87621 133.061 9.28752 132.191 9.28752C131.321 9.28752 130.734 9.93979 130.679 10.9489L133.673 10.949Z' fill='%23373F45'/%3E%3Cpath d='M137.345 8.11122C137.497 8.11118 137.645 8.16229 137.765 8.25635C137.884 8.35041 137.969 8.48197 138.005 8.62993C138.566 8.20932 139.268 7.94303 139.759 7.94303C139.801 7.94303 140.068 7.94303 140.489 7.99913V8.7265C140.489 9.11748 140.15 9.4147 139.759 9.4147C139.31 9.4147 138.651 9.5829 138.131 9.8773V14.8951H136.462V8.11112L137.345 8.11122ZM156.6 14.0508V8.09104H155.769C155.314 8.09104 154.944 8.45999 154.944 8.9151V14.8748H155.775C156.23 14.8748 156.6 14.5058 156.6 14.0508ZM158.857 12.9447V9.34254H157.749V8.91912C157.749 8.46401 158.118 8.09506 158.574 8.09506H158.857V6.56739L160.499 6.10479V8.09506H161.986V8.51848C161.986 8.97359 161.617 9.34254 161.161 9.34254H160.499V12.7345C160.499 13.2566 160.795 13.44 161.177 13.503C161.626 13.5774 162 13.9024 162 14.3574V14.977C160.446 14.977 158.857 14.9086 158.857 12.9447ZM98.1929 10.1124C98.2033 6.94046 100.598 5.16809 102.895 5.16809C104.171 5.16809 105.342 5.44285 106.304 6.12953L105.914 6.6631C105.654 7.02011 105.16 7.16194 104.749 6.99949C104.169 6.7702 103.622 6.7218 103.215 6.7218C101.335 6.7218 99.9169 7.92849 99.9068 10.1123C99.9169 12.2959 101.335 13.5201 103.215 13.5201C103.622 13.5201 104.169 13.4717 104.749 13.2424C105.16 13.0799 105.654 13.2046 105.914 13.5615L106.304 14.0952C105.342 14.7819 104.171 15.0566 102.895 15.0566C100.598 15.0566 98.2033 13.2842 98.1929 10.1124ZM147.619 5.21768C148.074 5.21768 148.444 5.58663 148.444 6.04174V9.81968L151.82 5.58131C151.897 5.47733 151.997 5.39282 152.112 5.3346C152.227 5.27638 152.355 5.24607 152.484 5.24611H153.984L150.166 10.0615L153.984 14.8749H152.484C152.355 14.8749 152.227 14.8446 152.112 14.7864C151.997 14.7281 151.897 14.6436 151.82 14.5397L148.444 10.3025V14.0508C148.444 14.5059 148.074 14.8749 147.619 14.8749H146.746V5.21768H147.619Z' fill='%23373F45'/%3E%3Cpath d='M0.773438 6.5752H2.68066C3.56543 6.5752 4.2041 6.7041 4.59668 6.96191C4.99219 7.21973 5.18994 7.62695 5.18994 8.18359C5.18994 8.55859 5.09326 8.87061 4.8999 9.11963C4.70654 9.36865 4.42822 9.52539 4.06494 9.58984V9.63379C4.51611 9.71875 4.84717 9.88721 5.05811 10.1392C5.27197 10.3882 5.37891 10.7266 5.37891 11.1543C5.37891 11.7314 5.17676 12.1841 4.77246 12.5122C4.37109 12.8374 3.81152 13 3.09375 13H0.773438V6.5752ZM1.82373 9.22949H2.83447C3.27393 9.22949 3.59473 9.16064 3.79688 9.02295C3.99902 8.88232 4.1001 8.64502 4.1001 8.31104C4.1001 8.00928 3.99023 7.79102 3.77051 7.65625C3.55371 7.52148 3.20801 7.4541 2.7334 7.4541H1.82373V9.22949ZM1.82373 10.082V12.1167H2.93994C3.37939 12.1167 3.71045 12.0332 3.93311 11.8662C4.15869 11.6963 4.27148 11.4297 4.27148 11.0664C4.27148 10.7324 4.15723 10.4849 3.92871 10.3237C3.7002 10.1626 3.35303 10.082 2.88721 10.082H1.82373Z' fill='%23373F45'/%3E%3Cpath d='M13.011 6.5752V10.7324C13.011 11.207 12.9084 11.623 12.7034 11.9805C12.5012 12.335 12.2068 12.6089 11.8201 12.8022C11.4363 12.9927 10.9763 13.0879 10.4402 13.0879C9.6433 13.0879 9.02368 12.877 8.5813 12.4551C8.13892 12.0332 7.91772 11.4531 7.91772 10.7148V6.5752H8.9724V10.6401C8.9724 11.1704 9.09546 11.5615 9.34155 11.8135C9.58765 12.0654 9.96557 12.1914 10.4753 12.1914C11.4656 12.1914 11.9607 11.6714 11.9607 10.6313V6.5752H13.011Z' fill='%23373F45'/%3E%3Cpath d='M15.9146 13V6.5752H16.9649V13H15.9146Z' fill='%23373F45'/%3E%3Cpath d='M19.9255 13V6.5752H20.9758V12.0991H23.696V13H19.9255Z' fill='%23373F45'/%3E%3Cpath d='M28.2828 13H27.2325V7.47607H25.3428V6.5752H30.1724V7.47607H28.2828V13Z' fill='%23373F45'/%3E%3Cpath d='M41.9472 13H40.8046L39.7148 9.16796C39.6679 9.00097 39.6093 8.76074 39.539 8.44727C39.4687 8.13086 39.4262 7.91113 39.4116 7.78809C39.3823 7.97559 39.3339 8.21875 39.2665 8.51758C39.2021 8.81641 39.1479 9.03905 39.1039 9.18554L38.0405 13H36.8979L36.0673 9.7832L35.2236 6.5752H36.2958L37.2143 10.3193C37.3578 10.9199 37.4604 11.4502 37.5219 11.9102C37.5541 11.6611 37.6025 11.3828 37.6669 11.0752C37.7314 10.7676 37.79 10.5186 37.8427 10.3281L38.8886 6.5752H39.9301L41.0024 10.3457C41.1049 10.6943 41.2133 11.2158 41.3276 11.9102C41.3715 11.4912 41.477 10.958 41.644 10.3105L42.558 6.5752H43.6215L41.9472 13Z' fill='%23373F45'/%3E%3Cpath d='M45.7957 13V6.5752H46.846V13H45.7957Z' fill='%23373F45'/%3E%3Cpath d='M52.0258 13H50.9755V7.47607H49.0859V6.5752H53.9155V7.47607H52.0258V13Z' fill='%23373F45'/%3E%3Cpath d='M61.2312 13H60.1765V10.104H57.2146V13H56.1643V6.5752H57.2146V9.20312H60.1765V6.5752H61.2312V13Z' fill='%23373F45'/%3E%3C/svg%3E");
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-powered-by-convertkit:hover,
+    .formkit-form[data-uid="831f119429"] .formkit-powered-by-convertkit:focus {
+      background-color: #ffffff;
+      -webkit-transform: scale(1.025) perspective(1px);
+      -ms-transform: scale(1.025) perspective(1px);
+      transform: scale(1.025) perspective(1px);
+      opacity: 1;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-powered-by-convertkit[data-variant="dark"],
+    .formkit-form[data-uid="831f119429"] .formkit-powered-by-convertkit[data-variant="light"] {
+      background-color: transparent;
+      border-color: transparent;
+      width: 166px;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-powered-by-convertkit[data-variant="light"] {
+      color: #ffffff;
+      background-image: url("data:image/svg+xml;charset=utf8,%3Csvg width='162' height='20' viewBox='0 0 162 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M83.0561 15.2457C86.675 15.2457 89.4722 12.5154 89.4722 9.14749C89.4722 5.99211 86.8443 4.06563 85.1038 4.06563C82.6801 4.06563 80.7373 5.76407 80.4605 8.28551C80.4092 8.75244 80.0387 9.14403 79.5686 9.14069C78.7871 9.13509 77.6507 9.12841 76.9314 9.13092C76.6217 9.13199 76.3658 8.88106 76.381 8.57196C76.4895 6.38513 77.2218 4.3404 78.618 2.76974C80.1695 1.02445 82.4289 0 85.1038 0C89.5979 0 93.8406 4.07791 93.8406 9.14749C93.8406 14.7608 89.1832 19.3113 83.1517 19.3113C78.8502 19.3113 74.5179 16.5041 73.0053 12.5795C72.9999 12.565 72.9986 12.5492 73.0015 12.534C73.0218 12.4179 73.0617 12.3118 73.1011 12.2074C73.1583 12.0555 73.2143 11.907 73.2062 11.7359L73.18 11.1892C73.174 11.0569 73.2075 10.9258 73.2764 10.8127C73.3452 10.6995 73.4463 10.6094 73.5666 10.554L73.7852 10.4523C73.9077 10.3957 74.0148 10.3105 74.0976 10.204C74.1803 10.0974 74.2363 9.97252 74.2608 9.83983C74.3341 9.43894 74.6865 9.14749 75.0979 9.14749C75.7404 9.14749 76.299 9.57412 76.5088 10.1806C77.5188 13.1 79.1245 15.2457 83.0561 15.2457Z' fill='white'/%3E%3Cpath d='M155.758 6.91365C155.028 6.91365 154.804 6.47916 154.804 5.98857C154.804 5.46997 154.986 5.06348 155.758 5.06348C156.53 5.06348 156.712 5.46997 156.712 5.98857C156.712 6.47905 156.516 6.91365 155.758 6.91365ZM142.441 12.9304V9.32833L141.415 9.32323V8.90392C141.415 8.44719 141.786 8.07758 142.244 8.07986L142.441 8.08095V6.55306L144.082 6.09057V8.08073H145.569V8.50416C145.569 8.61242 145.548 8.71961 145.506 8.81961C145.465 8.91961 145.404 9.01047 145.328 9.08699C145.251 9.16351 145.16 9.2242 145.06 9.26559C144.96 9.30698 144.853 9.32826 144.745 9.32822H144.082V12.7201C144.082 13.2423 144.378 13.4256 144.76 13.4887C145.209 13.5629 145.583 13.888 145.583 14.343V14.9626C144.029 14.9626 142.441 14.8942 142.441 12.9304Z' fill='white'/%3E%3Cpath d='M110.058 7.92554C108.417 7.88344 106.396 8.92062 106.396 11.5137C106.396 14.0646 108.417 15.0738 110.058 15.0318C111.742 15.0738 113.748 14.0646 113.748 11.5137C113.748 8.92062 111.742 7.88344 110.058 7.92554ZM110.07 13.7586C108.878 13.7586 108.032 12.8905 108.032 11.461C108.032 10.1013 108.878 9.20569 110.071 9.20569C111.263 9.20569 112.101 10.0995 112.101 11.459C112.101 12.8887 111.263 13.7586 110.07 13.7586Z' fill='white'/%3E%3Cpath d='M118.06 7.94098C119.491 7.94098 120.978 8.33337 120.978 11.1366V14.893H120.063C119.608 14.893 119.238 14.524 119.238 14.0689V10.9965C119.238 9.66506 118.747 9.16047 117.891 9.16047C117.414 9.16047 116.797 9.52486 116.502 9.81915V14.069C116.502 14.1773 116.481 14.2845 116.44 14.3845C116.398 14.4845 116.337 14.5753 116.261 14.6519C116.184 14.7284 116.093 14.7891 115.993 14.8305C115.893 14.8719 115.786 14.8931 115.678 14.8931H114.847V8.10918H115.773C115.932 8.10914 116.087 8.16315 116.212 8.26242C116.337 8.36168 116.424 8.50033 116.46 8.65577C116.881 8.19328 117.428 7.94098 118.06 7.94098ZM122.854 8.09713C123.024 8.09708 123.19 8.1496 123.329 8.2475C123.468 8.34541 123.574 8.48391 123.631 8.64405L125.133 12.8486L126.635 8.64415C126.692 8.48402 126.798 8.34551 126.937 8.2476C127.076 8.1497 127.242 8.09718 127.412 8.09724H128.598L126.152 14.3567C126.091 14.5112 125.986 14.6439 125.849 14.7374C125.711 14.831 125.549 14.881 125.383 14.8809H124.333L121.668 8.09713H122.854Z' fill='white'/%3E%3Cpath d='M135.085 14.5514C134.566 14.7616 133.513 15.0416 132.418 15.0416C130.496 15.0416 129.024 13.9345 129.024 11.4396C129.024 9.19701 130.451 7.99792 132.191 7.99792C134.338 7.99792 135.254 9.4378 135.158 11.3979C135.139 11.8029 134.786 12.0983 134.38 12.0983H130.679C130.763 13.1916 131.562 13.7662 132.615 13.7662C133.028 13.7662 133.462 13.7452 133.983 13.6481C134.535 13.545 135.085 13.9375 135.085 14.4985V14.5514ZM133.673 10.949C133.785 9.87621 133.061 9.28752 132.191 9.28752C131.321 9.28752 130.734 9.93979 130.679 10.9489L133.673 10.949Z' fill='white'/%3E%3Cpath d='M137.345 8.11122C137.497 8.11118 137.645 8.16229 137.765 8.25635C137.884 8.35041 137.969 8.48197 138.005 8.62993C138.566 8.20932 139.268 7.94303 139.759 7.94303C139.801 7.94303 140.068 7.94303 140.489 7.99913V8.7265C140.489 9.11748 140.15 9.4147 139.759 9.4147C139.31 9.4147 138.651 9.5829 138.131 9.8773V14.8951H136.462V8.11112L137.345 8.11122ZM156.6 14.0508V8.09104H155.769C155.314 8.09104 154.944 8.45999 154.944 8.9151V14.8748H155.775C156.23 14.8748 156.6 14.5058 156.6 14.0508ZM158.857 12.9447V9.34254H157.749V8.91912C157.749 8.46401 158.118 8.09506 158.574 8.09506H158.857V6.56739L160.499 6.10479V8.09506H161.986V8.51848C161.986 8.97359 161.617 9.34254 161.161 9.34254H160.499V12.7345C160.499 13.2566 160.795 13.44 161.177 13.503C161.626 13.5774 162 13.9024 162 14.3574V14.977C160.446 14.977 158.857 14.9086 158.857 12.9447ZM98.1929 10.1124C98.2033 6.94046 100.598 5.16809 102.895 5.16809C104.171 5.16809 105.342 5.44285 106.304 6.12953L105.914 6.6631C105.654 7.02011 105.16 7.16194 104.749 6.99949C104.169 6.7702 103.622 6.7218 103.215 6.7218C101.335 6.7218 99.9169 7.92849 99.9068 10.1123C99.9169 12.2959 101.335 13.5201 103.215 13.5201C103.622 13.5201 104.169 13.4717 104.749 13.2424C105.16 13.0799 105.654 13.2046 105.914 13.5615L106.304 14.0952C105.342 14.7819 104.171 15.0566 102.895 15.0566C100.598 15.0566 98.2033 13.2842 98.1929 10.1124ZM147.619 5.21768C148.074 5.21768 148.444 5.58663 148.444 6.04174V9.81968L151.82 5.58131C151.897 5.47733 151.997 5.39282 152.112 5.3346C152.227 5.27638 152.355 5.24607 152.484 5.24611H153.984L150.166 10.0615L153.984 14.8749H152.484C152.355 14.8749 152.227 14.8446 152.112 14.7864C151.997 14.7281 151.897 14.6436 151.82 14.5397L148.444 10.3025V14.0508C148.444 14.5059 148.074 14.8749 147.619 14.8749H146.746V5.21768H147.619Z' fill='white'/%3E%3Cpath d='M0.773438 6.5752H2.68066C3.56543 6.5752 4.2041 6.7041 4.59668 6.96191C4.99219 7.21973 5.18994 7.62695 5.18994 8.18359C5.18994 8.55859 5.09326 8.87061 4.8999 9.11963C4.70654 9.36865 4.42822 9.52539 4.06494 9.58984V9.63379C4.51611 9.71875 4.84717 9.88721 5.05811 10.1392C5.27197 10.3882 5.37891 10.7266 5.37891 11.1543C5.37891 11.7314 5.17676 12.1841 4.77246 12.5122C4.37109 12.8374 3.81152 13 3.09375 13H0.773438V6.5752ZM1.82373 9.22949H2.83447C3.27393 9.22949 3.59473 9.16064 3.79688 9.02295C3.99902 8.88232 4.1001 8.64502 4.1001 8.31104C4.1001 8.00928 3.99023 7.79102 3.77051 7.65625C3.55371 7.52148 3.20801 7.4541 2.7334 7.4541H1.82373V9.22949ZM1.82373 10.082V12.1167H2.93994C3.37939 12.1167 3.71045 12.0332 3.93311 11.8662C4.15869 11.6963 4.27148 11.4297 4.27148 11.0664C4.27148 10.7324 4.15723 10.4849 3.92871 10.3237C3.7002 10.1626 3.35303 10.082 2.88721 10.082H1.82373Z' fill='white'/%3E%3Cpath d='M13.011 6.5752V10.7324C13.011 11.207 12.9084 11.623 12.7034 11.9805C12.5012 12.335 12.2068 12.6089 11.8201 12.8022C11.4363 12.9927 10.9763 13.0879 10.4402 13.0879C9.6433 13.0879 9.02368 12.877 8.5813 12.4551C8.13892 12.0332 7.91772 11.4531 7.91772 10.7148V6.5752H8.9724V10.6401C8.9724 11.1704 9.09546 11.5615 9.34155 11.8135C9.58765 12.0654 9.96557 12.1914 10.4753 12.1914C11.4656 12.1914 11.9607 11.6714 11.9607 10.6313V6.5752H13.011Z' fill='white'/%3E%3Cpath d='M15.9146 13V6.5752H16.9649V13H15.9146Z' fill='white'/%3E%3Cpath d='M19.9255 13V6.5752H20.9758V12.0991H23.696V13H19.9255Z' fill='white'/%3E%3Cpath d='M28.2828 13H27.2325V7.47607H25.3428V6.5752H30.1724V7.47607H28.2828V13Z' fill='white'/%3E%3Cpath d='M41.9472 13H40.8046L39.7148 9.16796C39.6679 9.00097 39.6093 8.76074 39.539 8.44727C39.4687 8.13086 39.4262 7.91113 39.4116 7.78809C39.3823 7.97559 39.3339 8.21875 39.2665 8.51758C39.2021 8.81641 39.1479 9.03905 39.1039 9.18554L38.0405 13H36.8979L36.0673 9.7832L35.2236 6.5752H36.2958L37.2143 10.3193C37.3578 10.9199 37.4604 11.4502 37.5219 11.9102C37.5541 11.6611 37.6025 11.3828 37.6669 11.0752C37.7314 10.7676 37.79 10.5186 37.8427 10.3281L38.8886 6.5752H39.9301L41.0024 10.3457C41.1049 10.6943 41.2133 11.2158 41.3276 11.9102C41.3715 11.4912 41.477 10.958 41.644 10.3105L42.558 6.5752H43.6215L41.9472 13Z' fill='white'/%3E%3Cpath d='M45.7957 13V6.5752H46.846V13H45.7957Z' fill='white'/%3E%3Cpath d='M52.0258 13H50.9755V7.47607H49.0859V6.5752H53.9155V7.47607H52.0258V13Z' fill='white'/%3E%3Cpath d='M61.2312 13H60.1765V10.104H57.2146V13H56.1643V6.5752H57.2146V9.20312H60.1765V6.5752H61.2312V13Z' fill='white'/%3E%3C/svg%3E");
+    }
+    @-webkit-keyframes formkit-bouncedelay-formkit-form-data-uid-831f119429- {
+      0%,
+      100%,
+      80% {
+        -webkit-transform: scale(0);
+        -ms-transform: scale(0);
+        transform: scale(0);
+      }
+      40% {
+        -webkit-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
+      }
+    }
+    @keyframes formkit-bouncedelay-formkit-form-data-uid-831f119429- {
+      0%,
+      100%,
+      80% {
+        -webkit-transform: scale(0);
+        -ms-transform: scale(0);
+        transform: scale(0);
+      }
+      40% {
+        -webkit-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
+      }
+    }
+    .formkit-form[data-uid="831f119429"] blockquote {
+      padding: 10px 20px;
+      margin: 0 0 20px;
+      border-left: 5px solid #e1e1e1;
+    }
+    .formkit-form[data-uid="831f119429"] {
+      max-width: 700px;
+    }
+    .formkit-form[data-uid="831f119429"] [data-style="clean"] {
+      width: 100%;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-fields {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      margin: 0 auto;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-field,
+    .formkit-form[data-uid="831f119429"] .formkit-submit {
+      margin: 0 0 15px;
+      -webkit-flex: 1 0 100%;
+      -ms-flex: 1 0 100%;
+      flex: 1 0 100%;
+    }
+    .formkit-form[data-uid="831f119429"] .formkit-powered-by-convertkit-container {
+      margin: 0;
+    }
+    .formkit-form[data-uid="831f119429"][min-width~="700"] [data-style="clean"],
+    .formkit-form[data-uid="831f119429"][min-width~="800"] [data-style="clean"] {
+      padding: 10px;
+    }
+    .formkit-form[data-uid="831f119429"][min-width~="700"] .formkit-fields[data-stacked="false"],
+    .formkit-form[data-uid="831f119429"][min-width~="800"] .formkit-fields[data-stacked="false"] {
+      margin-left: -5px;
+      margin-right: -5px;
+    }
+    .formkit-form[data-uid="831f119429"][min-width~="700"] .formkit-fields[data-stacked="false"] .formkit-field,
+    .formkit-form[data-uid="831f119429"][min-width~="800"] .formkit-fields[data-stacked="false"] .formkit-field,
+    .formkit-form[data-uid="831f119429"][min-width~="700"] .formkit-fields[data-stacked="false"] .formkit-submit,
+    .formkit-form[data-uid="831f119429"][min-width~="800"] .formkit-fields[data-stacked="false"] .formkit-submit {
+      margin: 0 5px 15px 0;
+    }
+    .formkit-form[data-uid="831f119429"][min-width~="700"] .formkit-fields[data-stacked="false"] .formkit-field,
+    .formkit-form[data-uid="831f119429"][min-width~="800"] .formkit-fields[data-stacked="false"] .formkit-field {
+      -webkit-flex: 100 1 auto;
+      -ms-flex: 100 1 auto;
+      flex: 100 1 auto;
+    }
+    .formkit-form[data-uid="831f119429"][min-width~="700"] .formkit-fields[data-stacked="false"] .formkit-submit,
+    .formkit-form[data-uid="831f119429"][min-width~="800"] .formkit-fields[data-stacked="false"] .formkit-submit {
+      -webkit-flex: 1 1 auto;
+      -ms-flex: 1 1 auto;
+      flex: 1 1 auto;
+    }</style></form></div></div><div class="column is-half"><span style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 1024px;"><picture><source type="image/png" srcset="/img/node-js-design-patterns-open-chapter9-Khc9PnzSAE-64.png 64w, /img/node-js-design-patterns-open-chapter9-Khc9PnzSAE-128.png 128w, /img/node-js-design-patterns-open-chapter9-Khc9PnzSAE-256.png 256w, /img/node-js-design-patterns-open-chapter9-Khc9PnzSAE-512.png 512w, /img/node-js-design-patterns-open-chapter9-Khc9PnzSAE-1024.png 1024w, /img/node-js-design-patterns-open-chapter9-Khc9PnzSAE-1218.png 1218w" sizes="(max-width: 1024px) 100vw, 1024px"><source type="image/webp" srcset="/img/node-js-design-patterns-open-chapter9-Khc9PnzSAE-64.webp 64w, /img/node-js-design-patterns-open-chapter9-Khc9PnzSAE-128.webp 128w, /img/node-js-design-patterns-open-chapter9-Khc9PnzSAE-256.webp 256w, /img/node-js-design-patterns-open-chapter9-Khc9PnzSAE-512.webp 512w, /img/node-js-design-patterns-open-chapter9-Khc9PnzSAE-1024.webp 1024w, /img/node-js-design-patterns-open-chapter9-Khc9PnzSAE-1218.webp 1218w" sizes="(max-width: 1024px) 100vw, 1024px"><img loading="lazy" decoding="async" style="max-width: 100%; width: 100%; margin: 0px; vertical-align: middle;" class="chapter9" alt="Node.js Design Patterns chapter 9 behavioral design patterns" src="/img/node-js-design-patterns-open-chapter9-Khc9PnzSAE-64.png" width="64" height="46"></picture></span></div></div></div></section><footer class="footer"><div class="container"><div class="columns"><div class="column is-half"><p class="is-size-7">Copyright © 2014-2025 Mario Casciaro, Luciano Mammino, Packt Publishing.</p><p class="is-size-7">All trademarks and registered trademarks are the property of their respective owners.</p><p class="is-size-7 mt-1">Icons <strong>Unicons</strong> by <a href="https://iconscout.com" rel="nofollow noreferer">Iconscout</a></p></div><div class="column"><div class="content"><h2 class="title is-4">Fresh from the blog</h2><ul><li><a href="/blog/node-js-stream-consumer/">Node.js stream consumer utilities</a></li><li><a href="/blog/javascript-async-iterators/">JavaScript async iterators</a></li><li><a href="/blog/node-js-race-conditions/">Node.js race conditions</a></li><li><a href="/blog/5-ways-to-install-node-js/">5 Ways to install Node.js</a></li></ul></div></div></div><hr><p class="mt-2">Found an error or something that can be improved? You can help us make this website better on <a href="https://github.com/nodejs-design-patterns-book/nodejsdesignpatterns.com">GitHub</a>!</p></div></footer><script type="text/javascript" defer="defer" src="/assets//main.2099d5a76e3050e6dea6.js" integrity="sha256-8xfxiU9yNmXRZC9iNDGxmQnhwqdFaCUqWERfuDXhc0Y="></script></body></html>

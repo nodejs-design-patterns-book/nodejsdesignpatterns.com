@@ -1,0 +1,1 @@
+export default __webpack_public_path__ + "/fonts/Open_Sans_700.woff2";
