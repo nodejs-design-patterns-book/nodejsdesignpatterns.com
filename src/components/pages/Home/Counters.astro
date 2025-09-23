@@ -1,0 +1,38 @@
+---
+import { AnimatedCounter } from '@components/AnimatedCounter.tsx'
+import { EXAMPLES, EXERCISES, PAGES, READERS } from '@lib/const.ts'
+import { Book, LaptopMinimalCheck, Swords, Users } from '@lucide/astro'
+---
+
+<section
+  id="counters"
+  class="py-12 bg-base-200/50 border-b border-t border-base-200/70"
+>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+      <AnimatedCounter value={READERS} suffix="+" client:load>
+        <div class="flex gap-2 justify-center">
+          <Users class="h-4 w-4" /> Happy Developers
+        </div>
+      </AnimatedCounter>
+
+      <AnimatedCounter value={PAGES} client:load>
+        <div class="flex gap-2 justify-center">
+          <Book class="h-4 w-4" /> Pages of Content
+        </div>
+      </AnimatedCounter>
+
+      <AnimatedCounter value={EXAMPLES} client:load>
+        <div class="flex gap-2 justify-center">
+          <LaptopMinimalCheck class="h-4 w-4" /> Working Examples
+        </div>
+      </AnimatedCounter>
+
+      <AnimatedCounter value={EXERCISES} client:load>
+        <div class="flex gap-2 justify-center">
+          <Swords class="h-4 w-4" /> Practice Exercises
+        </div>
+      </AnimatedCounter>
+    </div>
+  </div>
+</section>

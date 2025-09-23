@@ -1,0 +1,17 @@
+---
+import Button from '@components/ui/button.astro'
+import { Book, TabletSmartphone } from '@lucide/astro'
+import { BUY_LINK_PRINT, BUY_LINK_EBOOK } from '@lib/const'
+---
+
+<div class="flex flex-col sm:flex-row gap-4">
+  <Button element="a" href={BUY_LINK_PRINT} variant="primary" size="lg">
+    <Book class="mr-2 h-5 w-5" />
+    Buy print
+  </Button>
+
+  <Button element="a" href={BUY_LINK_EBOOK} variant="default" size="lg">
+    <TabletSmartphone class="mr-2 h-5 w-5" />
+    Buy e-book
+  </Button>
+</div>

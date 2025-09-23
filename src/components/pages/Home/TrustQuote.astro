@@ -1,0 +1,192 @@
+---
+import { Picture } from 'astro:assets'
+import david from '@images/people/david-gonzalez.png'
+import joe from '@images/people/joe-karlsson.png'
+import maya from '@images/people/maya-shavin.png'
+import 'swiper/css'
+import 'swiper/css/pagination'
+---
+
+<section id="trust-quote" class="pt-16 px-4">
+  <div class="swiper">
+    <div class="swiper-wrapper">
+      <div class="w-full swiper-slide">
+        <div class="max-w-4xl mx-auto px-4 py-4 sm:px-6 lg:px-8 text-center">
+          <div class="relative">
+            <div
+              class="font-serif italic text-6xl text-primary absolute -top-2 -left-4 -sm:left-6 -lg:left-8"
+            >
+              &ldquo;
+            </div>
+            <blockquote
+              class="font-sans text-2xl lg:text-3xl font-medium text-base-content leading-relaxed relative z-10"
+            >
+              I have learnt a lot by just going through Node.js Design
+              Patterns... This is a book I recommend to my students to{' '}
+              <strong>go from 0 to hero</strong> and keep it as a reference forever.
+            </blockquote>
+            <div
+              class="font-serif italic text-6xl text-primary absolute -bottom-12 right-2 -sm:right-6 -lg:right-8"
+            >
+              &rdquo;
+            </div>
+          </div>
+        </div>
+        <div class="mt-8 flex items-center justify-center space-x-4">
+          <Picture
+            formats={['avif', 'webp', 'png']}
+            layout="fixed"
+            src={david}
+            alt="David Gonzalez, Instructor & Principal Engineer at Cloudsmith"
+            class="w-12 h-12 rounded-full"
+            loading="lazy"
+            width={256}
+            height={256}
+          />
+          <div class="text-left">
+            <div class="font-serif font-semibold text-base-content">
+              David Gonzalez
+            </div>
+            <div class="text-base-content/70">
+              Instructor & Principal Engineer at <strong>Cloudsmith</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-full swiper-slide">
+        <div class="max-w-4xl mx-auto px-4 py-4 sm:px-6 lg:px-8 text-center">
+          <div class="relative">
+            <div
+              class="font-serif italic text-6xl text-primary absolute -top-2 -left-4 -sm:left-6 -lg:left-8"
+            >
+              &ldquo;
+            </div>
+            <blockquote
+              class="font-sans text-2xl lg:text-3xl font-medium text-base-content leading-relaxed relative z-10"
+            >
+              This book surprised me for how <strong>detailed</strong> it is… an
+              <strong>excellent reference</strong> to apply design patterns in any
+              <strong>real scale Node.js application</strong>.
+            </blockquote>
+            <div
+              class="font-serif italic text-6xl text-primary absolute -bottom-12 right-2 -sm:right-6 -lg:right-8"
+            >
+              &rdquo;
+            </div>
+          </div>
+        </div>
+        <div class="mt-8 flex items-center justify-center space-x-4">
+          <Picture
+            formats={['avif', 'webp', 'png']}
+            layout="fixed"
+            src={maya}
+            alt="Maya Shavin, Lead Software Engineer at Salesforce"
+            class="w-12 h-12 rounded-full"
+            loading="lazy"
+            width={256}
+            height={256}
+          />
+          <div class="text-left">
+            <div class="font-serif font-semibold text-base-content">
+              Maya Shavin
+            </div>
+            <div class="text-base-content/70">
+              Lead Software Engineer at <strong>Salesforce</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-full swiper-slide">
+        <div class="max-w-4xl mx-auto px-4 py-4 sm:px-6 lg:px-8 text-center">
+          <div class="relative">
+            <div
+              class="font-serif italic text-6xl text-primary absolute -top-2 -left-4 -sm:left-6 -lg:left-8"
+            >
+              &ldquo;
+            </div>
+            <blockquote
+              class="font-sans text-2xl lg:text-3xl font-medium text-base-content leading-relaxed relative z-10"
+            >
+              I've read basically every Node.js book ever published, and this is <strong
+                >my personal favorite</strong
+              > (and best) by far... This is a must for anyone writing code in Node.js.
+            </blockquote>
+            <div
+              class="font-serif italic text-6xl text-primary absolute -bottom-12 right-2 -sm:right-6 -lg:right-8"
+            >
+              &rdquo;
+            </div>
+          </div>
+        </div>
+        <div class="mt-8 flex items-center justify-center space-x-4">
+          <Picture
+            formats={['avif', 'webp', 'png']}
+            layout="fixed"
+            src={joe}
+            alt="Joe Karlsson, Senior Developer Advocate at CloudQuery"
+            class="w-12 h-12 rounded-full"
+            loading="lazy"
+            width={256}
+            height={256}
+          />
+          <div class="text-left">
+            <div class="font-serif font-semibold text-base-content">
+              Joe Karlsson
+            </div>
+            <div class="text-base-content/70">
+              Senior Developer Advocate at <strong>CloudQuery</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="swiper-pagination"></div>
+  </div>
+</section>
+
+<script>
+  import { Swiper } from 'swiper'
+  import { Pagination, Autoplay } from 'swiper/modules'
+
+  new Swiper('.swiper', {
+    modules: [Pagination, Autoplay],
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+    autoplay: {
+      delay: 6000,
+      disableOnInteraction: true,
+    },
+    loop: true,
+  })
+</script>
+
+<style is:inline>
+  .swiper-pagination-bullet {
+    --swiper-pagination-color: var(--color-primary);
+    --swiper-pagination-bullet-inactive-color: var(--color-base-content);
+  }
+
+  .swiper {
+    width: 100%;
+  }
+
+  .swiper-pagination {
+    position: relative;
+    padding-top: 2rem;
+    margin-top: 2rem;
+    padding-bottom: 4rem;
+  }
+
+  .swiper-pagination .swiper-pagination-bullet {
+    background: var(--color-base-300);
+  }
+
+  .swiper-pagination .swiper-pagination-bullet-active {
+    background: var(--color-primary);
+  }
+</style>

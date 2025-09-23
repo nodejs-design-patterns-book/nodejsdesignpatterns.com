@@ -1,0 +1,351 @@
+---
+import Layout from '../../Layout.astro'
+import AuthorInfo from './AuthorInfo.astro'
+import type { CollectionEntry } from 'astro:content'
+import { SITE_URL } from '@lib/const'
+import { Calendar, CalendarCheck, Clock } from '@lucide/astro'
+import Footer from '@components/Footer.astro'
+import BookPromo from '@components/blog/BookPromo.astro'
+import { List } from '@lucide/astro'
+import { calculateReadingTime, formatDate } from '@lib/utils'
+import Breadcrumb from './Breadcrumb.astro'
+import BlogCard from './BlogCard.astro'
+
+interface Props {
+  post: CollectionEntry<'blog'>
+  authors: CollectionEntry<'authors'>[]
+  prevPost?: CollectionEntry<'blog'> | null
+  nextPost?: CollectionEntry<'blog'> | null
+}
+
+type CollectionEntryHeadingsItem = {
+  depth: number
+  text: string
+  slug: string
+}
+
+type CollectionEntryHeadings = CollectionEntryHeadingsItem[]
+type NestedCollectionHeadingsItem = CollectionEntryHeadingsItem & {
+  children: NestedCollectionHeadingsItem[]
+}
+
+const { post, authors, prevPost, nextPost } = Astro.props
+const { title, description, date, updatedAt } = post.data
+
+const formattedDate = formatDate(date)
+
+const formattedUpdatedDate =
+  updatedAt && updatedAt.getTime() !== date.getTime()
+    ? formatDate(updatedAt)
+    : null
+
+const readingTime = calculateReadingTime(post.body as string)
+
+// Groups ToC in a way that it's easier to render as nested lists
+const nestedToc: NestedCollectionHeadingsItem[] = []
+let lastNestedTocEntry: NestedCollectionHeadingsItem | null = null
+if (post.rendered?.metadata?.headings) {
+  for (const heading of post.rendered.metadata
+    .headings as CollectionEntryHeadings) {
+    const { depth, text, slug } = heading
+    const tocEntry = { depth, text, slug, children: [] }
+    if (depth === 2) {
+      nestedToc.push(tocEntry)
+      lastNestedTocEntry = tocEntry
+    } else if (lastNestedTocEntry) {
+      lastNestedTocEntry.children.push(tocEntry)
+    }
+  }
+}
+---
+
+<Layout
+  title={title}
+  description={description}
+  ogTitle={title}
+  ogDescription={description}
+>
+  <main class="min-h-screen bg-base-100">
+    <!-- Blog Header -->
+    <header class="bg-gradient-to-b from-primary/40 to-primary/10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Breadcrumbs -->
+        <Breadcrumb
+          sections={[
+            { title: 'Blog', url: '/blog' },
+            { title, url: `/blog/${post.id}` },
+          ]}
+        />
+
+        <!-- Article Title -->
+        <h1
+          class="text-4xl lg:text-5xl font-bold font-heading text-base-content mb-6 leading-tight"
+        >
+          {title}
+        </h1>
+
+        <!-- Article Description -->
+        <p class="text-xl text-base-content/80 leading-relaxed mb-8 max-w-3xl">
+          {description}
+        </p>
+
+        <!-- Article Meta -->
+        <div
+          class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6"
+        >
+          <AuthorInfo authors={authors} size="md" />
+
+          <div
+            class="flex flex-col lg:items-end space-y-1 text-sm text-base-content/70"
+          >
+            <time datetime={date.toISOString()} class="flex items-center">
+              <Calendar class="h-3 w-3 mr-1" /> Published on {formattedDate}
+            </time>
+            {
+              formattedUpdatedDate &&
+                formattedDate !== formattedUpdatedDate && (
+                  <time
+                    datetime={updatedAt?.toISOString()}
+                    class="flex items-center"
+                  >
+                    <CalendarCheck class="h-3 w-3 mr-1" /> Updated on{' '}
+                    {formattedUpdatedDate}
+                  </time>
+                )
+            }
+            <span class="flex items-center">
+              <Clock class="h-3 w-3 mr-1" />
+              {readingTime} min read
+            </span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Blog Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="flex flex-col md:flex-row gap-12">
+        <!-- Article (left column) -->
+        <article class="flex-1 min-w-0">
+          <!-- ToC -->
+          <div>
+            {
+              nestedToc.length > 0 && (
+                <details class="bg-base-100 py-2 mb-8 open:bg-primary/10 border border-base-200 hover:border-primary/20 open:border-primary/20 rounded-md transform transition-all duration-300 px-4 open:[&_.summary-arrow]:-rotate-180">
+                  <summary class="cursor-pointer flex">
+                    <span class="flex gap-2 items-center w-full">
+                      <List class="w-4.5 text-base-content/50" /> Table of
+                      Contents
+                      <span class="flex flex-1 text-primary justify-end">
+                        <svg
+                          class="summary-arrow -rotate-0 transform transition-all duration-300"
+                          fill="none"
+                          height="20"
+                          width="20"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          viewBox="0 0 24 24"
+                        >
+                          <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                      </span>
+                    </span>
+                  </summary>
+                  <ol class="my-2 [&_li]:my-1 list-decimal list-inside">
+                    {nestedToc.map((item) => (
+                      <li class="text-md">
+                        <a
+                          class="no-underline hover:underline text-base-content/70 hover:text-primary transition-colors"
+                          href={`#${item.slug}`}
+                        >
+                          {item.text}
+                        </a>
+                        {item.children.length > 0 && (
+                          <ol class="text-sm my-0 pt-0 pl-8 [&_li]:my-0 list-[lower-alpha] list-outside">
+                            {item.children.map((child) => (
+                              <li>
+                                <a
+                                  class="no-underline hover:underline text-base-content/70 hover:text-primary transition-colors"
+                                  href={`#${child.slug}`}
+                                >
+                                  {child.text}
+                                </a>
+                              </li>
+                            ))}
+                          </ol>
+                        )}
+                      </li>
+                    ))}
+                  </ol>
+                </details>
+              )
+            }
+            <div class="prose lg:prose-xl max-w-none">
+              <slot />
+            </div>
+          </div>
+
+          <!-- Article Footer -->
+          <aside class="mt-16 pt-8 border-t border-base-300">
+            <div
+              class="flex flex-col sm:flex-row items-center justify-between gap-6"
+            >
+              <div>
+                <h3 class="font-semibold text-base-content mb-2">
+                  Share this article
+                </h3>
+                <div class="flex space-x-4 justify-center sm:justify-start">
+                  <a
+                    href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`${SITE_URL}/blog/${post.id}`)}&text=${encodeURIComponent(title)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-base-content/70 hover:text-primary transition-colors"
+                  >
+                    <span class="sr-only">Share on X (formerly Twitter)</span>
+                    <svg
+                      class="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"
+                      ></path>
+                    </svg>
+                  </a>
+                  <a
+                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`${SITE_URL}/blog/${post.id}`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-base-content/70 hover:text-primary transition-colors"
+                  >
+                    <span class="sr-only">Share on LinkedIn</span>
+                    <svg
+                      class="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                      ></path>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Back to Blog -->
+              <div>
+                <a
+                  href="/blog"
+                  class="inline-flex items-center text-base-content/70 hover:text-primary transition-colors"
+                >
+                  <svg
+                    class="mr-2 w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M7 16l-4-4m0 0l4-4m-4 4h18"></path>
+                  </svg>
+                  Back to Blog
+                </a>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Previous/Next Navigation -->
+          {
+            (prevPost || nextPost) && (
+              <nav class="mt-12 pt-8 border-t border-base-300">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+                  {/* <!-- Previous Article (Left Column) --> */}
+
+                  <div class="flex flex-col">
+                    {prevPost && (
+                      <div class="flex flex-col h-full">
+                        <a
+                          href={`/blog/${prevPost.id}`}
+                          class="flex items-center text-sm font-medium text-base-content/60 hover:text-primary transition-colors mb-4"
+                        >
+                          <svg
+                            class="w-4 h-4 mr-2"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M7 16l-4-4m0 0l4-4m-4 4h18"
+                            />
+                          </svg>
+                          Previous Article
+                        </a>
+                        <div class="flex-1">
+                          <BlogCard
+                            post={prevPost}
+                            tabindex={0}
+                            class="h-full"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* <!-- Next Article (Right Column) --> */}
+
+                  <div class="flex flex-col">
+                    {nextPost && (
+                      <div class="flex flex-col h-full">
+                        <a
+                          href={`/blog/${nextPost.id}`}
+                          class="flex items-center justify-end text-sm font-medium text-base-content/60 hover:text-primary transition-colors mb-4"
+                        >
+                          Next Article
+                          <svg
+                            class="w-4 h-4 ml-2"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M17 8l4 4m0 0l-4 4m4-4H3"
+                            />
+                          </svg>
+                        </a>
+                        <div class="flex-1">
+                          <BlogCard
+                            post={nextPost}
+                            tabindex={0}
+                            class="h-full"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </nav>
+            )
+          }
+        </article>
+
+        <!-- Sidebar (right column) -->
+        <aside class="w-full md:w-60 lg:w-70 xl:w-80 md:flex-shrink-0">
+          <div class="md:sticky md:top-20 max-w-80">
+            <BookPromo />
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>

@@ -1,0 +1,93 @@
+---
+import { getEntries } from 'astro:content'
+import type { CollectionEntry } from 'astro:content'
+import AuthorInfo from './AuthorInfo.astro'
+import { calculateReadingTime, formatDate } from '@lib/utils'
+import { Calendar, Clock } from '@lucide/astro'
+
+interface Props {
+  post: CollectionEntry<'blog'>
+  tabindex: number
+  class?: string
+}
+
+const { post, tabindex, class: className } = Astro.props
+const { title, description, authors: authorIds, date } = post.data
+
+// Resolve author references
+const authors = await getEntries(authorIds)
+
+const formattedDate = formatDate(date)
+const readingTime = calculateReadingTime(post.body as string)
+---
+
+<article
+  role="link"
+  tabindex={tabindex}
+  class={`group relative bg-base-100 rounded-xl border border-base-200 hover:shadow-xl hover:-translate-y-0.5 hover:border-primary transition-all duration-300 overflow-hidden p-6 flex flex-col ${className}`}
+>
+  <a class="absolute inset-0 text-[0px]" href={`/blog/${post.id}`}
+    >Link to the detail page</a
+  >
+  <!-- Card body -->
+  <div class="flex flex-1">
+    <!-- Post Title and Description -->
+    <div class="mb-4">
+      <h2
+        class="text-xl font-bold font-heading text-base-content mb-2 line-clamp-2 hover:text-primary transition-colors"
+      >
+        <a href={`/blog/${post.id}`} class="block">
+          {title}
+        </a>
+      </h2>
+      <p class="text-base-content/80 line-clamp-3 leading-relaxed">
+        {description}
+      </p>
+    </div>
+  </div>
+
+  <!-- Card footer -->
+  <div>
+    <!-- Author Info -->
+    <div class="mb-4">
+      <AuthorInfo authors={authors} size="sm" />
+    </div>
+
+    <!-- Post Meta -->
+    <div class="flex items-center justify-between text-sm text-base-content/60">
+      <time class="flex gap-1 items-center" datetime={date.toISOString()}>
+        <Calendar class="h-4 w-4 mr-1" />
+        {formattedDate}
+      </time>
+      <span class="flex gap-1 items-center">
+        <Clock class="h-4 w-4 mr-1" />
+        {readingTime} min read
+      </span>
+    </div>
+
+    <!-- Read More Button -->
+    <div class="pt-4">
+      <a
+        href={`/blog/${post.id}`}
+        class="relative inline-flex items-center text-primary hover:text-primary-focus font-medium transition-colors"
+      >
+        Read article
+        <svg
+          class="ml-2 w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+        </svg>
+        <span
+          class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary/50 transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"
+        ></span>
+      </a>
+    </div>
+  </div>
+</article>

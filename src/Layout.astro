@@ -1,0 +1,151 @@
+---
+import './styles/global.css'
+import { Font } from 'astro:assets'
+import Navigation from './components/Navigation.astro'
+import ThemeSelector from './components/ThemeSelector.astro'
+import {
+  SITE_TITLE,
+  SITE_DESCRIPTION,
+  SITE_URL,
+  OG_TITLE,
+  OG_DESCRIPTION,
+  OG_TYPE,
+  OG_IMAGE,
+  OG_IMAGE_ALT,
+  TWITTER_CARD,
+  TWITTER_SITE,
+  TWITTER_CREATOR,
+  BOOK_AUTHORS,
+  THEME_COLOR,
+  CANONICAL_URL,
+} from '@lib/const'
+
+export interface Props {
+  title?: string
+  description?: string
+  ogTitle?: string
+  ogDescription?: string
+  ogImage?: string
+  canonical?: string
+}
+
+const {
+  title = SITE_TITLE,
+  description = SITE_DESCRIPTION,
+  ogTitle = OG_TITLE,
+  ogDescription = OG_DESCRIPTION,
+  ogImage = OG_IMAGE,
+  canonical = CANONICAL_URL,
+} = Astro.props
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Node.js Design Patterns" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <meta name="author" content={BOOK_AUTHORS} />
+    <meta
+      name="keywords"
+      content="Node.js, Design Patterns, JavaScript, Backend Development, Software Architecture, Programming, Web Development, Scalable Applications"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content={THEME_COLOR} />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonical} />
+
+    <!-- RSS Feed -->
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Node.js Design Patterns - Blog"
+      href="/rss.xml"
+    />
+
+    <!-- Sitemap -->
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={OG_TYPE} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={ogDescription} />
+    <meta property="og:image" content={new URL(ogImage, SITE_URL)} />
+    <meta property="og:image:alt" content={OG_IMAGE_ALT} />
+    <meta property="og:site_name" content="Node.js Design Patterns" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content={TWITTER_CARD} />
+    <meta property="twitter:url" content={canonical} />
+    <meta property="twitter:title" content={ogTitle} />
+    <meta property="twitter:description" content={ogDescription} />
+    <meta property="twitter:image" content={new URL(ogImage, SITE_URL)} />
+    <meta property="twitter:image:alt" content={OG_IMAGE_ALT} />
+    <meta property="twitter:site" content={TWITTER_SITE} />
+    <meta property="twitter:creator" content={TWITTER_CREATOR} />
+
+    <!-- Book-specific structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Book",
+        "name": "Node.js Design Patterns",
+        "edition": "Fourth Edition",
+        "author": [
+          {
+            "@type": "Person",
+            "name": "Mario Casciaro"
+          },
+          {
+            "@type": "Person",
+            "name": "Luciano Mammino"
+          }
+        ],
+        "publisher": {
+          "@type": "Organization",
+          "name": "Packt Publishing"
+        },
+        "datePublished": "2024-07-31",
+        "isbn": "9781803238944",
+        "numberOfPages": 660,
+        "description": "The definitive guide to Node.js patterns and best practices. Learn proven techniques for building scalable, maintainable applications.",
+        "url": "https://nodejsdesignpatterns.com",
+        "image": "https://nodejsdesignpatterns.com/images/og-image.png",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": 4.6,
+          "bestRating": 5,
+          "ratingCount": 780
+        }
+      }
+    </script>
+
+    <script>
+      import { initTheme } from './lib/theme.ts'
+      initTheme()
+    </script>
+    <Font cssVariable="--font-base-sans" preload />
+    <Font cssVariable="--font-base-serif" preload />
+    <Font cssVariable="--font-base-mono" preload />
+  </head>
+  <body
+    class="antialiased transition-colors duration-300 bg-base-100 text-base-content"
+  >
+    <Navigation />
+    <ThemeSelector />
+    <slot />
+  </body>
+</html>

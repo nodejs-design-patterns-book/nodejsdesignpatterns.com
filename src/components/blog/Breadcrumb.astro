@@ -1,0 +1,38 @@
+---
+interface Props {
+  sections: { title: string; url: string }[]
+}
+
+const { sections } = Astro.props
+---
+
+<nav class="mb-8">
+  <ol class="flex items-center space-x-2 text-sm text-base-content/70">
+    <li>
+      <a href="/" class="hover:text-primary transition-colors"
+        >Node.js Design Patterns</a
+      >
+    </li>
+    {
+      sections.map((section, idx, arr) => (
+        <>
+          <li>
+            <span>/</span>
+          </li>
+          <li>
+            {idx === arr.length - 1 ? (
+              <span class="text-base-content/90">{section.title}</span>
+            ) : (
+              <a
+                href={section.url}
+                class="hover:text-primary transition-colors"
+              >
+                {section.title}
+              </a>
+            )}
+          </li>
+        </>
+      ))
+    }
+  </ol>
+</nav>

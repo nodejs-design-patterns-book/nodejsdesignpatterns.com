@@ -1,5 +1,0 @@
-{%- macro track(label, category="navigation", action="click", value=1) -%}
-  {%- if site.analyticsId -%}
-    onclick="gtag('event', '{{ action }}', { 'event_category': '{{ category }}', 'event_label': '{{ label }}', 'value': {{ value }} });"
-  {%- endif -%}
-{%- endmacro -%}

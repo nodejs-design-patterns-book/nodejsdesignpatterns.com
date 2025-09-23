@@ -1,0 +1,222 @@
+---
+// ThemeSelector as an Astro component
+---
+
+<button
+  id="theme-selector"
+  class="relative p-2 rounded-full bg-base-200 hover:bg-base-300 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
+  title="Click to change theme"
+  aria-label="Toggle theme"
+>
+  <div
+    class="relative w-6 h-6 transition-transform duration-300"
+    id="theme-icon-container"
+  >
+    <!-- Sun Icon (Light Mode) -->
+    <div
+      id="sun-icon"
+      class="absolute inset-0 flex items-center justify-center transition-all duration-200 opacity-100 scale-100"
+    >
+      <svg
+        class="w-5 h-5 text-warning"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+        ></path>
+      </svg>
+    </div>
+
+    <!-- Moon Icon (Dark Mode) -->
+    <div
+      id="moon-icon"
+      class="absolute inset-0 flex items-center justify-center transition-all duration-200 opacity-0 scale-50"
+    >
+      <svg
+        class="w-5 h-5 text-info"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+        ></path>
+      </svg>
+    </div>
+
+    <!-- Laptop Icon (System Mode) -->
+    <div
+      id="laptop-icon"
+      class="absolute inset-0 flex items-center justify-center transition-all duration-200 opacity-0 scale-50"
+    >
+      <svg
+        class="w-5 h-5 text-accent"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+        ></path>
+      </svg>
+    </div>
+  </div>
+</button>
+
+<script>
+  class ThemeSelector {
+    private button: HTMLElement | null = null
+    private theme: { preference: string; actual: string } = {
+      preference: 'light',
+      actual: 'light',
+    }
+
+    constructor() {
+      this.init()
+    }
+
+    private async init() {
+      this.button = document.getElementById('theme-selector')
+      if (!this.button) return
+
+      // Import theme utilities
+      try {
+        const themeModule = await import('../lib/theme.ts')
+        this.theme = themeModule.getTheme()
+        this.updateIcon()
+        this.setupEventListener(themeModule)
+        this.setupThemeChangeListener(themeModule)
+      } catch {
+        console.warn(
+          'Theme module not available, using fallback theme selector',
+        )
+        this.setupFallbackThemeSelector()
+      }
+    }
+
+    private setupEventListener(themeModule: {
+      toggleTheme: () => { preference: string; actual: string }
+    }) {
+      if (!this.button) return
+
+      this.button.addEventListener('click', () => {
+        this.theme = themeModule.toggleTheme()
+        this.updateIcon()
+        this.animateIconChange()
+      })
+    }
+
+    private setupThemeChangeListener(themeModule: {
+      isValidThemeChangeEvent: (event: Event) => boolean
+    }) {
+      const root = window.document.documentElement
+      const listener = (event: Event) => {
+        if (themeModule.isValidThemeChangeEvent(event)) {
+          this.theme = (event as CustomEvent).detail
+          this.updateIcon()
+        }
+      }
+      root.addEventListener('themechange', listener)
+    }
+
+    private updateIcon() {
+      const sunIcon = document.getElementById('sun-icon')
+      const moonIcon = document.getElementById('moon-icon')
+      const laptopIcon = document.getElementById('laptop-icon')
+      const container = document.getElementById('theme-icon-container')
+
+      if (!sunIcon || !moonIcon || !laptopIcon || !container) return
+
+      // Reset all icons
+      sunIcon.classList.remove('opacity-100', 'scale-100')
+      sunIcon.classList.add('opacity-0', 'scale-50')
+      moonIcon.classList.remove('opacity-100', 'scale-100')
+      moonIcon.classList.add('opacity-0', 'scale-50')
+      laptopIcon.classList.remove('opacity-100', 'scale-100')
+      laptopIcon.classList.add('opacity-0', 'scale-50')
+
+      // Show the correct icon
+      switch (this.theme.preference) {
+        case 'light':
+          sunIcon.classList.remove('opacity-0', 'scale-50')
+          sunIcon.classList.add('opacity-100', 'scale-100')
+          container.style.transform = 'rotate(0deg)'
+          break
+        case 'dark':
+          moonIcon.classList.remove('opacity-0', 'scale-50')
+          moonIcon.classList.add('opacity-100', 'scale-100')
+          container.style.transform = 'rotate(270deg)'
+          break
+        case 'system':
+          laptopIcon.classList.remove('opacity-0', 'scale-50')
+          laptopIcon.classList.add('opacity-100', 'scale-100')
+          container.style.transform = 'rotate(360deg)'
+          break
+      }
+    }
+
+    private animateIconChange() {
+      const container = document.getElementById('theme-icon-container')
+      if (!container) return
+
+      container.style.transform += ' scale(1.1)'
+      setTimeout(() => {
+        container.style.transform = container.style.transform.replace(
+          ' scale(1.1)',
+          '',
+        )
+      }, 150)
+    }
+
+    private setupFallbackThemeSelector() {
+      if (!this.button) return
+
+      let currentTheme = 'light'
+
+      this.button.addEventListener('click', () => {
+        currentTheme = currentTheme === 'light' ? 'dark' : 'light'
+
+        if (currentTheme === 'dark') {
+          document.documentElement.classList.add('dark')
+        } else {
+          document.documentElement.classList.remove('dark')
+        }
+
+        this.theme = { preference: currentTheme, actual: currentTheme }
+        this.updateIcon()
+        this.animateIconChange()
+      })
+    }
+  }
+
+  // Initialize theme selector
+  document.addEventListener('DOMContentLoaded', () => {
+    new ThemeSelector()
+  })
+
+  // Re-initialize on page navigation
+  document.addEventListener('astro:page-load', () => {
+    new ThemeSelector()
+  })
+
+  // Mount theme selector into navigation
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('theme-selector-container')
+    const themeSelector = document.getElementById('theme-selector')
+
+    if (container && themeSelector) {
+      container.appendChild(themeSelector)
+    }
+  })
+</script>

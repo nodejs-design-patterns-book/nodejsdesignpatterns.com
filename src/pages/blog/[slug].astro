@@ -1,0 +1,46 @@
+---
+import { getCollection, getEntries, render } from 'astro:content'
+import type { InferGetStaticPropsType } from 'astro'
+import BlogLayout from '../../components/blog/BlogLayout.astro'
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog')
+  // Sort posts by date (newest first) to determine prev/next
+  const sortedPosts = posts.sort(
+    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+  )
+
+  return sortedPosts.map((post, index) => {
+    // Find previous (older) and next (newer) posts
+    const prevPost = sortedPosts[index + 1] || null
+    const nextPost = sortedPosts[index - 1] || null
+
+    return {
+      params: {
+        slug: post.id,
+      },
+      props: {
+        post,
+        prevPost,
+        nextPost,
+      },
+    }
+  })
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>
+
+const props = Astro.props
+const authors = await getEntries(props.post.data.authors)
+
+const { Content } = await render(props.post)
+---
+
+<BlogLayout
+  post={props.post}
+  authors={authors}
+  prevPost={props.prevPost}
+  nextPost={props.nextPost}
+>
+  <Content />
+</BlogLayout>

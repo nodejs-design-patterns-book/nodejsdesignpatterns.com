@@ -1,0 +1,112 @@
+---
+import BuyButtons from '@components/pages/Home/components/BuyButtons.astro'
+import { ArrowRight, BicepsFlexed, Book, Rocket } from '@lucide/astro'
+import { PAGES, EXAMPLES, EXERCISES } from '@lib/const'
+---
+
+<section id="action-plan" class="bg-base-100 py-16 lg:py-24">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <h2
+        class="text-4xl lg:text-5xl font-bold text-base-content font-heading mb-6"
+      >
+        Your Action Plan for <span class="text-primary">Node.js Mastery</span>
+      </h2>
+      <p
+        class="text-xl lg:text-2xl text-base-content/80 font-sans max-w-3xl mx-auto"
+      >
+        Follow this proven path to level up your Node.js skills:
+      </p>
+    </div>
+
+    <!-- Action Steps -->
+    <div class="flex flex-col md:flex-row gap-4 lg:gap-8 mb-16">
+      <div class="flex-1">
+        <div
+          class="bg-base-200/50 rounded-2xl p-8 shadow-md border border-primary/20 h-full"
+        >
+          <div class="flex">
+            <div class="text-primary flex font-extrabold text-5xl mb-8">01</div>
+            <div class="flex justify-end grow">
+              <Book class="h-10 w-10 text-base-content/50" />
+            </div>
+          </div>
+
+          <h3 class="text-2xl font-bold text-base-content font-heading mb-4">
+            Get the Book
+          </h3>
+          <p class="text-lg text-base-content/80 font-sans leading-relaxed">
+            Grab your copy and unlock {PAGES} pages of in-depth Node.js knowledge.
+          </p>
+        </div>
+      </div>
+
+      <div class="text-primary/40 flex items-center justify-center">
+        <ArrowRight class="h-8 w-8 rotate-90 md:rotate-0" />
+      </div>
+
+      <div class="flex-1">
+        <div
+          class="bg-base-200/50 rounded-2xl p-8 shadow-md border border-primary/20 h-full"
+        >
+          <div class="flex">
+            <div class="text-primary flex font-extrabold text-5xl mb-8">02</div>
+            <div class="flex justify-end grow">
+              <BicepsFlexed class="h-10 w-10 text-base-content/50" />
+            </div>
+          </div>
+
+          <h3 class="text-2xl font-bold text-base-content font-heading mb-4">
+            Learn by Doing
+          </h3>
+          <p class="text-lg text-base-content/80 font-sans leading-relaxed">
+            Work through {EXAMPLES}+ real examples that demonstrate patterns in
+            action.
+          </p>
+        </div>
+      </div>
+
+      <div class="text-primary/40 flex items-center justify-center">
+        <ArrowRight class="h-8 w-8 rotate-90 md:rotate-0" />
+      </div>
+
+      <div class="flex-1">
+        <div
+          class="bg-base-200/50 rounded-2xl p-8 shadow-md border border-primary/20 h-full"
+        >
+          <div class="flex">
+            <div class="text-primary flex font-extrabold text-5xl mb-8">03</div>
+            <div class="flex justify-end grow">
+              <Rocket class="h-10 w-10 text-base-content/50" />
+            </div>
+          </div>
+
+          <h3 class="text-2xl font-bold text-base-content font-heading mb-4">
+            Practice and Grow
+          </h3>
+          <p class="text-lg text-base-content/80 font-sans leading-relaxed">
+            Complete {EXERCISES} exercises designed to challenge your understanding
+            and prepare you for senior-level development.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="text-center mb-12">
+      <h2
+        class="text-3xl lg:text-4xl font-bold text-base-content font-heading mb-6"
+      >
+        Ready to Transform Your Node.js Skills?
+      </h2>
+      <p class="text-2xl lg:text-3xl text-base-content/80 font-heading">
+        Join thousands of developers who have mastered Node.js with our
+        comprehensive guide.
+      </p>
+    </div>
+
+    <div class="flex justify-center">
+      <BuyButtons />
+    </div>
+  </div>
+</section>
