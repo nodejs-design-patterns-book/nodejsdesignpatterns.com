@@ -1,0 +1,183 @@
+---
+import { Picture } from 'astro:assets'
+import Github from '@components/ui/social/github.astro'
+import Linkedin from '@components/ui/social/linkedin.astro'
+import X from '@components/ui/social/x.astro'
+import lucianoPicture from '@images/authors/luciano-mammino.jpg'
+import marioPicture from '@images/authors/mario-casciaro.jpg'
+import { Globe } from '@lucide/astro'
+---
+
+<section
+  id="authors"
+  class="bg-gradient-to-br from-success/20 to-primary/20 py-16 lg:py-24"
+>
+  <div class="max-w-6xl mx-auto px-6">
+    <!-- Section Header -->
+    <div class="text-center mb-16">
+      <h2
+        class="text-4xl lg:text-5xl font-bold text-base-content font-heading mb-8"
+      >
+        Meet the authors
+      </h2>
+      <p
+        class="text-xl lg:text-2xl text-base-content/80 font-sans leading-relaxed max-w-4xl mx-auto"
+      >
+        <strong>Luciano</strong> and <strong>Mario</strong> are two seasoned engineers
+        with a shared passion for Node.js and over 35 years of collective experience
+        building for the web. They've teamed up to make complex ideas simple, practical,
+        and fun to learn.
+      </p>
+    </div>
+
+    <!-- Authors Grid -->
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-16">
+      <!-- Luciano Mammino -->
+      <div
+        class="bg-base-100/90 max-w-xl justify-self-center rounded-2xl p-8 lg:p-10 shadow-lg border border-base-300/50 hover:shadow-xl transition-all duration-300"
+      >
+        <div class="flex flex-col items-center text-center h-full">
+          <!-- Profile Image -->
+          <div
+            class="w-32 h-32 lg:w-40 lg:h-40 rounded-full overflow-hidden mb-6 border-4 border-base-100 shadow-lg flex-none"
+          >
+            <Picture
+              src={lucianoPicture}
+              alt="Luciano Mammino - Senior Architect and AWS Serverless Hero"
+              formats={['avif', 'webp', 'jpg']}
+              widths={[160, 200, 240]}
+              sizes="(max-width: 1024px) 128px, 160px"
+              class="w-full h-full object-cover"
+              loading="lazy"
+              inferSize={true}
+            />
+          </div>
+
+          <h3
+            class="text-2xl lg:text-3xl font-bold text-base-content font-heading mb-6 flex-none"
+          >
+            Luciano Mammino
+          </h3>
+
+          <p
+            class="text-base lg:text-lg text-base-content/80 font-sans leading-relaxed mb-8 text-left flex-auto"
+          >
+            Luciano Mammino began his coding journey at the age of 12 on his
+            father's old i386, and he hasn't stopped since. With over 15 years
+            of experience in the software industry, he now serves as a Senior
+            Architect at <a class="underline" href="https://fourtheorem.com"
+              >fourTheorem</a
+            >, where he empowers global clients to fully leverage AWS and
+            serverless technologies. As an AWS Serverless Hero and Microsoft
+            MVP, Luciano is recognized for his expertise and contributions to
+            the tech community. An active international speaker, he has
+            delivered over 160 talks at conferences and meetups worldwide,
+            sharing his knowledge and passion for cutting-edge technology.
+          </p>
+
+          <!-- Social Links -->
+          <div class="flex flex-wrap justify-center gap-4 flex-none">
+            <a
+              title="Visit Luciano's website"
+              href="https://loige.co"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-colors duration-200 font-medium"
+            >
+              <Globe class="w-4 h-4" />
+            </a>
+            <a
+              title="Connect with Luciano on X"
+              href="https://x.com/loige"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-colors duration-200 font-medium"
+            >
+              <X class="w-4 h-4" />
+            </a>
+            <a
+              title="View Luciano's GitHub profile"
+              href="https://github.com/lmammino"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-colors duration-200 font-medium"
+            >
+              <Github class="w-4 h-4" />
+            </a>
+            <a
+              title="Connect with Luciano on LinkedIn"
+              href="https://linkedin.com/in/lucianomammino"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-colors duration-200 font-medium"
+            >
+              <Linkedin class="w-4 h-4" />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mario Casciaro -->
+      <div
+        class="bg-base-100/90 max-w-xl justify-self-center rounded-2xl p-8 lg:p-10 shadow-lg border border-base-300/50 hover:shadow-xl transition-all duration-300"
+      >
+        <div class="flex flex-col items-center text-center h-full">
+          <!-- Profile Image -->
+          <div
+            class="w-32 h-32 lg:w-40 lg:h-40 rounded-full overflow-hidden mb-6 border-4 border-base-100 shadow-lg flex-none"
+          >
+            <Picture
+              src={marioPicture}
+              alt="Mario Casciaro - Software Architect and Author"
+              formats={['avif', 'webp', 'jpg']}
+              widths={[160, 200, 240]}
+              sizes="(max-width: 1024px) 128px, 160px"
+              class="w-full h-full object-cover"
+              loading="lazy"
+              inferSize={true}
+            />
+          </div>
+
+          <h3
+            class="text-2xl lg:text-3xl font-bold text-base-content font-heading mb-6 flex-none"
+          >
+            Mario Casciaro
+          </h3>
+
+          <p
+            class="text-base lg:text-lg text-base-content/80 font-sans leading-relaxed mb-8 text-left grow"
+          >
+            Mario Casciaro is a software architect, technology leader, and
+            entrepreneur with a long career in building and scaling software
+            products for mission-critical industries. Throughout his career, he
+            has held roles ranging from software engineer to team leader to CTO.
+            His passion for software and technology has led him to develop
+            multiple side projects, launch a startup, and, of course, write the
+            bestselling book Node.js Design Patterns. His proudest moment was
+            seeing his software being used for astronaut rescue operations.
+          </p>
+
+          <!-- Social Links -->
+          <div class="flex flex-wrap justify-center gap-4 flex-none">
+            <!-- <a title="Visit Mario's website" href="https://mario.fyi/" class="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-colors duration-200 font-medium">
+              <Globe class="w-4 h-4" />
+            </a> -->
+            <a
+              title="Connect with Mario on X"
+              href="https://twitter.com/mariocasciaro"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-colors duration-200 font-medium"
+            >
+              <X class="w-4 h-4" />
+            </a>
+            <a
+              title="View Mario's GitHub profile"
+              href="https://github.com/mariocasciaro"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-colors duration-200 font-medium"
+            >
+              <Github class="w-4 h-4" />
+            </a>
+            <a
+              title="Connect with Mario on LinkedIn"
+              href="https://www.linkedin.com/in/mariocasciaro/"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-colors duration-200 font-medium"
+            >
+              <Linkedin class="w-4 h-4" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,42 +1,144 @@
-# nodejsdesignpatterns.com
+# Node.js Design Patterns Website
 
-![Build](https://github.com/nodejs-design-patterns-book/nodejsdesignpatterns.com/workflows/Build/badge.svg)
+This is the source code for the official website of the book **"Node.js Design Patterns"** by Mario Casciaro and Luciano Mammino. The website serves as the primary landing page and resource hub for the book.
 
-The website source code for possibly the [Best Node.js book](https://www.nodejsdesignpatterns.com/) out there: Node.js Design Patterns 😊
+## 🌐 Live Site
 
-[![Node.js design patterns 3rd edition](./src/node-js-design-patterns.jpg)](https://www.nodejsdesignpatterns.com/)
+The website is available at **[https://nodejsdesignpatterns.com](https://nodejsdesignpatterns.com)**
 
+The site is deployed as a static site on GitHub Pages and is automatically updated on every push to the `main` branch.
 
-## Dependencies
+## 🛠️ Technology Stack
 
-Install dependencies with
+This project is built with:
 
-```bash
-npm install
+- **[Astro](https://astro.build/)** - Static site generator for optimal performance
+- **[Tailwind CSS](https://tailwindcss.com/)** - Utility-first CSS framework
+- **[React](https://react.dev/)** - Used sparingly for interactive components
+- **TypeScript** - For type safety and better developer experience
+- **pnpm** - Fast, disk space efficient package manager
+
+## 📁 Project Structure
+
+```text
+/
+├── .claude/                  # Claude Code AI assistant configuration
+│   └── commands/            # Custom Claude commands
+├── .github/                  # GitHub Actions workflows
+├── public/                   # Static assets served directly
+│   └── images/              # Public images
+├── src/
+│   ├── components/          # Reusable UI components
+│   │   ├── pages/          # Page-specific components
+│   │   │   └── Home/       # Home page components
+│   │   │       └── components/ # Shared Home components
+│   │   ├── ui/             # Generic UI components (Astro)
+│   │   │   └── social/     # Social media icons
+│   │   ├── blog/           # Blog-related components
+│   │   ├── AnimatedCounter.tsx  # React: Animated counter component
+│   │   └── ParallaxBackground.tsx # React: Parallax background effect
+│   ├── content/            # Content collections (Astro)
+│   │   ├── authors/        # Author information
+│   │   ├── blog/           # Blog posts with assets
+│   │   ├── chapters/       # Book chapters
+│   │   ├── faq/            # FAQ entries
+│   │   ├── quotes/         # Testimonial quotes
+│   │   └── reviews/        # Book reviews
+│   ├── hooks/              # React hooks (minimal set)
+│   │   ├── useAnimatedCounter.tsx # Hook for counter animation
+│   │   └── useInView.tsx   # Hook for viewport detection
+│   ├── images/             # Optimized images for Astro
+│   │   ├── authors/        # Author photos
+│   │   ├── mktg/           # Marketing images
+│   │   ├── people/         # People photos
+│   │   └── promo/          # Promotional materials
+│   ├── lib/                # Utility functions and constants
+│   ├── pages/              # Astro pages and routes
+│   │   └── blog/           # Blog pages
+│   └── styles/             # Global CSS and theme files
+└── dist/                   # Built site (generated)
 ```
 
+## 🚀 Getting Started
 
-## Run
+### Prerequisites
 
-Run the local development server (with auto-reload):
+- Node.js 18+
+- pnpm (recommended package manager)
 
-```bash
-npm start
-```
-
-Run the build with:
+### Installation
 
 ```bash
-npm run build
+# Clone the repository
+git clone [repository-url]
+
+# Install dependencies
+pnpm install
+
+# Start development server
+pnpm dev
 ```
 
-## Support this book
+The site will be available at `http://localhost:4321`
 
-A book is a work of art and passion. We invested a lot of our time and tried our best to create a great book and we hope we managed to give you something valuable with our efforts. If you enjoyed this book, here are some ways you can help us to spread the word and support our work:
+## 🧞 Available Commands
 
-  - Leave a review on [Amazon.com](https://www.amazon.com/gp/product/1839214112) (or other Amazon stores), on [Packt.com](https://www.packtpub.com/product/node-js-design-patterns-third-edition/9781839214110) or on [GoodReads](https://www.goodreads.com/book/show/54518801-node-js-design-patterns---third-edition).
-  - Share the book's website on Social media ([Share on Twitter](https://twitter.com/intent/tweet?text=Check%20out%20Node.js%20Design%20Patterns%20if%20you%20want%20to%20take%20your%20%23Nodejs%20knowledge%20to%20the%20next%20level%3A%20&url=https%3A%2F%2Fwww.nodejsdesignpatterns.com%2F), [Share on Facebook](https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.nodejsdesignpatterns.com%2F), [Share on Pinterest](http://pinterest.com/pin/create/button/?url=https%3A%2F%2Fwww.nodejsdesignpatterns.com%2F&media=https%3A%2F%2Fwww.nodejsdesignpatterns.com%2Fimg%2Fnode-js-design-patterns.jpg&description=Check%20out%20Node.js%20Design%20Patterns%20if%20you%20want%20to%20take%20your%20%23Nodejs%20knowledge%20to%20the%20next%20level%3A%20), [Share on LinkedIn](http://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fwww.nodejsdesignpatterns.com%2F&title=Check%20out%20Node.js%20Design%20Patterns%20if%20you%20want%20to%20take%20your%20%23Nodejs%20knowledge%20to%20the%20next%20level%3A%20), [Share on Tumblr](http://www.tumblr.com/share?v=3&u=https%3A%2F%2Fwww.nodejsdesignpatterns.com%2F&t=Check%20out%20Node.js%20Design%20Patterns%20if%20you%20want%20to%20take%20your%20%23Nodejs%20knowledge%20to%20the%20next%20level%3A%20))
-  - Check out and follow this project on [Product Hunt](https://www.producthunt.com/posts/node-js-design-patterns-third-edition) and [Indie Hackers](https://www.indiehackers.com/product/node-js-design-patterns)
-  - Follow the authors on Twitter: [Mario Casciaro](https://twitter.com/mariocasciaro), [Luciano Mammino](https://twitter.com/loige)
-  
-THANK YOU ❤️
+| Command             | Action                                       |
+| :------------------ | :------------------------------------------- |
+| `pnpm install`      | Installs dependencies                        |
+| `pnpm dev`          | Starts local dev server at `localhost:4321`  |
+| `pnpm build`        | Build your production site to `./dist/`      |
+| `pnpm preview`      | Preview your build locally, before deploying |
+| `pnpm lint`         | Run ESLint on the codebase                   |
+| `pnpm lint:fix`     | Fix auto-fixable ESLint issues               |
+| `pnpm format`       | Format code with Prettier                    |
+| `pnpm format:check` | Check code formatting                        |
+| `pnpm typecheck`    | Run TypeScript type checking                 |
+
+## 🤖 AI Assistant Support
+
+This project is configured to work seamlessly with AI coding assistants:
+
+- **[Claude Code](https://claude.ai/code)** - Full project configuration in `.claude/` directory
+
+The AI assistant configuration includes project structure understanding, coding standards, and constitutional principles to help maintain consistency and quality during development.
+
+## 🤝 Contributing
+
+Contributions are **super welcome**! Whether you want to:
+
+- Fix a bug
+- Add a new feature
+- Improve documentation
+- Enhance accessibility
+- Optimize performance
+
+Please feel free to:
+
+1. **Open an Issue** - For bug reports, feature requests, or questions
+2. **Submit a Pull Request** - For code contributions
+
+### Before Contributing
+
+Please read our [project constitution](memory/constitution.md) to understand our coding standards, principles, and guidelines.
+
+### Development Guidelines
+
+- Follow the mobile-first responsive design approach
+- Maintain accessibility standards (WCAG AA)
+- Keep the site lean and performant
+- Prefer Astro components over React when possible
+- Write semantic HTML with proper ARIA attributes
+- Ensure all PRs pass linting and formatting checks
+
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 📚 About the Book
+
+"Node.js Design Patterns" is a comprehensive guide to mastering Node.js development through proven design patterns and best practices. Learn more about the book and purchase it from the official website.
+
+---
+
+Built with ❤️ using [Astro](https://astro.build) | Deployed on [GitHub Pages](https://pages.github.com)

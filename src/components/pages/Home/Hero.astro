@@ -1,0 +1,115 @@
+---
+import { Picture } from 'astro:assets'
+import AnimatedSection from '@components/AnimatedSection.astro'
+import { ParallaxBackground } from '@components/ParallaxBackground'
+import BuyButtons from '@components/pages/Home/components/BuyButtons.astro'
+import Badge from '@components/ui/badge.astro'
+import coverImage from '@images/book-cover.png'
+import { MAX_RATING, RATING, READERS } from '@lib/const.ts'
+import { Star, Users } from '@lucide/astro'
+
+const numberFormatter = new Intl.NumberFormat('en-US', {
+  notation: 'compact',
+  compactDisplay: 'short',
+  maximumFractionDigits: 1,
+})
+---
+
+<section
+  id="hero"
+  class="relative bg-gradient-to-br from-primary/10 via-base-100 to-primary/5 dark:from-base-300 dark:via-base-200 dark:to-base-300 overflow-hidden"
+>
+  <ParallaxBackground client:load />
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+    <div class="grid lg:grid-cols-2 gap-12">
+      <AnimatedSection
+        direction="left"
+        delay={0.2}
+        class="order-last lg:order-first"
+      >
+        <div class="space-y-8">
+          <div class="space-y-4">
+            <Badge
+              class="bg-primary/10 text-primary font-medium px-3 py-1"
+              style="background-image: linear-gradient(120deg, rgba(255, 255, 255, 0) 40%, color-mix(in oklab, var(--color-primary) 30%, transparent) 50%, rgba(255, 255, 255, 0) 60%); background-size: 200% 100%; animation: shine 5s linear infinite;"
+            >
+              <span
+                class="block font-bold"
+                style="background-image: linear-gradient(120deg, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 60%); background-size: 200% 100%; background-clip: text; -webkit-background-clip: text; animation: shine 5s linear infinite;"
+                >The #1 Node.js Book</span
+              >
+            </Badge>
+            <h1
+              class="font-heading text-4xl lg:text-6xl font-bold text-base-content leading-tight"
+            >
+              Become a Senior <span class="text-primary">Node.js</span>{' '}
+              Developer
+            </h1>
+            <p class="text-xl lg:text-2xl text-base-content/70 leading-relaxed">
+              Level up your Node.js skills with{' '}
+              <strong>Node.js Design Patterns</strong>: the trusted, hands-on
+              guide that brings clarity, sharpens your coding style, and
+              prepares you for real-world challenges.
+            </p>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <BuyButtons />
+            <p class="text-sm text-base-content/70">
+              Or you can{' '}
+              <a href="#free-chapter" class="font-bold hover:underline">
+                Download a FREE chapter
+              </a>
+            </p>
+          </div>
+
+          <div class="flex items-center space-x-6 text-sm text-base-content/70">
+            <div class="flex items-center space-x-2">
+              <div class="flex">
+                {
+                  [...Array(5)].map(() => (
+                    <Star class="h-4 w-4 fill-warning text-secondary" />
+                  ))
+                }
+              </div>
+              <span>{RATING}/{MAX_RATING} rating</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <Users class="h-4 w-4" />
+              <span>{numberFormatter.format(READERS)}+ developers</span>
+            </div>
+          </div>
+        </div>
+      </AnimatedSection>
+
+      <div class="flex order-first lg:order-last justify-center lg:justify-end">
+        <Picture
+          formats={['avif', 'webp', 'png']}
+          layout="constrained"
+          sizes="(min-width: 800px) 800px, 100vw"
+          src={coverImage}
+          alt="Node.js Design Patterns Book Cover"
+          pictureAttributes={{
+            class: 'w-full max-w-sm lg:max-w-md',
+          }}
+          class="w-full max-w-sm lg:max-w-md drop-shadow-2xl shadow-2xl lg:absolute rounded-tr-sm rounded-br-sm"
+          loading="lazy"
+          width={1000}
+          height={1234}
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes shine {
+    0% {
+      background-position: 100%;
+    }
+
+    100% {
+      background-position: -100%;
+    }
+  }
+</style>

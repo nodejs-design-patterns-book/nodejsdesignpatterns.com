@@ -1,0 +1,135 @@
+---
+import { getCollection, render } from 'astro:content'
+import { Picture } from 'astro:assets'
+import { Masonry } from 'astro-masonry'
+import BuyButtons from '@components/pages/Home/components/BuyButtons.astro'
+
+const quotes = await getCollection('quotes')
+const renderedQuotes = (
+  await Promise.all(
+    quotes.map(async (quote) => {
+      const renderedContent = await render(quote)
+      return {
+        ...quote,
+        Content: renderedContent.Content,
+        data: quote.data,
+      }
+    }),
+  )
+).sort((a, b) => 1 - a.id.localeCompare(b.id))
+---
+
+<section
+  id="quotes"
+  class="bg-gradient-to-br from-primary/10 to-primary/20 py-16 sm:py-32 mt-16 w-full relative"
+>
+  <div class="relative z-10">
+    <div class="max-w-4xl lg:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl lg:text-4xl font-bold text-base-content mb-4">
+          Industry-Backed. <span class="text-primary">Expert-Approved</span>.
+        </h2>
+        <p class="text-xl text-base-content/70">
+          Why top engineers and thought leaders recommend this book!
+        </p>
+      </div>
+      <Masonry
+        breakpointCols={{
+          default: 4,
+          1100: 3,
+          800: 2,
+          600: 1,
+        }}
+        class="flex gap-4"
+      >
+        {
+          renderedQuotes.map((quote) => (
+            <div class="flex items-center mt-4">
+              <blockquote class="bg-base-100 p-6 rounded-lg shadow-sm">
+                <div class="text-md lg:text-lg text-base-content mb-4 quote-content">
+                  <quote.Content />
+                </div>
+                <footer class="text-sm text-base-content/70 mt-8">
+                  <div class="flex gap-2 items-center">
+                    <Picture
+                      formats={['avif', 'webp', 'png']}
+                      layout="fixed"
+                      src={quote.data.picture}
+                      alt={`${quote.data.name} - ${quote.data.description}`}
+                      class="w-12 h-12 rounded-full shrink-0"
+                      pictureAttributes={{
+                        class: 'shrink-0',
+                      }}
+                      loading="lazy"
+                      width={128}
+                      height={128}
+                    />
+                    <div>
+                      <div class="font-semibold">{quote.data.name}</div>
+                      <div>{quote.data.description}</div>
+                    </div>
+                  </div>
+                </footer>
+              </blockquote>
+            </div>
+          ))
+        }
+      </Masonry>
+
+      <!-- Call to Action -->
+      <div class="text-center mt-24">
+        <h2
+          class="text-3xl lg:text-4xl font-bold text-base-content font-heading mb-6"
+        >
+          Listen to the experts
+        </h2>
+        <p class="text-2xl lg:text-3xl text-base-content/80 font-heading">
+          Start your improvement journey today with <strong
+            >Node.js Design Patterns</strong
+          >.
+        </p>
+      </div>
+
+      <div class="flex justify-center mt-16">
+        <BuyButtons />
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="absolute inset-0 z-0"
+    style={{
+      backgroundImage: `
+        linear-gradient(to right, color-mix(in oklab, var(--color-primary) 10%, transparent) 1px, transparent 1px),
+        linear-gradient(to bottom, color-mix(in oklab, var(--color-primary) 10%, transparent) 1px, transparent 1px)
+      `,
+      backgroundSize: '20px 30px',
+      WebkitMaskImage:
+        'radial-gradient(ellipse 70% 60% at 50% 100%, #000 60%, transparent 100%)',
+      maskImage:
+        'radial-gradient(ellipse 70% 60% at 50% 100%, #000 60%, transparent 100%)',
+    }}
+  >
+  </div>
+</section>
+
+<style is:global>
+  .quote-content p strong {
+    background-color: color-mix(
+      in oklab,
+      var(--color-secondary) 5%,
+      transparent
+    );
+    border-radius: 4px;
+    padding: 0.4em 0.2em;
+  }
+
+  .quote-content p a {
+    border-bottom: 1px solid
+      color-mix(in oklab, var(--color-primary) 50%, transparent);
+  }
+
+  .quote-content p a:hover {
+    border-bottom-color: var(--color-primary);
+  }
+</style>

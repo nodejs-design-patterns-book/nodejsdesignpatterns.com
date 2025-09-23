@@ -1,0 +1,341 @@
+---
+import Button from './ui/button.astro'
+import { BUY_LINK_PRINT } from '@lib/const.ts'
+
+const menuItems = [
+  { id: 'authors', href: '/#authors', label: 'Authors' },
+  { id: 'whats-inside', href: '/#whats-inside', label: 'Content' },
+  { id: 'quotes', href: '/#quotes', label: 'Opinions' },
+  { id: 'free-chapter', href: '/#free-chapter', label: 'Free Chapter' },
+  { id: 'faq', href: '/#faq', label: 'FAQ' },
+  { id: 'blog', href: '/blog', label: 'Blog' },
+]
+const buyButton = {
+  href: BUY_LINK_PRINT,
+  label: 'Get the book',
+}
+---
+
+<nav
+  id="main-navigation"
+  class="fixed top-0 left-0 right-0 z-50 bg-base-100/95 backdrop-blur-sm border-b border-base-300 shadow-sm transition-all duration-300 ease-in-out transform -translate-y-full opacity-0"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <div>
+        <a
+          href="/"
+          title="Node.js Design Patterns"
+          class="flex items-center space-x-2"
+        >
+          <svg
+            class="h-6 w-6 text-primary"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+            ></path>
+          </svg>
+          <span class="font-bold text-base-content">
+            <span class="md:hidden lg:inline"> Node.js Design Patterns </span>
+            <span class="hidden md:inline lg:hidden">Node.js DP</span>
+          </span>
+        </a>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:flex items-center space-x-6">
+        {
+          menuItems.map((item) => (
+            <a
+              href={item.href}
+              class="nav-link text-sm font-medium transition-colors duration-200 ease-in-out hover:text-primary text-base-content/70"
+            >
+              {item.label}
+            </a>
+          ))
+        }
+
+        <!-- Theme Selector Placeholder -->
+        <div id="theme-selector-container"></div>
+
+        <Button
+          element="a"
+          href={buyButton.href}
+          variant="secondary"
+          size="sm"
+          id="cta-button"
+        >
+          {buyButton.label}
+        </Button>
+      </div>
+
+      <!-- Mobile menu button -->
+      <div class="md:hidden">
+        <button
+          type="button"
+          id="mobile-menu-toggle"
+          class="text-base-content/70 hover:text-base-content transition-colors duration-200 ease-in-out"
+        >
+          <svg
+            id="menu-icon"
+            class="h-6 w-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+          <svg
+            id="close-icon"
+            class="h-6 w-6 hidden"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div
+      id="mobile-menu"
+      class="md:hidden border-t border-base-300 overflow-hidden transition-all duration-200 ease-in-out max-h-0 opacity-0 p-0"
+    >
+      <div class="py-4 md:py-0 flex flex-col space-y-4">
+        {
+          menuItems.map((item) => (
+            <a
+              href={item.href}
+              class="mobile-nav-link text-left text-sm font-medium transition-colors duration-200 ease-in-out hover:text-primary text-base-content/70"
+            >
+              {item.label}
+            </a>
+          ))
+        }
+        <Button
+          element="a"
+          href={buyButton.href}
+          variant="primary"
+          size="sm"
+          class="bg-primary hover:bg-primary-focus text-primary-content w-fit"
+          id="mobile-cta-button"
+        >
+          {buyButton.label}
+        </Button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script>
+  class NavigationController {
+    private nav: HTMLElement | null = null
+    private activeSection: string = ''
+    private isMobileMenuOpen: boolean = false
+    private sections = [
+      { id: 'authors', href: '#authors' },
+      { id: 'whats-inside', href: '#whats-inside' },
+      { id: 'quotes', href: '#quotes' },
+      { id: 'free-chapter', href: '#free-chapter' },
+      { id: 'faq', href: '#faq' },
+    ]
+
+    constructor() {
+      this.init()
+    }
+
+    private init() {
+      this.nav = document.getElementById('main-navigation')
+      if (!this.nav) return
+
+      this.setupEventListeners()
+      this.setupScrollHandler()
+    }
+
+    private setupEventListeners() {
+      // Mobile navigation links - close menu when clicked
+      const mobileNavLinks = document.querySelectorAll('.mobile-nav-link')
+      mobileNavLinks.forEach((link) => {
+        link.addEventListener('click', () => {
+          this.closeMobileMenu()
+        })
+      })
+
+      // Mobile CTA button - close menu when clicked
+      const mobileCta = document.getElementById('mobile-cta-button')
+      if (mobileCta) {
+        mobileCta.addEventListener('click', () => {
+          this.closeMobileMenu()
+        })
+      }
+
+      // Mobile menu toggle
+      const mobileToggle = document.getElementById('mobile-menu-toggle')
+      if (mobileToggle) {
+        mobileToggle.addEventListener('click', () => {
+          this.toggleMobileMenu()
+        })
+      }
+    }
+
+    private setupScrollHandler() {
+      let ticking = false
+
+      const handleScroll = () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            this.updateNavigationVisibility()
+            this.updateActiveSection()
+            ticking = false
+          })
+          ticking = true
+        }
+      }
+
+      window.addEventListener('scroll', handleScroll)
+    }
+
+    private updateNavigationVisibility() {
+      if (!this.nav) return
+
+      const shouldShow = window.scrollY > 100
+
+      if (shouldShow) {
+        this.nav.classList.remove('-translate-y-full', 'opacity-0')
+        this.nav.classList.add('translate-y-0', 'opacity-100')
+      } else {
+        this.nav.classList.remove('translate-y-0', 'opacity-100')
+        this.nav.classList.add('-translate-y-full', 'opacity-0')
+      }
+    }
+
+    private updateActiveSection() {
+      const scrollPosition = window.scrollY + 100
+
+      for (const section of this.sections) {
+        const element = document.getElementById(section.id)
+        if (element) {
+          const { offsetTop, offsetHeight } = element
+          if (
+            scrollPosition >= offsetTop &&
+            scrollPosition < offsetTop + offsetHeight
+          ) {
+            if (this.activeSection !== section.id) {
+              this.setActiveSection(section.id)
+            }
+            break
+          }
+        }
+      }
+    }
+
+    private setActiveSection(sectionId: string) {
+      this.activeSection = sectionId
+
+      // Update desktop nav links
+      const navLinks = document.querySelectorAll('.nav-link')
+      navLinks.forEach((link) => {
+        const linkHref = (link as HTMLAnchorElement).getAttribute('href')
+        if (linkHref === `#${sectionId}`) {
+          link.classList.remove('text-base-content/70')
+          link.classList.add(
+            'text-primary',
+            'border-b-2',
+            'border-primary',
+            'pb-1',
+          )
+        } else {
+          link.classList.add('text-base-content/70')
+          link.classList.remove(
+            'text-primary',
+            'border-b-2',
+            'border-primary',
+            'pb-1',
+          )
+        }
+      })
+
+      // Update mobile nav links
+      const mobileNavLinks = document.querySelectorAll('.mobile-nav-link')
+      mobileNavLinks.forEach((link) => {
+        const linkHref = (link as HTMLAnchorElement).getAttribute('href')
+        if (linkHref === `#${sectionId}`) {
+          link.classList.remove('text-base-content/70')
+          link.classList.add('text-primary')
+        } else {
+          link.classList.add('text-base-content/70')
+          link.classList.remove('text-primary')
+        }
+      })
+    }
+
+    private toggleMobileMenu() {
+      this.isMobileMenuOpen = !this.isMobileMenuOpen
+
+      const mobileMenu = document.getElementById('mobile-menu')
+      const menuIcon = document.getElementById('menu-icon')
+      const closeIcon = document.getElementById('close-icon')
+
+      if (mobileMenu && menuIcon && closeIcon) {
+        if (this.isMobileMenuOpen) {
+          // Open menu
+          mobileMenu.classList.remove('max-h-0', 'opacity-0')
+          mobileMenu.classList.add('max-h-96', 'opacity-100')
+          menuIcon.classList.add('hidden')
+          closeIcon.classList.remove('hidden')
+        } else {
+          this.closeMobileMenu()
+        }
+      }
+    }
+
+    private closeMobileMenu() {
+      this.isMobileMenuOpen = false
+
+      const mobileMenu = document.getElementById('mobile-menu')
+      const menuIcon = document.getElementById('menu-icon')
+      const closeIcon = document.getElementById('close-icon')
+
+      if (mobileMenu && menuIcon && closeIcon) {
+        // Close menu
+        mobileMenu.classList.remove('max-h-96', 'opacity-100')
+        mobileMenu.classList.add('max-h-0', 'opacity-0')
+        menuIcon.classList.remove('hidden')
+        closeIcon.classList.add('hidden')
+      }
+    }
+  }
+
+  // Initialize navigation when DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    new NavigationController()
+  })
+
+  // Re-initialize on page navigation (for SPA-like behavior)
+  document.addEventListener('astro:page-load', () => {
+    new NavigationController()
+  })
+</script>
+
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+</style>

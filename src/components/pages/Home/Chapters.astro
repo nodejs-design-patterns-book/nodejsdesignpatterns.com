@@ -1,0 +1,166 @@
+---
+import { getCollection, render } from 'astro:content'
+import Badge from '@components/ui/badge.astro'
+import Button from '@components/ui/button.astro'
+import {
+  BookOpen,
+  ChevronDown,
+  ChevronRight,
+  Clock,
+  CodeXml,
+  LockOpen,
+} from '@lucide/astro'
+
+function readingTime(numWords: number): number {
+  const wordsPerMinute = 180 // Average reading speed for technical content
+  const minutes = Math.round(numWords / wordsPerMinute / 5) * 5 // rounds to the nearest 5 minutes
+  return minutes
+}
+
+const chapters = (await getCollection('chapters')).sort((a, b) => {
+  return parseInt(a.data.number) - parseInt(b.data.number)
+})
+const renderedChapters = await Promise.all(
+  chapters.map(async (chapter) => {
+    const renderedContent = await render(chapter)
+    return {
+      ...chapter,
+      Content: renderedContent.Content,
+      data: chapter.data,
+    }
+  }),
+)
+---
+
+<section id="chapters">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl lg:text-4xl font-bold text-base-content mb-4">
+        Let's unpack each Chapter
+      </h2>
+      <p class="text-xl text-base-content/70">
+        Discover the key topics and takeaways in every chapter.
+      </p>
+    </div>
+    <div class="flex flex-col gap-4">
+      {
+        renderedChapters.map((chapter) => (
+          <div class="chapter overflow-hidden border-2 border-primary/20 hover:border-primary/50 transition-all duration-200 rounded-xl bg-card text-base-content shadow">
+            <div class="flex flex-col space-y-1.5 p-6 cursor-pointer bg-primary/10 hover:bg-primary/30 transition-colors">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                  <div class="shrink-0 w-10 h-10 bg-primary text-primary-content rounded-full flex items-center justify-center text-sm font-bold">
+                    {chapter.data.number}
+                  </div>
+                  <div>
+                    <div class="font-semibold leading-none tracking-tight text-lg text-left">
+                      {chapter.data.title}
+                    </div>
+                    <p class="text-sm text-base-content/70 mt-1">
+                      {chapter.data.description}
+                    </p>
+                  </div>
+                </div>
+                <div class="flex shrink-0 items-center space-x-2">
+                  {chapter.data.isFree && (
+                    <Badge variant="outline" class="flex shrink-0 mr-2 gap-1">
+                      <LockOpen class="h-3 w-3 text-primary" />
+                      <span class="text-primary">Free Chapter</span>
+                    </Badge>
+                  )}
+                  <div class="hidden sm:flex items-center space-x-4 text-xs text-base-content/70">
+                    <div class="flex items-center space-x-1">
+                      <Clock class="h-3 w-3 text-accent" />
+                      <span>{readingTime(chapter.data.numWords)} min</span>
+                    </div>
+                    <div class="flex items-center space-x-1">
+                      <CodeXml class="h-3 w-3 text-accent" />
+                      <span>{chapter.data.numExamples} examples</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <ChevronDown class="chapter-close h-5 w-5 text-primary" />
+                    <ChevronRight class="chapter-open h-5 w-5 text-primary hidden" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="chapter-content overflow-hidden">
+              <div class="p-6 pt-0 border-t border-primary/10">
+                <div class="py-4">
+                  <div class="text-base-content/70 leading-relaxed mb-4 flex flex-col gap-2">
+                    <chapter.Content />
+                    {chapter.data.isFree && (
+                      <p class="mt-4">
+                        <Button
+                          element="a"
+                          href="#free-chapter"
+                          title={`Download chapter ${parseInt(chapter.data.number)} of Node.js Design Patterns for FREE`}
+                        >
+                          <LockOpen class="h-3 w-3" />
+                          Download this chapter for FREE
+                        </Button>
+                      </p>
+                    )}
+                  </div>
+                  <div class="flex flex-wrap gap-4 text-sm">
+                    <div class="flex items-center space-x-2 text-accent">
+                      <Clock class="h-4 w-4" />
+                      <span class="font-medium">
+                        Reading time: {readingTime(chapter.data.numWords)} min
+                      </span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-accent">
+                      <CodeXml class="h-4 w-4" />
+                      <span class="font-medium">
+                        {chapter.data.numExamples} practical examples
+                      </span>
+                    </div>
+                    {chapter.data.numExercises > 0 && (
+                      <div class="flex items-center space-x-2 text-accent">
+                        <BookOpen class="h-4 w-4" />
+                        <span class="font-medium">
+                          {chapter.data.numExercises} Chapter exercises included
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+<script>
+  const chapters = document.querySelectorAll('.chapter')
+
+  chapters.forEach((chapter) => {
+    const chapterClose = chapter.querySelector('.chapter-close')
+    const chapterOpen = chapter.querySelector('.chapter-open')
+    const chapterContent = chapter.querySelector('.chapter-content')
+
+    chapterContent?.classList.add('hidden')
+    chapterClose?.classList.add('hidden')
+    chapterOpen?.classList.remove('hidden')
+
+    let status: 'open' | 'closed' = 'closed'
+    chapter.addEventListener('click', () => {
+      if (status === 'closed') {
+        chapterContent?.classList.remove('hidden')
+        chapterClose?.classList.remove('hidden')
+        chapterOpen?.classList.add('hidden')
+        status = 'open'
+      } else {
+        chapterContent?.classList.add('hidden')
+        chapterClose?.classList.add('hidden')
+        chapterOpen?.classList.remove('hidden')
+        status = 'closed'
+      }
+    })
+  })
+</script>

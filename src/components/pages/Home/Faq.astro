@@ -1,0 +1,121 @@
+---
+import { Picture } from 'astro:assets'
+import manReading from '@images/mktg/young-man-reading-nodejs-design-patterns.jpg'
+import { getCollection, render } from 'astro:content'
+
+const faq = await getCollection('faq')
+const renderedFaq = await Promise.all(
+  faq
+    .sort((a, b) => a.id.localeCompare(b.id))
+    .map(async (f) => {
+      const renderedContent = await render(f)
+      return {
+        ...f,
+        Content: renderedContent.Content,
+        data: f.data,
+      }
+    }),
+)
+---
+
+<section id="faq" class="bg-base-100 py-16 lg:py-24">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="max-w-4xl mx-auto text-center mb-16">
+      <h2
+        class="text-4xl lg:text-5xl font-bold text-base-content font-heading mb-6"
+      >
+        FAQ
+      </h2>
+      <p class="text-2xl lg:text-3xl text-base-content/80 font-heading">
+        Frequently Asked Questions
+      </p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+      <!-- Left Content -->
+      <div class="flex justify-center">
+        <Picture
+          formats={['avif', 'webp', 'png']}
+          layout="none"
+          sizes="(min-width: 600px) 600px, 100vw"
+          src={manReading}
+          alt="Slightly blurred young man reading a copy of Node.js Design Patterns with a smiling expression"
+          pictureAttributes={{
+            class: 'w-full max-w-[300px] lg:max-w-[500px] block',
+          }}
+          class="rounded-lg shadow-lg"
+          loading="lazy"
+          width={1000}
+          height={1300}
+        />
+      </div>
+      <!-- Right content: Faq -->
+      <div>
+        <div class="accordion-group flex flex-col gap-4">
+          {
+            renderedFaq.map((faqItem) => (
+              <div
+                class="accordion border-t-1 border-t-base-200 first:border-t-0 pt-4 first:pt-0"
+                id={faqItem.id}
+              >
+                <button class="accordion-toggle group flex text-xl font-serif leading-8 w-full cursor-pointer">
+                  <h5 class="font-bold text-left group-hover:text-primary">
+                    {faqItem.data.question}
+                  </h5>
+                  <div class="flex grow justify-end">
+                    <svg
+                      class="accordion-icon text-base-content transition duration-500 group-hover:text-primary accordion-active:rotate-180"
+                      width="22"
+                      height="22"
+                      viewBox="0 0 22 22"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M16.5 8.25L12.4142 12.3358C11.7475 13.0025 11.4142 13.3358 11 13.3358C10.5858 13.3358 10.2525 13.0025 9.58579 12.3358L5.5 8.25"
+                        stroke="currentColor"
+                        stroke-width="1.6"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </div>
+                </button>
+                <div
+                  id={`${faqItem.id}-content`}
+                  class="content accordion-content w-full px-0 pr-4 active"
+                  aria-labelledby={faqItem.id}
+                >
+                  <faqItem.Content />
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const accordions = document.querySelectorAll('.accordion-group .accordion')
+
+  accordions.forEach((accordion) => {
+    const toggle = accordion.querySelector('.accordion-toggle')
+    const toggleIcon = toggle?.querySelector('.accordion-icon')
+    const content = accordion.querySelector('.accordion-content')
+    content?.classList.add('hidden')
+
+    toggle?.addEventListener('click', () => {
+      const isOpen = !content?.classList.contains('hidden')
+
+      if (!isOpen) {
+        content?.classList.remove('hidden')
+        toggleIcon?.classList.add('-rotate-180')
+      } else {
+        content?.classList.add('hidden')
+        toggleIcon?.classList.remove('-rotate-180')
+      }
+    })
+  })
+</script>

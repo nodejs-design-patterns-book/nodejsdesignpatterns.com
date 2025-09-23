@@ -1,0 +1,83 @@
+---
+import { Picture } from 'astro:assets'
+import type { CollectionEntry } from 'astro:content'
+
+interface Props {
+  authors: CollectionEntry<'authors'>[]
+  showBio?: boolean
+  size?: 'sm' | 'md' | 'lg'
+}
+
+const { authors, size = 'md' } = Astro.props
+
+const sizeClasses = {
+  sm: {
+    avatar: 'w-8 h-8',
+    text: 'text-sm',
+    name: 'text-sm font-medium',
+  },
+  md: {
+    avatar: 'w-12 h-12',
+    text: 'text-base',
+    name: 'text-base font-semibold',
+  },
+  lg: {
+    avatar: 'w-16 h-16',
+    text: 'text-lg',
+    name: 'text-xl font-bold',
+  },
+}
+
+const classes = sizeClasses[size]
+---
+
+<div class="flex items-center space-x-4">
+  <!-- Author Avatars -->
+  <div class="flex -space-x-2">
+    {
+      authors.map((author) => (
+        <a
+          href={author.data.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block relative"
+          title={author.data.name}
+        >
+          <Picture
+            src={author.data.profile_pic}
+            alt={author.data.name}
+            class={`${classes.avatar} rounded-full border-2 border-white dark:border-gray-800 object-cover`}
+            loading="lazy"
+          />
+        </a>
+      ))
+    }
+  </div>
+
+  <!-- Author Info -->
+  <div class="flex-1 min-w-0">
+    <div class="flex flex-wrap items-center gap-1">
+      <span class={`${classes.text} text-base-content/70`}>Written by</span>
+      {
+        authors.map((author, index) => (
+          <>
+            <a
+              href={author.data.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              class={`${classes.name} text-base-content hover:text-primary transition-colors`}
+            >
+              {author.data.name}
+            </a>
+            {index < authors.length - 2 && (
+              <span class={`${classes.text} text-base-content/70`}>,</span>
+            )}
+            {index === authors.length - 2 && authors.length > 1 && (
+              <span class={`${classes.text} text-base-content/70`}>and</span>
+            )}
+          </>
+        ))
+      }
+    </div>
+  </div>
+</div>

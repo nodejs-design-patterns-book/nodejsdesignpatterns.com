@@ -1,0 +1,226 @@
+---
+import { ExternalLink, BookOpen, Users, Rss, Github, Mail } from '@lucide/astro'
+import { BUY_LINK_PRINT, BUY_LINK_EBOOK, BUY_LINK_PACKT } from '@lib/const'
+import { getCollection } from 'astro:content'
+import Threads from '@components/Threads.tsx'
+
+const blogPosts = await getCollection('blog')
+const latestBlogPosts = blogPosts
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 5)
+
+const currentYear = new Date().getFullYear()
+---
+
+<footer class="bg-base-200 text-base-content py-16 lg:py-20 relative">
+  <div class="absolute inset-0 z-1 pointer-events-none opacity-25">
+    <div class="relative w-full h-full -z-1">
+      <Threads
+        amplitude={1.6}
+        distance={0.5}
+        enableMouseInteraction={false}
+        color={[1, 0.5, 1]}
+        client:load
+      />
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-6 z-10">
+    <!-- Main Footer Content -->
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12"
+    >
+      <!-- Get the book -->
+      <div>
+        <h3
+          class="text-lg font-bold font-heading text-base-content mb-4 flex items-center gap-2"
+        >
+          <BookOpen class="h-5 w-5 text-primary" />
+          Get the book
+        </h3>
+        <div class="space-y-3">
+          <a
+            href={BUY_LINK_PRINT}
+            class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Buy print (Amazon)
+            <ExternalLink class="ml-1 h-3 w-3" />
+          </a>
+          <a
+            href={BUY_LINK_EBOOK}
+            class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Buy e-book (Amazon)
+            <ExternalLink class="ml-1 h-3 w-3" />
+          </a>
+          <a
+            href={BUY_LINK_PACKT}
+            class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Buy on Packt (e-book + print)
+            <ExternalLink class="ml-1 h-3 w-3" />
+          </a>
+        </div>
+      </div>
+
+      <!-- Connect -->
+      <div>
+        <h3
+          class="text-lg font-bold font-heading text-base-content mb-4 flex items-center gap-2"
+        >
+          <Users class="h-5 w-5 text-primary" />
+          Connect
+        </h3>
+        <div class="space-y-3">
+          <a
+            href="https://x.com/mariocasciaro"
+            class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Mario on X (Twitter)
+            <ExternalLink class="ml-1 h-3 w-3" />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/mariocasciaro/"
+            class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Mario on LinkedIn
+            <ExternalLink class="ml-1 h-3 w-3" />
+          </a>
+
+          <a
+            href="https://x.com/loige"
+            class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Luciano on X (Twitter)
+            <ExternalLink class="ml-1 h-3 w-3" />
+          </a>
+          <a
+            href="https://bsky.app/profile/loige.co"
+            class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Luciano on Bluesky
+            <ExternalLink class="ml-1 h-3 w-3" />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/lucianomammino/"
+            class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Luciano on LinkedIn
+            <ExternalLink class="ml-1 h-3 w-3" />
+          </a>
+
+          <a
+            href="mailto:authors@nodejsdesignpatterns.com"
+            class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200 text-sm mt-3 font-medium"
+          >
+            Email us <Mail class="ml-1 h-3 w-3" />
+          </a>
+        </div>
+      </div>
+
+      <!-- Latest from the blog -->
+      <div>
+        <h3
+          class="text-lg font-bold font-heading text-base-content mb-4 flex items-center gap-2"
+        >
+          <Rss class="h-5 w-5 text-primary" />
+          Latest from the <a
+            href="/blog"
+            class="text-base-content/80 hover:text-primary transition-colors duration-200"
+            >blog</a
+          >
+        </h3>
+        <div class="space-y-3">
+          {
+            latestBlogPosts.map((post) => (
+              <a
+                href={`/blog/${post.id}`}
+                class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
+              >
+                {post.data.title}
+              </a>
+            ))
+          }
+          <a
+            href={`/blog/`}
+            class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
+          >
+            Read all articles from the blog
+          </a>
+        </div>
+      </div>
+
+      <!-- Additional space for future content -->
+      <div>
+        <h3
+          class="text-lg font-bold font-heading text-base-content mb-4 flex items-center gap-2"
+        >
+          <Github class="h-5 w-5 text-primary" />
+          Community
+        </h3>
+        <div class="space-y-3">
+          <a
+            href="https://github.com/PacktPublishing/Node.js-Design-Patterns-Fourth-Edition/discussions"
+            class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub Discussions
+            <ExternalLink class="ml-1 h-3 w-3" />
+          </a>
+          <a
+            href="https://github.com/PacktPublishing/Node.js-Design-Patterns-fourth-Edition"
+            class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Code Examples
+            <ExternalLink class="ml-1 h-3 w-3" />
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="pt-8">
+      <div
+        class="text-center text-base-content/70 text-sm leading-relaxed mb-4"
+      >
+        Copyright © 2014-{currentYear} Mario Casciaro, Luciano Mammino, Packt Publishing.<br
+        />
+        All trademarks and registered trademarks are the property of their respective
+        owners.
+      </div>
+
+      <!-- GitHub contribution line -->
+      <div class="text-center text-base-content/60 text-xs">
+        Found an error or something that can be improved? You can help us make
+        this website better on{' '}
+        <a
+          href="https://github.com/nodejs-design-patterns-book/nodejsdesignpatterns.com"
+          class="text-primary hover:text-primary/80 transition-colors duration-200 font-medium"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub</a
+        >!
+      </div>
+    </div>
+  </div>
+</footer>

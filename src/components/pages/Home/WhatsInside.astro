@@ -1,0 +1,187 @@
+---
+import { Picture } from 'astro:assets'
+import mockup1 from '@images/mktg/mockup1.png'
+import { CHAPTERS, EXAMPLES, EXERCISES, PAGES } from '@lib/const.ts'
+import { Book, Brain, Building, Code, TestTube, Zap } from '@lucide/astro'
+---
+
+<section id="whats-inside" class="bg-base-100 pt-16 lg:pt-24">
+  <div class="max-w-6xl mx-auto px-6">
+    <!-- Section Header -->
+    <div class="text-center mb-16">
+      <h2
+        class="text-4xl lg:text-5xl font-bold text-base-content font-heading mb-8"
+      >
+        What's Inside
+      </h2>
+    </div>
+
+    <!-- Key Stats -->
+    <div class="grid md:grid-cols-3 gap-8 mb-16">
+      <!-- 660 Pages -->
+      <div
+        class="bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl p-8 text-center border border-primary/20"
+      >
+        <div class="flex justify-center mb-4">
+          <Book class="w-12 h-12 text-primary" />
+        </div>
+        <h3 class="text-2xl font-bold text-base-content font-heading mb-2">
+          {CHAPTERS} Chapters
+        </h3>
+        <p class="text-lg font-semibold text-primary mb-4">
+          All Signal, No Filler
+        </p>
+        <p class="text-base text-base-content/80 font-sans leading-relaxed">
+          With more than {PAGES} pages packed with practical knowledge, you'll find
+          clear explanations, real-world context, and insights that guide you from
+          the basics to advanced Node.js techniques, no matter your current level.
+        </p>
+      </div>
+
+      <!-- 150+ Code Examples -->
+      <div
+        class="bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl p-8 text-center border border-primary/20"
+      >
+        <div class="flex justify-center mb-4">
+          <Code class="w-12 h-12 text-primary" />
+        </div>
+        <h3 class="text-2xl font-bold text-base-content font-heading mb-2">
+          {EXAMPLES}+ Code Examples
+        </h3>
+        <p class="text-lg font-semibold text-primary mb-4">Learn by Doing</p>
+        <p class="text-base text-base-content/80 font-sans leading-relaxed">
+          Every concept is backed by working code. Follow step-by-step examples
+          and build your skills through hands-on challenges that reinforce what
+          you learn.
+        </p>
+      </div>
+
+      <!-- 50+ Exercises -->
+      <div
+        class="bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl p-8 text-center border border-primary/20"
+      >
+        <div class="flex justify-center mb-4">
+          <Brain class="w-12 h-12 text-primary" />
+        </div>
+        <h3 class="text-2xl font-bold text-base-content font-heading mb-2">
+          {EXERCISES}+ Exercises
+        </h3>
+        <p class="text-lg font-semibold text-primary mb-4">
+          Master the Material
+        </p>
+        <p class="text-base text-base-content/80 font-sans leading-relaxed">
+          At the end of each chapter, sharpen your skills with practical
+          exercises designed to test and solidify your understanding.
+        </p>
+      </div>
+    </div>
+
+    <!-- More Than Just Design Patterns -->
+    <div
+      class="bg-base-100/80 rounded-2xl p-8 lg:p-12 shadow border border-base-300/50 mb-12"
+    >
+      <div class="grid lg:grid-cols-2 gap-12 items-start">
+        <!-- Content -->
+        <div>
+          <h3
+            class="text-3xl lg:text-4xl font-bold text-base-content font-heading mb-6"
+          >
+            More Than Just Design Patterns
+          </h3>
+          <p
+            class="text-xl lg:text-2xl text-base-content/90 font-sans leading-relaxed mb-8"
+          >
+            This is the comprehensive guide to writing professional-grade
+            Node.js applications.
+          </p>
+          <p
+            class="text-lg text-base-content/80 font-sans leading-relaxed mb-8"
+          >
+            With <strong>{CHAPTERS} deeply researched chapters</strong>, you'll
+            learn:
+          </p>
+
+          <!-- Learning Topics -->
+          <div class="space-y-6">
+            <div class="flex items-start gap-4">
+              <div
+                class="flex-shrink-0 w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center mt-1"
+              >
+                <Zap class="w-4 h-4 text-primary" />
+              </div>
+              <p
+                class="text-base lg:text-lg text-base-content/80 font-sans leading-relaxed"
+              >
+                The fundamentals of Node.js and its asynchronous, event-driven
+                architecture, including <strong>event emitters</strong>, <strong
+                  >callbacks</strong
+                >, <strong>promises</strong>, and <strong>async/await</strong>.
+              </p>
+            </div>
+
+            <div class="flex items-start gap-4">
+              <div
+                class="flex-shrink-0 w-8 h-8 bg-secondary/20 rounded-full flex items-center justify-center mt-1"
+              >
+                <Code class="w-4 h-4 text-secondary" />
+              </div>
+              <p
+                class="text-base lg:text-lg text-base-content/80 font-sans leading-relaxed"
+              >
+                How to use and extend <strong>Node.js streams</strong>, and
+                apply <strong>classic Gang of Four design patterns</strong> reimagined
+                for JavaScript, plus modern patterns unique to Node.js.
+              </p>
+            </div>
+
+            <div class="flex items-start gap-4">
+              <div
+                class="flex-shrink-0 w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center mt-1"
+              >
+                <TestTube class="w-4 h-4 text-primary" />
+              </div>
+              <p
+                class="text-base lg:text-lg text-base-content/80 font-sans leading-relaxed"
+              >
+                How to develop the right mindset for <strong
+                  >automated testing</strong
+                >, with real examples covering <strong>unit tests</strong>, <strong
+                  >integration tests</strong
+                >, and <strong>end-to-end tests</strong> for your Node.js projects.
+              </p>
+            </div>
+
+            <div class="flex items-start gap-4">
+              <div
+                class="flex-shrink-0 w-8 h-8 bg-secondary/20 rounded-full flex items-center justify-center mt-1"
+              >
+                <Building class="w-4 h-4 text-secondary" />
+              </div>
+              <p
+                class="text-base lg:text-lg text-base-content/80 font-sans leading-relaxed"
+              >
+                How to architect <strong>scalable services</strong> with best practices
+                for <strong>microservices</strong>, <strong>messaging</strong>,
+                and <strong>distributed systems</strong>.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Marketing Image -->
+        <div class="flex justify-center lg:justify-end">
+          <Picture
+            src={mockup1}
+            alt="Node.js Design Patterns book mockup"
+            formats={['avif', 'webp', 'png']}
+            class="w-full max-w-md lg:max-w-lg rounded-lg shadow-lg"
+            loading="lazy"
+            inferSize={true}
+            widths={[320, 480, 640, 800]}
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 400px"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

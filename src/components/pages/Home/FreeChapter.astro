@@ -1,0 +1,178 @@
+---
+import { Picture } from 'astro:assets'
+import Button from '@components/ui/button.astro'
+import { Download, BookOpen, Code } from '@lucide/astro'
+import chapter6Image from '@images/mktg/person-reading-node-js-design-patterns-chapter-6.png'
+import {
+  FREE_CHAPTER_FORM_ACTION,
+  FREE_CHAPTER_FORM_FIELD_NAME,
+  FREE_CHAPTER_PAGES,
+} from '@lib/const.ts'
+---
+
+<section
+  id="free-chapter"
+  class="bg-gradient-to-br from-primary/10 to-primary/20 py-16 lg:py-24"
+>
+  <div class="max-w-7xl mx-auto px-6">
+    <!-- Centered Content Block -->
+    <div class="max-w-4xl mx-auto text-center mb-16">
+      <h2
+        class="text-4xl lg:text-5xl font-bold text-base-content font-heading mb-6"
+      >
+        Still unsure?
+      </h2>
+      <p class="text-2xl lg:text-3xl text-base-content/80 font-heading mb-6">
+        Get a <strong>FREE</strong> chapter!
+      </p>
+      <p
+        class="text-lg lg:text-xl text-base-content/80 font-sans leading-relaxed mb-6"
+      >
+        Serious about Node.js? <strong>Node.js Design Patterns</strong> is the most
+        complete guide out there.<br />Download a free chapter and judge for
+        yourself.
+      </p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <!-- Left Content -->
+      <div>
+        <!-- Try Chapter Section -->
+        <div class="bg-base-100/80 backdrop-blur-sm rounded-lg p-8 shadow-lg">
+          <div class="flex items-center gap-3 mb-4">
+            <div
+              class="shink-0 w-8 h-8 bg-accent/20 rounded-lg flex items-center justify-center"
+            >
+              <BookOpen class="shrink-0 h-5 w-5 text-accent" />
+            </div>
+            <h3 class="text-2xl font-bold text-base-content font-heading">
+              Chapter 6: <strong>Coding with Streams</strong>
+            </h3>
+          </div>
+
+          <p
+            class="text-base-content/80 font-sans leading-relaxed mb-6 text-lg"
+          >
+            {FREE_CHAPTER_PAGES} pages packed with practical examples, real-world
+            insights, and powerful design patterns to help you write faster, leaner,
+            and more scalable Node.js code.
+          </p>
+
+          <!-- What You'll Learn -->
+          <div class="mb-8">
+            <div class="flex items-center gap-3 mb-4">
+              <div
+                class="w-8 h-8 bg-secondary/20 rounded-lg flex items-center justify-center"
+              >
+                <Code class="h-5 w-5 text-secondary" />
+              </div>
+              <h4 class="text-xl font-bold text-base-content font-heading">
+                In this chapter, you'll learn:
+              </h4>
+            </div>
+
+            <ul class="space-y-3">
+              <li class="flex items-start gap-3 text-base-content/80">
+                <div
+                  class="ml-6 w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0"
+                >
+                </div>
+                <span class="font-sans"
+                  >How streams fit into the Node.js philosophy</span
+                >
+              </li>
+              <li class="flex items-start gap-3 text-base-content/80">
+                <div
+                  class="ml-6 w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0"
+                >
+                </div>
+                <span class="font-sans"
+                  >The anatomy of readable, writable, and transform streams</span
+                >
+              </li>
+              <li class="flex items-start gap-3 text-base-content/80">
+                <div
+                  class="ml-6 w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0"
+                >
+                </div>
+                <span class="font-sans"
+                  >How to handle backpressure and avoid memory issues</span
+                >
+              </li>
+              <li class="flex items-start gap-3 text-base-content/80">
+                <div
+                  class="ml-6 w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0"
+                >
+                </div>
+                <span class="font-sans"
+                  >Real-world streaming patterns for composability and
+                  performance</span
+                >
+              </li>
+              <li class="flex items-start gap-3 text-base-content/80">
+                <div
+                  class="ml-6 w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0"
+                >
+                </div>
+                <span class="font-sans"
+                  >Tips for error handling, concurrency, and combining streams
+                  effectively</span
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Email Form -->
+          <form action={FREE_CHAPTER_FORM_ACTION} method="POST" target="_blank">
+            <div class="space-y-4">
+              <div>
+                <label
+                  for={FREE_CHAPTER_FORM_FIELD_NAME}
+                  class="block text-sm font-medium text-base-content/80 mb-2"
+                >
+                  Enter your email to download the chapter:
+                </label>
+                <input
+                  id={FREE_CHAPTER_FORM_FIELD_NAME}
+                  name={FREE_CHAPTER_FORM_FIELD_NAME}
+                  type="email"
+                  placeholder="your@email.com"
+                  class="w-full px-4 py-4 rounded-lg border border-base-300 bg-base-100 text-base-content placeholder-base-content/50 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-300"
+                  required
+                />
+              </div>
+              <Button
+                type="submit"
+                element="button"
+                variant="primary"
+                size="lg"
+                class="w-full"
+              >
+                <Download class="mr-2 h-5 w-5" />
+                Download the FREE chapter
+              </Button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Main Image -->
+      <div class="flex justify-center">
+        <Picture
+          formats={['avif', 'webp', 'png']}
+          layout="constrained"
+          sizes="(min-width: 600px) 600px, 100vw"
+          src={chapter6Image}
+          alt="A person holding a copy of Node.js Design Patterns open on Chapter 6: Coding with Streams"
+          pictureAttributes={{
+            class: 'w-full max-w-sm lg:max-w-md',
+          }}
+          class="rounded-lg shadow-lg"
+          loading="lazy"
+          width={1000}
+          height={1300}
+        />
+      </div>
+    </div>
+  </div>
+</section>

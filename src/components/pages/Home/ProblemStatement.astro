@@ -1,0 +1,174 @@
+---
+import { Picture } from 'astro:assets'
+import BuyButtons from '@components/pages/Home/components/BuyButtons.astro'
+import businessManImage from '@images/mktg/business-man-1.png'
+import { Construction } from '@lucide/astro'
+---
+
+<section id="problem-statement" class="bg-base-100 bg-circuit">
+  <div class="relative max-w-7xl mx-auto px-6 py-16 lg:py-24">
+    <!-- Main Headline -->
+    <div class="text-center mb-12">
+      <p class="text-accent text-4xl lg:text-6xl font-bold font-heading mb-6">
+        <Construction class="inline-block h-9 w-9 ml-2" />
+      </p>
+      <h1
+        class="text-4xl lg:text-6xl font-heading font-bold text-base-content mb-8 leading-tight"
+      >
+        Building <span class="text-primary">modern</span>, <span
+          class="text-primary">reliable</span
+        >, and <span class="text-primary">extensible</span> web applications is still
+        surprisingly
+        <span
+          class="text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text"
+          >hard</span
+        >!
+      </h1>
+      <p class="text-2xl lg:text-3xl text-base-content/80 font-heading">
+        But it doesn't have to be...
+      </p>
+    </div>
+
+    <!-- Problem Statement -->
+    <div
+      class="max-w-6xl justify-self-center bg-base-100/80 rounded-2xl p-8 lg:p-12 shadow border border-base-300/50 mb-12"
+    >
+      <p
+        class="text-lg lg:text-xl text-base-content/90 font-sans leading-relaxed mb-8"
+      >
+        If you've landed here, you've probably been down the rabbit hole,
+        reading articles, watching videos, and following tutorials, hoping to
+        finally <strong>get good at Node.js</strong>.
+      </p>
+
+      <p
+        class="text-lg lg:text-xl text-base-content/90 font-sans leading-relaxed mb-8"
+      >
+        Maybe you've used Node.js before, but&hellip;
+      </p>
+
+      <!-- Pain Points List -->
+      <ul class="space-y-4 mb-8">
+        <li class="flex items-start gap-4 text-base-content/80">
+          <div class="w-2 h-2 bg-accent rounded-full mt-3 flex-shrink-0"></div>
+          <span class="text-lg font-sans"
+            >You can't quite explain how the <strong>event loop</strong> really works.</span
+          >
+        </li>
+        <li class="flex items-start gap-4 text-base-content/80">
+          <div class="w-2 h-2 bg-accent rounded-full mt-3 flex-shrink-0"></div>
+          <span class="text-lg font-sans"
+            ><strong>Callbacks</strong>, <strong>promises</strong>, and <strong
+              >async</strong
+            > flows still trip you up occasionally.</span
+          >
+        </li>
+        <li class="flex items-start gap-4 text-base-content/80">
+          <div class="w-2 h-2 bg-accent rounded-full mt-3 flex-shrink-0"></div>
+          <span class="text-lg font-sans"
+            >Writing <strong>concurrent code</strong> feels messy and unpredictable.</span
+          >
+        </li>
+        <li class="flex items-start gap-4 text-base-content/80">
+          <div class="w-2 h-2 bg-accent rounded-full mt-3 flex-shrink-0"></div>
+          <span class="text-lg font-sans"
+            >As your project grows, so does the chaos, and you're unsure how to
+            keep things <strong>organized</strong>, <strong>scalable</strong>,
+            and <strong>maintainable</strong></span
+          >
+        </li>
+        <li class="flex items-start gap-4 text-base-content/80">
+          <div class="w-2 h-2 bg-accent rounded-full mt-3 flex-shrink-0"></div>
+          <span class="text-lg font-sans"
+            ><strong>Testing</strong>? You avoid it, because it just feels too
+            hard to get right.</span
+          >
+        </li>
+        <li class="flex items-start gap-4 text-base-content/80">
+          <div class="w-2 h-2 bg-accent rounded-full mt-3 flex-shrink-0"></div>
+          <span class="text-lg font-sans"
+            >You see the value in <strong>microservices</strong>, but managing
+            instances, distributing load, and handling messaging patterns still
+            feels overwhelming.</span
+          >
+        </li>
+      </ul>
+    </div>
+
+    <!-- Solution -->
+    <div class="text-center mb-12">
+      <h2
+        class="text-3xl lg:text-4xl font-bold text-base-content font-heading mb-6"
+      >
+        We get it. We've been there too!
+      </h2>
+      <p class="text-2xl lg:text-3xl text-base-content/80 font-heading">
+        That's exactly why we wrote Node.js Design Patterns.
+      </p>
+    </div>
+
+    <!-- Value Proposition with Image -->
+    <div
+      class="bg-base-100/80 rounded-2xl p-8 lg:p-12 shadow border border-primary/30 mb-12"
+    >
+      <div class="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
+        <!-- Text Content -->
+        <div class="flex-1 space-y-6">
+          <p
+            class="text-lg lg:text-xl text-base-content leading-relaxed font-sans"
+          >
+            This book exists to guide you through all the fundamentals with
+            clarity and purpose, and it doesn't stop there.
+          </p>
+          <p
+            class="text-lg lg:text-xl text-base-content leading-relaxed font-sans"
+          >
+            You'll walk through carefully crafted code examples, learn how to
+            master asynchronous flows, write clean and testable code, and apply
+            battle-tested design and architectural patterns that scale.
+          </p>
+          <p
+            class="text-lg lg:text-xl text-base-content leading-relaxed font-sans"
+          >
+            From modular design and dependency injection to scalability,
+            messaging, and integration patterns, this is the bread and butter of
+            senior developers who build complex, distributed systems with
+            confidence.
+          </p>
+        </div>
+
+        <!-- Image -->
+        <div class="flex-shrink-0 flex justify-center w-full lg:w-80 xl:w-96">
+          <Picture
+            src={businessManImage}
+            alt="Professional reading Node.js Design Patterns book"
+            formats={['avif', 'webp', 'jpg']}
+            widths={[320, 480, 640, 800]}
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 400px"
+            pictureAttributes={{
+              class: 'max-w-[400px] lg:max-w-[800px]',
+            }}
+            class="w-full h-auto rounded-xl"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="text-center mb-12">
+      <h2
+        class="text-3xl lg:text-4xl font-bold text-base-content font-heading mb-6"
+      >
+        Stop stitching together half-solutions.
+      </h2>
+      <p class="text-2xl lg:text-3xl text-base-content/80 font-heading">
+        Start learning Node.js the way it was meant to be learned.
+      </p>
+    </div>
+
+    <div class="flex justify-center">
+      <BuyButtons />
+    </div>
+  </div>
+</section>

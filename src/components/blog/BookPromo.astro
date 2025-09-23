@@ -1,0 +1,101 @@
+---
+import type { ImageMetadata } from 'astro'
+import { Image } from 'astro:assets'
+import {
+  READERS,
+  RATING,
+  REVIEWS,
+  PAGES,
+  EXAMPLES,
+  EXERCISES,
+  BUY_LINK_PRINT,
+} from '@lib/const'
+
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/images/promo/*.{jpeg,jpg,png}',
+)
+const imagesIds = Object.keys(images)
+
+const imagesAlt = {
+  '/src/images/promo/promo01.png':
+    'Stack of two copies of “Node.js Design Patterns – Fourth Edition” on a purple gradient surface; top book slightly rotated, showing the purple wave cover and authors’ portraits.',
+  '/src/images/promo/promo02.png':
+    'Man reading “Node.js Design Patterns – Fourth Edition” on a subway train, standing and smiling; front cover with the purple wave design visible.',
+  '/src/images/promo/promo03.png':
+    'Studio render of the “Node.js Design Patterns – Fourth Edition” hardcover floating against a blue gradient backdrop, front cover with purple wave graphic centered.',
+  '/src/images/promo/promo04.png':
+    'Lifestyle shot of a woman in a cafe holding the “Node.js Design Patterns – Fourth Edition” book; greenery and warm lights in the background, cover fully visible.',
+  '/src/images/promo/promo05.png':
+    'Person holding the “Node.js Design Patterns – Fourth Edition” hardcover against a neutral background; tilted view showing authors’ portraits and Packt logo on the front.',
+  '/src/images/promo/promo06.png':
+    'Close-up of the top corner of the “Node.js Design Patterns” cover on a purple gradient background, highlighting the large title text and flowing purple wave graphic.',
+  '/src/images/promo/promo07.png':
+    'Smiling man presenting the “Node.js Design Patterns – Fourth Edition” book toward the camera in a bright studio setting; cover and Packt logo clearly shown.',
+  '/src/images/promo/promo08.png':
+    'Angled view of the “Node.js Design Patterns – Fourth Edition” paperback lying on a light gray surface, showing the spine, title, purple wave design, and Packt branding.',
+  '/src/images/promo/promo09.png':
+    'Hand holding the “Node.js Design Patterns – Fourth Edition” book on a beige desk next to an open book; front cover with the purple wave motif clearly visible.',
+  '/src/images/promo/promo10.png':
+    'Hardcover of “Node.js Design Patterns – Fourth Edition” on a purple surface with a wooden pencil resting diagonally on the cover; black cover with purple wave graphic, authors’ portraits, and Packt logo.',
+}
+
+const promoMessages = {
+  '/src/images/promo/promo01.png':
+    'Get the Node.js Design Patterns book. Your playbook to senior-level Node.js.',
+  '/src/images/promo/promo02.png':
+    'Buy Node.js Design Patterns and master async, streams, and scaling Node.js.',
+  '/src/images/promo/promo03.png':
+    'Upgrade your Node.js skills: get the book professional developers trust.',
+  '/src/images/promo/promo04.png': `Join ${READERS.toLocaleString()}+ developers. Get the book they use to level up their Node.js skills.`,
+  '/src/images/promo/promo05.png': `The Node.js book with ${RATING}★ from ${REVIEWS}+ reviews. Get your copy.`,
+  '/src/images/promo/promo06.png': `${PAGES} pages. ${EXAMPLES} examples. ${EXERCISES} exercises. Get this book to level up your Node.js game.`,
+  '/src/images/promo/promo07.png':
+    'Stop stitching together half-baked tutorials. Get the definitive Node.js book and become a PRO.',
+  '/src/images/promo/promo08.png':
+    'Master all there is to know about Node.js: from callbacks to microservices. Learn it all in one book. Get your copy today.',
+  '/src/images/promo/promo09.png':
+    'Build production-grade Node.js with confidence. Grab Node.js Design Patterns now.',
+  '/src/images/promo/promo10.png':
+    'Serious about Node.js? This is the book. Get it now and start your Node.js mastery journey.',
+}
+
+const selectedPromoKey = imagesIds[Math.floor(Math.random() * imagesIds.length)]
+const selectedPromoImg = images[selectedPromoKey]()
+const selectedPromoImgAlt =
+  imagesAlt[selectedPromoKey as keyof typeof imagesAlt]
+const selectedPromoMessage =
+  promoMessages[selectedPromoKey as keyof typeof promoMessages]
+---
+
+<div
+  class="group bg-base-100 border-2 border-base-200 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 hover:border-primary transition-all duration-300 relative overflow-hidden"
+>
+  <a class="absolute inset-0 text-[0px]" href={BUY_LINK_PRINT}
+    >Link to buy Node.js Design Patterns</a
+  >
+
+  <div class="flex flex-col no-underline text-inherit">
+    <div class="w-full h-48 overflow-hidden">
+      <Image
+        src={selectedPromoImg}
+        alt={selectedPromoImgAlt}
+        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+      />
+    </div>
+    <div class="p-5 flex flex-col gap-3">
+      <p class="text-base leading-relaxed text-base-content m-0 font-medium">
+        {selectedPromoMessage}
+      </p>
+      <span
+        class="inline-flex items-center font-semibold text-primary text-sm mt-auto relative"
+      >
+        <a href={BUY_LINK_PRINT} class="relative"
+          >Get Your Copy Today →
+          <span
+            class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary/50 transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"
+          ></span>
+        </a>
+      </span>
+    </div>
+  </div>
+</div>

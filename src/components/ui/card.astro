@@ -1,0 +1,39 @@
+---
+import { cn } from '@lib/utils'
+
+type Props = {
+  class?: string
+  headerClass?: string
+  titleClass?: string
+  descriptionClass?: string
+  contentClass?: string
+  footerClass?: string
+}
+
+const props = Astro.props
+---
+
+<div
+  class={cn(
+    'rounded-xl border bg-card text-card-foreground shadow',
+    props.class,
+  )}
+>
+  <div class={cn('flex flex-col space-y-1.5 p-6', props.headerClass)}>
+    <slot name="header" />
+  </div>
+  <div
+    class={cn('font-semibold leading-none tracking-tight', props.titleClass)}
+  >
+    <slot name="title" />
+  </div>
+  <div class={cn('text-sm text-muted-foreground', props.descriptionClass)}>
+    <slot name="description" />
+  </div>
+  <div class={cn('p-6 pt-0', props.contentClass)}>
+    <slot name="content" />
+  </div>
+  <div class={cn('flex items-center p-6 pt-0', props.footerClass)}>
+    <slot name="footer" />
+  </div>
+</div>
