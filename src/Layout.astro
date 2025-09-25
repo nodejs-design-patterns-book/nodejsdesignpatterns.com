@@ -140,6 +140,28 @@ const {
     <Font cssVariable="--font-base-sans" preload />
     <Font cssVariable="--font-base-serif" preload />
     <Font cssVariable="--font-base-mono" preload />
+
+    <!-- Google tag (gtag.js) -->
+    <script
+      is:inline
+      type="text/partytown"
+      src="https://www.googletagmanager.com/gtag/js?id=G-NFE37ZH2W3"></script>
+    <script is:inline type="text/partytown">
+      window.dataLayer = window.dataLayer || []
+      function gtag() {
+        // eslint-disable-next-line no-undef
+        dataLayer.push(arguments)
+      }
+      gtag('js', new Date())
+      // Disable all tracking by default
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+      })
+      gtag('config', 'G-NFE37ZH2W3')
+    </script>
   </head>
   <body
     class="antialiased transition-colors duration-300 bg-base-100 text-base-content"
