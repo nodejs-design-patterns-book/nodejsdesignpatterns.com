@@ -1,0 +1,65 @@
+---
+import Layout from '../Layout.astro'
+import Footer from '@components/Footer.astro'
+import ASCIIText from '@components/ASCIIText'
+
+const pageTitle = '404: Page Not Found! - Node.js Design Patterns'
+const pageDescription =
+  "Page not found. Let's get you back on track to explore Node.js Design Patterns."
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  ogTitle={pageTitle}
+  ogDescription={pageDescription}
+>
+  <main class="min-h-screen bg-base-100 relative overflow-hidden">
+    <!-- ASCII Text Background -->
+    <div class="absolute inset-0 z-0 opacity-5">
+      <ASCIIText
+        text="404"
+        asciiFontSize={6}
+        textFontSize={180}
+        enableWaves={true}
+        client:load
+      />
+    </div>
+
+    <!-- Content Overlay -->
+    <div
+      class="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-12"
+    >
+      <div class="text-center max-w-2xl mx-auto">
+        <!-- Main Heading -->
+        <h1
+          class="text-6xl lg:text-8xl font-bold font-heading text-base-content mb-6 opacity-90"
+        >
+          Page Not Found
+        </h1>
+
+        <p class="text-xl text-base-content/80 mb-12 leading-relaxed">
+          The page you're looking for doesn't exist. Let's get you back to
+          exploring Node.js patterns.
+        </p>
+
+        <!-- Navigation Links -->
+        <div class="flex flex-wrap justify-center gap-6 mb-16">
+          <a
+            href="/"
+            class="btn btn-primary btn-lg shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            Go Home
+          </a>
+          <a
+            href="/blog"
+            class="btn btn-outline btn-lg shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            Read Blog
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+  <Footer /></Layout
+>
