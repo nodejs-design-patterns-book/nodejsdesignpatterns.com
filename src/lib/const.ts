@@ -6,10 +6,8 @@ export const EXERCISES = 54
 export const RATING = 4.6
 export const MAX_RATING = 5
 export const REVIEWS = 780
-export const BUY_LINK_PRINT =
-  'https://zhinaydjxzpysk4hel3tqbhn3q0kewtv.lambda-url.eu-west-1.on.aws/1803238941'
-export const BUY_LINK_EBOOK =
-  'https://zhinaydjxzpysk4hel3tqbhn3q0kewtv.lambda-url.eu-west-1.on.aws/B0F4WXGHJX'
+export const BUY_LINK_PRINT = 'https://nodejsdp.link/buy'
+export const BUY_LINK_EBOOK = 'https://nodejsdp.link/buy-kindle'
 export const BUY_LINK_PACKT =
   'https://www.packtpub.com/en-us/product/nodejs-design-patterns-9781803235431'
 
