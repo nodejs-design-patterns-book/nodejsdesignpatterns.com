@@ -176,7 +176,17 @@ async function createBeepWav() {
 await createBeepWav()
 ```
 
-When working with binary data like this, we use the Node.js [Buffer](https://nodejs.org/api/buffer.html) object to organize and manipulate the binary data. A Buffer is a fixed-size sequence of bytes that provides a way to work with binary data directly. It's similar to an array of integers, but specifically designed for handling raw binary data efficiently. In our WAV example, we use `Buffer.alloc()` to create a buffer of the required size, then use methods like `writeUInt32LE()` and `writeInt16LE()` to write specific data types at specific positions in little-endian format. If you are curious to find out more about the binary structure of a WAV file, you can check out this excellent page on [Wikipedia](https://en.wikipedia.org/wiki/WAV).
+This example demonstrates several key concepts for binary file manipulation in Node.js. The `encodeWavPcm16()` function creates a complete WAV file structure by constructing both the header and audio data sections. The WAV header contains metadata like file size, audio format, sample rate, and number of channels, while the data section contains the actual audio samples.
+
+The `generateBeepTone()` function creates audio samples using a sine wave mathematical formula, generating a pure tone at the specified frequency. Each sample represents the amplitude of the sound wave at a specific point in time, and when played back at the correct sample rate, these digital values recreate the original analog sound.
+
+Don't worry too much about the specifics of this example dealing with the WAV binary format - what matters here is learning that we can put arbitrary binary data into a buffer and write it into a file using `writeFile()`. The key takeaway is that Node.js treats all file operations the same way, whether you're writing text, JSON, images, audio, or any other type of data.
+
+When working with binary data like this, we use the Node.js [Buffer](https://nodejs.org/api/buffer.html) object to organize and manipulate the binary data. A Buffer is a fixed-size sequence of bytes that provides a way to work with binary data directly. It's similar to an array of integers, but specifically designed for handling raw binary data efficiently. In our WAV example, we use `Buffer.alloc()` to create a buffer of the required size, then use methods like `writeUInt32LE()` and `writeInt16LE()` to write specific data types at specific positions in little-endian format.
+
+:::note[WAV Binary File Structure]
+If you are curious to find out more about the binary structure of a WAV file, you can check out this excellent page on [Wikipedia](https://en.wikipedia.org/wiki/WAV).
+:::
 
 #### Reading Binary Data - Parse WAV file header
 
@@ -255,6 +265,12 @@ if (!filePath) {
 await getWavDuration(filePath)
 ```
 
+This example showcases the reverse process - reading and parsing binary data from an existing WAV file. The `decodeWavHeader()` function demonstrates how to extract specific information from binary data by reading bytes at predetermined positions within the file structure.
+
+The function uses Buffer methods like `readUInt32LE()` and `readUInt16LE()` to interpret raw bytes as specific data types. For example, bytes 22-23 contain the number of channels, bytes 24-27 contain the sample rate, and bytes 40-43 contain the size of the audio data. By knowing the WAV file format specification, we can locate and extract these values.
+
+The duration calculation combines several pieces of metadata: we divide the total audio data size by the byte rate (bytes per second) to get the duration in seconds, then multiply by 1000 to convert to milliseconds. This demonstrates how understanding both the file format and basic math allows us to derive meaningful information from binary data.
+
 You can try out this example with the beep WAV files we created in the previous example or, if you need some longer free WAV files, you can check out a website with free audio samples like [Zapsplat](https://www.zapsplat.com/).
 
 :::note[Binary file complexity]
@@ -306,7 +322,7 @@ This concurrent approach provides a significant performance improvement. If we u
 
 #### Writing Multiple Files Concurrently
 
-```javascript
+```javascript {26-29}
 // write-multiple-files.js
 import { writeFile } from 'node:fs/promises'
 
@@ -335,8 +351,8 @@ async function generateReports(data) {
     const promises = reports.map(({ filename, content }) =>
       writeFile(filename, content, 'utf8'),
     )
-
     await Promise.all(promises)
+
     console.log(`Successfully generated ${reports.length} report files`)
   } catch (error) {
     console.error('Failed to write report files:', error.message)
@@ -486,7 +502,7 @@ Notice that when using `readFileSync()` and `writeFileSync()` we are not using `
 
 However, if you care about extreme performance, there are specific cases where you might prefer the sync methods. Sync methods can occasionally be faster because they don't need to give back control to the event loop and, for example in the case of reading a file, the content of the file is immediately available once the filesystem operation completes without having to wait for the event loop to capture the event and give back control to our code. One case that comes to mind is when writing **non-concurrent CLI apps or scripts** that need to read or write a file before continuing with the next operation.
 
-:::danger[Never Use Sync Methods in Concurrent Environments]
+:::warning[Never Use Sync Methods in Concurrent Environments]
 **Do not use sync methods in concurrent environments such as web servers.** While you read or write a file synchronously, you will be blocking the event loop, which means that no other user requests will be processed during that time.
 
 This can cause noticeable delays for users - if a file operation takes 100ms, every user trying to access your server during that time will experience a 100ms delay. In a web application, this is unacceptable.
@@ -502,7 +518,7 @@ This can cause noticeable delays for users - if a file operation takes 100ms, ev
 - Web servers (Express, Fastify, etc.)
 - Real-time applications
 - Any concurrent environment
-:::
+  :::
 
 ## Working with Large Files: Memory Considerations
 
