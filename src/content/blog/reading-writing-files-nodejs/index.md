@@ -16,11 +16,17 @@ In this comprehensive guide, we'll focus on the modern approaches to file handli
 
 Let's dive in and master file operations in Node.js!
 
+:::note[Code examples]
+All the code examples in this article can be found on [GitHub](https://github.com/lmammino/reading-and-writing-files-with-nodejs-examples).
+:::
+
 ## Reading and Writing Files with Node.js Promises (fs/promises)
 
-The most straightforward way to work with files in modern Node.js is using the `fs/promises` module with functions like `readFile()` and `writeFile()`. This gives us a clean, promise-based API that works beautifully with `async/await`.
+The most straightforward way to work with files in modern Node.js is using the `node:fs/promises` module with functions like `readFile()` and `writeFile()`. This gives us a clean, promise-based API that works beautifully with `async/await`.
 
-Both `readFile()` and `writeFile()` return promises, and when we use `await`, we give control back to the event loop while the asynchronous file operation completes. When the operation finishes successfully, execution moves to the next line of code. If the operation fails, the promise rejects and throws an error (which is why we need `try/catch` blocks). This non-blocking behavior is what makes Node.js so efficient at handling I/O operations in highly concurrent environments.
+Both `readFile()` and `writeFile()` return promises, and when we use `await`, we give control back to the event loop while the asynchronous file operation completes. When the operation finishes successfully, the event loop gives back control to our code and the execution moves to the next line of code. If the operation fails, the promise rejects and throws an error (which we can handle with a `try/catch` block). This non-blocking behavior is what makes Node.js so efficient at handling I/O operations in highly concurrent environments.
+
+But enough theory, let's see this in action!
 
 ### Reading Files with fs/promises
 
@@ -41,7 +47,7 @@ try {
 
 The `readFile()` function loads the entire file content into memory and returns it as a string (when you specify an encoding like 'utf8') or as a Buffer (when no encoding is specified).
 
-:::tip[Why error handling matters]
+:::tip[Handling errors when reading files]
 Notice how we wrapped our file operation in a `try/catch` block? File operations can fail for many reasons:
 
 - **ENOENT**: File or directory doesn't exist
@@ -55,18 +61,17 @@ Always handle these errors gracefully to prevent your application from crashing.
 
 ### Writing Files with fs/promises
 
-Writing files is just as straightforward. This example takes a JavaScript object, converts it to JSON, and saves it to a file:
+Now that we've mastered reading files, what about creating them? Writing files is just as straightforward. This example takes a JavaScript object, converts it to JSON, and saves it to a file:
 
-```javascript {10}
+```javascript {9}
 // write-promises.js
 import { writeFile } from 'node:fs/promises'
 
 try {
-  const jsonData = JSON.stringify(
-    { name: 'John Doe', email: 'john@example.com' },
-    null,
-    2,
-  )
+  const jsonData = JSON.stringify({
+    name: 'John Doe',
+    email: 'john@example.com',
+  })
   await writeFile('user-data.json', jsonData, 'utf8')
   console.log('User data saved successfully!')
 } catch (error) {
@@ -75,6 +80,9 @@ try {
 }
 ```
 
+This example demonstrates the fundamental `writeFile()` operation: we're taking all our data (in this case, a JSON string) and flushing it to a file in a single atomic operation. The `writeFile()` function creates the file if it doesn't exist, or completely overwrites it if it does. The entire string content is written to disk at once, making this approach perfect for situations where you have all your data ready and want to persist it quickly.
+
+:::tip[Handling errors when writing files]
 Notice we're using `try/catch` here as well, because file write operations can fail for various reasons:
 
 - **EACCES**: Permission denied (can't write to the directory)
@@ -82,10 +90,11 @@ Notice we're using `try/catch` here as well, because file write operations can f
 - **EROFS**: Read-only file system
 - **EISDIR**: Trying to write to a directory instead of a file
 - **ENOTDIR**: Part of the path is not a directory
+  :::
 
 ### Reading and Writing Binary Files
 
-Not all files are text-based. Here's a more advanced example showing how to work with binary data by creating and reading WAV audio files:
+So far, we've been working with text files, but what happens when you need to handle images, videos, or audio files? Not all files are text-based, and Node.js handles binary data just as elegantly. Here's a more advanced example showing how to work with binary data by creating and reading WAV audio files:
 
 #### Writing Binary Data - Generate a WAV file
 
@@ -180,7 +189,7 @@ This example demonstrates several key concepts for binary file manipulation in N
 
 The `generateBeepTone()` function creates audio samples using a sine wave mathematical formula, generating a pure tone at the specified frequency. Each sample represents the amplitude of the sound wave at a specific point in time, and when played back at the correct sample rate, these digital values recreate the original analog sound.
 
-Don't worry too much about the specifics of this example dealing with the WAV binary format - what matters here is learning that we can put arbitrary binary data into a buffer and write it into a file using `writeFile()`. The key takeaway is that Node.js treats all file operations the same way, whether you're writing text, JSON, images, audio, or any other type of data.
+Don't worry too much about the specifics of this example dealing with the WAV binary format! What matters here is learning that we can put arbitrary binary data into a buffer and write it into a file using `writeFile()`. The key takeaway is that Node.js treats all file operations the same way, whether you're writing text, JSON, images, audio, or any other type of data.
 
 When working with binary data like this, we use the Node.js [Buffer](https://nodejs.org/api/buffer.html) object to organize and manipulate the binary data. A Buffer is a fixed-size sequence of bytes that provides a way to work with binary data directly. It's similar to an array of integers, but specifically designed for handling raw binary data efficiently. In our WAV example, we use `Buffer.alloc()` to create a buffer of the required size, then use methods like `writeUInt32LE()` and `writeInt16LE()` to write specific data types at specific positions in little-endian format.
 
@@ -271,7 +280,9 @@ The function uses Buffer methods like `readUInt32LE()` and `readUInt16LE()` to i
 
 The duration calculation combines several pieces of metadata: we divide the total audio data size by the byte rate (bytes per second) to get the duration in seconds, then multiply by 1000 to convert to milliseconds. This demonstrates how understanding both the file format and basic math allows us to derive meaningful information from binary data.
 
+:::note[Finding free WAV files]
 You can try out this example with the beep WAV files we created in the previous example or, if you need some longer free WAV files, you can check out a website with free audio samples like [Zapsplat](https://www.zapsplat.com/).
+:::
 
 :::note[Binary file complexity]
 This is a very simple example showing basic binary manipulation using only Node.js built-ins. We can handle the WAV format manually here because we're creating a minimal, single-channel PCM file with known parameters.
@@ -281,7 +292,7 @@ For real-world audio applications, you'd typically want to use a comprehensive l
 
 ### Concurrent File Operations with Promises
 
-One of the great advantages of promise-based file operations is the ability to read and write multiple files concurrently. Here's how you can do it:
+Reading and writing single files is useful, but what if you need to process multiple files? Should you handle them one by one, or is there a faster way? One of the great advantages of promise-based file operations is the ability to read and write multiple files concurrently. Here's how you can do it:
 
 #### Reading Multiple Files Concurrently
 
@@ -300,7 +311,7 @@ try {
   // Read all files concurrently and parse JSON
   // Note that we are not using await here, so the reads happen concurrently
   const promises = configFiles.map((file) =>
-    readFile(file, 'utf8').then((content) => JSON.parse(content)),
+    readFile(file, 'utf8').then(JSON.parse),
   )
 
   // Here we are using await, so we wait for all reads to complete before proceeding
@@ -318,7 +329,13 @@ try {
 }
 ```
 
+This example demonstrates the power of promise chaining combined with concurrent operations. We start by mapping over an array of file names to create an array of promises. Each promise represents the complete operation of reading a file and parsing its JSON content.
+
+The key insight here is how we use `.then(JSON.parse)` — which is a shorthand for `.then(content => JSON.parse(content))` — to chain operations. First, `readFile(filename, 'utf8')` returns a promise that resolves to the raw file content as a string. Then, we chain `.then(JSON.parse)` to that promise, which creates a new promise that will resolve to the file content parsed from JSON into a JavaScript value (likely an object). In other words, this chaining transforms our original "read file" promise into a "read and parse JSON file" promise.
+
+:::important[Concurrent vs Sequential Operations]
 This concurrent approach provides a significant performance improvement. If we used multiple `await` statements (one for each file read), we would be processing the files sequentially. If each file read takes 10ms, we wouldn't be completing the operation in less than 40ms. With concurrent reads - by starting all promises first and then awaiting all of them with `Promise.all()` - we'll most likely be able to read all four files in around 10ms (roughly the time of the slowest individual read).
+:::
 
 #### Writing Multiple Files Concurrently
 
@@ -371,6 +388,14 @@ const reportData = {
 await generateReports(reportData)
 ```
 
+This example mirrors the concurrent reading pattern but for writing operations. We create an array of report objects, each containing a filename and content, then use `.map()` to transform this into an array of `writeFile()` promises. The key pattern here is the same: we start all write operations simultaneously (when we create the promises array) and then use `Promise.all()` to wait for all of them to complete.
+
+:::tip[JavaScript Promises are Eager]
+It's important to remember that JavaScript promises are eager: once they are created, the underlying computation starts immediately. In this case, this means that once we call `writeFile()`, it will create a promise and start to write into the file immediately. We don't need to `await` the promise for the file operation to begin; the `await` only determines when our code waits for the operation to complete.
+:::
+
+This approach is particularly useful for generating multiple related files, such as reports, logs, or configuration files. All files are written concurrently, which significantly improves performance compared to writing them one by one. If any write operation fails, the entire batch fails, which is often the desired behavior for related files that should be created as a unit.
+
 :::tip[Promise.all() vs Promise.allSettled() - Choose the Right Tool]
 In these examples, we use `Promise.all()` because if any config file fails to load or any report fails to write, we can't continue - all operations are required for the application to function properly.
 
@@ -386,7 +411,7 @@ Learn more: [Promise.all() on MDN](https://developer.mozilla.org/en-US/docs/Web/
 
 ### Working with Directories
 
-You'll often need to work with directories too:
+Files don't exist in isolation, they live in directories. What if you need to process all files in a folder, or create directories dynamically? You'll often need to work with directories too:
 
 ```javascript {8,11,14,15,17}
 // process-directory.js
@@ -468,7 +493,7 @@ This approach is much more reliable than using relative paths like `'./config.js
 
 ### Async vs Sync File Operations: When to Use Which
 
-Before diving into more advanced file handling techniques, let's compare the promise-based approaches we've seen with the synchronous alternatives Node.js provides.
+We've been using async operations throughout this guide, but you might be wondering: "Are there simpler, synchronous alternatives?" The answer is yes, but when should you use them? Before diving into more advanced file handling techniques, let's compare the promise-based approaches we've seen with the synchronous alternatives Node.js provides.
 
 Node.js also offers synchronous versions of file operations like `readFileSync()` and `writeFileSync()`:
 
@@ -496,11 +521,15 @@ try {
 }
 ```
 
-Notice that when using `readFileSync()` and `writeFileSync()` we are not using `await`. This is because these methods are synchronous: they block the event loop until the operation is completed, which means no other JavaScript code is executed while the file read/write operation is in progress.
+Notice that when using `readFileSync()` and `writeFileSync()` we are not using `await`. This is because these functions are synchronous: they block the event loop until the operation is completed, which means no other JavaScript code is executed while the file read/write operation is in progress.
 
 **My recommendation: I generally prefer to avoid synchronous file functions entirely and always go for the async approach for consistency.** This keeps your codebase uniform and prevents accidentally blocking the event loop in unexpected places. This makes even more sense since for a few years Node.js has added support for **top-level await** (being able to use `await` outside an async function), so using asynchronous file operations is just as easy as using synchronous ones.
 
-However, if you care about extreme performance, there are specific cases where you might prefer the sync methods. Sync methods can occasionally be faster because they don't need to give back control to the event loop and, for example in the case of reading a file, the content of the file is immediately available once the filesystem operation completes without having to wait for the event loop to capture the event and give back control to our code. One case that comes to mind is when writing **non-concurrent CLI apps or scripts** that need to read or write a file before continuing with the next operation.
+However, if you care about extreme performance, there are specific cases where you might prefer the sync methods. Sync methods can occasionally be slightly faster because they don't need to give back control to the event loop and, for example in the case of reading a file, the content of the file is immediately available once the filesystem operation completes without having to wait for the event loop to capture the event and give back control to our code. One case that comes to mind is when writing **non-concurrent CLI apps or scripts** that need to read or write a file before continuing with the next operation.
+
+:::note[Always run your benchmarks!]
+If you are wondering how much faster sync methods are compared to async ones, the answer is: _it depends!_ The only way to know for sure is to run benchmarks in your specific environment and use case. Factors like filesystem speed, file size, and system load can all impact performance. With that being said, we do expect the difference to be negligible in most cases, which is one more reason to prefer async methods for consistency.
+:::
 
 :::warning[Never Use Sync Methods in Concurrent Environments]
 **Do not use sync methods in concurrent environments such as web servers.** While you read or write a file synchronously, you will be blocking the event loop, which means that no other user requests will be processed during that time.
@@ -520,9 +549,9 @@ This can cause noticeable delays for users - if a file operation takes 100ms, ev
 - Any concurrent environment
   :::
 
-## Working with Large Files: Memory Considerations
+## Working with Large Files
 
-The promise-based approach we've seen so far is perfect for small to medium-sized files. However, there's a significant limitation: **everything gets loaded into memory at once**.
+The promise-based approaches we've covered work brilliantly for everyday files - but what happens when you need to process a massive CSV file, or a multi-gigabyte log file? The promise-based approach we've seen so far is perfect for small to medium-sized files. However, there's a significant limitation: **everything gets loaded into memory at once**.
 
 Imagine you're trying to read a 2GB log file using `readFile()`. Your Node.js process will attempt to load all 2GB into memory simultaneously. This can lead to several problems:
 
@@ -560,7 +589,7 @@ try {
 }
 ```
 
-So does this mean that Node.js can't handle big files?! Of course not, we just need to use different tools to do that! The trick is to make sure we don't load ALL the data into memory in one go, but we process the data in smaller incremental chunks!
+So does this mean that Node.js can't handle big files?! Of course not, Node.js is actually quite good at handling them... we just need to use different tools to do that! The trick is to make sure we don't load ALL the data into memory in one go, but we process the data in smaller incremental chunks!
 
 ### When to Use Promise-Based Methods
 
@@ -573,7 +602,7 @@ Promise-based file operations are great when:
 
 ## Advanced Node.js File Operations with File Handles
 
-When you need more control over file operations, Node.js provides lower-level APIs using file handles. This approach allows you to read and write files incrementally, giving you fine-grained control over memory usage.
+So how do we handle those massive files without running out of memory? When you need more control over file operations, Node.js provides lower-level APIs using file handles. This approach allows you to read and write files incrementally, giving you fine-grained control over memory usage.
 
 If you have ever read data from a file or written data into a file in a low-level language such as C, this approach will seem familiar.
 
@@ -632,11 +661,15 @@ This example demonstrates the core concepts of working with file handles in Node
 
 The `read()` method allows us to read a specific number of bytes from a specific position in the file. In our loop, we read 1KB chunks at a time, processing each chunk before moving to the next. This approach keeps memory usage low and predictable, regardless of the file size.
 
-Most importantly, we need to make sure we clean up resources, which is why we use a `finally` block. This way, the cleanup code (calling `fileHandle.close()`) is executed whether everything goes well or if there's an error. This allows us to retain a clean state and lets Node.js reclaim resources that aren't needed anymore. Failing to close file handles can lead to resource leaks and eventually cause your application to run out of available file descriptors.
+Most importantly, we need to make sure we clean up resources, which is why we use a `finally` block. This way, the cleanup code (calling `fileHandle.close()`) is executed whether everything goes well or if there's an error. This allows us to retain a clean state and lets Node.js reclaim resources that aren't needed anymore.
+
+:::warning[Always Close File Handles]
+Failing to close file handles can lead to resource leaks and eventually cause your application to run out of available file descriptors.
+:::
 
 ### Writing Files Incrementally
 
-Let's say we want to create a file that contains 1 million unique voucher codes. If we prepopulate all the data in memory, that would require a significant amount of memory. Instead, we can generate vouchers in small chunks and append them to a file as we go:
+Suppose we need a file with one million unique voucher codes for a later print run. Preloading them all in memory would be wasteful, so we stream the work: generate codes in small batches and append each batch to the file.
 
 ```javascript {20,42,56}
 // generate-voucher-codes.js
@@ -720,14 +753,14 @@ While file handles give you precise control, they require you to manage a lot of
 - **Error handling** - More complex error scenarios to handle
 - **Resource cleanup** - You must remember to close file handles
 
-This low-level approach is powerful but verbose. For most use cases, there's a better solution: **streams**.
+This low-level approach is powerful but verbose. For most use cases, there's a better solution: **Node.js streams**.
 
 ## Node.js Streams: Memory-Efficient File Processing
 
-Streams provide the memory efficiency of low-level file operations with a much more ergonomic API. They're perfect for processing large files without loading everything into memory.
+File handles give us control, but they require a lot of manual work. Is there a middle ground that gives us memory efficiency without all the complexity? Absolutely! Streams provide the memory efficiency of low-level file operations with a much more ergonomic API. They're perfect for processing large files without loading everything into memory.
 
-:::tip[Want to Master Node.js Streams?]
-We're giving away for free an entire chapter from our book "Node.js Design Patterns" dedicated to learning Streams!
+:::tip[Want to Master Node.js Streams (for FREE)?]
+We're giving away for free an entire chapter from our book ["Node.js Design Patterns"](/) entirely dedicated to learning Streams!
 
 **Chapter 6: Coding with Streams** - 80 pages packed with practical examples, real-world insights, and powerful design patterns to help you write faster, leaner, and more scalable Node.js code.
 
@@ -1086,6 +1119,8 @@ await analyzeLogFile('./logs/access.log')
 
 ### Best Practices Summary
 
+We've covered a lot of ground in this guide - from simple file reading to advanced streaming patterns. But with so many options available, how do you choose the right approach for your specific use case? Here are the key principles to guide your decisions:
+
 1. **Choose the right approach for your use case**:
    - **Small files (< 100MB)**: Use `fs/promises` with `readFile()` and `writeFile()`
    - **Large files or unknown sizes**: Use streams with `createReadStream()` and `createWriteStream()`
@@ -1210,6 +1245,8 @@ Remember that file operations are often I/O bound, so proper error handling and 
 
 ## Frequently Asked Questions
 
+Still have questions about Node.js file operations? You're not alone! Here are the most common questions developers ask when mastering file handling in Node.js:
+
 ### What's the difference between sync and async file operations in Node.js?
 
 Synchronous file operations like `readFileSync()` block the event loop until the operation completes, meaning no other JavaScript code can execute during that time. Asynchronous operations like `readFile()` don't block the event loop, allowing other code to run while the file operation happens in the background. Always use async operations in web servers and concurrent applications to avoid blocking other requests.
@@ -1237,6 +1274,8 @@ Use `Promise.all()` or `Promise.allSettled()` with an array of promises to proce
 ---
 
 ## Take Your Node.js Skills to the Next Level
+
+Congratulations! You've just mastered one of the most fundamental aspects of Node.js development. But this is just the beginning of your journey to becoming a Node.js expert.
 
 If you found value in this comprehensive guide to file operations, you'll love **Node.js Design Patterns** - the definitive resource designed to elevate Node.js developers from junior to senior level.
 
