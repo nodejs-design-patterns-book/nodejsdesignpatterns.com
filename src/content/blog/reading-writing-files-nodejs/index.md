@@ -733,7 +733,7 @@ async function generateVoucherFile(filePath, totalVouchers) {
 }
 
 // Usage - Generate 1 million voucher codes
-await generateVoucherFile('voucher-codes.txt', 1000000)
+await generateVoucherFile('voucher-codes.txt', 1_000_000)
 ```
 
 This example shows how to efficiently generate and write large amounts of data without overwhelming memory. The `open()` function creates a file handle with the `'w'` flag, which opens the file for writing (creating it if it doesn't exist, or truncating it if it does).
@@ -786,17 +786,15 @@ Streams offer several key benefits:
 
 ### Reading Files with Streams
 
-Here's how to read a file using a readable stream:
+Ready to see the magic of streams in action? Let's build a CLI utility that takes a text file of arbitrary size and counts the number of characters and lines in it, all while barely using any memory.
 
-```javascript
+```javascript {5-7,12,20,26}
 // process-large-file-stream.js
 import { createReadStream } from 'node:fs'
-import { pipeline } from 'node:stream/promises'
 
 async function processLargeFile(filePath) {
   const readStream = createReadStream(filePath, {
     encoding: 'utf8',
-    highWaterMark: 16 * 1024, // 16KB chunks
   })
 
   let lineCount = 0
@@ -825,169 +823,195 @@ async function processLargeFile(filePath) {
 await processLargeFile('huge-log-file.txt')
 ```
 
+This example demonstrates the elegance of stream-based file processing. We create a readable stream with `createReadStream()` and set up event handlers to process the data as it flows through.
+
+The key advantage here is that we're processing the file incrementally - each chunk is handled as soon as it's read, without waiting for the entire file to load into memory. This makes it possible to process files of any size using a constant, predictable amount of memory. The stream emits three important events: `data` (when a chunk is available), `end` (when the entire file has been read), and `error` (if something goes wrong).
+
+This pattern is perfect for analyzing log files, processing CSV data, or any scenario where you need to examine file content without loading everything into memory at once.
+
+:::tip[UTF-8 Encoding and Multibyte Character Handling]
+By specifying `encoding: 'utf8'`, the stream takes care of processing multibyte UTF-8 characters for us automatically. Here's why this matters: chunking data into arbitrary windows of bytes (64KB by default) might happen to truncate a multibyte character between chunks. For example, a 2-byte character might have the first byte at the end of one chunk and the second byte at the beginning of the following chunk.
+
+This can be problematic because if you print chunks without stitching them together, you might end up with broken characters displayed between chunks. Thankfully, Node.js takes care of doing the stitching for us - it will move the incomplete multibyte character from one chunk to the following chunk, so every chunk is guaranteed to contain a valid UTF-8 string (assuming the source file contains valid UTF-8 text).
+:::
+
 ### Writing Files with Streams
 
-Writing with streams is equally straightforward:
+Now let's flip the script and see streams in action for writing! Remember our voucher code generator that could create millions of codes? Let's revisit that example using streams for a more ergonomic and manageable approach. We'll build the same voucher generator but with cleaner, simpler code that's easier to understand and maintain.
 
-```javascript
-// generate-large-file.js
+```javascript {17,23,45-48, 56} collapse={8-13}
+// generate-voucher-codes-stream.js
+import { once } from 'node:events'
 import { createWriteStream } from 'node:fs'
-import { pipeline } from 'node:stream/promises'
-import { Readable } from 'node:stream'
 
-async function generateLargeFile(filePath, numberOfLines) {
-  const writeStream = createWriteStream(filePath, {
-    encoding: 'utf8',
-    highWaterMark: 64 * 1024, // 64KB buffer
-  })
-
-  // Create a readable stream that generates data
-  const dataGenerator = new Readable({
-    read() {
-      if (numberOfLines > 0) {
-        this.push(`Line ${numberOfLines}: This is some sample data\n`)
-        numberOfLines--
-      } else {
-        this.push(null) // End the stream
-      }
-    },
-  })
-
-  try {
-    // Use pipeline for proper error handling and cleanup
-    await pipeline(dataGenerator, writeStream)
-    console.log('File generation completed!')
-  } catch (error) {
-    console.error('Pipeline failed:', error.message)
-    throw error
+// This is for demonstration purposes only.
+// Ideally, voucher codes should be generated using a secure random generator
+function generateVoucherCode() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  let result = ''
+  for (let i = 0; i < 8; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length))
   }
+  return result
 }
 
-// Usage: Generate a file with 1 million lines
-await generateLargeFile('generated-data.txt', 1000000)
+async function generateVoucherFile(filePath, totalVouchers) {
+  const writeStream = createWriteStream(filePath)
+
+  const chunkSize = 1000 // Generate 1000 vouchers per chunk
+  let vouchersGenerated = 0
+  let hasError = false
+
+  writeStream.on('error', (err) => {
+    console.error('Error writing to file:', err)
+    hasError = true
+  })
+
+  while (vouchersGenerated < totalVouchers && !hasError) {
+    // Generate a chunk of voucher codes
+    const vouchersInThisChunk = Math.min(
+      chunkSize,
+      totalVouchers - vouchersGenerated,
+    )
+    const vouchers = []
+
+    for (let i = 0; i < vouchersInThisChunk; i++) {
+      vouchers.push(generateVoucherCode())
+    }
+
+    // Convert to buffer and write to file
+    const chunk = `${vouchers.join('\n')}\n`
+    const buffer = Buffer.from(chunk, 'utf8')
+
+    // Write and handle backpressure
+    const canContinue = writeStream.write(buffer)
+    if (!canContinue) {
+      await once(writeStream, 'drain')
+    }
+
+    vouchersGenerated += vouchersInThisChunk
+
+    console.log(`Generated ${vouchersGenerated}/${totalVouchers} vouchers`)
+  }
+
+  console.log(`Successfully generated ${totalVouchers} voucher codes!`)
+  writeStream.end()
+}
+
+// Usage - Generate 1 million voucher codes
+await generateVoucherFile('voucher-codes.txt', 1_000_000)
 ```
+
+This stream-based approach transforms our file generation process into a more ergonomic operation. The `createWriteStream()` function creates a writable stream that we can feed data to incrementally. Unlike our earlier file handle approach, we don't need to manually track file positions - the stream automatically advances its internal cursor for us after each write.
+
+Notice how we handle errors differently here - instead of using try/catch blocks, we set up an error event handler that sets the `hasError` flag. This event-driven approach lets the stream manage error propagation naturally.
+
+The `canContinue` variable captures an important concept: **backpressure handling**. When `writeStream.write()` returns `false`, it means the internal buffer is full and we should pause until the 'drain' event fires. This prevents memory buildup when we're generating data faster than it can be written to disk.
+
+Compare this to our file handle version: we've eliminated manual position tracking, simplified the control flow, and gained automatic buffering. While this example could still be greatly simplified using higher-level stream utilities, it's already much simpler than using file handles directly. The stream manages the underlying file operations, letting us focus on generating data.
 
 ### Stream Composition and Processing
 
-One of the most powerful features of streams is the ability to compose them. Here's an example that reads a CSV file, processes it, and writes the results:
+Now let's see the true power of streams by creating a much more elegant version of our voucher generator. One of the most powerful features of streams is their composability - you can combine different streams to create sophisticated data processing pipelines:
 
-```javascript
-// csv-processor.js
-import { createReadStream, createWriteStream } from 'node:fs'
+```javascript {17-27,30,31,34} collapse={9-14}
+// stream-composition.js
+import { createWriteStream } from 'node:fs'
+import { Readable } from 'node:stream'
 import { pipeline } from 'node:stream/promises'
-import { Transform } from 'node:stream'
 
-// Custom transform stream to process CSV data
-class CSVProcessor extends Transform {
-  constructor(options = {}) {
-    super({ objectMode: true, ...options })
-    this.headers = null
-    this.lineCount = 0
+// This is for demonstration purposes only.
+// Ideally, voucher codes should be generated using a secure random generator
+function generateVoucherCode() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  let result = ''
+  for (let i = 0; i < 8; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length))
+  }
+  return result
+}
+
+class VoucherGeneratorStream extends Readable {
+  constructor(options) {
+    super({ ...options, objectMode: true })
   }
 
-  _transform(chunk, encoding, callback) {
-    const lines = chunk.toString().split('\n')
+  _read(_size) {
+    const chunk = `${generateVoucherCode()}\n`
+    this.push(chunk)
+  }
+}
 
-    for (const line of lines) {
-      if (!line.trim()) continue
+const totalVouchers = 1_000_000
+const sourceStream = new VoucherGeneratorStream().take(totalVouchers) // Generate 1 million vouchers
+const destinationStream = createWriteStream('voucher-codes.txt')
 
-      if (!this.headers) {
-        this.headers = line.split(',')
-        continue
-      }
+try {
+  await pipeline(sourceStream, destinationStream)
+  console.log(`Successfully generated ${totalVouchers} voucher codes!`)
+} catch (err) {
+  console.error('Pipeline failed:', err)
+}
+```
 
-      const values = line.split(',')
-      const record = {}
+This example is functionally equivalent to our previous voucher generator but offers a much more concise and readable implementation. Let's break down what makes this approach so powerful:
 
-      this.headers.forEach((header, index) => {
-        record[header.trim()] = values[index]?.trim() || ''
-      })
+**Custom Readable Stream**: We create a `VoucherGeneratorStream` class that extends Node.js's `Readable` stream. The `_read()` method is called whenever the stream needs more data - it generates one voucher code per call and pushes it to the stream. Notice we use `objectMode: true` in the constructor, which tells the stream to treat each voucher string as an individual chunk rather than trying to buffer multiple strings together.
 
-      // Transform the record (e.g., uppercase all names)
-      if (record.name) {
-        record.name = record.name.toUpperCase()
-      }
+**Endless Stream with Limits**: Our `VoucherGeneratorStream` is essentially endless - it would keep generating voucher codes forever. That's where the `.take(totalVouchers)` utility function comes in. This stream method limits our endless stream to exactly 1 million vouchers, automatically ending the stream once that limit is reached.
 
-      this.push(JSON.stringify(record) + '\n')
-      this.lineCount++
+**Automatic Pipeline Management**: The `pipeline()` function is where the magic happens. It connects our voucher generator stream to the file write stream, automatically handling data flow, backpressure, and error propagation. When the generator produces data faster than the file can be written, `pipeline()` automatically pauses the generator until the file stream catches up. No manual `canContinue` checks or `drain` event handling needed!
+
+The beauty of this approach is its declarative nature - we describe _what_ we want (generate vouchers and write them to a file) rather than _how_ to manage the low-level details. The stream infrastructure handles buffering, backpressure, and coordination for us.
+
+:::tip[Learn More About Streams]
+There are many stream details we've glossed over here - transform streams, duplex streams, and advanced composition patterns. For a deep dive into Node.js streams, check out the [FREE streams chapter from our Node.js Design Patterns book](/#free-chapter).
+:::
+
+:::tip[Using pipeline() with Generators]
+It's worth noting that the `pipeline()` function also supports **iterables** and **async iterables** (including **generator functions**), which can allow us to make the code even more concise.
+
+<details>
+  <summary>Alternative implementation using an async Generator Function (click to expand)</summary>
+
+```javascript {5,14,22}
+// stream-composition-gen.js
+import { createWriteStream } from 'node:fs'
+import { pipeline } from 'node:stream/promises'
+
+function* voucherCodesGen() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  while (true) {
+    // This is for demonstration purposes only.
+    // Ideally, voucher codes should be generated using a secure random generator
+    let result = ''
+    for (let i = 0; i < 8; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length))
     }
-
-    callback()
-  }
-
-  _flush(callback) {
-    console.log(`Processed ${this.lineCount} records`)
-    callback()
+    yield `${result}\n`
   }
 }
 
-async function processCSVFile(inputPath, outputPath) {
-  try {
-    await pipeline(
-      createReadStream(inputPath, { encoding: 'utf8' }),
-      new CSVProcessor(),
-      createWriteStream(outputPath, { encoding: 'utf8' }),
-    )
+const totalVouchers = 1_000_000 // Generate 1 million vouchers
+const destinationStream = createWriteStream('voucher-codes.txt')
 
-    console.log('CSV processing completed!')
-  } catch (error) {
-    console.error('CSV processing failed:', error.message)
-    throw error
-  }
+try {
+  await pipeline(voucherCodesGen().take(totalVouchers), destinationStream)
+  console.log(`Successfully generated ${totalVouchers} voucher codes!`)
+} catch (err) {
+  console.error('Pipeline failed:', err)
 }
-
-// Usage
-await processCSVFile('users.csv', 'processed-users.json')
 ```
 
-### Handling Backpressure
+</details>
 
-Streams automatically handle backpressure - the situation where data is being produced faster than it can be consumed. Here's how you can monitor and control it:
+If you want to learn more about JavaScript iteration protocols, including iterables, async iterables, and generator functions, check out our article dedicated to [JavaScript Async Iterators](/blog/javascript-async-iterators) where we cover these concepts in detail.
 
-```javascript
-// backpressure-handling.js
-import { createReadStream, createWriteStream } from 'node:fs'
-
-function copyFileWithBackpressureHandling(source, destination) {
-  return new Promise((resolve, reject) => {
-    const readStream = createReadStream(source)
-    const writeStream = createWriteStream(destination)
-
-    readStream.on('data', (chunk) => {
-      const canContinue = writeStream.write(chunk)
-
-      if (!canContinue) {
-        // Backpressure detected - pause reading
-        console.log('Backpressure detected, pausing read stream')
-        readStream.pause()
-
-        // Resume when drain event is emitted
-        writeStream.once('drain', () => {
-          console.log('Resuming read stream')
-          readStream.resume()
-        })
-      }
-    })
-
-    readStream.on('end', () => {
-      writeStream.end()
-    })
-
-    writeStream.on('finish', () => {
-      console.log('File copy completed!')
-      resolve()
-    })
-
-    readStream.on('error', reject)
-    writeStream.on('error', reject)
-  })
-}
-
-// Usage
-await copyFileWithBackpressureHandling('large-video.mp4', 'copy-video.mp4')
-```
+:::
 
 ### When to Use Streams
+
+So, to summarize, when should you reach for streams?
 
 Streams are the best choice when:
 
@@ -997,129 +1021,9 @@ Streams are the best choice when:
 - **You need composability** (multiple processing steps)
 - **Handling unknown file sizes** (user uploads, network data)
 
-## Real-World Node.js File Operations: Examples and Best Practices
+## Node.js File Operations: Best Practices Summary
 
-Let's look at some real-world scenarios and best practices for file operations.
-
-### Example 1: Processing User Uploads
-
-```javascript
-// process-upload.js
-import { createWriteStream, createReadStream } from 'node:fs'
-import { pipeline } from 'node:stream/promises'
-import { Transform } from 'node:stream'
-import crypto from 'node:crypto'
-
-class FileHasher extends Transform {
-  constructor() {
-    super()
-    this.hash = crypto.createHash('sha256')
-    this.size = 0
-  }
-
-  _transform(chunk, encoding, callback) {
-    this.hash.update(chunk)
-    this.size += chunk.length
-    this.push(chunk) // Pass chunk through unchanged
-    callback()
-  }
-
-  _flush(callback) {
-    this.digest = this.hash.digest('hex')
-    callback()
-  }
-}
-
-async function saveUserUpload(uploadStream, filename) {
-  const hasher = new FileHasher()
-  const writeStream = createWriteStream(`./uploads/${filename}`)
-
-  try {
-    await pipeline(uploadStream, hasher, writeStream)
-
-    console.log(`File saved: ${filename}`)
-    console.log(`Size: ${hasher.size} bytes`)
-    console.log(`SHA256: ${hasher.digest}`)
-
-    return {
-      filename,
-      size: hasher.size,
-      hash: hasher.digest,
-    }
-  } catch (error) {
-    console.error('Upload failed:', error.message)
-    throw error
-  }
-}
-```
-
-### Example 2: Log File Analysis
-
-```javascript
-// analyze-logs.js
-import { createReadStream } from 'node:fs'
-import { createInterface } from 'node:readline'
-
-async function analyzeLogFile(logPath) {
-  const fileStream = createReadStream(logPath)
-  const rl = createInterface({
-    input: fileStream,
-    crlfDelay: Infinity, // Handle Windows line endings
-  })
-
-  const stats = {
-    totalLines: 0,
-    errorLines: 0,
-    warningLines: 0,
-    ipAddresses: new Set(),
-    statusCodes: new Map(),
-  }
-
-  for await (const line of rl) {
-    stats.totalLines++
-
-    // Simple log parsing (adjust for your log format)
-    if (line.includes('ERROR')) {
-      stats.errorLines++
-    } else if (line.includes('WARN')) {
-      stats.warningLines++
-    }
-
-    // Extract IP addresses (simple regex)
-    const ipMatch = line.match(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/)
-    if (ipMatch) {
-      stats.ipAddresses.add(ipMatch[0])
-    }
-
-    // Extract HTTP status codes
-    const statusMatch = line.match(/\s(\d{3})\s/)
-    if (statusMatch) {
-      const status = statusMatch[1]
-      stats.statusCodes.set(status, (stats.statusCodes.get(status) || 0) + 1)
-    }
-  }
-
-  console.log('Log Analysis Results:')
-  console.log(`Total lines: ${stats.totalLines}`)
-  console.log(`Error lines: ${stats.errorLines}`)
-  console.log(`Warning lines: ${stats.warningLines}`)
-  console.log(`Unique IP addresses: ${stats.ipAddresses.size}`)
-  console.log('Status code distribution:')
-
-  for (const [code, count] of stats.statusCodes) {
-    console.log(`  ${code}: ${count}`)
-  }
-
-  return stats
-}
-
-// Usage
-await analyzeLogFile('./logs/access.log')
-```
-
-### Best Practices Summary
-
-We've covered a lot of ground in this guide - from simple file reading to advanced streaming patterns. But with so many options available, how do you choose the right approach for your specific use case? Here are the key principles to guide your decisions:
+We've covered a comprehensive range of file operation techniques in Node.js, from simple promise-based methods to advanced streaming patterns. Here are the key principles and some extra tips to guide your decisions when choosing the right approach for your specific use case:
 
 1. **Choose the right approach for your use case**:
    - **Small files (< 100MB)**: Use `fs/promises` with `readFile()` and `writeFile()`
@@ -1133,7 +1037,9 @@ We've covered a lot of ground in this guide - from simple file reading to advanc
    - Use `Promise.allSettled()` when you can tolerate partial failures
    - Read/write multiple files concurrently when possible
 
-3. **Always handle errors properly**:
+3. **Handle specific errors**:
+
+   It's good practice to handle specific error codes to provide meaningful feedback to the user or take specific corrective action:
 
    ```javascript
    // error-handling-example.js
@@ -1154,15 +1060,19 @@ We've covered a lot of ground in this guide - from simple file reading to advanc
 
 4. **Use appropriate buffer sizes for streams**:
 
+   Stream objects will load data in chunks into an internal buffer. The default chunk size is 64KB (or 16 objects if using object mode), which is a good balance for most use cases. However, you can adjust the `highWaterMark` option when creating streams to optimize performance based on your specific needs. When processing large amounts of data, if you can tolerate allocating more memory, increasing the chunk size can reduce the number of I/O operations and improve throughput.
+
    ```javascript
    // stream-buffer-size.js
    // For large files, use bigger chunks
    const stream = createReadStream(path, {
-     highWaterMark: 64 * 1024, // 64KB chunks
+     highWaterMark: 128 * 1024, // 64KB chunks
    })
    ```
 
 5. **Always clean up resources**:
+
+   When using file handles or streams, ensure you properly close them to avoid resource leaks. Use `finally` blocks or event handlers to guarantee cleanup even in the face of errors.
 
    ```javascript
    // resource-cleanup.js
@@ -1178,66 +1088,20 @@ We've covered a lot of ground in this guide - from simple file reading to advanc
    stream.on('error', () => stream.destroy())
    ```
 
-6. **Use modern JavaScript patterns**:
-   - Array destructuring for concurrent operations
-   - Promise chaining for data transformation
-   - Proper error handling with `try/catch` blocks
+   When using `pipeline()`, it automatically handles cleanup for you, so prefer it when possible.
 
-7. **Consider using pipeline() for stream operations**:
    ```javascript
    // pipeline-example.js
    // Better error handling and cleanup
    await pipeline(source, transform, destination)
    ```
 
+6. **Use modern JavaScript patterns**:
+   - Array destructuring for concurrent operations
+   - Promise chaining for data transformation
+   - Proper error handling with `try/catch` blocks
+
 ## Summary and Conclusion
-
-We've covered a comprehensive range of file operation techniques in Node.js, from simple promise-based methods to advanced streaming patterns. Here's a quick recap of when to use each approach:
-
-**Use `fs/promises` (async methods) when:**
-
-- Files are small to medium-sized (under 100MB)
-- You need the entire file content at once
-- Working in concurrent environments (web servers, APIs)
-- You want consistency across your codebase
-- Memory usage isn't a critical constraint
-
-**Use sync methods (`readFileSync`, `writeFileSync`) when:**
-
-- Building CLI tools or scripts
-- Working in non-concurrent environments
-- You need to complete file operations before continuing
-- Extreme performance is critical for simple operations
-
-**Use concurrent operations when:**
-
-- Reading/writing multiple files
-- Operations can be performed in parallel
-- You want to maximize I/O efficiency
-
-**Use file handles when:**
-
-- You need precise control over read/write operations
-- Working with specific file positions or ranges
-- Building low-level file processing tools
-- Performance optimization is critical
-
-**Use streams when:**
-
-- Processing large files (over 100MB)
-- Memory efficiency is important
-- You need to compose multiple operations
-- Handling real-time or unknown-sized data
-- Building scalable applications
-- Working with binary data formats
-
-**Key principles for modern Node.js file operations:**
-
-1. **Prefer async by default** - Use promise-based methods unless you have a specific reason to use sync methods
-2. **Leverage concurrency** - Process multiple files simultaneously when possible
-3. **Handle errors gracefully** - Always use proper error handling with specific error codes
-4. **Choose the right tool** - Match your approach to your file size and use case
-5. **Use modern JavaScript** - Take advantage of array destructuring, promise chaining, and async/await
 
 The key to mastering file operations in Node.js is understanding these trade-offs and choosing the right approach for your specific use case. Start with the simple promise-based methods for most scenarios, leverage concurrency when processing multiple files, and move to streams when you need better performance and memory efficiency for large files.
 
@@ -1269,7 +1133,7 @@ Yes! Modern Node.js supports top-level await in ES modules, so you can use `awai
 
 ### How do I process multiple files concurrently in Node.js?
 
-Use `Promise.all()` or `Promise.allSettled()` with an array of promises to process multiple files simultaneously. For example: `await Promise.all(filenames.map(name => readFile(name)))`. This is much faster than processing files sequentially, especially for I/O-bound operations.
+Use `Promise.all()` or `Promise.allSettled()` with an array of promises to process multiple files simultaneously. For example: `await Promise.all(filenames.map(name => readFile(name)))`. This is much faster than processing files sequentially, especially for I/O-bound operations. If you are processing large files, you might want to consider using streams. You can create multiple stream objects and pipeline and run them concurrently.
 
 ---
 
@@ -1282,3 +1146,7 @@ If you found value in this comprehensive guide to file operations, you'll love *
 This book dives deep into the patterns, techniques, and best practices that separate good Node.js code from great Node.js code. From fundamental concepts like the ones covered in this article to advanced architectural patterns for building scalable applications, it provides the knowledge you need to write professional, maintainable Node.js code.
 
 **Ready to master Node.js?** Visit our [homepage](/) to discover how Node.js Design Patterns can accelerate your development journey and help you build better applications with confidence.
+
+```
+
+```

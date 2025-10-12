@@ -17,6 +17,9 @@ importers:
       '@astrojs/sitemap':
         specifier: ^3.6.0
         version: 3.6.0
+      '@expressive-code/plugin-collapsible-sections':
+        specifier: ^0.41.3
+        version: 0.41.3
       '@lucide/astro':
         specifier: ^0.522.0
         version: 0.522.0(astro@5.13.10(@types/node@22.15.29)(jiti@2.4.2)(lightningcss@1.30.1)(rollup@4.41.1)(typescript@5.8.3))
@@ -496,6 +499,9 @@ packages:
 
   '@expressive-code/core@0.41.3':
     resolution: {integrity: sha512-9qzohqU7O0+JwMEEgQhnBPOw5DtsQRBXhW++5fvEywsuX44vCGGof1SL5OvPElvNgaWZ4pFZAFSlkNOkGyLwSQ==}
+
+  '@expressive-code/plugin-collapsible-sections@0.41.3':
+    resolution: {integrity: sha512-cuHIN7Ipl7gUcaWFfsgy6G3wn0Svk8dQ6WKXNQha63BURbm7CSBhD6y9qFGeIOrxaJtvH4Pj3Xb4C2Ni0OVwYA==}
 
   '@expressive-code/plugin-frames@0.41.3':
     resolution: {integrity: sha512-rFQtmf/3N2CK3Cq/uERweMTYZnBu+CwxBdHuOftEmfA9iBE7gTVvwpbh82P9ZxkPLvc40UMhYt7uNuAZexycRQ==}
@@ -3244,6 +3250,10 @@ snapshots:
       postcss-nested: 6.2.0(postcss@8.5.4)
       unist-util-visit: 5.0.0
       unist-util-visit-parents: 6.0.1
+
+  '@expressive-code/plugin-collapsible-sections@0.41.3':
+    dependencies:
+      '@expressive-code/core': 0.41.3
 
   '@expressive-code/plugin-frames@0.41.3':
     dependencies:
