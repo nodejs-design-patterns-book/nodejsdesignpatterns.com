@@ -1,6 +1,6 @@
 ---
-date: 2025-01-06T10:00:00
-updatedAt: 2025-01-06T10:00:00
+date: 2025-10-12T23:40:00
+updatedAt: 2025-10-12T23:40:00
 title: Reading and Writing Files in Node.js - The Complete Modern Guide
 slug: reading-writing-files-nodejs
 description: Learn the modern way to read and write files in Node.js using promises, streams, and file handles. Master memory-efficient file operations for production applications.
@@ -187,7 +187,7 @@ await createBeepWav()
 
 This example demonstrates several key concepts for binary file manipulation in Node.js. The `encodeWavPcm16()` function creates a complete WAV file structure by constructing both the header and audio data sections. The WAV header contains metadata like file size, audio format, sample rate, and number of channels, while the data section contains the actual audio samples.
 
-The `generateBeepTone()` function creates audio samples using a sine wave mathematical formula, generating a pure tone at the specified frequency. Each sample represents the amplitude of the sound wave at a specific point in time, and when played back at the correct sample rate, these digital values recreate the original analog sound.
+The `makeSine()` function creates audio samples using a sine wave mathematical formula, generating a pure tone at the specified frequency. Each sample represents the amplitude of the sound wave at a specific point in time, and when played back at the correct sample rate, these digital values recreate the original analog sound.
 
 Don't worry too much about the specifics of this example dealing with the WAV binary format! What matters here is learning that we can put arbitrary binary data into a buffer and write it into a file using `writeFile()`. The key takeaway is that Node.js treats all file operations the same way, whether you're writing text, JSON, images, audio, or any other type of data.
 
@@ -280,10 +280,6 @@ The function uses Buffer methods like `readUInt32LE()` and `readUInt16LE()` to i
 
 The duration calculation combines several pieces of metadata: we divide the total audio data size by the byte rate (bytes per second) to get the duration in seconds, then multiply by 1000 to convert to milliseconds. This demonstrates how understanding both the file format and basic math allows us to derive meaningful information from binary data.
 
-:::note[Finding free WAV files]
-You can try out this example with the beep WAV files we created in the previous example or, if you need some longer free WAV files, you can check out a website with free audio samples like [Zapsplat](https://www.zapsplat.com/).
-:::
-
 :::note[Binary file complexity]
 This is a very simple example showing basic binary manipulation using only Node.js built-ins. We can handle the WAV format manually here because we're creating a minimal, single-channel PCM file with known parameters.
 
@@ -318,7 +314,7 @@ try {
   const [databaseConfig, apiConfig, loggingConfig, featureFlagsConfig] =
     await Promise.all(promises)
 
-  console.log(`Successfully loaded config files`, {
+  console.log('Successfully loaded config files', {
     databaseConfig,
     apiConfig,
     loggingConfig,
@@ -341,7 +337,7 @@ This concurrent approach provides a significant performance improvement. If we u
 
 ```javascript {26-29}
 // write-multiple-files.js
-import { writeFile } from 'node:fs/promises'
+import { mkdir, writeFile } from 'node:fs/promises'
 
 async function generateReports(data) {
   const reports = [
@@ -385,6 +381,7 @@ const reportData = {
   yearly: { sales: 365000, visitors: 91250 },
 }
 
+await mkdir('reports', { recursive: true }) // Ensure reports directory exists
 await generateReports(reportData)
 ```
 
@@ -411,11 +408,11 @@ Learn more: [Promise.all() on MDN](https://developer.mozilla.org/en-US/docs/Web/
 
 ### Working with Directories
 
-Files don't exist in isolation, they live in directories. What if you need to process all files in a folder, or create directories dynamically? You'll often need to work with directories too:
+In the latest example we used the `mkdir()` function to create a directory before writing files into it. This is a common pattern because files don't exist in isolation, they live in directories. What if you need to process all files in a folder, or create directories dynamically? Let's see a more complete example that combines several file system operations:
 
 ```javascript {8,11,14,15,17}
 // process-directory.js
-import { readdir, mkdir, stat } from 'node:fs/promises'
+import { mkdir, readdir, stat } from 'node:fs/promises'
 import { join } from 'node:path'
 
 async function processDirectory(dirPath) {
@@ -513,7 +510,7 @@ try {
 // Synchronous file writing
 try {
   const userData = { name: 'John Doe', email: 'john@example.com' }
-  const jsonData = JSON.stringify(userData, null, 2)
+  const jsonData = JSON.stringify(userData)
   writeFileSync('user-data.json', jsonData, 'utf8')
   console.log('User data saved successfully!')
 } catch (error) {
@@ -558,47 +555,48 @@ Imagine you're trying to read a 2GB log file using `readFile()`. Your Node.js pr
 1. **Out of memory errors** - Your application might crash
 2. **Poor performance** - High memory usage affects other operations
 
-### Understanding Node.js Buffer Limits
+### Understanding Memory Considerations for Large Files
 
-Node.js has built-in limits on buffer sizes to prevent applications from consuming too much memory. You can check these limits:
+While modern Node.js has significantly increased buffer limits (the theoretical maximum is now around 9 petabytes, compared to the original limits of ~1GB on 32-bit and ~2GB on 64-bit architectures), this doesn't mean we should load massive files into memory all at once. You can check the current buffer limits on your system:
 
 ```javascript
 // check-buffer-limits.js
-// Check the maximum buffer size
-console.log('Max buffer size:', Buffer.constants.MAX_LENGTH)
-console.log('Max string length:', Buffer.constants.MAX_STRING_LENGTH)
+import buffer from 'node:buffer'
 
-// On most systems:
-// MAX_LENGTH is around 2GB (2,147,483,647 bytes on 64-bit systems)
-// MAX_STRING_LENGTH is around 1GB
+// Check the maximum buffer size
+console.log('Max buffer size:', buffer.constants.MAX_LENGTH)
+console.log('Max string length:', buffer.constants.MAX_STRING_LENGTH)
+
+// Convert to more readable format
+const maxSizeGB = (buffer.constants.MAX_LENGTH / (1024 * 1024 * 1024)).toFixed(
+  2,
+)
+console.log(`That's approximately ${maxSizeGB} GB`)
 ```
 
-If you try to read a file larger than these limits using `readFile()`, you'll get an error:
+Even though Node.js can theoretically handle extremely large buffers, attempting to read huge files into memory can cause practical problems:
 
 ```javascript
-// handle-large-file-error.js
+// handle-large-file-memory.js
 import { readFile } from 'node:fs/promises'
 
 try {
-  // This will fail if the file is larger than the buffer limit
+  // Even if this doesn't hit buffer limits, it might cause memory issues
+  console.log('Attempting to read large file...')
   const hugeFile = await readFile('massive-dataset.csv', 'utf8')
+  console.log('File loaded successfully!')
 } catch (error) {
   if (error.code === 'ERR_FS_FILE_TOO_LARGE') {
-    console.log('File is too large to read into memory at once!')
+    console.log('File exceeds buffer limits!')
+  } else if (error.code === 'ENOMEM') {
+    console.log('Not enough memory available!')
+  } else {
+    console.log('Error loading file:', error.message)
   }
 }
 ```
 
-So does this mean that Node.js can't handle big files?! Of course not, Node.js is actually quite good at handling them... we just need to use different tools to do that! The trick is to make sure we don't load ALL the data into memory in one go, but we process the data in smaller incremental chunks!
-
-### When to Use Promise-Based Methods
-
-Promise-based file operations are great when:
-
-- **Files are small to medium-sized** (typically under 100MB)
-- **You need the entire content at once** (parsing JSON, reading config files)
-- **Simplicity is important** (rapid prototyping, simple scripts)
-- **Memory usage isn't a concern** (plenty of RAM available)
+The key insight is that loading massive files into memory all at once is rarely a good idea, even when technically possible. It can lead to memory pressure, slower performance, and poor user experience. Instead, we should process large files incrementally using streams or file handles!
 
 ## Advanced Node.js File Operations with File Handles
 
@@ -635,13 +633,13 @@ async function readFileInChunks(filePath) {
 
       // Process the chunk
       const chunk = buffer.subarray(0, result.bytesRead)
-      console.log(`Read ${result.bytesRead} bytes:`, chunk.toString('utf8'))
+      console.log(`>>> Read ${result.bytesRead} bytes:`, chunk.toString('utf8'))
 
       position += result.bytesRead
       totalBytesRead += result.bytesRead
     }
 
-    console.log(`Total bytes read: ${totalBytesRead}`)
+    console.log(`>>> Total bytes read: ${totalBytesRead}`)
   } catch (error) {
     console.error('Error reading file:', error.message)
     throw error
@@ -1066,7 +1064,7 @@ We've covered a comprehensive range of file operation techniques in Node.js, fro
    // stream-buffer-size.js
    // For large files, use bigger chunks
    const stream = createReadStream(path, {
-     highWaterMark: 128 * 1024, // 64KB chunks
+     highWaterMark: 128 * 1024, // 128KB chunks
    })
    ```
 
@@ -1133,7 +1131,7 @@ Yes! Modern Node.js supports top-level await in ES modules, so you can use `awai
 
 ### How do I process multiple files concurrently in Node.js?
 
-Use `Promise.all()` or `Promise.allSettled()` with an array of promises to process multiple files simultaneously. For example: `await Promise.all(filenames.map(name => readFile(name)))`. This is much faster than processing files sequentially, especially for I/O-bound operations. If you are processing large files, you might want to consider using streams. You can create multiple stream objects and pipeline and run them concurrently.
+Use `Promise.all()` or `Promise.allSettled()` with an array of promises to process multiple files simultaneously. For example: `await Promise.all(filenames.map(name => readFile(name)))`. This is much faster than processing files sequentially, especially for I/O-bound operations. If you are processing large files, you might want to consider using streams. You can create multiple stream pipelines and run them concurrently.
 
 ---
 
@@ -1146,7 +1144,3 @@ If you found value in this comprehensive guide to file operations, you'll love *
 This book dives deep into the patterns, techniques, and best practices that separate good Node.js code from great Node.js code. From fundamental concepts like the ones covered in this article to advanced architectural patterns for building scalable applications, it provides the knowledge you need to write professional, maintainable Node.js code.
 
 **Ready to master Node.js?** Visit our [homepage](/) to discover how Node.js Design Patterns can accelerate your development journey and help you build better applications with confidence.
-
-```
-
-```
