@@ -17,7 +17,6 @@ import {
   TWITTER_CREATOR,
   BOOK_AUTHORS,
   THEME_COLOR,
-  CANONICAL_URL,
 } from '@lib/const'
 
 export interface Props {
@@ -35,7 +34,7 @@ const {
   ogTitle = OG_TITLE,
   ogDescription = OG_DESCRIPTION,
   ogImage = OG_IMAGE,
-  canonical = CANONICAL_URL,
+  canonical,
 } = Astro.props
 ---
 
@@ -64,7 +63,7 @@ const {
     <meta name="theme-color" content={THEME_COLOR} />
 
     <!-- Canonical URL -->
-    <link rel="canonical" href={canonical} />
+    {canonical && <link rel="canonical" href={canonical} />}
 
     <!-- RSS Feed -->
     <link
