@@ -2,7 +2,7 @@
 import { ExternalLink, BookOpen, Users, Rss, Github, Mail } from '@lucide/astro'
 import { BUY_LINK_PRINT, BUY_LINK_EBOOK, BUY_LINK_PACKT } from '@lib/const'
 import { getCollection } from 'astro:content'
-import Threads from '@components/Threads.tsx'
+// import Threads from '@components/Threads.tsx'
 
 const blogPosts = await getCollection('blog')
 const latestBlogPosts = blogPosts
@@ -13,7 +13,7 @@ const currentYear = new Date().getFullYear()
 ---
 
 <footer class="bg-base-200 text-base-content py-16 lg:py-20 relative">
-  <div class="absolute inset-0 z-1 pointer-events-none opacity-25">
+  <!-- <div class="absolute inset-0 z-1 pointer-events-none opacity-25">
     <div class="relative w-full h-full -z-1">
       <Threads
         amplitude={1.6}
@@ -23,7 +23,7 @@ const currentYear = new Date().getFullYear()
         client:load
       />
     </div>
-  </div>
+  </div> -->
 
   <div class="max-w-7xl mx-auto px-6 z-10">
     <!-- Main Footer Content -->
