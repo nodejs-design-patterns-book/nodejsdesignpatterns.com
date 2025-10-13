@@ -5,6 +5,7 @@ import BlogCard from '../../components/blog/BlogCard.astro'
 import Breadcrumb from '@components/blog/Breadcrumb.astro'
 import Footer from '@components/Footer.astro'
 import BookPromo from '@components/blog/BookPromo.astro'
+import { SITE_URL } from '@lib/const'
 
 // Get all blog posts, sorted by date (newest first)
 const posts = (await getCollection('blog')).sort(
@@ -21,6 +22,7 @@ const pageDescription =
   description={pageDescription}
   ogTitle="Blog - Node.js Design Patterns"
   ogDescription={pageDescription}
+  canonical={`${SITE_URL}/blog/`}
 >
   <main class="min-h-screen bg-base-100">
     <header class="bg-gradient-to-b from-primary/40 to-primary/10">

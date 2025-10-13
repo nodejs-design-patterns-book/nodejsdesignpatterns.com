@@ -39,7 +39,7 @@ export const BOOK_EDITION = 'Fourth Edition'
 export const BOOK_PUBLICATION_DATE = '2025-10-09'
 
 // Additional
-export const CANONICAL_URL = 'https://nodejsdesignpatterns.com'
+export const DEFAULT_CANONICAL_URL = 'https://nodejsdesignpatterns.com'
 export const THEME_COLOR = '#16a34a' // Green color from the design
 
 // Free chapter
