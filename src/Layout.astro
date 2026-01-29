@@ -26,6 +26,8 @@ export interface Props {
   ogDescription?: string
   ogImage?: string
   canonical?: string
+  additionalSchema?: object
+  noindex?: boolean
 }
 
 const {
@@ -35,6 +37,8 @@ const {
   ogDescription = OG_DESCRIPTION,
   ogImage = OG_IMAGE,
   canonical,
+  additionalSchema,
+  noindex = false,
 } = Astro.props
 ---
 
@@ -59,7 +63,10 @@ const {
       name="keywords"
       content="Node.js, Design Patterns, JavaScript, Backend Development, Software Architecture, Programming, Web Development, Scalable Applications"
     />
-    <meta name="robots" content="index, follow" />
+    {noindex
+      ? <meta name="robots" content="noindex, nofollow" />
+      : <meta name="robots" content="index, follow" />
+    }
     <meta name="theme-color" content={THEME_COLOR} />
 
     <!-- Canonical URL -->
@@ -131,6 +138,10 @@ const {
         }
       }
     </script>
+
+    {additionalSchema && (
+      <script type="application/ld+json" set:html={JSON.stringify(additionalSchema)} />
+    )}
 
     <script>
       import { initTheme } from './lib/theme.ts'
