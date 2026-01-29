@@ -1,6 +1,6 @@
 ---
 date: 2021-04-07T18:00:00
-updatedAt: 2021-04-07T18:00:00
+updatedAt: 2026-01-29T12:00:00
 title: Node.js development with Docker and Docker Compose
 slug: node-js-development-with-docker-and-docker-compose
 description: Using Docker and Docker Compose to develop Node.js projects can be a good option, especially if working in a team. This article provides a walk-through a possible setup and discuss pros and cons of this approach
@@ -391,6 +391,12 @@ Let's conclude this article, by discussing some of the main pros and cons of usi
 That's all! Hopefully you found this article interesting and you will decide to give Docker a shot for your Node.js development.
 
 You can check out the code examples in the following repository: https://github.com/giuseppemorelli/docker-node-example. If you liked this article, please consider giving it a star, everyone needs some vanity metrics, after all! :)
+
+:::tip[Take Your Node.js Skills Further]
+Whether you're using Docker or not, understanding Node.js patterns and best practices is essential. **Node.js Design Patterns** covers async patterns, streams, scalable architectures, and more.
+
+[Get a FREE chapter →](/#free-chapter)
+:::
 
 ## About the author
 

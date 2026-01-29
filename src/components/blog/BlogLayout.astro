@@ -8,7 +8,7 @@ import Footer from '@components/Footer.astro'
 import BookPromo from '@components/blog/BookPromo.astro'
 import { List } from '@lucide/astro'
 import { calculateReadingTime, formatDate } from '@lib/utils'
-import { generateBlogPostingSchema } from '@lib/schema'
+import { generateBlogPostingSchema, generateFAQPageSchema } from '@lib/schema'
 import Breadcrumb from './Breadcrumb.astro'
 import BlogCard from './BlogCard.astro'
 
@@ -31,7 +31,7 @@ type NestedCollectionHeadingsItem = CollectionEntryHeadingsItem & {
 }
 
 const { post, authors, prevPost, nextPost } = Astro.props
-const { title, description, date, updatedAt } = post.data
+const { title, description, date, updatedAt, faq } = post.data
 
 const formattedDate = formatDate(date)
 
@@ -53,6 +53,10 @@ const blogPostingSchema = generateBlogPostingSchema({
   wordCount,
   siteUrl: SITE_URL,
 })
+
+// Generate FAQ schema if FAQ items are present
+const faqSchema = faq && faq.length > 0 ? generateFAQPageSchema(faq) : null
+const schemas = faqSchema ? [blogPostingSchema, faqSchema] : blogPostingSchema
 
 // Groups ToC in a way that it's easier to render as nested lists
 const nestedToc: NestedCollectionHeadingsItem[] = []
@@ -78,7 +82,7 @@ if (post.rendered?.metadata?.headings) {
   ogTitle={title}
   ogDescription={description}
   canonical={`${SITE_URL}/blog/${post.id}/`}
-  additionalSchema={blogPostingSchema}
+  additionalSchema={schemas}
 >
   <main class="min-h-screen bg-base-100">
     <!-- Blog Header -->

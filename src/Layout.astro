@@ -26,7 +26,7 @@ export interface Props {
   ogDescription?: string
   ogImage?: string
   canonical?: string
-  additionalSchema?: object
+  additionalSchema?: object | object[]
   noindex?: boolean
 }
 
@@ -143,12 +143,17 @@ const {
     </script>
 
     {
-      additionalSchema && (
-        <script
-          type="application/ld+json"
-          set:html={JSON.stringify(additionalSchema)}
-        />
-      )
+      additionalSchema &&
+        (Array.isArray(additionalSchema) ? (
+          additionalSchema.map((schema) => (
+            <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+          ))
+        ) : (
+          <script
+            type="application/ld+json"
+            set:html={JSON.stringify(additionalSchema)}
+          />
+        ))
     }
 
     <script>

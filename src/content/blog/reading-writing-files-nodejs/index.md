@@ -1,6 +1,6 @@
 ---
 date: 2025-10-12T23:40:00
-updatedAt: 2025-10-12T23:40:00
+updatedAt: 2026-01-29T12:00:00
 title: Reading and Writing Files in Node.js - The Complete Modern Guide
 slug: reading-writing-files-nodejs
 description: Learn the modern way to read and write files in Node.js using promises, streams, and file handles. Master memory-efficient file operations for production applications.
@@ -964,6 +964,8 @@ The beauty of this approach is its declarative nature - we describe _what_ we wa
 
 :::tip[Learn More About Streams]
 There are many stream details we've glossed over here - transform streams, duplex streams, and advanced composition patterns. For a deep dive into Node.js streams, check out the [FREE streams chapter from our Node.js Design Patterns book](/#free-chapter).
+
+If you need to consume an entire stream into memory (for small files), check out our article on [Node.js stream consumer utilities](/blog/node-js-stream-consumer/).
 :::
 
 :::tip[Using pipeline() with Generators]
