@@ -23,6 +23,14 @@ Making HTTP requests is one of the most common tasks in Node.js development. Whe
 
 The good news is that modern Node.js includes everything you need to make HTTP requests without installing any external packages. If you've done HTTP requests in the browser before, what you'll learn today will feel very familiar. In this guide, we'll explore the built-in options and when to use each one.
 
+:::note[Prerequisites]
+The examples in this guide use **top-level `await`**, which requires ESM (ECMAScript Modules). To use these examples, either:
+- Set `"type": "module"` in your `package.json`, or
+- Use the `.mjs` file extension
+
+All examples assume Node.js 18 or later.
+:::
+
 ## Quick Answer: Use `fetch()`
 
 I get it, you don't have time to become an expert on everything there's to know about making HTTP requests with Node.js, so here's the quick answer you might be looking for.
@@ -179,7 +187,7 @@ try {
 }
 ```
 
-`AbortSignal.timeout()` is available since Node.js 17.3 (or 16.14 LTS).
+`AbortSignal.timeout()` is available since Node.js 18 (or 17.3+).
 
 ### Handling Different Response Types
 
@@ -380,6 +388,10 @@ This `fetchWithRetry` helper wraps `fetch()` and automatically retries failed re
 
 Note that this example is opinionated: it always parses the response as JSON and treats any non-OK status code as an error worth retrying. For a more flexible approach, you could return the raw response and let the caller decide how to parse it, or add logic to only retry on specific status codes (like 429 Too Many Requests or 503 Service Unavailable).
 
+:::caution[Idempotency Warning]
+This retry helper works best with **idempotent** GET requests. For POST/PUT/DELETE requests, retrying may cause duplicate side effects (like creating multiple orders). Additionally, if `options.body` is a stream, it can only be consumed once and retries will fail. For non-idempotent operations, either disable retries or implement request-specific retry logic.
+:::
+
 ### Form Data and File Uploads
 
 The earlier [Streaming Uploads](#streaming-uploads) section shows how to stream a file as raw bytes, where the entire request body is just the file content. That approach works when the API accepts a raw binary body, but most real-world APIs expect the `multipart/form-data` format instead. This format follows web standards (it's the same encoding used by HTML forms with `enctype="multipart/form-data"`) and lets you include metadata fields like descriptions, tags, or user IDs alongside the file.
@@ -543,16 +555,24 @@ Here's how to test it with mocked responses:
 ```javascript
 // user-service.test.js
 import assert from 'node:assert/strict'
-import { beforeEach, describe, it } from 'node:test'
-import { MockAgent, setGlobalDispatcher } from 'undici'
+import { afterEach, beforeEach, describe, it } from 'node:test'
+import { MockAgent, setGlobalDispatcher, getGlobalDispatcher } from 'undici'
 import { getUser } from './user-service.js'
 
 describe('getUser', () => {
   let mockAgent
+  let originalDispatcher
 
   beforeEach(() => {
+    originalDispatcher = getGlobalDispatcher()
     mockAgent = new MockAgent()
+    mockAgent.disableNetConnect()  // Prevent accidental real requests
     setGlobalDispatcher(mockAgent)
+  })
+
+  afterEach(async () => {
+    await mockAgent.close()
+    setGlobalDispatcher(originalDispatcher)  // Restore original dispatcher
   })
 
   it('returns user data for valid id', async () => {
@@ -581,6 +601,8 @@ describe('getUser', () => {
   })
 })
 ```
+
+The `afterEach` cleanup is important: it closes the mock agent (releasing resources) and restores the original dispatcher. This prevents test pollution where mocks from one test leak into another, and avoids resource leaks if you're running many tests. The `disableNetConnect()` call adds an extra safety net by ensuring tests fail fast if they accidentally try to make real HTTP requests.
 
 Let's break down what's happening in this test file. We import `describe`, `it`, and `beforeEach` from Node.js's built-in test runner (`node:test`), along with `assert` for assertions. In the `beforeEach` hook, we create a fresh `MockAgent` and register it as the global dispatcher using `setGlobalDispatcher()`. This tells undici (and therefore `fetch()`) to route all requests through our mock.
 
