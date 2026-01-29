@@ -8,6 +8,7 @@ import Footer from '@components/Footer.astro'
 import BookPromo from '@components/blog/BookPromo.astro'
 import { List } from '@lucide/astro'
 import { calculateReadingTime, formatDate } from '@lib/utils'
+import { generateBlogPostingSchema } from '@lib/schema'
 import Breadcrumb from './Breadcrumb.astro'
 import BlogCard from './BlogCard.astro'
 
@@ -41,6 +42,18 @@ const formattedUpdatedDate =
 
 const readingTime = calculateReadingTime(post.body as string)
 
+const wordCount = (post.body as string).split(/\s+/).length
+const blogPostingSchema = generateBlogPostingSchema({
+  title,
+  description,
+  datePublished: date,
+  dateModified: updatedAt || date,
+  authors,
+  url: `${SITE_URL}/blog/${post.id}/`,
+  wordCount,
+  siteUrl: SITE_URL,
+})
+
 // Groups ToC in a way that it's easier to render as nested lists
 const nestedToc: NestedCollectionHeadingsItem[] = []
 let lastNestedTocEntry: NestedCollectionHeadingsItem | null = null
@@ -65,6 +78,7 @@ if (post.rendered?.metadata?.headings) {
   ogTitle={title}
   ogDescription={description}
   canonical={`${SITE_URL}/blog/${post.id}/`}
+  additionalSchema={blogPostingSchema}
 >
   <main class="min-h-screen bg-base-100">
     <!-- Blog Header -->

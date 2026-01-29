@@ -93,7 +93,8 @@ const numberFormatter = new Intl.NumberFormat('en-US', {
             class: 'w-full max-w-sm lg:max-w-md',
           }}
           class="w-full max-w-sm lg:max-w-md drop-shadow-2xl shadow-2xl lg:absolute rounded-tr-sm rounded-br-sm"
-          loading="lazy"
+          loading="eager"
+          fetchpriority="high"
           width={1000}
           height={1234}
         />

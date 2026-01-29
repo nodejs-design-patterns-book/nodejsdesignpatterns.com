@@ -1,7 +1,7 @@
 {
-  "name": "spiffy-shepherd",
+  "name": "nodejs-design-patterns-site",
   "type": "module",
-  "version": "0.0.1",
+  "version": "4.0.0",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -15,8 +15,8 @@
   },
   "dependencies": {
     "@astrojs/partytown": "^2.1.4",
-    "@astrojs/react": "^4.3.1",
-    "@astrojs/sitemap": "^3.6.0",
+    "@astrojs/react": "^4.4.2",
+    "@astrojs/sitemap": "^3.7.0",
     "@expressive-code/plugin-collapsible-sections": "^0.41.3",
     "@lucide/astro": "^0.522.0",
     "@radix-ui/react-slot": "^1.2.3",
@@ -24,7 +24,7 @@
     "@tailwindcss/vite": "^4.1.8",
     "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.5",
-    "astro": "^5.13.10",
+    "astro": "^5.16.16",
     "astro-expressive-code": "^0.41.3",
     "astro-masonry": "^1.2.2",
     "class-variance-authority": "^0.7.1",

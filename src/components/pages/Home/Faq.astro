@@ -2,6 +2,7 @@
 import { Picture } from 'astro:assets'
 import manReading from '@images/mktg/young-man-reading-nodejs-design-patterns.jpg'
 import { getCollection, render } from 'astro:content'
+import { generateFAQPageSchema } from '@lib/schema'
 
 const faq = await getCollection('faq')
 const renderedFaq = await Promise.all(
@@ -13,12 +14,27 @@ const renderedFaq = await Promise.all(
         ...f,
         Content: renderedContent.Content,
         data: f.data,
+        plainTextAnswer: f.body
+          ? f.body
+              .replace(/\*\*(.*?)\*\*/g, '$1')
+              .replace(/\*(.*?)\*/g, '$1')
+              .replace(/\[(.*?)\]\(.*?\)/g, '$1')
+              .replace(/#+\s/g, '')
+              .trim()
+          : '',
       }
     }),
 )
+
+const faqSchemaItems = renderedFaq.map((item) => ({
+  question: item.data.question,
+  answer: item.plainTextAnswer,
+}))
+const faqPageSchema = generateFAQPageSchema(faqSchemaItems)
 ---
 
 <section id="faq" class="bg-base-100 py-16 lg:py-24">
+  <script type="application/ld+json" set:html={JSON.stringify(faqPageSchema)} />
   <div class="max-w-7xl mx-auto px-6">
     <div class="max-w-4xl mx-auto text-center mb-16">
       <h2
