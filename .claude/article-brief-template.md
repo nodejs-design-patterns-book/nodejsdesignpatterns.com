@@ -63,10 +63,12 @@ Use this template when planning new blog articles for Node.js Design Patterns.
 ### Internal Links
 
 Link to related existing articles:
+
 - [ ] [Article 1 title](/blog/slug)
 - [ ] [Article 2 title](/blog/slug)
 
 Link to book chapters:
+
 - [ ] [Relevant chapter](/)
 
 ---
@@ -110,30 +112,31 @@ faq:
 
 ### Content Calendar Reference
 
-| Month | # | Article | Primary Keyword | Est. Volume |
-|-------|---|---------|-----------------|-------------|
-| 1-2 | 1 | HTTP request in Node.js | "node js http request" | 15,000+ |
-| 1-2 | 2 | Environment variables in Node.js | "node js environment variables" | 8,000+ |
-| 1-2 | 3 | Using Node.js built-in SQLite | "node js sqlite" | 5,000+ |
-| 1-2 | 4 | Writing a CLI with Node.js | "node js cli" | 4,000+ |
-| 3-4 | 5 | API server in Node.js (no deps) | "node js http server" | 6,000+ |
-| 3-4 | 6 | Hashing files with Node.js | "node js hash file" | 2,000+ |
-| 3-4 | 7 | Base64 encode/decode | "base64 node js" | 3,000+ |
-| 3-4 | 8 | Files and paths (node:path) | "node js path" | 4,000+ |
-| 5-6 | 9 | Node.js Event Emitter | "node js event emitter" | 6,000+ |
-| 5-6 | 10 | Interactive streams guide | "node js streams" | 10,000+ |
-| 5-6 | 11 | How CommonJS works | "commonjs node js" | 3,000+ |
-| 5-6 | 12 | Node.js console tips | "node js console" | 2,000+ |
-| 7-8 | 13 | Type-stripping in Node.js | "node js typescript" | Growing |
-| 7-8 | 14 | Node.js built-in test runner | "node js test runner" | 3,000+ |
-| 7-8 | 15 | Import maps in Node.js | "node js import maps" | 1,000+ |
-| 7-8 | 16 | Encrypting files with Node.js | "node js encrypt file" | 1,500+ |
+| Month | #   | Article                          | Primary Keyword                 | Est. Volume |
+| ----- | --- | -------------------------------- | ------------------------------- | ----------- |
+| 1-2   | 1   | HTTP request in Node.js          | "node js http request"          | 15,000+     |
+| 1-2   | 2   | Environment variables in Node.js | "node js environment variables" | 8,000+      |
+| 1-2   | 3   | Using Node.js built-in SQLite    | "node js sqlite"                | 5,000+      |
+| 1-2   | 4   | Writing a CLI with Node.js       | "node js cli"                   | 4,000+      |
+| 3-4   | 5   | API server in Node.js (no deps)  | "node js http server"           | 6,000+      |
+| 3-4   | 6   | Hashing files with Node.js       | "node js hash file"             | 2,000+      |
+| 3-4   | 7   | Base64 encode/decode             | "base64 node js"                | 3,000+      |
+| 3-4   | 8   | Files and paths (node:path)      | "node js path"                  | 4,000+      |
+| 5-6   | 9   | Node.js Event Emitter            | "node js event emitter"         | 6,000+      |
+| 5-6   | 10  | Interactive streams guide        | "node js streams"               | 10,000+     |
+| 5-6   | 11  | How CommonJS works               | "commonjs node js"              | 3,000+      |
+| 5-6   | 12  | Node.js console tips             | "node js console"               | 2,000+      |
+| 7-8   | 13  | Type-stripping in Node.js        | "node js typescript"            | Growing     |
+| 7-8   | 14  | Node.js built-in test runner     | "node js test runner"           | 3,000+      |
+| 7-8   | 15  | Import maps in Node.js           | "node js import maps"           | 1,000+      |
+| 7-8   | 16  | Encrypting files with Node.js    | "node js encrypt file"          | 1,500+      |
 
 ---
 
 ### Success Metrics
 
 After publishing, track:
+
 - Organic traffic (Google Search Console)
 - Keyword rankings for target terms
 - Free chapter downloads from blog CTAs

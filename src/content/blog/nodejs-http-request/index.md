@@ -25,6 +25,7 @@ The good news is that modern Node.js includes everything you need to make HTTP r
 
 :::note[Prerequisites]
 The examples in this guide use **top-level `await`**, which requires ESM (ECMAScript Modules). To use these examples, either:
+
 - Set `"type": "module"` in your `package.json`, or
 - Use the `.mjs` file extension
 
@@ -82,16 +83,17 @@ Some HTTP libraries hide this complexity and give you the full response body in 
 The first `fetch()` call establishes the connection, sends the request, and parses **only the headers**. At this point, you can check the status code and decide whether to continue reading from the underlying socket. If the status is bad, you can stop right there and save bandwidth.
 
 The body might be huge (think _downloading_ a video file or an AI model file!), so you get to choose how to read it:
+
 - **Stream the response in chunks** (e.g. to a file), ideal for large response bodies
 - **Load as binary, text, or JSON** for small responses (a few MBs max)
-:::
-
+  :::
 
 ### POST Request with JSON Body
 
 POST requests are used when you need to attach data to your request. The request will have a body containing your payload, and the encoding depends on what the server expects. You tell the server how your data is encoded using the `Content-Type` header.
 
 In this example, we use JSON (`application/json`), which is the most common format for APIs. Other common content types include:
+
 - `multipart/form-data` for file uploads
 - `application/x-www-form-urlencoded` for traditional HTML form submissions
 
@@ -132,8 +134,8 @@ const token = process.env.API_TOKEN
 try {
   const response = await fetch('https://api.example.com/protected', {
     headers: {
-      'Authorization': `Bearer ${token}`,
-      'Accept': 'application/json',
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
       'X-Custom-Header': 'custom-value',
     },
   })
@@ -197,14 +199,14 @@ Remember the two-step process we discussed earlier? Here are some shorthand appr
 // fetch-response-types.js
 
 // JSON response
-const jsonData = await fetch(url).then(res => res.json())
+const jsonData = await fetch(url).then((res) => res.json())
 
 // Text response (HTML, plain text)
-const textData = await fetch(url).then(res => res.text())
+const textData = await fetch(url).then((res) => res.text())
 
 // Binary data (images, files)
-const blobData = await fetch(url).then(res => res.blob())
-const arrayBuffer = await fetch(url).then(res => res.arrayBuffer())
+const blobData = await fetch(url).then((res) => res.blob())
+const arrayBuffer = await fetch(url).then((res) => res.arrayBuffer())
 
 // Get response headers
 const response = await fetch(url)
@@ -307,9 +309,10 @@ When you need to make multiple HTTP requests, you can run them concurrently for 
 ```javascript
 // concurrent-requests.js
 async function fetchMultipleUsers(userIds) {
-  const requests = userIds.map(id =>
-    fetch(`https://jsonplaceholder.typicode.com/users/${id}`)
-      .then(res => res.json())
+  const requests = userIds.map((id) =>
+    fetch(`https://jsonplaceholder.typicode.com/users/${id}`).then((res) =>
+      res.json(),
+    ),
   )
 
   // Wait for all requests to complete
@@ -320,7 +323,7 @@ async function fetchMultipleUsers(userIds) {
 // Usage
 const users = await fetchMultipleUsers([1, 2, 3, 4, 5])
 console.log(`Fetched ${users.length} users`)
-users.forEach(user => console.log(`- ${user.name}`))
+users.forEach((user) => console.log(`- ${user.name}`))
 ```
 
 If some requests might fail but you want to continue with the successful ones, use `Promise.allSettled()`:
@@ -328,9 +331,7 @@ If some requests might fail but you want to continue with the successful ones, u
 ```javascript
 // concurrent-requests-settled.js
 async function fetchMultipleWithFallback(urls) {
-  const requests = urls.map(url =>
-    fetch(url).then(res => res.json())
-  )
+  const requests = urls.map((url) => fetch(url).then((res) => res.json()))
 
   const results = await Promise.allSettled(requests)
 
@@ -375,7 +376,7 @@ async function fetchWithRetry(url, options = {}, maxRetries = 3) {
       if (attempt < maxRetries) {
         // Exponential backoff: wait longer between retries
         const delay = Math.pow(2, attempt) * 100
-        await new Promise(resolve => setTimeout(resolve, delay))
+        await new Promise((resolve) => setTimeout(resolve, delay))
       }
     }
   }
@@ -471,7 +472,7 @@ async function uploadLargeFileWithFormData(url, filePath, metadata) {
 await uploadLargeFileWithFormData(
   'https://api.example.com/videos',
   './large-video.mp4',
-  { description: 'My vacation video', category: 'travel' }
+  { description: 'My vacation video', category: 'travel' },
 )
 ```
 
@@ -566,13 +567,13 @@ describe('getUser', () => {
   beforeEach(() => {
     originalDispatcher = getGlobalDispatcher()
     mockAgent = new MockAgent()
-    mockAgent.disableNetConnect()  // Prevent accidental real requests
+    mockAgent.disableNetConnect() // Prevent accidental real requests
     setGlobalDispatcher(mockAgent)
   })
 
   afterEach(async () => {
     await mockAgent.close()
-    setGlobalDispatcher(originalDispatcher)  // Restore original dispatcher
+    setGlobalDispatcher(originalDispatcher) // Restore original dispatcher
   })
 
   it('returns user data for valid id', async () => {
@@ -594,10 +595,9 @@ describe('getUser', () => {
       .intercept({ path: '/users/999', method: 'GET' })
       .reply(404, { error: 'Not found' })
 
-    await assert.rejects(
-      () => getUser(999),
-      { message: 'Failed to fetch user: 404' }
-    )
+    await assert.rejects(() => getUser(999), {
+      message: 'Failed to fetch user: 404',
+    })
   })
 })
 ```
@@ -671,7 +671,7 @@ async function apiRequest(endpoint, options = {}) {
       ...options,
       signal: AbortSignal.timeout(10000), // [Practice #2] Set 10s timeout
       headers: {
-        'Authorization': `Bearer ${token}`, // [Practice #4] Use env var for token
+        Authorization: `Bearer ${token}`, // [Practice #4] Use env var for token
         'Content-Type': 'application/json',
         ...options.headers,
       },
@@ -730,29 +730,35 @@ import https from 'node:https'
 
 function httpsGet(url) {
   return new Promise((resolve, reject) => {
-    https.get(url, (response) => {
-      // Handle redirects
-      if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
-        return resolve(httpsGet(response.headers.location))
-      }
+    https
+      .get(url, (response) => {
+        // Handle redirects
+        if (
+          response.statusCode >= 300 &&
+          response.statusCode < 400 &&
+          response.headers.location
+        ) {
+          return resolve(httpsGet(response.headers.location))
+        }
 
-      if (response.statusCode !== 200) {
-        reject(new Error(`HTTP error! status: ${response.statusCode}`))
-        response.resume() // Consume response to free up memory
-        return
-      }
+        if (response.statusCode !== 200) {
+          reject(new Error(`HTTP error! status: ${response.statusCode}`))
+          response.resume() // Consume response to free up memory
+          return
+        }
 
-      const chunks = []
+        const chunks = []
 
-      response.on('data', (chunk) => chunks.push(chunk))
+        response.on('data', (chunk) => chunks.push(chunk))
 
-      response.on('end', () => {
-        const body = Buffer.concat(chunks).toString()
-        resolve(JSON.parse(body))
+        response.on('end', () => {
+          const body = Buffer.concat(chunks).toString()
+          resolve(JSON.parse(body))
+        })
+
+        response.on('error', reject)
       })
-
-      response.on('error', reject)
-    }).on('error', reject)
+      .on('error', reject)
   })
 }
 
@@ -837,30 +843,32 @@ import { pipeline } from 'node:stream/promises'
 
 async function downloadFile(url, destPath) {
   return new Promise((resolve, reject) => {
-    https.get(url, async (response) => {
-      if (response.statusCode !== 200) {
-        reject(new Error(`Failed to download: ${response.statusCode}`))
-        response.resume()
-        return
-      }
+    https
+      .get(url, async (response) => {
+        if (response.statusCode !== 200) {
+          reject(new Error(`Failed to download: ${response.statusCode}`))
+          response.resume()
+          return
+        }
 
-      const fileStream = createWriteStream(destPath)
+        const fileStream = createWriteStream(destPath)
 
-      try {
-        await pipeline(response, fileStream)
-        console.log(`Downloaded to ${destPath}`)
-        resolve()
-      } catch (error) {
-        reject(error)
-      }
-    }).on('error', reject)
+        try {
+          await pipeline(response, fileStream)
+          console.log(`Downloaded to ${destPath}`)
+          resolve()
+        } catch (error) {
+          reject(error)
+        }
+      })
+      .on('error', reject)
   })
 }
 
 // Usage
 await downloadFile(
   'https://nodejs.org/dist/v22.0.0/node-v22.0.0.tar.gz',
-  './node-source.tar.gz'
+  './node-source.tar.gz',
 )
 ```
 
@@ -870,11 +878,11 @@ For more on streaming and file operations, check out our guide on [Reading and W
 
 Modern Node.js provides excellent built-in options for making HTTP requests:
 
-| Method | Best For | Node.js Version |
-|--------|----------|-----------------|
-| `fetch()` | Most use cases: GET, POST, streaming, file downloads | 18+ (recommended) |
-| `http.request()` | Unencrypted HTTP connections, legacy codebases | All versions |
-| `https.request()` | Encrypted HTTPS connections, legacy codebases | All versions |
+| Method            | Best For                                             | Node.js Version   |
+| ----------------- | ---------------------------------------------------- | ----------------- |
+| `fetch()`         | Most use cases: GET, POST, streaming, file downloads | 18+ (recommended) |
+| `http.request()`  | Unencrypted HTTP connections, legacy codebases       | All versions      |
+| `https.request()` | Encrypted HTTPS connections, legacy codebases        | All versions      |
 
 For most developers, **`fetch()` is the recommended choice**. It's familiar from browser JavaScript, promise-based, supports streaming, and requires no external dependencies.
 

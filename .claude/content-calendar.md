@@ -18,60 +18,60 @@
 
 ### Month 1-2: Foundation
 
-| # | Status | Article | Primary Keyword | Est. Volume | Pillar |
-|---|--------|---------|-----------------|-------------|--------|
-| 1 | COMPLETE | **HTTP request in Node.js** | "node js http request" | 15,000+ | Core APIs |
-| 2 | NOT STARTED | Environment variables in Node.js | "node js environment variables" | 8,000+ | Core APIs |
-| 3 | NOT STARTED | Using Node.js built-in SQLite | "node js sqlite" | 5,000+ | Modern |
-| 4 | NOT STARTED | Writing a CLI with Node.js | "node js cli" | 4,000+ | Core APIs |
+| #   | Status      | Article                          | Primary Keyword                 | Est. Volume | Pillar    |
+| --- | ----------- | -------------------------------- | ------------------------------- | ----------- | --------- |
+| 1   | COMPLETE    | **HTTP request in Node.js**      | "node js http request"          | 15,000+     | Core APIs |
+| 2   | NOT STARTED | Environment variables in Node.js | "node js environment variables" | 8,000+      | Core APIs |
+| 3   | NOT STARTED | Using Node.js built-in SQLite    | "node js sqlite"                | 5,000+      | Modern    |
+| 4   | NOT STARTED | Writing a CLI with Node.js       | "node js cli"                   | 4,000+      | Core APIs |
 
 ### Month 3-4: Core APIs
 
-| # | Status | Article | Primary Keyword | Est. Volume | Pillar |
-|---|--------|---------|-----------------|-------------|--------|
-| 5 | NOT STARTED | API server in Node.js (no deps) | "node js http server" | 6,000+ | Core APIs |
-| 6 | NOT STARTED | Hashing files with Node.js | "node js hash file" | 2,000+ | Core APIs |
-| 7 | NOT STARTED | Base64 encode/decode | "base64 node js" | 3,000+ | Core APIs |
-| 8 | NOT STARTED | Files and paths (node:path) | "node js path" | 4,000+ | Core APIs |
+| #   | Status      | Article                         | Primary Keyword       | Est. Volume | Pillar    |
+| --- | ----------- | ------------------------------- | --------------------- | ----------- | --------- |
+| 5   | NOT STARTED | API server in Node.js (no deps) | "node js http server" | 6,000+      | Core APIs |
+| 6   | NOT STARTED | Hashing files with Node.js      | "node js hash file"   | 2,000+      | Core APIs |
+| 7   | NOT STARTED | Base64 encode/decode            | "base64 node js"      | 3,000+      | Core APIs |
+| 8   | NOT STARTED | Files and paths (node:path)     | "node js path"        | 4,000+      | Core APIs |
 
 ### Month 5-6: Patterns (Book-Adjacent)
 
-| # | Status | Article | Primary Keyword | Est. Volume | Pillar |
-|---|--------|---------|-----------------|-------------|--------|
-| 9 | NOT STARTED | Node.js Event Emitter guide | "node js event emitter" | 6,000+ | Patterns |
-| 10 | NOT STARTED | Interactive streams guide | "node js streams" | 10,000+ | Patterns |
-| 11 | NOT STARTED | How CommonJS works | "commonjs node js" | 3,000+ | Patterns |
-| 12 | NOT STARTED | Node.js console tips | "node js console" | 2,000+ | Core APIs |
+| #   | Status      | Article                     | Primary Keyword         | Est. Volume | Pillar    |
+| --- | ----------- | --------------------------- | ----------------------- | ----------- | --------- |
+| 9   | NOT STARTED | Node.js Event Emitter guide | "node js event emitter" | 6,000+      | Patterns  |
+| 10  | NOT STARTED | Interactive streams guide   | "node js streams"       | 10,000+     | Patterns  |
+| 11  | NOT STARTED | How CommonJS works          | "commonjs node js"      | 3,000+      | Patterns  |
+| 12  | NOT STARTED | Node.js console tips        | "node js console"       | 2,000+      | Core APIs |
 
 ### Month 7-8: Modern Node.js
 
-| # | Status | Article | Primary Keyword | Est. Volume | Pillar |
-|---|--------|---------|-----------------|-------------|--------|
-| 13 | NOT STARTED | Type-stripping in Node.js | "node js typescript" | Growing | Modern |
-| 14 | NOT STARTED | Node.js built-in test runner | "node js test runner" | 3,000+ | Modern |
-| 15 | NOT STARTED | Import maps in Node.js | "node js import maps" | 1,000+ | Modern |
-| 16 | NOT STARTED | Encrypting files with Node.js | "node js encrypt file" | 1,500+ | Core APIs |
+| #   | Status      | Article                       | Primary Keyword        | Est. Volume | Pillar    |
+| --- | ----------- | ----------------------------- | ---------------------- | ----------- | --------- |
+| 13  | NOT STARTED | Type-stripping in Node.js     | "node js typescript"   | Growing     | Modern    |
+| 14  | NOT STARTED | Node.js built-in test runner  | "node js test runner"  | 3,000+      | Modern    |
+| 15  | NOT STARTED | Import maps in Node.js        | "node js import maps"  | 1,000+      | Modern    |
+| 16  | NOT STARTED | Encrypting files with Node.js | "node js encrypt file" | 1,500+      | Core APIs |
 
 ### Month 9-12: Advanced & Experimental
 
-| # | Status | Article | Primary Keyword | Notes |
-|---|--------|---------|-----------------|-------|
-| 17+ | NOT STARTED | Rust/Zig + Node.js integration | niche | Thought leadership |
-| 18+ | NOT STARTED | TBD based on analytics | TBD | Iterate based on data |
+| #   | Status      | Article                        | Primary Keyword | Notes                 |
+| --- | ----------- | ------------------------------ | --------------- | --------------------- |
+| 17+ | NOT STARTED | Rust/Zig + Node.js integration | niche           | Thought leadership    |
+| 18+ | NOT STARTED | TBD based on analytics         | TBD             | Iterate based on data |
 
 ---
 
 ## Existing Content
 
-| Topic | Coverage | Link |
-|-------|----------|------|
-| Reading/writing files | COMPLETE | /blog/reading-writing-files-nodejs |
-| Stream consumers | COMPLETE | /blog/node-js-stream-consumer |
-| Async iterators | COMPLETE | /blog/javascript-async-iterators |
-| Race conditions | COMPLETE | /blog/node-js-race-conditions |
-| Checking Node.js version | COMPLETE | /blog/checking-node-js-version |
-| Installing Node.js | UPDATED | /blog/5-ways-to-install-node-js |
-| Docker development | COMPLETE | /blog/node-js-development-with-docker-and-docker-compose |
+| Topic                    | Coverage | Link                                                     |
+| ------------------------ | -------- | -------------------------------------------------------- |
+| Reading/writing files    | COMPLETE | /blog/reading-writing-files-nodejs                       |
+| Stream consumers         | COMPLETE | /blog/node-js-stream-consumer                            |
+| Async iterators          | COMPLETE | /blog/javascript-async-iterators                         |
+| Race conditions          | COMPLETE | /blog/node-js-race-conditions                            |
+| Checking Node.js version | COMPLETE | /blog/checking-node-js-version                           |
+| Installing Node.js       | UPDATED  | /blog/5-ways-to-install-node-js                          |
+| Docker development       | COMPLETE | /blog/node-js-development-with-docker-and-docker-compose |
 
 ---
 
