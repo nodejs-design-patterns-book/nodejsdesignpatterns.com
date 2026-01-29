@@ -11,7 +11,9 @@ export interface BlogPostingSchemaOptions {
   siteUrl: string
 }
 
-export function generateBlogPostingSchema(options: BlogPostingSchemaOptions): object {
+export function generateBlogPostingSchema(
+  options: BlogPostingSchemaOptions,
+): object {
   return {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
