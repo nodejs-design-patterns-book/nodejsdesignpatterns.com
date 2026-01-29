@@ -1,11 +1,20 @@
 ---
 date: 2025-09-09T10:00:00
-updatedAt: 2025-09-09T10:00:00
+updatedAt: 2026-01-29T12:00:00
 title: How to check Node.js version and package manager versions
 slug: checking-node-js-version
 description: Learn how to check your current Node.js version and the versions of popular package managers including npm, pnpm, and yarn
 authors: ['luciano-mammino']
 tags: ['blog']
+faq:
+  - question: How do I check my Node.js version?
+    answer: Run 'node --version' or 'node -v' in your terminal. This will display your current Node.js version, such as v22.0.0.
+  - question: How do I check my npm version?
+    answer: Run 'npm --version' or 'npm -v' in your terminal. npm comes bundled with Node.js, so if you have Node.js installed, npm is already available.
+  - question: How do I check which Node.js version a project requires?
+    answer: Check the project's package.json file for an 'engines' field, or look for a .nvmrc, .node-version, or .tool-versions file in the project root. These files specify the required Node.js version.
+  - question: What Node.js version should I use?
+    answer: For production applications, use the Active LTS (Long Term Support) version. LTS releases receive critical bug fixes for 30 months. Check the official Node.js releases page for the current LTS version.
 ---
 
 Whether you're debugging compatibility issues, ensuring you're running the right version for a project, or just curious about your current setup, knowing how to check your Node.js version and package manager versions is essential for any Node.js developer.
@@ -174,3 +183,9 @@ Checking versions is a quick but essential task for Node.js developers:
 - **yarn**: `yarn --version` or `yarn -v`
 
 Keep these commands handy, and you'll always know what versions you're working with!
+
+:::tip[Level Up Your Node.js Skills]
+Now that you know how to check your Node.js version, why not deepen your Node.js knowledge? **Node.js Design Patterns** covers everything from async patterns to scalable architectures.
+
+[Get a FREE chapter →](/#free-chapter)
+:::

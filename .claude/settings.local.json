@@ -3,7 +3,16 @@
     "allow": [
       "Bash(pnpm build:*)",
       "Bash(pnpm exec astro build:*)",
-      "Bash(pnpm install:*)"
+      "Bash(pnpm install:*)",
+      "Skill(marketing-skills:content-strategy)",
+      "Bash(find:*)",
+      "Bash(npm run build:*)",
+      "WebSearch",
+      "Bash(node fetch-get.js:*)",
+      "Bash(node fetch-post.js)",
+      "Bash(node http-get.js:*)",
+      "Bash(node http-post.js:*)",
+      "Bash(node:*)"
     ]
   }
 }

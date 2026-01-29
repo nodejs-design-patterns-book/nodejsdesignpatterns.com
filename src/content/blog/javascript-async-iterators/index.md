@@ -1,6 +1,6 @@
 ---
 date: 2021-05-04T13:10:00
-updatedAt: 2021-05-04T13:10:00
+updatedAt: 2026-01-29T12:00:00
 title: JavaScript async iterators
 slug: javascript-async-iterators
 description: An in-depth exploration of JavaScript iteration protocols with a special focus on async iterators
@@ -564,7 +564,7 @@ Synchronous iterable objects and the `for...of` syntax are quite widespread, so 
 
 ### Node.js readable streams and async iterators
 
-One interesting detail that needs a bit more visibility is that Node.js _Readable_ streams are async iterable objects since Node.js 11.14.
+One interesting detail that needs a bit more visibility is that Node.js _Readable_ streams are async iterable objects since Node.js 11.14. For a comprehensive guide on reading and writing files in Node.js, including streams, check out our article on [Reading and Writing Files in Node.js](/blog/reading-writing-files-nodejs/).
 
 This basically means that we can consume data from a Readable stream using `for await...of`.
 

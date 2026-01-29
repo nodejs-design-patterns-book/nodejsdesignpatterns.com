@@ -63,6 +63,14 @@ const blog = defineCollection({
     description: z.string(),
     authors: z.array(reference('authors')),
     tags: z.array(z.string()),
+    faq: z
+      .array(
+        z.object({
+          question: z.string(),
+          answer: z.string(),
+        }),
+      )
+      .optional(),
   }),
 })
 

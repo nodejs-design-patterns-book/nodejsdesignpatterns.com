@@ -1,11 +1,20 @@
 ---
 date: 2021-01-24T18:35:00
-updatedAt: 2021-01-24T19:35:00
+updatedAt: 2026-01-29T12:00:00
 title: Node.js race conditions
 slug: node-js-race-conditions
 description: Can there be race conditions with Node.js? Actually yes, let's see some examples and some solutions.
 authors: ['luciano-mammino']
 tags: ['blog']
+faq:
+  - question: Can Node.js have race conditions even though it's single-threaded?
+    answer: Yes, Node.js can have race conditions despite being single-threaded. While multiple threads don't compete for resources, asynchronous operations from different logical transactions can be scheduled on the event loop and interleaved, causing stale reads and inconsistent data.
+  - question: What is a mutex in Node.js?
+    answer: A mutex (mutual exclusion) is a synchronization mechanism that allows exclusive access to a shared resource. In Node.js, you can use libraries like async-mutex or implement a simple mutex using promise chaining to ensure only one operation accesses a critical section at a time.
+  - question: How do I fix race conditions in Node.js?
+    answer: You can fix race conditions by serializing access to shared resources using techniques like mutexes, promise chaining, or relying on database-level transactions. The key is ensuring that operations that read and modify shared data complete atomically without interleaving.
+  - question: Does using a mutex affect Node.js performance?
+    answer: Yes, using a mutex can impact performance because it serializes operations that would otherwise run concurrently. Tasks must wait in line for exclusive access, which can slow down your application. Use mutexes sparingly and keep critical paths as short as possible.
 ---
 
 A single-threaded event loop like the one used by JavaScript and Node.js, makes it somewhat harder to have race conditions, but, SPOILER ALERT: race conditions are still possible!
@@ -157,7 +166,7 @@ This approach is similar to writing the following code:
 await Promise.all([sellGrapes(), sellOlives()])
 ```
 
-Using `Promise.all()` is a more commonly used way to schedule different tasks to run concurrently.
+Using `Promise.all()` is a more commonly used way to schedule different tasks to run concurrently. If you want to learn more about JavaScript async patterns including async iterators, check out our article on [JavaScript async iterators](/blog/javascript-async-iterators/).
 
 Note that with `Promise.all()`, the resulting promise will reject as soon as any of the promises rejects. In our previous example, since we await the two promises independently, we will always catch errors in `transaction1` before `transaction2`.
 

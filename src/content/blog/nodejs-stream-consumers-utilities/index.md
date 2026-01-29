@@ -1,6 +1,6 @@
 ---
 date: 2022-03-11T12:30:00
-updatedAt: 2022-03-11T21:20:00
+updatedAt: 2026-01-29T12:00:00
 title: Node.js stream consumer utilities
 slug: node-js-stream-consumer
 description: How to easily read all the content of a readable stream using async await
@@ -200,10 +200,16 @@ By processing the data in chunks, we can keep the amount of memory being allocat
 
 When we accumulate an entire stream we are effectively defeating all the advantages of Node.js streams, so this is something that is recommended only when you are absolutely certain you are dealing with small amounts of data.
 
-## Wapping up
+## Wrapping up
 
 This is all for this article, feel free to [reach out to me on Twitter](https://twitter.com/loige) if you found this article interesting and if you think you learned something useful.
 
 If you are curious, you can also [read the code of the `stream/consumers` module](https://github.com/nodejs/node/blob/main/lib/stream/consumers.js), it's actually a really thin layer (less than 100 lines) and you can learn a trick or two by doing that.
+
+:::tip[Want to Master Node.js Streams?]
+Streams are a fundamental concept in Node.js. Our book **Node.js Design Patterns** has an entire chapter dedicated to streams, covering readable, writable, transform streams, and advanced patterns.
+
+[Get a FREE chapter →](/#free-chapter)
+:::
 
 See you in the next article!

@@ -1,14 +1,25 @@
 ---
 date: 2020-12-24T18:30:00
-updatedAt: 2020-12-30T16:00:00
+updatedAt: 2026-01-29T12:00:00
 title: 5 Ways to install Node.js
 slug: 5-ways-to-install-node-js
-description: Learn what are the most common ways to install Node.js in your development machine
+description: Learn what are the most common ways to install Node.js in your development machine. Covers nvm, fnm, Volta, n, official installers, Docker, and more.
 authors: ['luciano-mammino']
 tags: ['blog']
+faq:
+  - question: What is the best way to install Node.js?
+    answer: For most developers, using a version manager like nvm, fnm, or Volta is the best approach. These tools allow you to easily switch between Node.js versions, install multiple versions simultaneously, and avoid permission issues with global packages.
+  - question: What is the difference between nvm and fnm?
+    answer: Both nvm and fnm are Node.js version managers, but fnm is written in Rust and is significantly faster. fnm also has native Windows support and cross-platform compatibility. nvm has a larger community and more documentation, while fnm offers better performance.
+  - question: Should I use the LTS or Current version of Node.js?
+    answer: For production applications and most development work, use the LTS (Long Term Support) version. LTS releases receive critical bug fixes for 30 months. Use the Current version only if you need the latest features or are testing compatibility with upcoming releases.
+  - question: How do I switch between Node.js versions?
+    answer: With version managers like nvm, fnm, or Volta, you can switch versions using simple commands. For nvm use 'nvm use <version>', for fnm use 'fnm use <version>', and Volta automatically switches based on your project's package.json.
+  - question: Can I install multiple versions of Node.js on the same machine?
+    answer: Yes, using a version manager like nvm, fnm, n, or Volta allows you to install and maintain multiple Node.js versions simultaneously. You can easily switch between them based on your project requirements.
 ---
 
-In this article, we will explore some of the most common ways to install Node.js in your development system. We will see how to install Node.js using the official installer for various platforms, how to use a Node.js version manager such as `n` or `nvm` and, finally, we will also see how to compile and install Node.js from source. Along the way, we will try to disclose one or two tips to get you even more productive with Node.js!
+In this article, we will explore the most common ways to install Node.js in your development system. We will cover modern version managers like `fnm`, `nvm`, `Volta`, and `n`, the official installer for various platforms, how to use Docker for Node.js development, and how to compile Node.js from source. Along the way, we will share tips to help you choose the right approach and get productive with Node.js!
 
 Let's get started!
 
@@ -18,7 +29,8 @@ There are many different ways to install Node.js and every one of them comes wit
 
 ### TLDR;
 
-- Use `nvm` or `n` if you develop with Node.js frequently and you expect to be needing to switch Node.js version while moving from one project to another or to debug potential compatibility issues in your project or library.
+- Use a version manager like `fnm`, `nvm`, `Volta`, or `n` if you develop with Node.js frequently and you expect to be needing to switch Node.js version while moving from one project to another or to debug potential compatibility issues in your project or library.
+- `fnm` is the recommended choice for most developers: it's fast, cross-platform, and easy to use.
 - Use the system package manager like `apt`, `brew` or `winget` if you tend to install all your software this way and if you don't expect to be needing to switch or upgrade Node.js version too often.
 - Install Node.js from source if you are an advanced user and if you want to contribute back to Node.js itself.
 - Use the official Node.js installer if you don't fall in any of the previous options...
@@ -51,11 +63,9 @@ Node.js offers 2 main release lines:
 
 Finally, the release coming from the current _master_ branch is considered **Unstable**. This is generally a release dedicated to people maintaining Node.js or developers who want to explore new experimental features that haven't been yet included in any of the major releases.
 
-Node.js publishes an [official timeline of current and future releases](https://nodejs.org/en/about/releases/). At the time of writing (December 2020), this how the timeline looks like:
+Node.js publishes an [official timeline of current and future releases](https://nodejs.org/en/about/releases/). You can always check the current release schedule on the official Node.js website.
 
-[![Node.js release timeline](./nodejs-release-schedule.svg)]()
-
-If you are still wondering which release should you use, going with the _Active LTS_ is almost always the best choice, especially if you are building production applications.
+If you are still wondering which release should you use, going with the _Active LTS_ is almost always the best choice, especially if you are building production applications. As of 2026, Node.js 22 is the current Active LTS version.
 
 ## Install Node.js using n
 
@@ -116,6 +126,85 @@ In summary, this is where `n` shines or falls short:
 - 👍 It keeps all the installed versions cached, so you can switch quickly between versions (no full re-install)
 - 👍 Allows to keep the setup local to the user so you don't have to use admin permission to install global packages
 
+## Install Node.js using fnm
+
+[`fnm`](https://github.com/Schniz/fnm) (Fast Node Manager) is a modern, cross-platform Node.js version manager written in Rust. It has become increasingly popular due to its speed and simplicity. Unlike `n`, fnm works on Windows, macOS, and Linux.
+
+### Installing fnm
+
+On macOS with Homebrew:
+
+```bash
+brew install fnm
+```
+
+On Windows with Winget:
+
+```bash
+winget install Schniz.fnm
+```
+
+On Linux/macOS with the install script:
+
+```bash
+curl -fsSL https://fnm.vercel.app/install | bash
+```
+
+After installation, you need to set up your shell. Add the following to your shell configuration file (`.bashrc`, `.zshrc`, or equivalent):
+
+```bash
+eval "$(fnm env --use-on-cd)"
+```
+
+The `--use-on-cd` flag enables automatic version switching when you enter a directory with a `.node-version` or `.nvmrc` file.
+
+### Using fnm
+
+Here are the most common fnm commands:
+
+```bash
+# Install the latest LTS version
+fnm install --lts
+
+# Install a specific version
+fnm install 22
+
+# List installed versions
+fnm list
+
+# Use a specific version
+fnm use 22
+
+# Set a default version
+fnm default 22
+
+# Show current version
+fnm current
+```
+
+fnm also supports `.node-version` and `.nvmrc` files for per-project version management:
+
+```bash
+# Create a .node-version file in your project
+echo "22" > .node-version
+
+# fnm will automatically switch to this version when you cd into the directory
+# (if you enabled --use-on-cd in your shell setup)
+```
+
+### Why fnm is fast
+
+fnm is written in Rust and uses symbolic links instead of modifying your PATH for each version switch. This makes version switching nearly instantaneous, even when you have many versions installed.
+
+Here are the pros and cons of fnm:
+
+- 👍 **Blazingly fast** - written in Rust, version switching is nearly instant
+- 👍 **Cross-platform** - native support for Windows, macOS, and Linux
+- 👍 **Simple** - easy to install and use with a clean CLI
+- 👍 **Compatible** - supports `.nvmrc` files from nvm
+- 👍 **Automatic switching** - can automatically switch versions based on project configuration
+- 👎 Smaller community compared to nvm (but growing quickly)
+
 ## Install Node.js using nvm
 
 With more than 45 thousand stars on GitHub, [`nvm`](https://github.com/nvm-sh/nvm), which stands for "Node.js Version Manager" (no surprises!), is probably the most famous Node.js version manager currently available.
@@ -125,11 +214,10 @@ With more than 45 thousand stars on GitHub, [`nvm`](https://github.com/nvm-sh/nv
 The easiest way to install `nvm` on your system is to use the official installer script:
 
 ```bash
-VERSION=v0.37.2
-curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/${VERSION}/install.sh" | bash
+curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh" | bash
 ```
 
-**Note**: At the time of writing, version `v0.37.2` is the latest version available. Make sure to check out if there is any new version available if you are installing `nvm` following this tutorial.
+**Note**: Check the [nvm releases page](https://github.com/nvm-sh/nvm/releases) for the latest version available.
 
 Once `nvm` is installed in your system, here are some examples showing what you can do with it:
 
@@ -192,7 +280,63 @@ Finally, here are some pros and cons of `nvm`:
 - 👍 You can run once off commands on a given version of Node.js without having to switch the entire system to that version.
 - 👎 You might have to take a bit of time to go through the documentation and make sure you install it and use it correctly.
 
-**Note**: if you like to use version managers like `n` or `nvm`, you can also check out [`volta.sh`](https://volta.sh/), another interesting alternative in this space, which defines itself as _"The Hassle-Free JavaScript Tool Manager"_.
+## Install Node.js using Volta
+
+[Volta](https://volta.sh/) is a JavaScript tool manager that takes a different approach to version management. Instead of manually switching versions, Volta automatically detects and uses the right Node.js version based on your project's configuration.
+
+### Installing Volta
+
+On Unix systems (macOS, Linux):
+
+```bash
+curl https://get.volta.sh | bash
+```
+
+On Windows, download and run the installer from the [Volta website](https://volta.sh/).
+
+### Using Volta
+
+Volta's key feature is automatic version management through your `package.json`:
+
+```bash
+# Install a Node.js version
+volta install node@22
+
+# Pin a Node.js version to your project
+volta pin node@22
+```
+
+The `volta pin` command adds the Node.js version to your `package.json`:
+
+```json
+{
+  "volta": {
+    "node": "22.0.0"
+  }
+}
+```
+
+When anyone with Volta installed enters your project directory, Volta automatically uses the correct Node.js version without any manual intervention.
+
+```bash
+# Install npm or yarn globally (Volta manages these too)
+volta install npm
+volta install yarn
+
+# Pin package manager versions to your project
+volta pin npm@10
+```
+
+### Why choose Volta
+
+Volta excels at team environments where everyone needs to use the same tool versions:
+
+- 👍 **Zero configuration switching** - automatically uses the right version per project
+- 👍 **Team friendly** - versions stored in `package.json`, tracked in git
+- 👍 **Fast** - written in Rust, near-instant version switching
+- 👍 **Cross-platform** - works on Windows, macOS, and Linux
+- 👍 **Manages multiple tools** - handles Node.js, npm, and Yarn versions
+- 👎 Less flexibility for ad-hoc version testing compared to nvm/fnm
 
 ## Install Node.js using the official installer
 
@@ -300,7 +444,11 @@ Finally, here is the usual summary of pros and cons:
 
 ## Node.js with Docker
 
-If you just want to "play" a bit with a Node.js REPL, you don't need to install Node.js in your system. If you have `docker` installed in your system, running a Node.js REPL in a container is as easy as running:
+Docker is an excellent option both for quick experiments and for production deployments. If you have Docker installed, you can run Node.js without installing it on your system.
+
+### Quick experiments with Docker
+
+Run a Node.js REPL instantly:
 
 ```bash
 docker run -it node
@@ -310,40 +458,100 @@ Here's a super quick demo:
 
 ![Running a Node.js REPL using Docker](./node-repl-with-docker.gif)
 
-If you want to run a shell in a container with Node.js and `npm` installed, then you can do the following:
+Run a shell with Node.js and npm available:
 
 ```bash
 docker run -it node bash
 ```
 
-This way you can install third-party modules using `npm`, create your own scripts and run them with `node`. When you close the session the container and all the generated files will be destroyed.
+Run a specific Node.js version:
 
-This is the perfect environment for quick and dirty experiments.
+```bash
+# Run Node.js 22
+docker run -it node:22
 
-Note, that you can also use Docker as a complete environment for development and not just for quick tests. Docker is actually great for keeping different Node.js version and other dependencies isolated on a per-project basis. Exploring this setup goes beyond the scope of this article, but there is ton of reference on the web about how you might use Docker for Node.js development.
+# Run Node.js 20 LTS
+docker run -it node:20-alpine
+```
+
+### Development with Docker
+
+For development, you can mount your project directory into the container:
+
+```bash
+# Run your project in a container
+docker run -it -v $(pwd):/app -w /app node:22 npm start
+
+# Or start a development shell
+docker run -it -v $(pwd):/app -w /app node:22 bash
+```
+
+### Docker Compose for Node.js development
+
+For a more complete development setup, create a `docker-compose.yml`:
+
+```yaml
+services:
+  app:
+    image: node:22-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    ports:
+      - '3000:3000'
+    command: npm run dev
+
+volumes:
+  node_modules:
+```
+
+Then start your development environment with:
+
+```bash
+docker compose up
+```
+
+This approach keeps Node.js versions isolated per project and ensures everyone on your team uses the same environment. Check out our detailed guide on [Node.js Development with Docker and Docker Compose](/blog/node-js-development-with-docker-and-docker-compose) for more advanced setups.
+
+### Pros and cons of Docker for Node.js
+
+- 👍 **Perfect isolation** - each project can have its own Node.js version and dependencies
+- 👍 **Reproducible environments** - same setup for development, CI, and production
+- 👍 **No system pollution** - nothing installed on your host machine
+- 👍 **Easy cleanup** - remove containers when done
+- 👎 Additional complexity compared to version managers
+- 👎 Requires Docker to be installed and running
+- 👎 Slight performance overhead (especially on macOS/Windows)
 
 ## Node.js online
 
-But what if you don't have docker installed and still want to have an environment where you can write and run some Node.js code?
+If you don't want to install anything locally, several cloud-based development environments provide Node.js out of the box.
 
-Well, there is no shortage of platforms online that will give you a Node.js environment and an IDE that you can use to write and run JavaScript online.
+These platforms offer features like collaborative editing, instant deployment, and the ability to share your projects easily.
 
-These environments often offer delightful additional features like collaborative edit and the possibility to host and share your applications.
+Here are some popular options:
 
-Here's a non-exhaustive list of services that you might want to try if you just need a quick way to write and share some Node.js examples:
+- [StackBlitz](https://stackblitz.com/) - Runs Node.js directly in your browser using WebContainers technology
+- [CodeSandbox](https://codesandbox.io/) - Feature-rich cloud IDE with great npm integration
+- [GitHub Codespaces](https://github.com/features/codespaces) - Full VS Code environment in the cloud
+- [Gitpod](https://gitpod.io/) - Cloud development environments from any Git repository
+- [Replit](https://replit.com/) - Simple and beginner-friendly online IDE
+- [Glitch](https://glitch.com/) - Great for quick prototypes and learning
 
-- [CodeSandbox](https://codesandbox.io/)
-- [Repl.it](https://repl.it/)
-- [Glitch](https://glitch.com/)
-- [Stackblitz](https://stackblitz.com/)
-
-Most of these services offer a quite generous free plan, so you only need to sign up to start coding!
+Most of these services offer generous free tiers, making them perfect for learning, prototyping, or quick experiments.
 
 ## Conclusion
 
 This concludes our list of ways to install Node.js. At this point, I hope you feel comfortable enough picking one of the options suggested here and that along the way you learned a trick or two.
 
 If you enjoyed this article please consider sharing it and don't hesitate to reach out to me [on Twitter](https://twitter.com/loige). I am quite curious to find out what is your favourite way to install Node.js and why!
+
+:::tip[Ready to Master Node.js?]
+Now that you have Node.js installed, take your skills to the next level with **Node.js Design Patterns**. Learn async patterns, streams, scalable architectures, and more.
+
+[Get a FREE chapter →](/#free-chapter)
+:::
 
 Until next time!
 
