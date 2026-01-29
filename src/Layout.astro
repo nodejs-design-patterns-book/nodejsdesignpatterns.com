@@ -146,7 +146,10 @@ const {
       additionalSchema &&
         (Array.isArray(additionalSchema) ? (
           additionalSchema.map((schema) => (
-            <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+            <script
+              type="application/ld+json"
+              set:html={JSON.stringify(schema)}
+            />
           ))
         ) : (
           <script
