@@ -18,7 +18,7 @@ function readingTime(numWords: number): number {
 }
 
 const chapters = (await getCollection('chapters')).sort((a, b) => {
-  return parseInt(a.data.number) - parseInt(b.data.number)
+  return Number.parseInt(a.data.number) - Number.parseInt(b.data.number)
 })
 const renderedChapters = await Promise.all(
   chapters.map(async (chapter) => {
