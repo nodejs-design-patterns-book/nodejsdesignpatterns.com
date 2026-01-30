@@ -38,7 +38,10 @@
       "mcp__playwright__browser_click",
       "mcp__playwright__browser_type",
       "Bash(pnpm typecheck:*)",
-      "Bash(pnpm lint:*)"
+      "Bash(pnpm lint:*)",
+      "mcp__playwright__browser_wait_for",
+      "mcp__playwright__browser_network_requests",
+      "mcp__playwright__browser_close"
     ]
   }
 }

@@ -82,7 +82,7 @@ const promoVariant = extractPromoVariant(selectedPromoKey)
     >Link to buy Node.js Design Patterns</a
   >
 
-  <div class="flex flex-col no-underline text-inherit">
+  <div class="flex flex-col no-underline text-inherit pointer-events-none">
     <div class="w-full h-48 overflow-hidden">
       <Image
         src={selectedPromoImg}
@@ -95,7 +95,7 @@ const promoVariant = extractPromoVariant(selectedPromoKey)
         {selectedPromoMessage}
       </p>
       <span
-        class="inline-flex items-center font-semibold text-primary text-sm mt-auto relative"
+        class="inline-flex items-center font-semibold text-primary text-sm mt-auto relative pointer-events-auto"
       >
         <a href={BUY_LINK_PRINT} class="relative"
           >Get Your Copy Today →
