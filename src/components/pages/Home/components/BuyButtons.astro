@@ -44,16 +44,17 @@ const { location = 'hero' } = Astro.props
     trackClickBuyButton,
     observeOnce,
     getPagePath,
-    type BookFormat,
-    type ButtonLocation,
+    validateBookFormat,
+    validateButtonLocation,
   } from '@lib/analytics'
 
   function initBuyButtonsTracking() {
     const containers = document.querySelectorAll('.buy-buttons-container')
 
     containers.forEach((container) => {
-      const location = (container.getAttribute('data-analytics-location') ||
-        'hero') as ButtonLocation
+      const location = validateButtonLocation(
+        container.getAttribute('data-analytics-location') || 'hero',
+      )
       const pagePath = getPagePath()
 
       // Track view when buttons become visible (once per container)
@@ -68,9 +69,9 @@ const { location = 'hero' } = Astro.props
       const buttons = container.querySelectorAll('a[data-analytics-format]')
       buttons.forEach((button) => {
         button.addEventListener('click', () => {
-          const format = button.getAttribute(
-            'data-analytics-format',
-          ) as BookFormat
+          const format = validateBookFormat(
+            button.getAttribute('data-analytics-format') || 'print',
+          )
           trackClickBuyButton({
             book_format: format,
             source_page: pagePath,

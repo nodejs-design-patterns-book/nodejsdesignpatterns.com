@@ -114,19 +114,21 @@ const promoVariant = extractPromoVariant(selectedPromoKey)
     trackClickBlogCta,
     observeOnce,
     getPagePath,
-    type PromoVariant,
-    type CtaPosition,
+    validatePromoVariant,
+    validateCtaPosition,
   } from '@lib/analytics'
 
   function initBlogPromoTracking() {
     const promoCard = document.getElementById('blog-promo-cta')
     if (!promoCard) return
 
-    const variant = (promoCard.dataset.analyticsVariant ||
-      'promo01') as PromoVariant
+    const variant = validatePromoVariant(
+      promoCard.dataset.analyticsVariant || 'promo01',
+    )
     const ctaType = promoCard.dataset.analyticsCtaType || 'book_promo_card'
-    const ctaPosition = (promoCard.dataset.analyticsCtaPosition ||
-      'sidebar') as CtaPosition
+    const ctaPosition = validateCtaPosition(
+      promoCard.dataset.analyticsCtaPosition || 'sidebar',
+    )
     const pagePath = getPagePath()
 
     // Track view when promo card becomes visible

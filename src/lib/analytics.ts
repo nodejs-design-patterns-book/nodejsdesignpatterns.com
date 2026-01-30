@@ -378,5 +378,100 @@ export function extractPromoVariant(imagePath: string): PromoVariant {
   if (match) {
     return `promo${match[1].padStart(2, '0')}` as PromoVariant
   }
+  if (isDebugMode()) {
+    console.warn(
+      `[Analytics] Could not extract promo variant from: ${imagePath}`,
+    )
+  }
   return 'promo01' // fallback
+}
+
+// ============================================================================
+// Type Validation Helpers (with debug warnings)
+// ============================================================================
+
+const VALID_BOOK_FORMATS: BookFormat[] = ['print', 'ebook']
+const VALID_BUTTON_LOCATIONS: ButtonLocation[] = [
+  'hero',
+  'problem_statement',
+  'action_plan',
+  'quotes',
+  'reviews',
+  'sidebar',
+  'footer',
+  'blog_promo',
+  'free_chapter_section',
+]
+const VALID_PROMO_VARIANTS: PromoVariant[] = [
+  'promo01',
+  'promo02',
+  'promo03',
+  'promo04',
+  'promo05',
+  'promo06',
+  'promo07',
+  'promo08',
+  'promo09',
+  'promo10',
+]
+const VALID_CTA_POSITIONS: CtaPosition[] = ['sidebar', 'inline', 'footer']
+
+/**
+ * Validate book format value with debug warning for invalid values
+ */
+export function validateBookFormat(value: string): BookFormat {
+  if (VALID_BOOK_FORMATS.includes(value as BookFormat)) {
+    return value as BookFormat
+  }
+  if (isDebugMode()) {
+    console.warn(
+      `[Analytics] Invalid book_format: "${value}". Expected one of: ${VALID_BOOK_FORMATS.join(', ')}`,
+    )
+  }
+  return 'print' // fallback
+}
+
+/**
+ * Validate button location value with debug warning for invalid values
+ */
+export function validateButtonLocation(value: string): ButtonLocation {
+  if (VALID_BUTTON_LOCATIONS.includes(value as ButtonLocation)) {
+    return value as ButtonLocation
+  }
+  if (isDebugMode()) {
+    console.warn(
+      `[Analytics] Invalid button_location: "${value}". Expected one of: ${VALID_BUTTON_LOCATIONS.join(', ')}`,
+    )
+  }
+  return 'hero' // fallback
+}
+
+/**
+ * Validate promo variant value with debug warning for invalid values
+ */
+export function validatePromoVariant(value: string): PromoVariant {
+  if (VALID_PROMO_VARIANTS.includes(value as PromoVariant)) {
+    return value as PromoVariant
+  }
+  if (isDebugMode()) {
+    console.warn(
+      `[Analytics] Invalid promo_variant: "${value}". Expected one of: ${VALID_PROMO_VARIANTS.join(', ')}`,
+    )
+  }
+  return 'promo01' // fallback
+}
+
+/**
+ * Validate CTA position value with debug warning for invalid values
+ */
+export function validateCtaPosition(value: string): CtaPosition {
+  if (VALID_CTA_POSITIONS.includes(value as CtaPosition)) {
+    return value as CtaPosition
+  }
+  if (isDebugMode()) {
+    console.warn(
+      `[Analytics] Invalid cta_position: "${value}". Expected one of: ${VALID_CTA_POSITIONS.join(', ')}`,
+    )
+  }
+  return 'sidebar' // fallback
 }
