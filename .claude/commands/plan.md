@@ -11,7 +11,7 @@ Given the implementation details provided as an argument, do this:
    - Success criteria and acceptance criteria
    - Any technical constraints or dependencies mentioned
 
-3. Read the constitution at `/memory/constitution.md` to understand constitutional requirements.
+3. Read the constitution at `.claude/constitution.md` to understand constitutional requirements.
 
 4. Execute the implementation plan template:
    - Load `/templates/implementation-plan-template.md` (already copied to IMPL_PLAN path)
