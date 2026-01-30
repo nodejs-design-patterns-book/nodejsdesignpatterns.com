@@ -10,6 +10,7 @@ import {
   EXERCISES,
   BUY_LINK_PRINT,
 } from '@lib/const'
+import { extractPromoVariant } from '@lib/analytics'
 
 const images = import.meta.glob<{ default: ImageMetadata }>(
   '/src/images/promo/*.{jpeg,jpg,png}',
@@ -18,25 +19,25 @@ const imagesIds = Object.keys(images)
 
 const imagesAlt = {
   '/src/images/promo/promo01.png':
-    'Stack of two copies of “Node.js Design Patterns – Fourth Edition” on a purple gradient surface; top book slightly rotated, showing the purple wave cover and authors’ portraits.',
+    "Stack of two copies of 'Node.js Design Patterns – Fourth Edition' on a purple gradient surface; top book slightly rotated, showing the purple wave cover and authors' portraits.",
   '/src/images/promo/promo02.png':
-    'Man reading “Node.js Design Patterns – Fourth Edition” on a subway train, standing and smiling; front cover with the purple wave design visible.',
+    "Man reading 'Node.js Design Patterns – Fourth Edition' on a subway train, standing and smiling; front cover with the purple wave design visible.",
   '/src/images/promo/promo03.png':
-    'Studio render of the “Node.js Design Patterns – Fourth Edition” hardcover floating against a blue gradient backdrop, front cover with purple wave graphic centered.',
+    "Studio render of the 'Node.js Design Patterns – Fourth Edition' hardcover floating against a blue gradient backdrop, front cover with purple wave graphic centered.",
   '/src/images/promo/promo04.png':
-    'Lifestyle shot of a woman in a cafe holding the “Node.js Design Patterns – Fourth Edition” book; greenery and warm lights in the background, cover fully visible.',
+    "Lifestyle shot of a woman in a cafe holding the 'Node.js Design Patterns – Fourth Edition' book; greenery and warm lights in the background, cover fully visible.",
   '/src/images/promo/promo05.png':
-    'Person holding the “Node.js Design Patterns – Fourth Edition” hardcover against a neutral background; tilted view showing authors’ portraits and Packt logo on the front.',
+    "Person holding the 'Node.js Design Patterns – Fourth Edition' hardcover against a neutral background; tilted view showing authors' portraits and Packt logo on the front.",
   '/src/images/promo/promo06.png':
-    'Close-up of the top corner of the “Node.js Design Patterns” cover on a purple gradient background, highlighting the large title text and flowing purple wave graphic.',
+    "Close-up of the top corner of the 'Node.js Design Patterns' cover on a purple gradient background, highlighting the large title text and flowing purple wave graphic.",
   '/src/images/promo/promo07.png':
-    'Smiling man presenting the “Node.js Design Patterns – Fourth Edition” book toward the camera in a bright studio setting; cover and Packt logo clearly shown.',
+    "Smiling man presenting the 'Node.js Design Patterns – Fourth Edition' book toward the camera in a bright studio setting; cover and Packt logo clearly shown.",
   '/src/images/promo/promo08.png':
-    'Angled view of the “Node.js Design Patterns – Fourth Edition” paperback lying on a light gray surface, showing the spine, title, purple wave design, and Packt branding.',
+    "Angled view of the 'Node.js Design Patterns – Fourth Edition' paperback lying on a light gray surface, showing the spine, title, purple wave design, and Packt branding.",
   '/src/images/promo/promo09.png':
-    'Hand holding the “Node.js Design Patterns – Fourth Edition” book on a beige desk next to an open book; front cover with the purple wave motif clearly visible.',
+    "Hand holding the 'Node.js Design Patterns – Fourth Edition' book on a beige desk next to an open book; front cover with the purple wave motif clearly visible.",
   '/src/images/promo/promo10.png':
-    'Hardcover of “Node.js Design Patterns – Fourth Edition” on a purple surface with a wooden pencil resting diagonally on the cover; black cover with purple wave graphic, authors’ portraits, and Packt logo.',
+    "Hardcover of 'Node.js Design Patterns – Fourth Edition' on a purple surface with a wooden pencil resting diagonally on the cover; black cover with purple wave graphic, authors' portraits, and Packt logo.",
 }
 
 const promoMessages = {
@@ -65,10 +66,17 @@ const selectedPromoImgAlt =
   imagesAlt[selectedPromoKey as keyof typeof imagesAlt]
 const selectedPromoMessage =
   promoMessages[selectedPromoKey as keyof typeof promoMessages]
+
+// Extract variant ID for analytics (e.g., "promo05" from "/src/images/promo/promo05.png")
+const promoVariant = extractPromoVariant(selectedPromoKey)
 ---
 
 <div
+  id="blog-promo-cta"
   class="group bg-base-100 border-2 border-base-200 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 hover:border-primary transition-all duration-300 relative overflow-hidden"
+  data-analytics-variant={promoVariant}
+  data-analytics-cta-type="book_promo_card"
+  data-analytics-cta-position="sidebar"
 >
   <a class="absolute inset-0 text-[0px]" href={BUY_LINK_PRINT}
     >Link to buy Node.js Design Patterns</a
@@ -99,3 +107,53 @@ const selectedPromoMessage =
     </div>
   </div>
 </div>
+
+<script>
+  import {
+    trackViewBlogCta,
+    trackClickBlogCta,
+    observeOnce,
+    getPagePath,
+    type PromoVariant,
+    type CtaPosition,
+  } from '@lib/analytics'
+
+  function initBlogPromoTracking() {
+    const promoCard = document.getElementById('blog-promo-cta')
+    if (!promoCard) return
+
+    const variant = (promoCard.dataset.analyticsVariant ||
+      'promo01') as PromoVariant
+    const ctaType = promoCard.dataset.analyticsCtaType || 'book_promo_card'
+    const ctaPosition = (promoCard.dataset.analyticsCtaPosition ||
+      'sidebar') as CtaPosition
+    const pagePath = getPagePath()
+
+    // Track view when promo card becomes visible
+    observeOnce(promoCard, () => {
+      trackViewBlogCta({
+        cta_type: ctaType,
+        cta_position: ctaPosition,
+        cta_variant: variant,
+        page_path: pagePath,
+      })
+    })
+
+    // Track clicks on the promo card (the whole card is clickable)
+    promoCard.addEventListener('click', () => {
+      trackClickBlogCta({
+        cta_type: ctaType,
+        cta_position: ctaPosition,
+        cta_variant: variant,
+        page_path: pagePath,
+      })
+    })
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBlogPromoTracking)
+  } else {
+    initBlogPromoTracking()
+  }
+</script>

@@ -123,7 +123,13 @@ import {
           </div>
 
           <!-- Email Form -->
-          <form action={FREE_CHAPTER_FORM_ACTION} method="POST" target="_blank">
+          <form
+            id="free-chapter-form"
+            action={FREE_CHAPTER_FORM_ACTION}
+            method="POST"
+            target="_blank"
+            data-analytics-form="free_chapter"
+          >
             <div class="space-y-4">
               <div>
                 <label
@@ -176,3 +182,35 @@ import {
     </div>
   </div>
 </section>
+
+<script>
+  import {
+    trackViewFreeChapterForm,
+    trackSubmitFreeChapterForm,
+    observeOnce,
+  } from '@lib/analytics'
+
+  function initFreeChapterFormTracking() {
+    const form = document.getElementById('free-chapter-form')
+    if (!form) return
+
+    const formLocation = 'homepage_free_chapter_section'
+
+    // Track view when form section becomes visible
+    observeOnce(form, () => {
+      trackViewFreeChapterForm({ form_location: formLocation })
+    })
+
+    // Track form submission
+    form.addEventListener('submit', () => {
+      trackSubmitFreeChapterForm({ form_location: formLocation })
+    })
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFreeChapterFormTracking)
+  } else {
+    initFreeChapterFormTracking()
+  }
+</script>

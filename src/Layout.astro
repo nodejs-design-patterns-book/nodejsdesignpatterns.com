@@ -163,6 +163,119 @@ const {
       import { initTheme } from './lib/theme.ts'
       initTheme()
     </script>
+
+    <!-- Global Analytics: Outbound Link Tracking -->
+    <script>
+      import {
+        trackClickOutboundLink,
+        isExternalUrl,
+        extractDomain,
+        getPagePath,
+      } from './lib/analytics.ts'
+
+      function initOutboundLinkTracking() {
+        document.addEventListener('click', (event) => {
+          const target = event.target as HTMLElement
+          const link = target.closest('a')
+
+          if (!link) return
+
+          const href = link.getAttribute('href')
+          if (!href) return
+
+          // Only track external links
+          if (!isExternalUrl(href)) return
+
+          // Don't track if it's a buy button (already tracked separately)
+          if (link.hasAttribute('data-analytics-format')) return
+
+          trackClickOutboundLink({
+            link_url: href,
+            link_domain: extractDomain(href),
+            link_text: link.textContent?.trim().slice(0, 100) || '',
+            source_page: getPagePath(),
+          })
+        })
+      }
+
+      // Initialize when DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initOutboundLinkTracking)
+      } else {
+        initOutboundLinkTracking()
+      }
+    </script>
+
+    <!-- Global Analytics: Internal Navigation Tracking -->
+    <script>
+      import {
+        trackInternalNavigation,
+        isExternalUrl,
+        getPagePath,
+        type NavigationType,
+      } from './lib/analytics.ts'
+
+      function initInternalNavigationTracking() {
+        const currentPath = getPagePath()
+
+        document.addEventListener('click', (event) => {
+          const target = event.target as HTMLElement
+          const link = target.closest('a')
+
+          if (!link) return
+
+          const href = link.getAttribute('href')
+          if (!href) return
+
+          // Only track internal links
+          if (isExternalUrl(href)) return
+
+          // Skip anchor links on same page
+          if (href.startsWith('#')) return
+
+          // Skip if it's a buy button (already tracked)
+          if (link.hasAttribute('data-analytics-format')) return
+
+          // Determine navigation type based on element location
+          let navigationType: NavigationType = 'inline_link'
+
+          const nav = link.closest('nav')
+          const header = link.closest('header')
+          const footer = link.closest('footer')
+
+          if (nav || header) {
+            navigationType = 'header_link'
+          } else if (footer) {
+            navigationType = 'footer_link'
+          }
+
+          // Get the destination path
+          let toPage = href
+          try {
+            const url = new URL(href, window.location.origin)
+            toPage = url.pathname
+          } catch {
+            // Keep original href if URL parsing fails
+          }
+
+          trackInternalNavigation({
+            from_page: currentPath,
+            to_page: toPage,
+            navigation_type: navigationType,
+          })
+        })
+      }
+
+      // Initialize when DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener(
+          'DOMContentLoaded',
+          initInternalNavigationTracking,
+        )
+      } else {
+        initInternalNavigationTracking()
+      }
+    </script>
     <Font cssVariable="--font-base-sans" preload />
     <Font cssVariable="--font-base-serif" preload />
     <Font cssVariable="--font-base-mono" preload />
