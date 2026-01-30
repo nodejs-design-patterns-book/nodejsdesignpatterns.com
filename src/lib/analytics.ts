@@ -60,25 +60,30 @@ export type NavigationType = 'header_link' | 'footer_link' | 'inline_link'
 // ============================================================================
 
 export interface ViewBuyButtonsParams {
+  [key: string]: unknown
   source_page: string
   button_location: ButtonLocation
 }
 
 export interface ClickBuyButtonParams {
+  [key: string]: unknown
   book_format: BookFormat
   source_page: string
   button_location: ButtonLocation
 }
 
 export interface ViewFreeChapterFormParams {
+  [key: string]: unknown
   form_location: string
 }
 
 export interface SubmitFreeChapterFormParams {
+  [key: string]: unknown
   form_location: string
 }
 
 export interface ClickOutboundLinkParams {
+  [key: string]: unknown
   link_url: string
   link_domain: string
   link_text: string
@@ -86,18 +91,21 @@ export interface ClickOutboundLinkParams {
 }
 
 export interface ScrollDepthParams {
+  [key: string]: unknown
   percent_scrolled: ScrollDepthThreshold
   page_path: string
   content_type: string
 }
 
 export interface BlogReadCompleteParams {
+  [key: string]: unknown
   page_path: string
   estimated_read_time: number
   time_on_page: number
 }
 
 export interface ViewBlogCtaParams {
+  [key: string]: unknown
   cta_type: string
   cta_position: CtaPosition
   cta_variant: PromoVariant
@@ -105,6 +113,7 @@ export interface ViewBlogCtaParams {
 }
 
 export interface ClickBlogCtaParams {
+  [key: string]: unknown
   cta_type: string
   cta_position: CtaPosition
   cta_variant: PromoVariant
@@ -112,12 +121,14 @@ export interface ClickBlogCtaParams {
 }
 
 export interface InternalNavigationParams {
+  [key: string]: unknown
   from_page: string
   to_page: string
   navigation_type: NavigationType
 }
 
 export interface ViewChapterDetailsParams {
+  [key: string]: unknown
   chapter_number: number
   chapter_title: string
 }
@@ -171,7 +182,10 @@ export function isDebugMode(): boolean {
 /**
  * Log analytics event to console in debug mode
  */
-function debugLog(eventName: string, params: Record<string, unknown>): void {
+function debugLog<T extends Record<string, unknown>>(
+  eventName: string,
+  params: T,
+): void {
   if (!isDebugMode()) return
 
   console.group(`📊 Analytics Event: ${eventName}`)
@@ -197,9 +211,9 @@ function getGtag(): GtagFunction | null {
  * Generic event tracking function
  * Handles cases where gtag might not be loaded yet (Partytown delay)
  */
-export function trackEvent(
+export function trackEvent<T extends Record<string, unknown>>(
   eventName: string,
-  params: Record<string, unknown>,
+  params: T,
 ): void {
   debugLog(eventName, params)
 

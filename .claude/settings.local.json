@@ -36,7 +36,9 @@
       "mcp__analytics-mcp__run_realtime_report",
       "Bash(python3:*)",
       "mcp__playwright__browser_click",
-      "mcp__playwright__browser_type"
+      "mcp__playwright__browser_type",
+      "Bash(pnpm typecheck:*)",
+      "Bash(pnpm lint:*)"
     ]
   }
 }
