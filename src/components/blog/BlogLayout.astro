@@ -145,7 +145,11 @@ if (post.rendered?.metadata?.headings) {
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div class="flex flex-col md:flex-row gap-12">
         <!-- Article (left column) -->
-        <article class="flex-1 min-w-0">
+        <article
+          id="blog-article"
+          class="flex-1 min-w-0"
+          data-reading-time={readingTime}
+        >
           <!-- ToC -->
           <div>
             {
@@ -206,8 +210,11 @@ if (post.rendered?.metadata?.headings) {
             </div>
           </div>
 
-          <!-- Article Footer -->
-          <aside class="mt-16 pt-8 border-t border-base-300">
+          <!-- Article Footer (used as read completion marker) -->
+          <aside
+            id="article-footer"
+            class="mt-16 pt-8 border-t border-base-300"
+          >
             <div
               class="flex flex-col sm:flex-row items-center justify-between gap-6"
             >
@@ -368,3 +375,101 @@ if (post.rendered?.metadata?.headings) {
   </main>
   <Footer />
 </Layout>
+
+<script>
+  import {
+    trackScrollDepth,
+    trackBlogReadComplete,
+    getPagePath,
+    type ScrollDepthThreshold,
+  } from '@lib/analytics'
+
+  function initBlogAnalytics() {
+    const article = document.getElementById('blog-article')
+    const articleFooter = document.getElementById('article-footer')
+
+    if (!article) return
+
+    const pagePath = getPagePath()
+    const readingTime = parseInt(article.dataset.readingTime || '0', 10)
+    const pageLoadTime = Date.now()
+
+    // Track scroll depth milestones
+    const scrollThresholds: ScrollDepthThreshold[] = [25, 50, 75, 100]
+    const firedThresholds = new Set<number>()
+
+    function checkScrollDepth() {
+      const scrollTop = window.scrollY
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight
+      // Handle edge case: very short pages where content fits in viewport
+      const scrollPercent =
+        docHeight <= 0 ? 100 : Math.round((scrollTop / docHeight) * 100)
+
+      for (const threshold of scrollThresholds) {
+        if (scrollPercent >= threshold && !firedThresholds.has(threshold)) {
+          firedThresholds.add(threshold)
+          trackScrollDepth({
+            percent_scrolled: threshold,
+            page_path: pagePath,
+            content_type: 'blog_post',
+          })
+        }
+      }
+
+      // Remove listener once all thresholds have been tracked
+      if (firedThresholds.size === scrollThresholds.length) {
+        window.removeEventListener('scroll', handleScroll)
+      }
+    }
+
+    // Throttled scroll handler
+    let scrollTimeout: ReturnType<typeof setTimeout> | null = null
+    function handleScroll() {
+      if (scrollTimeout) return
+      scrollTimeout = setTimeout(() => {
+        checkScrollDepth()
+        scrollTimeout = null
+      }, 100)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    // Check initial scroll position (in case user starts mid-page)
+    checkScrollDepth()
+
+    // Track blog read completion when article footer becomes visible
+    if (articleFooter) {
+      let hasTrackedCompletion = false
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !hasTrackedCompletion) {
+              hasTrackedCompletion = true
+              const timeOnPage = Math.round((Date.now() - pageLoadTime) / 1000)
+
+              trackBlogReadComplete({
+                page_path: pagePath,
+                estimated_read_time: readingTime,
+                time_on_page: timeOnPage,
+              })
+
+              observer.disconnect()
+            }
+          })
+        },
+        { threshold: 0.5 },
+      )
+
+      observer.observe(articleFooter)
+    }
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBlogAnalytics)
+  } else {
+    initBlogAnalytics()
+  }
+</script>

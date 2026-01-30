@@ -18,7 +18,7 @@ function readingTime(numWords: number): number {
 }
 
 const chapters = (await getCollection('chapters')).sort((a, b) => {
-  return parseInt(a.data.number) - parseInt(b.data.number)
+  return Number.parseInt(a.data.number) - Number.parseInt(b.data.number)
 })
 const renderedChapters = await Promise.all(
   chapters.map(async (chapter) => {
@@ -45,7 +45,11 @@ const renderedChapters = await Promise.all(
     <div class="flex flex-col gap-4">
       {
         renderedChapters.map((chapter) => (
-          <div class="chapter overflow-hidden border-2 border-primary/20 hover:border-primary/50 transition-all duration-200 rounded-xl bg-card text-base-content shadow">
+          <div
+            class="chapter overflow-hidden border-2 border-primary/20 hover:border-primary/50 transition-all duration-200 rounded-xl bg-card text-base-content shadow"
+            data-chapter-number={chapter.data.number}
+            data-chapter-title={chapter.data.title}
+          >
             <div class="flex flex-col space-y-1.5 p-6 cursor-pointer bg-primary/10 hover:bg-primary/30 transition-colors">
               <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
@@ -137,12 +141,22 @@ const renderedChapters = await Promise.all(
   </div>
 </section>
 <script>
+  import { trackViewChapterDetails } from '@lib/analytics'
+
   const chapters = document.querySelectorAll('.chapter')
 
   chapters.forEach((chapter) => {
     const chapterClose = chapter.querySelector('.chapter-close')
     const chapterOpen = chapter.querySelector('.chapter-open')
     const chapterContent = chapter.querySelector('.chapter-content')
+
+    // Get chapter data for analytics
+    const chapterElement = chapter as HTMLElement
+    const chapterNumber = parseInt(
+      chapterElement.dataset.chapterNumber || '0',
+      10,
+    )
+    const chapterTitle = chapterElement.dataset.chapterTitle || ''
 
     chapterContent?.classList.add('hidden')
     chapterClose?.classList.add('hidden')
@@ -155,6 +169,12 @@ const renderedChapters = await Promise.all(
         chapterClose?.classList.remove('hidden')
         chapterOpen?.classList.add('hidden')
         status = 'open'
+
+        // Track chapter expansion
+        trackViewChapterDetails({
+          chapter_number: chapterNumber,
+          chapter_title: chapterTitle,
+        })
       } else {
         chapterContent?.classList.add('hidden')
         chapterClose?.classList.add('hidden')

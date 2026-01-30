@@ -2,16 +2,90 @@
 import Button from '@components/ui/button.astro'
 import { Book, TabletSmartphone } from '@lucide/astro'
 import { BUY_LINK_PRINT, BUY_LINK_EBOOK } from '@lib/const'
+import type { ButtonLocation } from '@lib/analytics'
+
+interface Props {
+  location?: ButtonLocation
+}
+
+const { location = 'hero' } = Astro.props
 ---
 
-<div class="flex flex-col sm:flex-row gap-4">
-  <Button element="a" href={BUY_LINK_PRINT} variant="primary" size="lg">
+<div
+  class="buy-buttons-container flex flex-col sm:flex-row gap-4"
+  data-analytics-location={location}
+>
+  <Button
+    element="a"
+    href={BUY_LINK_PRINT}
+    variant="primary"
+    size="lg"
+    data-analytics-format="print"
+  >
     <Book class="mr-2 h-5 w-5" />
     Buy print
   </Button>
 
-  <Button element="a" href={BUY_LINK_EBOOK} variant="default" size="lg">
+  <Button
+    element="a"
+    href={BUY_LINK_EBOOK}
+    variant="default"
+    size="lg"
+    data-analytics-format="ebook"
+  >
     <TabletSmartphone class="mr-2 h-5 w-5" />
     Buy e-book
   </Button>
 </div>
+
+<script>
+  import {
+    trackViewBuyButtons,
+    trackClickBuyButton,
+    observeOnce,
+    getPagePath,
+    validateBookFormat,
+    validateButtonLocation,
+  } from '@lib/analytics'
+
+  function initBuyButtonsTracking() {
+    const containers = document.querySelectorAll('.buy-buttons-container')
+
+    containers.forEach((container) => {
+      const location = validateButtonLocation(
+        container.getAttribute('data-analytics-location') || 'hero',
+      )
+      const pagePath = getPagePath()
+
+      // Track view when buttons become visible (once per container)
+      observeOnce(container, () => {
+        trackViewBuyButtons({
+          source_page: pagePath,
+          button_location: location,
+        })
+      })
+
+      // Track clicks on buy buttons
+      const buttons = container.querySelectorAll('a[data-analytics-format]')
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const format = validateBookFormat(
+            button.getAttribute('data-analytics-format') || 'print',
+          )
+          trackClickBuyButton({
+            book_format: format,
+            source_page: pagePath,
+            button_location: location,
+          })
+        })
+      })
+    })
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBuyButtonsTracking)
+  } else {
+    initBuyButtonsTracking()
+  }
+</script>
