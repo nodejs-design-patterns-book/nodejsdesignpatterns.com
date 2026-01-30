@@ -223,16 +223,18 @@ export function trackEvent<T extends Record<string, unknown>>(
   } else {
     // If gtag not ready, queue the event for when it becomes available
     // This is a fallback for slow Partytown initialization
+    let timeoutId: ReturnType<typeof setTimeout> | null = null
     const checkInterval = setInterval(() => {
       const fn = getGtag()
       if (fn) {
         fn('event', eventName, params)
         clearInterval(checkInterval)
+        if (timeoutId) clearTimeout(timeoutId)
       }
     }, 100)
 
     // Give up after 5 seconds
-    setTimeout(() => clearInterval(checkInterval), 5000)
+    timeoutId = setTimeout(() => clearInterval(checkInterval), 5000)
   }
 }
 

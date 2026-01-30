@@ -402,7 +402,9 @@ if (post.rendered?.metadata?.headings) {
       const scrollTop = window.scrollY
       const docHeight =
         document.documentElement.scrollHeight - window.innerHeight
-      const scrollPercent = Math.round((scrollTop / docHeight) * 100)
+      // Handle edge case: very short pages where content fits in viewport
+      const scrollPercent =
+        docHeight <= 0 ? 100 : Math.round((scrollTop / docHeight) * 100)
 
       for (const threshold of scrollThresholds) {
         if (scrollPercent >= threshold && !firedThresholds.has(threshold)) {
@@ -413,6 +415,11 @@ if (post.rendered?.metadata?.headings) {
             content_type: 'blog_post',
           })
         }
+      }
+
+      // Remove listener once all thresholds have been tracked
+      if (firedThresholds.size === scrollThresholds.length) {
+        window.removeEventListener('scroll', handleScroll)
       }
     }
 
