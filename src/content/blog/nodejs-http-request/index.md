@@ -1,6 +1,6 @@
 ---
 date: 2026-01-29T16:30:00
-updatedAt: 2026-01-29T12:00:00
+updatedAt: 2026-01-30T10:44:00
 title: How to make an HTTP request in Node.js
 slug: nodejs-http-request
 description: Learn to make HTTP requests in Node.js using built-in fetch(), http/https modules. Covers POST, authentication, streaming, and testing with code examples.
@@ -21,7 +21,7 @@ faq:
 
 Making HTTP requests is one of the most common tasks in Node.js development. Whether you're calling a REST API, fetching data from an external service, or building a web scraper, you'll need to know how to make HTTP requests effectively.
 
-The good news is that modern Node.js includes everything you need to make HTTP requests without installing any external packages. If you've done HTTP requests in the browser before, what you'll learn today will feel very familiar. In this guide, we'll explore the built-in options and when to use each one.
+The good news is that modern Node.js includes everything you need to make HTTP requests without installing any external packages. A simple `fetch()` call is all it takes to get started. But between "it works on my machine" and "it's production-ready" lies a minefield of edge cases: requests that hang forever, unhandled network errors, memory leaks from unhandled streams, retry logic that causes duplicate orders, and tests that accidentally hit real APIs. This guide covers everything you need to confidently ship HTTP code to production—not just the basics, but the patterns, pitfalls, and testing strategies that only surface when things go wrong.
 
 :::note[Prerequisites]
 The examples in this guide use **top-level `await`**, which requires ESM (ECMAScript Modules). To use these examples, either:
@@ -696,6 +696,18 @@ async function apiRequest(endpoint, options = {}) {
 }
 ```
 
+## Performance Considerations
+
+While `fetch()` is the recommended choice for most applications, it's worth knowing that **it's not the fastest option**. The built-in `fetch()` is powered by undici but adds overhead from WebStreams (required by the fetch specification). In benchmarks, `http.request()` with keep-alive can be [50% faster](https://github.com/nodejs/performance/issues/11), and using `undici.request()` directly can be [7-10x faster](https://github.com/nodejs/undici/issues/1203) than `fetch()`.
+
+For the vast majority of applications, this difference is irrelevant—network latency typically dominates, and the ergonomic benefits of `fetch()` outweigh the performance cost. However, if you're building high-throughput systems (API gateways, proxies, or services making thousands of requests per second), consider:
+
+- Using `undici.request()` directly for maximum throughput
+- Using the `http`/`https` modules with connection pooling
+- Profiling your specific workload before optimizing
+
+Node.js v22 brought [significant improvements](https://nodesource.com/blog/State-of-Nodejs-Performance-2024) to fetch performance through WebStreams optimizations, and future versions will likely continue to close the gap.
+
 ## When to Use External Libraries
 
 While Node.js built-ins handle most use cases, external libraries like [axios](https://axios-http.com/), [got](https://github.com/sindresorhus/got), or [ky](https://github.com/sindresorhus/ky) offer additional features:
@@ -708,6 +720,8 @@ While Node.js built-ins handle most use cases, external libraries like [axios](h
 - **Request cancellation** with simpler APIs
 
 For simple applications, stick with built-in `fetch()`. Consider external libraries when you need their specific features or want to reduce boilerplate in complex applications.
+
+If performance is your primary concern, consider using [undici](https://undici.nodejs.org/) directly via `undici.request()`. It's the same library that powers Node.js's built-in `fetch()`, but calling it directly bypasses the WebStreams layer and uses Node.js native streams instead. This makes it significantly faster while still providing a modern, promise-based API. The interface differs slightly from the web `fetch()` spec, but in ways that rarely matter for server-side code.
 
 ## Using the `http` and `https` Modules
 
@@ -878,15 +892,16 @@ For more on streaming and file operations, check out our guide on [Reading and W
 
 Modern Node.js provides excellent built-in options for making HTTP requests:
 
-| Method            | Best For                                             | Node.js Version   |
-| ----------------- | ---------------------------------------------------- | ----------------- |
-| `fetch()`         | Most use cases: GET, POST, streaming, file downloads | 18+ (recommended) |
-| `http.request()`  | Unencrypted HTTP connections, legacy codebases       | All versions      |
-| `https.request()` | Encrypted HTTPS connections, legacy codebases        | All versions      |
+| Method             | Best For                                                | Node.js Version        |
+| ------------------ | ------------------------------------------------------- | ---------------------- |
+| `fetch()`          | Most use cases: GET, POST, streaming, file downloads    | 18+ (recommended)      |
+| `undici.request()` | High-throughput scenarios needing maximum performance   | 18+ (requires install) |
+| `http.request()`   | Unencrypted HTTP, legacy integrations or raw throughput | All versions           |
+| `https.request()`  | Encrypted HTTPS, legacy integrations or raw throughput  | All versions           |
 
-For most developers, **`fetch()` is the recommended choice**. It's familiar from browser JavaScript, promise-based, supports streaming, and requires no external dependencies.
+For most developers, **`fetch()` is the recommended choice**. It's familiar from browser JavaScript, promise-based, supports streaming, and requires no external dependencies. However, if you need maximum throughput, `undici.request()` bypasses the WebStreams overhead and can be 7-10x faster.
 
-The `http.request()` and `https.request()` functions are lower-level alternatives available in all Node.js versions. The key difference between them is that you must explicitly choose the protocol: `http.request()` for unencrypted connections and `https.request()` for encrypted ones. If you need a unified abstraction that handles both protocols, you'll need to build it yourself or use `fetch()`, which handles this automatically based on the URL.
+The `http.request()` and `https.request()` functions are lower-level alternatives available in all Node.js versions. They're useful for legacy integrations or when you need raw performance without adding dependencies. The key difference between them is that you must explicitly choose the protocol: `http.request()` for unencrypted connections and `https.request()` for encrypted ones. Both `fetch()` and `undici` handle protocol selection automatically based on the URL.
 
 :::tip[Ready to Master Node.js?]
 HTTP requests are just the beginning. **Node.js Design Patterns** covers async patterns, streams, scalable architectures, and more - everything you need to build production-grade Node.js applications.
@@ -910,13 +925,14 @@ Use `fetch()` with `method` set to `'POST'`, set the `Content-Type` header to `'
 
 ### When should I use http/https modules instead of fetch?
 
-For most use cases, you should use `fetch()`. The `http`/`https` modules are primarily useful when:
+For most use cases, you should use `fetch()`. The `http`/`https` modules (or `undici.request()`) are primarily useful when:
 
 1. You're working with Node.js versions before 18
 2. You're maintaining legacy codebases
 3. You're integrating with libraries that expect `http.IncomingMessage` or `http.ClientRequest` objects
+4. You need maximum performance in high-throughput scenarios (fetch adds overhead from WebStreams)
 
-Modern `fetch()` supports streaming too, so that's no longer a reason to prefer the older modules.
+Modern `fetch()` supports streaming too, so that's no longer a reason to prefer the older modules—but raw throughput still favors the lower-level APIs.
 
 ### Do I need axios or got to make HTTP requests in Node.js?
 

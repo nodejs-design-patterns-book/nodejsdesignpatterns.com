@@ -12,7 +12,10 @@
       "Bash(node fetch-post.js)",
       "Bash(node http-get.js:*)",
       "Bash(node http-post.js:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:nodesource.com)",
+      "Bash(ls:*)"
     ]
   }
 }

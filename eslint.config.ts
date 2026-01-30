@@ -14,6 +14,7 @@ import globals from 'globals'
 export default defineConfig([
   globalIgnores(['dist/**/*'], 'Ignore Astro Build Directory'),
   globalIgnores(['.astro/**/*'], 'Ignore Astro Files'),
+  globalIgnores(['.claude/**/*'], 'Ignore Claude Code Files'),
   {
     languageOptions: {
       globals: {
