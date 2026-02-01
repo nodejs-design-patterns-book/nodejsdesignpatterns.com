@@ -92,6 +92,12 @@ Notice we're using `try/catch` here as well, because file write operations can f
 - **ENOTDIR**: Part of the path is not a directory
   :::
 
+:::warning[Security: Validating User-Provided File Paths]
+When your application handles user-provided file paths (e.g., serving uploaded files or processing user-specified paths), you must validate them to prevent **path traversal attacks**. Attackers can use sequences like `../` to escape your intended directory and access sensitive files like `/etc/passwd` or application credentials.
+
+Never pass user input directly to `readFile()`, `writeFile()`, or similar functions without validation. Learn how to properly validate paths and build secure file servers in our comprehensive guide on [preventing path traversal attacks in Node.js](/blog/nodejs-path-traversal-security/).
+:::
+
 ### Reading and Writing Binary Files
 
 So far, we've been working with text files, but what happens when you need to handle images, videos, or audio files? Not all files are text-based, and Node.js handles binary data just as elegantly. Here's a more advanced example showing how to work with binary data by creating and reading WAV audio files:

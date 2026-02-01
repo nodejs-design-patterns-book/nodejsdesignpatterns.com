@@ -69,6 +69,7 @@
 | Stream consumers         | COMPLETE | /blog/node-js-stream-consumer                            |
 | Async iterators          | COMPLETE | /blog/javascript-async-iterators                         |
 | Race conditions          | COMPLETE | /blog/node-js-race-conditions                            |
+| Path traversal security  | COMPLETE | /blog/nodejs-path-traversal-security                     |
 | Checking Node.js version | COMPLETE | /blog/checking-node-js-version                           |
 | Installing Node.js       | UPDATED  | /blog/5-ways-to-install-node-js                          |
 | Docker development       | COMPLETE | /blog/node-js-development-with-docker-and-docker-compose |
@@ -88,6 +89,7 @@ Environment Variables
 Files & Paths
     └── links to → Reading/Writing Files (existing)
     └── links to → Hashing Files
+    └── links to → Path Traversal Security (existing)
     └── links to → Encrypting Files
 
 Streams Guide
