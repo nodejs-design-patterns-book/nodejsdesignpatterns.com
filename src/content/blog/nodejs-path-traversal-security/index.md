@@ -19,13 +19,17 @@ faq:
 
 Building on our extensive [Node.js File Operations Guide](/blog/reading-writing-files-nodejs/), let's explore one of the most critical security vulnerabilities related to handling files and paths in web applications: **path traversal attacks**.
 
+It's surprisingly easy to build Node.js applications where users can influence which files get loaded from the filesystem. Think about a simple image server: depending on the URL a user requests, your application decides which file to return. Or consider a document download endpoint, a static file server, or even a template engine that loads views based on route parameters. In all these cases, user input directly or indirectly determines a file path.
+
+If we're not careful with our implementation, we might accidentally expose the *entire* filesystem. An attacker could read configuration files containing database credentials, access private SSH keys, or examine application source code to discover additional vulnerabilities. This information disclosure often becomes the gateway for attackers to move laterally through your infrastructure, escalating what started as a simple web request into a full system compromise.
+
+Path traversal has been one of the most severely exploited attack vectors in recent years, affecting everything from Apache web servers to popular npm packages. This is not a theoretical concern—it's a real and present danger that deserves your full attention when building production applications.
+
+In this article, you'll learn exactly what a path traversal attack is, how it happens in practice, and—most importantly—what you must do to build Node.js applications that are not vulnerable.
+
 ## When Simple File Serving can Become Dangerous
 
 You've built a Node.js application that serves user-uploaded images. The implementation is clean, efficient, and uses modern streaming APIs. But what happens when a malicious user requests `../../etc/passwd` instead of `cat.jpg`? Suddenly, your simple file server could become a gateway to your entire server filesystem.
-
-This article will guide you through understanding, detecting, and preventing path traversal attacks in Node.js web servers. We'll start with a vulnerable implementation, demonstrate how attackers exploit it, and then build a secure solution using modern Node.js APIs.
-
-If you build applications that allow users to read files from the filesystem—whether it's serving uploads, generating downloads, or processing user-specified paths—this is essential reading.
 
 
 ## Quick Answer: Secure Path Resolution
