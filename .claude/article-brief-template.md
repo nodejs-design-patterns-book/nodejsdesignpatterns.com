@@ -60,6 +60,17 @@ Use this template when planning new blog articles for Node.js Design Patterns.
 
 ---
 
+### Writing Style Checklist
+
+- [ ] No em dashes (—) used anywhere
+- [ ] Context provided before diving into implementation details
+- [ ] Explains "why" not just "how" for each concept
+- [ ] Friendly, conversational tone throughout
+- [ ] Sections connected with transitions (forward/backward references)
+- [ ] Technical explanations start with the problem/use case
+
+---
+
 ### Internal Links
 
 Link to related existing articles:
