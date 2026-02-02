@@ -2,17 +2,10 @@
  * Analytics Utility Module for GA4 Event Tracking
  *
  * This module provides type-safe helper functions for sending GA4 events.
- * It handles Partytown's async nature and provides debug mode for development.
+ * It uses the global gtag() function which runs in the main thread.
  *
  * @module analytics
  */
-
-// Type for gtag function (loaded by Google Tag Manager via Partytown)
-type GtagFunction = (
-  command: string,
-  eventNameOrConfig: string,
-  params?: Record<string, unknown>,
-) => void
 
 // ============================================================================
 // Types & Interfaces
@@ -198,18 +191,24 @@ function debugLog<T extends Record<string, unknown>>(
 // Core Tracking Function
 // ============================================================================
 
+// Extend Window interface for gtag
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void
+  }
+}
+
 /**
- * Safely get the gtag function, handling Partytown's async loading
+ * Get the gtag function from the window object
  */
-function getGtag(): GtagFunction | null {
+function getGtag(): ((...args: unknown[]) => void) | null {
   if (typeof window === 'undefined') return null
-  // gtag is loaded via Partytown, may not be immediately available
-  return (window as unknown as { gtag?: GtagFunction }).gtag ?? null
+  return window.gtag ?? null
 }
 
 /**
  * Generic event tracking function
- * Handles cases where gtag might not be loaded yet (Partytown delay)
+ * Uses the global gtag() function directly for event tracking.
  */
 export function trackEvent<T extends Record<string, unknown>>(
   eventName: string,
@@ -217,17 +216,16 @@ export function trackEvent<T extends Record<string, unknown>>(
 ): void {
   debugLog(eventName, params)
 
-  const gtagFn = getGtag()
-  if (gtagFn) {
-    gtagFn('event', eventName, params)
+  const gtag = getGtag()
+  if (gtag) {
+    gtag('event', eventName, params)
   } else {
-    // If gtag not ready, queue the event for when it becomes available
-    // This is a fallback for slow Partytown initialization
+    // If gtag not ready, queue the event with retry
     let timeoutId: ReturnType<typeof setTimeout> | null = null
     const checkInterval = setInterval(() => {
-      const fn = getGtag()
-      if (fn) {
-        fn('event', eventName, params)
+      const g = getGtag()
+      if (g) {
+        g('event', eventName, params)
         clearInterval(checkInterval)
         if (timeoutId) clearTimeout(timeoutId)
       }

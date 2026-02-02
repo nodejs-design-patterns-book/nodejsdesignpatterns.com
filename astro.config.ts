@@ -5,19 +5,13 @@ import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig, fontProviders } from 'astro/config'
 import expressiveCode from 'astro-expressive-code'
-import partytown from '@astrojs/partytown'
 import remarkDirective from 'remark-directive' /* Handle ::: directives as nodes */
 import { remarkAdmonitions } from './src/plugins/remark-admonitions' /* Add admonitions */
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://nodejsdesignpatterns.com',
-  integrations: [
-    react(),
-    expressiveCode(),
-    sitemap(),
-    partytown({ config: { forward: ['dataLayer.push'] } }),
-  ],
+  integrations: [react(), expressiveCode(), sitemap()],
   markdown: {
     remarkPlugins: [remarkDirective, remarkAdmonitions],
   },
