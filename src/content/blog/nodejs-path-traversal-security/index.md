@@ -19,40 +19,98 @@ faq:
 
 Building on our extensive [Node.js File Operations Guide](/blog/reading-writing-files-nodejs/), let's explore one of the most critical security vulnerabilities related to handling files and paths in web applications: **path traversal attacks**.
 
-It's surprisingly easy to build Node.js applications where users can influence which files get loaded from the filesystem. Think about a simple image server: depending on the URL a user requests, your application decides which file to return. Or consider a document download endpoint, a static file server, or even a template engine that loads views based on route parameters. In all these cases, user input directly or indirectly determines a file path.
+It's surprisingly easy to build Node.js applications where users can influence which files get loaded from the filesystem. Think about a simple image server: depending on the URL a user requests, your application decides which file to return. A user requests `/images/cat.jpg`, and your server dutifully streams the file from your uploads directory. But what happens when a malicious user requests `/images/../../etc/passwd` instead? If you're not careful, that request could escape your uploads folder entirely and expose sensitive system files.
 
-If we're not careful with our implementation, we might accidentally expose the _entire_ filesystem. An attacker could read configuration files containing database credentials, access private SSH keys, or examine application source code to discover additional vulnerabilities. This information disclosure often becomes the gateway for attackers to move laterally through your infrastructure, escalating what started as a simple web request into a full system compromise.
+An attacker can craft malicious requests to read configuration files containing database credentials, access private SSH keys, or examine application source code to discover additional vulnerabilities. This information disclosure often becomes the gateway for attackers to move laterally through your infrastructure, escalating what started as a simple web request into a full system compromise.
 
-Path traversal has been one of the most severely exploited attack vectors in recent years, affecting everything from Apache web servers to popular npm packages. This is not a theoretical concern—it's a real and present danger that deserves your full attention when building production applications.
+Path traversal has been one of the most severely exploited attack vectors in recent years, affecting everything from Apache web servers to popular npm packages. This is not a theoretical concern; it's a real and present danger that deserves your full attention when building production applications.
 
-In this article, you'll learn exactly what a path traversal attack is, how it happens in practice, and—most importantly—what you must do to build Node.js applications that are not vulnerable.
-
-## When Simple File Serving can Become Dangerous
-
-You've built a Node.js application that serves user-uploaded images. The implementation is clean, efficient, and uses modern streaming APIs. But what happens when a malicious user requests `../../etc/passwd` instead of `cat.jpg`? Suddenly, your simple file server could become a gateway to your entire server filesystem.
+In this article, you'll learn exactly what a path traversal attack is, how it happens in practice, and (most importantly) what you must do to build Node.js applications that are not vulnerable.
 
 ## Quick Answer: Secure Path Resolution
+
+Here's the TLDR;
 
 If you're already familiar with path traversal attacks and just need a quick checklist to sanity-check your implementation, here's the summary:
 
 To prevent path traversal in Node.js:
 
-1. **Decode user input** with `decodeURIComponent()` (handle double encoding with a loop)
+1. **Fully decode user input** handling double/triple encoding with a loop
 2. **Reject null bytes** that can truncate paths
 3. **Reject absolute paths** with `path.isAbsolute()`
-4. **Resolve to canonical path** with `path.resolve()`
-5. **Follow symlinks** with `fs.realpath()`
-6. **Verify path stays within root** using `startsWith(root + path.sep)`
+4. **Reject Windows-specific paths** (drive letters, UNC paths)
+5. **Resolve to canonical path** with `path.resolve()`
+6. **Follow symlinks** with `fs.realpath()`
+7. **Verify path stays within root** using `startsWith(root + path.sep)`
+
+Here's a possible implementation of all these precautions:
 
 ```js
-const safePath = path.resolve(root, decodeURIComponent(userInput))
-const realPath = await fs.realpath(safePath)
-if (!realPath.startsWith(root + path.sep)) {
-  throw new Error('Path traversal detected')
+// safe-resolve.js
+import path from 'node:path'
+import fs from 'node:fs/promises'
+
+function fullyDecode(input) {
+  let result = String(input)
+  for (let i = 0; i < 10; i++) {
+    try {
+      const decoded = decodeURIComponent(result)
+      if (decoded === result) break
+      result = decoded
+    } catch {
+      // decodeURIComponent throws a URIError on malformed sequences
+      break
+    }
+  }
+  return result
+}
+
+export async function safeResolve(root, userInput) {
+  // 1. Fully decode (handles double/triple encoding)
+  const decoded = fullyDecode(userInput)
+
+  // 2. Reject null bytes
+  if (decoded.includes('\0')) {
+    throw new Error('Null bytes not allowed')
+  }
+
+  // 3. Reject absolute paths
+  if (path.isAbsolute(decoded)) {
+    throw new Error('Absolute paths not allowed')
+  }
+
+  // 4. Reject Windows drive letters and UNC paths
+  if (/^[a-zA-Z]:/.test(decoded)) {
+    throw new Error('Drive letters not allowed')
+  }
+  if (decoded.startsWith('\\\\') || decoded.startsWith('//')) {
+    throw new Error('UNC paths not allowed')
+  }
+
+  // 5. Resolve to canonical path
+  const safePath = path.resolve(root, decoded)
+
+  // 6. Follow symlinks
+  const realPath = await fs.realpath(safePath)
+
+  // 7. Verify path stays within root
+  if (!realPath.startsWith(root + path.sep)) {
+    throw new Error('Path traversal detected')
+  }
+
+  return realPath
 }
 ```
 
-Read on for the complete implementation with all edge cases handled, and to understand _why_ each of these measures is necessary and how they work together to protect your application.
+:::important[Resolve root with realpath at startup]
+The `root` parameter should be pre-resolved with `fs.realpath()` at application startup. On systems where the root path contains symlinks (like macOS where `/var` is a symlink to `/private/var`), `fs.realpath()` on user files returns the fully resolved path. If your root isn't also resolved, the `startsWith` check will fail even for valid paths.
+:::
+
+:::warning[Don't Forget Your Dependencies]
+Path traversal vulnerabilities can also exist in your dependencies, not just in your own application code. A layered defense approach that combines secure coding practices, regular dependency updates, and vulnerability scanning (using tools like `npm audit`) is essential for maintaining a secure application.
+:::
+
+Don't just copy-paste the snippet above into your app without understanding it. Read on to learn _why_ each of these measures is necessary and how they work together to protect your application.
 
 ## Understanding Path Traversal Vulnerabilities
 
@@ -83,11 +141,12 @@ Path traversal attacks typically follow these steps:
 Let's begin with a common but vulnerable implementation of an image server:
 
 ```js
+// vulnerable-image-server.js
 import { createServer } from 'node:http'
 import { createReadStream } from 'node:fs'
 import path from 'node:path'
 
-// VULNERABLE: Do not use in production
+// ⚠️ VULNERABLE: Do not use in production
 const server = createServer((req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`)
 
@@ -124,6 +183,10 @@ server.listen(3000, () => {
 })
 ```
 
+This server handles requests to `/images/*` by extracting the path after `/images/`, joining it with an `uploads` directory, and streaming the file back to the client. It determines the content type based on the file extension and uses Node.js streams to efficiently serve the file without loading it entirely into memory.
+
+At first glance, this looks like a reasonable implementation. But there's a critical security flaw lurking in this code.
+
 ### Why This Code is Vulnerable
 
 Let's break down the security issues in this implementation:
@@ -133,21 +196,21 @@ Let's break down the security issues in this implementation:
 3. **No Boundary Checking**: There's no verification that the final path is still within the `uploads` directory.
 4. **No Input Sanitization**: Special characters like `../` are not filtered or handled safely.
 
-When a user requests `/images/../../etc/passwd`, the code:
+When a user requests `/images/../../../../etc/passwd`, the code:
 
-1. Extracts `../../etc/passwd` from the URL
+1. Extracts `../../../../etc/passwd` from the URL
 2. Joins it with the current working directory and `uploads`
-3. Results in a path like `/home/user/myapp/uploads/../../etc/passwd`
-4. Which resolves to `/home/user/etc/passwd` - completely outside our intended directory!
+3. Results in a path like `/home/user/myapp/uploads/../../../../etc/passwd`
+4. Which resolves to `/etc/passwd`, completely outside our intended directory!
 
 :::warning[Real-World Impact]
-This exact pattern has led to serious security breaches in production applications. Attackers can use path traversal to:
+The attack described above allows an attacker to read `/etc/passwd`, which on Unix systems reveals the list of system users. But that's just the beginning. Other ways attackers exploit path traversal vulnerabilities include:
 
-- Read `/etc/passwd` to enumerate system users
-- Access `.env` files containing API keys and database credentials
-- Read private SSH keys from `~/.ssh/id_rsa`
-- Access application source code to find more vulnerabilities
-  :::
+- Accessing `.env` files containing API keys and database credentials
+- Reading private SSH keys from `~/.ssh/id_rsa`
+- Examining application source code to discover additional vulnerabilities
+- Reading configuration files to understand the system architecture
+:::
 
 ## The Attack: Common Exploitation Techniques
 
@@ -160,16 +223,16 @@ A path traversal attack occurs when user input is used to construct file paths w
 Consider what happens when a malicious user requests:
 
 ```
-/images/../../etc/passwd
+/images/../../../../etc/passwd
 ```
 
 Our server takes this path, removes the `/images/` prefix, and joins it with our uploads directory:
 
 ```js
-path.join(process.cwd(), 'uploads', '../../etc/passwd')
+path.join(process.cwd(), 'uploads', '../../../../etc/passwd')
 ```
 
-This resolves to something like `/home/user/myapp/uploads/../../etc/passwd`, which is equivalent to `/home/user/etc/passwd` - completely outside our intended uploads directory!
+This resolves to something like `/home/user/myapp/uploads/../../../../etc/passwd`, which is equivalent to `/etc/passwd`. That's completely outside our intended uploads directory!
 
 ### Common Attack Vectors
 
@@ -180,7 +243,7 @@ Path traversal attacks can take many sophisticated forms:
 3. **Double encoding**: `..%252F..%252Fetc%252Fpasswd`
 4. **Windows paths**: `..\..\windows\system32\config\sam`
 5. **Mixed encoding**: `..%2F..%5Cetc%2Fpasswd`
-6. **Overlong UTF-8**: `..%c0%af..%c0%afetc%c0%afpasswd` (largely a legacy attack vector - modern UTF-8 parsers reject these malformed sequences, but older systems may be vulnerable)
+6. **Overlong UTF-8**: `..%c0%af..%c0%afetc%c0%afpasswd` (largely a legacy attack vector; modern UTF-8 parsers reject these malformed sequences, but older systems may be vulnerable)
 
 :::tip[URL Decoding Matters]
 Many HTTP servers and frameworks decode URL-encoded characters once, but behavior varies by framework. The important point is that validation must happen **after** full URL decoding, not before. Always decode input explicitly rather than relying on framework behavior.
@@ -193,7 +256,7 @@ Path traversal vulnerabilities have affected many major applications:
 1. **Apache HTTP Server (CVE-2021-41773)**: A path traversal flaw in Apache httpd 2.4.49 that allowed attackers to map URLs to files outside the document root, leading to arbitrary file reads and potential RCE.
 2. **`st` npm module (CVE-2014-6394)**: A classic Node.js ecosystem example where the popular static file serving module was vulnerable to directory traversal via URL-encoded sequences.
 3. **`serve` npm module (CVE-2019-5418)**: Path traversal vulnerability in the serve package allowing access to files outside the served directory through crafted requests.
-4. **Jenkins (CVE-2024-23897)**: Arbitrary file read via CLI "@file" argument expansion - while not pure path traversal, it demonstrates how path-based input can lead to unauthorized file access.
+4. **Jenkins (CVE-2024-23897)**: Arbitrary file read via CLI "@file" argument expansion. While not pure path traversal, it demonstrates how path-based input can lead to unauthorized file access.
 5. **Node.js (CVE-2023-32002)**: Policy bypass via path traversal in Node.js experimental policy feature, allowing module loading restrictions to be circumvented.
 
 :::tip[Keep Node.js Updated]
@@ -206,15 +269,18 @@ Now that we've seen how attackers exploit path traversal vulnerabilities, let's 
 
 ### Step 1: Path Validation and Canonicalization
 
-First, let's create a utility function that safely resolves user-provided paths:
+First, let's create a utility function that safely resolves user-provided paths. This is the same function from the Quick Answer section, shown here with detailed comments:
 
 ```js
 import path from 'node:path'
 import fs from 'node:fs/promises'
 
+/**
+ * Fully decodes URL-encoded input, handling double/triple encoding.
+ */
 function fullyDecode(input) {
   let result = String(input)
-  // Decode repeatedly until the string stops changing (handles double/triple encoding)
+  // Decode repeatedly until the string stops changing
   // Limit iterations to prevent infinite loops on malformed input
   for (let i = 0; i < 10; i++) {
     try {
@@ -222,57 +288,53 @@ function fullyDecode(input) {
       if (decoded === result) break
       result = decoded
     } catch {
-      break // Stop on decode error (malformed encoding)
+      // decodeURIComponent throws URIError on malformed sequences (e.g., '%', '%zz')
+      break
     }
   }
   return result
 }
 
+/**
+ * Safely resolves a user-provided path within a root directory.
+ * IMPORTANT: root must be pre-resolved with fs.realpath() at startup.
+ */
 export async function safeResolve(root, userPath) {
-  // Fully decode any URL-encoded characters (handles double encoding)
+  // 1. Fully decode any URL-encoded characters (handles double encoding)
   const decoded = fullyDecode(userPath)
 
-  // Reject null bytes (used to bypass extension checks)
+  // 2. Reject null bytes (used to bypass extension checks)
   if (decoded.includes('\0')) {
     throw new Error('Null bytes not allowed')
   }
 
-  // Reject absolute paths immediately
+  // 3. Reject absolute paths immediately
   if (path.isAbsolute(decoded)) {
     throw new Error('Absolute paths not allowed')
   }
 
-  // Reject Windows drive letters (e.g., C:, D:)
+  // 4. Reject Windows drive letters (e.g., C:, D:)
   if (/^[a-zA-Z]:/.test(decoded)) {
     throw new Error('Drive letters not allowed')
   }
 
-  // Reject UNC paths (e.g., \\server\share or //server/share)
+  // 5. Reject UNC paths (e.g., \\server\share or //server/share)
   if (decoded.startsWith('\\\\') || decoded.startsWith('//')) {
     throw new Error('UNC paths not allowed')
   }
 
-  // Normalize the path and resolve against our root
-  const resolved = path.resolve(root, decoded)
+  // 6. Resolve to canonical path
+  const safePath = path.resolve(root, decoded)
 
-  // Resolve symlinks to prevent symlink-based escapes
-  const real = await fs.realpath(resolved).catch(() => resolved)
+  // 7. Follow symlinks to get the real path
+  const realPath = await fs.realpath(safePath)
 
-  // Also resolve root to handle symlinks in the root path
-  const realRoot = await fs.realpath(root).catch(() => path.resolve(root))
-
-  // Use path.relative for robust containment check
-  // This handles: Windows case-insensitivity, root edge cases (e.g., root === '/'),
-  // and trailing slash variations
-  const relative = path.relative(realRoot, real)
-
-  // If relative path starts with '..' or is absolute, it's outside root
-  // Empty string means they're the same path (accessing root itself is allowed)
-  if (relative.startsWith('..') || path.isAbsolute(relative)) {
+  // 8. Verify the path stays within root
+  if (!realPath.startsWith(root + path.sep)) {
     throw new Error('Path traversal detected')
   }
 
-  return real
+  return realPath
 }
 ```
 
@@ -280,7 +342,7 @@ export async function safeResolve(root, userPath) {
 
 Let's break down each security measure in our `safeResolve` function:
 
-1. **Full Input Decoding**: The `fullyDecode` function handles URL-encoded characters in a loop, decoding repeatedly until the string stops changing. This catches double encoding attacks (`%252F` → `%2F` → `/`) and triple encoding. We limit to 10 iterations to prevent infinite loops on malicious input.
+1. **Full Input Decoding**: The `fullyDecode` function handles URL-encoded characters in a loop, decoding repeatedly until the string stops changing. This catches double encoding attacks (`%252F` → `%2F` → `/`) and triple encoding. We limit to 10 iterations to prevent infinite loops on malicious input. Note that `decodeURIComponent` throws a `URIError` on malformed sequences like `%` or `%zz`, so we wrap it in a try/catch and stop decoding if an error occurs.
 
 2. **Null Byte Rejection**: Null bytes (`\0`) are used in null byte injection attacks to truncate paths. For example, `valid.jpg\0../../etc/passwd` might pass extension checks but access different files. We reject these explicitly.
 
@@ -292,12 +354,12 @@ Let's break down each security measure in our `safeResolve` function:
 
 6. **Path Resolution**: `path.resolve()` normalizes the path, handling `.` and `..` segments correctly. This converts relative paths to absolute paths and removes any path traversal sequences.
 
-7. **Symlink Resolution**: `fs.realpath()` follows symbolic links to their actual destinations, preventing symlink-based escapes. An attacker could create a symlink inside the uploads directory pointing to sensitive files elsewhere - this prevents that attack. We also resolve the root path to handle symlinks in the root itself.
+7. **Symlink Resolution**: `fs.realpath()` follows symbolic links to their actual destinations, preventing symlink-based escapes. An attacker could create a symlink inside the uploads directory pointing to sensitive files elsewhere, and this check prevents that attack.
 
-8. **Boundary Checking**: We use `path.relative()` to compute the relative path from root to the resolved path. If it starts with `..` or is absolute, the path is outside our root. This approach correctly handles: Windows case-insensitivity, edge cases when `root === '/'`, and trailing slash variations.
+8. **Boundary Checking**: The `startsWith(root + path.sep)` check verifies the resolved path is still within our allowed directory. Adding `path.sep` prevents a subtle bug where a path like `/uploads-backup/secret.txt` would incorrectly pass a check against `/uploads`.
 
 :::important[Why Both Resolve and Realpath?]
-`path.resolve()` handles `..` sequences but doesn't follow symlinks. `fs.realpath()` follows symlinks but only works for paths that exist on disk - for non-existent paths, it throws an error (which we catch and fall back to the resolved path). Using both provides defense in depth - even if one has a subtle bug or edge case, the other provides protection. Note that symlink protection only applies to files that already exist.
+`path.resolve()` handles `..` sequences but doesn't follow symlinks. `fs.realpath()` follows symlinks and returns the canonical path, but throws `ENOENT` if the file doesn't exist. Using both provides defense in depth: `resolve()` normalizes traversal sequences, while `realpath()` catches symlink-based escapes. If a file doesn't exist, `realpath()` throws before the boundary check, which is the safe behavior (don't reveal whether paths outside root exist).
 :::
 
 ### Step 2: Secure Streaming Implementation
@@ -793,7 +855,7 @@ Path traversal vulnerabilities are deceptively simple to introduce but can have 
 5. **Layer your defenses** - Multiple validation steps provide protection even if one fails
 6. **Test thoroughly** - Include security tests alongside functional tests
 
-By incorporating these practices into your development workflow, you'll build Node.js applications that can withstand common attack vectors. Security isn't an afterthought - it's a fundamental aspect of writing reliable, professional code.
+By incorporating these practices into your development workflow, you'll build Node.js applications that can withstand common attack vectors. Security isn't an afterthought; it's a fundamental aspect of writing reliable, professional code.
 
 :::tip[Continue Learning]
 This article builds on concepts from our [Node.js File Operations Guide](/blog/reading-writing-files-nodejs/). If you haven't read it yet, check it out to deepen your understanding of Node.js file handling with promises, streams, and file handles.
