@@ -41,6 +41,34 @@ We adhere to a set of coding standards to ensure code quality and maintainabilit
 
 The repository uses well-defined formatting rules through [Prettier](https://prettier.io/) and linting through [ESLint](https://eslint.org/).
 
+### Content Writing Style
+
+When creating or editing written content (blog articles, documentation, tutorials), follow these style guidelines:
+
+#### Tone and Readability
+- Use a **friendly, approachable tone** - almost colloquial, as if explaining to a colleague
+- Write in a conversational style while maintaining technical accuracy
+- Avoid overly formal or academic language
+
+#### Punctuation and Formatting
+- **Never use em dashes (—)** - use commas, parentheses, or separate sentences instead
+- Use short paragraphs and clear sentence structure
+- Break up long explanations with code examples, lists, or callouts
+
+#### Structure and Flow
+- **Always provide context first** - explain the "what" and "why" before diving into "how"
+- **Emphasize the "why"** - readers should understand not just how something works, but why it matters and why it works that way
+- **Connect sections smoothly** using:
+  - Forward references: "In the next section, we'll see how to handle errors"
+  - Backward references: "As we saw earlier, streams provide memory efficiency"
+  - Brief previews of what's coming: "Before we implement this, let's understand the underlying concept"
+
+#### Technical Explanations
+- Start with the problem or use case before introducing the solution
+- Explain concepts progressively - simple version first, then edge cases and advanced usage
+- Use real-world analogies when explaining abstract concepts
+- Include practical examples that readers can relate to their own projects
+
 ## Deployment
 
 The website is automatically deployed to GitHub Pages through a GitHub Actions workflow. The deployment process is triggered on every push to the `main` branch. The workflow builds the static site and publishes it to GitHub Pages, making it accessible to users. Contributors do not need to manually handle deployment - focus on code quality and the automated pipeline will handle the rest.
