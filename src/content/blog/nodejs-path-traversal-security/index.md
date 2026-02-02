@@ -15,6 +15,10 @@ faq:
     answer: No, path.join() does not prevent path traversal. It simply concatenates paths without security validation. An input like "../../etc/passwd" will be joined as-is, allowing directory escape. Always validate paths after joining.
   - question: How do I secure file uploads in Node.js?
     answer: Secure file uploads by (1) validating filenames with strict patterns, (2) storing files with generated names rather than user-provided ones, (3) serving files through a validated path resolution function, and (4) using file handles to minimize TOCTOU race conditions.
+  - question: Does Express.js protect against path traversal?
+    answer: Express.js provides some built-in protections through res.sendFile(), but you should never rely solely on framework behavior. Always validate paths yourself using techniques like path.resolve(), fs.realpath(), and boundary checking with startsWith() before passing them to any file-serving function.
+  - question: How do I test for path traversal vulnerabilities?
+    answer: Test with attack payloads including basic traversal (../), URL encoding (%2e%2e%2f), double encoding (%252e%252e%252f), null bytes (%00), and absolute paths. Use automated tools like OWASP ZAP or Burp Suite, and write unit tests that verify your validation rejects all these patterns.
 ---
 
 Building on our extensive [Node.js File Operations Guide](/blog/reading-writing-files-nodejs/), let's explore one of the most critical security vulnerabilities related to handling files and paths in web applications: **path traversal attacks**.
@@ -210,7 +214,7 @@ The attack described above allows an attacker to read `/etc/passwd`, which on Un
 - Reading private SSH keys from `~/.ssh/id_rsa`
 - Examining application source code to discover additional vulnerabilities
 - Reading configuration files to understand the system architecture
-:::
+  :::
 
 ## The Attack: Common Exploitation Techniques
 
@@ -601,42 +605,42 @@ describe('safeResolve', () => {
   it('should block basic traversal', async () => {
     await assert.rejects(
       safeResolve(root, '../../etc/passwd'),
-      /Path traversal detected/
+      /Path traversal detected/,
     )
   })
 
   it('should reject absolute paths', async () => {
     await assert.rejects(
       safeResolve(root, '/etc/passwd'),
-      /Absolute paths not allowed/
+      /Absolute paths not allowed/,
     )
   })
 
   it('should block URL-encoded traversal', async () => {
     await assert.rejects(
       safeResolve(root, '..%2F..%2Fetc%2Fpasswd'),
-      /Path traversal detected/
+      /Path traversal detected/,
     )
   })
 
   it('should block double-encoded traversal', async () => {
     await assert.rejects(
       safeResolve(root, '..%252F..%252Fetc%252Fpasswd'),
-      /Path traversal detected/
+      /Path traversal detected/,
     )
   })
 
   it('should reject null bytes', async () => {
     await assert.rejects(
       safeResolve(root, 'valid.jpg\0../../etc/passwd'),
-      /Null bytes not allowed/
+      /Null bytes not allowed/,
     )
   })
 
   it('should reject UNC paths', async () => {
     await assert.rejects(
       safeResolve(root, '//server/share/sensitive.txt'),
-      /UNC paths not allowed|Absolute paths not allowed/
+      /UNC paths not allowed|Absolute paths not allowed/,
     )
   })
 })

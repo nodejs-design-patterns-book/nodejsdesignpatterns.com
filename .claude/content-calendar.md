@@ -11,6 +11,7 @@
 1. **Node.js Core APIs & Built-ins** - High-volume foundational topics
 2. **Modern Node.js Features** - New capabilities (22+, 23+) with early-mover SEO advantage
 3. **Node.js Patterns & Architecture** - Advanced patterns (light connection to book)
+4. **Node.js Security** - Security best practices and vulnerability prevention
 
 ---
 
@@ -52,12 +53,21 @@
 | 15  | NOT STARTED | Import maps in Node.js        | "node js import maps"  | 1,000+      | Modern    |
 | 16  | NOT STARTED | Encrypting files with Node.js | "node js encrypt file" | 1,500+      | Core APIs |
 
-### Month 9-12: Advanced & Experimental
+### Month 9-10: Security
+
+| #   | Status   | Article                           | Primary Keyword                   | Est. Volume | Pillar   |
+| --- | -------- | --------------------------------- | --------------------------------- | ----------- | -------- |
+| 17  | COMPLETE | **Path Traversal Security Guide** | "node js path traversal"          | 1,000+      | Security |
+| 18  | NOT STARTED | Input Validation in Node.js    | "node js input validation"        | 2,000+      | Security |
+| 19  | NOT STARTED | Secure File Uploads             | "node js secure file upload"      | 1,500+      | Security |
+| 20  | NOT STARTED | OWASP Top 10 for Node.js        | "node js security best practices" | 3,000+      | Security |
+
+### Month 11-12: Advanced & Experimental
 
 | #   | Status      | Article                        | Primary Keyword | Notes                 |
 | --- | ----------- | ------------------------------ | --------------- | --------------------- |
-| 17+ | NOT STARTED | Rust/Zig + Node.js integration | niche           | Thought leadership    |
-| 18+ | NOT STARTED | TBD based on analytics         | TBD             | Iterate based on data |
+| 21+ | NOT STARTED | Rust/Zig + Node.js integration | niche           | Thought leadership    |
+| 22+ | NOT STARTED | TBD based on analytics         | TBD             | Iterate based on data |
 
 ---
 
@@ -104,6 +114,20 @@ Event Emitter
 Installing Node.js
     └── links to → Checking Node.js version (existing)
     └── links to → Docker development (existing)
+
+Path Traversal Security (NEW)
+    └── links to → Reading/Writing Files (existing)
+    └── links to → Race Conditions (existing)
+    └── links to → 5 Ways to Install Node.js (existing)
+    └── links to → Input Validation (future)
+    └── links to → Secure File Uploads (future)
+    └── links to → OWASP Top 10 for Node.js (future)
+
+Security Cluster (future)
+    └── Path Traversal Security (hub for file security)
+    └── Input Validation
+    └── Secure File Uploads
+    └── OWASP Top 10 for Node.js (potential hub)
 ```
 
 ---
@@ -114,8 +138,11 @@ Installing Node.js
 - [x] Update "5 Ways to Install Node.js" with fnm, Volta, Docker
 - [x] Cross-link existing articles
 - [x] Add CTAs for free chapter download to all posts
+- [x] Publish path traversal security article (new security pillar)
+- [x] Add link to path traversal article from Reading/Writing Files guide
 - [ ] Monitor keyword rankings for existing content
 - [ ] A/B test CTA placements
+- [ ] Promote path traversal article on security forums (r/netsec, HN)
 
 ---
 
@@ -125,3 +152,6 @@ Installing Node.js
 - Most competing articles still recommend axios/got first - opportunity to differentiate
 - New Node.js features (22+, 23+) have early-mover advantage
 - Light book excerpts where relevant (Ch 6 streams, Ch 10 testing)
+- **Security content** differentiates us from typical tutorial sites and builds trust/authority
+- Path traversal article targets developers building file servers, image handlers, and upload systems
+- Security topics have strong CVE/news hooks for promotion and backlinks

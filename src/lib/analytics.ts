@@ -156,6 +156,18 @@ export type AnalyticsEventName =
 // ============================================================================
 
 /**
+ * Check if running on localhost (development environment)
+ */
+export function isLocalhost(): boolean {
+  if (typeof window === 'undefined') return false
+
+  return (
+    window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1'
+  )
+}
+
+/**
  * Check if analytics debug mode is enabled.
  * Enable via URL param: ?debug_analytics=true
  * Or in development mode (localhost)
@@ -165,11 +177,8 @@ export function isDebugMode(): boolean {
 
   const urlParams = new URLSearchParams(window.location.search)
   const debugParam = urlParams.get('debug_analytics') === 'true'
-  const isDev =
-    window.location.hostname === 'localhost' ||
-    window.location.hostname === '127.0.0.1'
 
-  return debugParam || isDev
+  return debugParam || isLocalhost()
 }
 
 /**
@@ -207,14 +216,29 @@ function getGtag(): ((...args: unknown[]) => void) | null {
 }
 
 /**
+ * Check if debug analytics param is enabled via URL
+ */
+function hasDebugParam(): boolean {
+  if (typeof window === 'undefined') return false
+  const urlParams = new URLSearchParams(window.location.search)
+  return urlParams.get('debug_analytics') === 'true'
+}
+
+/**
  * Generic event tracking function
  * Uses the global gtag() function directly for event tracking.
+ * Events are not sent when running on localhost (unless ?debug_analytics=true is set).
  */
 export function trackEvent<T extends Record<string, unknown>>(
   eventName: string,
   params: T,
 ): void {
   debugLog(eventName, params)
+
+  // Skip sending events on localhost unless debug param is set
+  if (isLocalhost() && !hasDebugParam()) {
+    return
+  }
 
   const gtag = getGtag()
   if (gtag) {
