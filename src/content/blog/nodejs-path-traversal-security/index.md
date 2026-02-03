@@ -576,6 +576,91 @@ While TOCTOU attacks are theoretically possible, they're difficult to exploit in
 However, defense in depth means we still minimize the risk by using file handles.
 :::
 
+### Infrastructure-Level Hardening
+
+So far, we've focused on securing your Node.js code itself. But what if an attacker finds a vulnerability you haven't anticipated? What if there's a bug in a dependency? Infrastructure-level protections act as a safety net, limiting the damage even when application-level defenses fail.
+
+Think of it this way: secure code is your first line of defense, but infrastructure hardening ensures that a breach doesn't become a catastrophe. Here are several strategies to consider:
+
+#### Run with Minimal Permissions
+
+One of the simplest and most effective mitigations is running your Node.js process with a dedicated user account that has only the permissions it absolutely needs:
+
+```bash
+# Create a dedicated user for the application
+useradd --system --no-create-home --shell /bin/false nodeapp
+
+# Set ownership of application files
+chown -R nodeapp:nodeapp /app
+
+# Set restrictive permissions on the uploads directory
+chmod 750 /app/uploads
+
+# Run the application as the dedicated user
+su -s /bin/bash -c 'node server.js' nodeapp
+```
+
+With this setup, even if an attacker exploits a path traversal vulnerability, they can only access files that the `nodeapp` user has permission to read. System files like `/etc/shadow` or other users' home directories remain inaccessible.
+
+#### Node.js Permission Model
+
+Node.js has a built-in [permission model](https://nodejs.org/api/permissions.html) (stable since Node.js 22) that restricts access to system resources at the runtime level. When you start Node.js with the `--permission` flag, all resource access is denied by default unless explicitly allowed.
+
+The `--allow-fs-read` flag is particularly relevant for path traversal protection. It lets you specify exactly which paths your application can read:
+
+```bash
+# Only allow reading from the uploads directory and node_modules
+node --permission \
+  --allow-fs-read=/app/uploads/ \
+  --allow-fs-read=/app/node_modules/ \
+  server.js
+```
+
+With this configuration, even if a path traversal attack bypasses your application-level validation, Node.js itself will block any attempt to read files outside the allowed paths, throwing an `ERR_ACCESS_DENIED` error.
+
+You can also check permissions at runtime using `process.permission.has()`:
+
+```js
+if (!process.permission.has('fs.read', '/etc/passwd')) {
+  console.log('Cannot read /etc/passwd - permission denied at runtime level')
+}
+```
+
+:::note[Permission Model Limitations]
+The Node.js permission model is designed as a "seat belt" for trusted code, not as a sandbox against malicious code. It won't protect against attacks that exploit native addons or existing file descriptors. Use it as one layer in your defense-in-depth strategy, not as your only protection.
+:::
+
+#### Containerization with Docker
+
+Docker provides excellent sandboxing by isolating your application in a container with its own filesystem view. The application can have broad access within the container, but the container itself has limited access to the host system. Even if an attacker escapes your uploads directory through a path traversal vulnerability, they're still trapped inside the container with no access to the host filesystem.
+
+For maximum security, run your container with a non-root user, drop all Linux capabilities with `--cap-drop=ALL`, and use `--security-opt=no-new-privileges` to prevent privilege escalation.
+
+#### Other Sandboxing Strategies
+
+Beyond Docker, several other sandboxing approaches can limit the blast radius of a successful attack:
+
+- **chroot jails**: The classic Unix approach to restricting filesystem access. The application sees a limited directory tree as its entire filesystem. While not as robust as containers, it's a lightweight option for simple deployments.
+
+- **systemd service hardening**: If running as a systemd service, use directives like `ProtectSystem=strict`, `ProtectHome=true`, `PrivateTmp=true`, and `ReadOnlyPaths=/` to restrict filesystem access.
+
+- **SELinux/AppArmor profiles**: These Linux Security Modules provide mandatory access control. Create a profile that explicitly lists which files and directories your application can access, denying everything else by default.
+
+- **seccomp filters**: Restrict which system calls your application can make. Node.js needs a relatively small set of syscalls, and blocking dangerous ones like `ptrace` or `mount` adds another layer of protection.
+
+#### Web Application Firewall (WAF)
+
+A WAF can detect and block path traversal attempts before they even reach your application:
+
+- **Cloud-based WAFs** (AWS WAF, Cloudflare, Akamai) provide managed rule sets that detect common attack patterns including path traversal
+- **Self-hosted options** like ModSecurity with the OWASP Core Rule Set can be deployed in front of your Node.js application
+
+WAFs are particularly valuable because they protect against attacks targeting vulnerabilities you might not even know exist in your code or dependencies.
+
+:::tip[Defense in Depth in Practice]
+The most resilient systems combine multiple strategies. A well-protected deployment might include: validated code paths (application layer) + Docker container (isolation) + non-root user (least privilege) + read-only mounts (filesystem protection) + WAF (network perimeter). Each layer reduces risk independently, so even if one fails, others remain.
+:::
+
 ## Testing Your Implementation
 
 Writing secure code is only half the battle. You also need to verify that your defenses actually work against the attack vectors we've discussed. In this section, we'll build a test suite that validates our `safeResolve` function against common attack patterns, giving you confidence that your implementation is solid.
