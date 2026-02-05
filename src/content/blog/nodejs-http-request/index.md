@@ -1,6 +1,6 @@
 ---
 date: 2026-01-29T16:30:00
-updatedAt: 2026-01-30T10:44:00
+updatedAt: 2026-02-05T00:00:00
 title: How to make an HTTP request in Node.js
 slug: nodejs-http-request
 description: Learn to make HTTP requests in Node.js using built-in fetch(), http/https modules. Covers POST, authentication, streaming, and testing with code examples.
@@ -19,9 +19,11 @@ faq:
     answer: No, modern Node.js (18+) includes a built-in fetch() API that handles most use cases. External libraries like axios or got are optional and mainly useful for advanced features like automatic retries, request interceptors, or progress events.
 ---
 
-Making HTTP requests is one of the most common tasks in Node.js development. Whether you're calling a REST API, fetching data from an external service, or building a web scraper, you'll need to know how to make HTTP requests effectively.
+For the longest time I remember using the `request` package (now deprecated) to make HTTP requests in Node.js. Then promises became mainstream and I switched to `request-promise` (also deprecated). In more recent times I moved to `axios` and I thought I would never look back... and yet here we are. The HTTP story in Node.js keeps evolving, and for good reasons!
 
-The good news is that modern Node.js includes everything you need to make HTTP requests without installing any external packages. A simple `fetch()` call is all it takes to get started. But between "it works on my machine" and "it's production-ready" lies a minefield of edge cases: requests that hang forever, unhandled network errors, memory leaks from unhandled streams, retry logic that causes duplicate orders, and tests that accidentally hit real APIs. This guide covers everything you need to confidently ship HTTP code to production—not just the basics, but the patterns, pitfalls, and testing strategies that only surface when things go wrong.
+Making HTTP requests is one of the most common tasks in Node.js development. Whether you're calling a REST API, fetching data from an external service, or building a web scraper, you need to know how to do it effectively. The good news is that since Node.js 18, the Web-standard `fetch()` API is available as a built-in global. If you've ever used `fetch()` in the browser, you already know how to use it on the server. No extra dependencies, no wrappers, just the same familiar API giving you everything you need to do HTTP the modern way in Node.js.
+
+But between "it works on my machine" and "it's production-ready" lies a minefield of edge cases: requests that hang forever, unhandled network errors, memory leaks from unhandled streams, retry logic that causes duplicate orders, and tests that accidentally hit real APIs. This guide covers everything you need to confidently ship HTTP code to production, not just the basics, but the patterns, pitfalls, and testing strategies that only surface when things go wrong.
 
 :::note[Prerequisites]
 The examples in this guide use **top-level `await`**, which requires ESM (ECMAScript Modules). To use these examples, either:

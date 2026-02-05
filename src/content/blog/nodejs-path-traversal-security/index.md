@@ -1,6 +1,6 @@
 ---
 date: 2026-02-02T18:17:00
-updatedAt: 2026-02-02T18:17:00
+updatedAt: 2026-02-05T00:00:00
 title: 'Node.js Path Traversal: Prevention & Security Guide'
 slug: nodejs-path-traversal-security
 description: Learn to prevent path traversal attacks in Node.js. Secure file servers with input validation, boundary checks, and defense-in-depth patterns.
@@ -943,6 +943,6 @@ For a deeper dive into Node.js security, consider:
 
 - **Node.js Design Patterns** - Our book covers security patterns and best practices throughout ([learn more](/))
 - **[Liran Tal's Node.js Security](https://www.nodejs-security.com/)** - Comprehensive Node.js security resources
-- **[Snyk's Node.js Security Guide](https://snyk.io/blog/nodejs-security-best-practices/)** - Modern security practices
+- **[Snyk's Node.js Security Guide](https://snyk.io/articles/nodejs-security-best-practice/)** - Modern security practices
 
 Remember: **security is an ongoing process**, not a one-time fix. Stay informed about new vulnerabilities, regularly review your code, and always prioritize secure coding practices from the start.
