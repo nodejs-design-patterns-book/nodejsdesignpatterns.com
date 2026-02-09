@@ -48,10 +48,11 @@
 
 | #   | Status      | Article                       | Primary Keyword        | Est. Volume | Pillar    |
 | --- | ----------- | ----------------------------- | ---------------------- | ----------- | --------- |
-| 13  | NOT STARTED | Type-stripping in Node.js     | "node js typescript"   | Growing     | Modern    |
-| 14  | NOT STARTED | Node.js built-in test runner  | "node js test runner"  | 3,000+      | Modern    |
-| 15  | NOT STARTED | Import maps in Node.js        | "node js import maps"  | 1,000+      | Modern    |
-| 16  | NOT STARTED | Encrypting files with Node.js | "node js encrypt file" | 1,500+      | Core APIs |
+| 13  | NOT STARTED | Type-stripping in Node.js     | "node js typescript"       | Growing     | Modern    |
+| 14  | NOT STARTED | Node.js built-in test runner  | "node js test runner"      | 3,000+      | Modern    |
+| 15  | NOT STARTED | Import maps in Node.js        | "node js import maps"      | 1,000+      | Modern    |
+| 15b | NOT STARTED | Explicit Resource Management (`using` and `await using`) | "javascript using keyword" | Growing (2,000+) | Modern |
+| 16  | NOT STARTED | Encrypting files with Node.js | "node js encrypt file"     | 1,500+      | Core APIs |
 
 ### Month 9-10: Security
 
@@ -123,6 +124,12 @@ Path Traversal Security (NEW)
     └── links to → Secure File Uploads (future)
     └── links to → OWASP Top 10 for Node.js (future)
 
+Explicit Resource Management (using/await using)
+    └── links to → Reading/Writing Files (existing)
+    └── links to → Stream Consumer (existing)
+    └── links to → Async Iterators (existing)
+    └── links to → Event Emitter (future)
+
 Security Cluster (future)
     └── Path Traversal Security (hub for file security)
     └── Input Validation
@@ -155,3 +162,6 @@ Security Cluster (future)
 - **Security content** differentiates us from typical tutorial sites and builds trust/authority
 - Path traversal article targets developers building file servers, image handlers, and upload systems
 - Security topics have strong CVE/news hooks for promotion and backlinks
+- `using`/`await using` (Explicit Resource Management) is TC39 Stage 3, in Node.js 20.4+.
+  Most coverage is TypeScript-focused — opportunity for a Node.js-specific deep dive that
+  ties naturally to the design patterns theme
