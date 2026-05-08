@@ -57,6 +57,8 @@ Working with dates in JavaScript has been famously painful. The legacy `Date` ob
 
 Temporal is immutable, type-safe (you cannot accidentally mix a date with a date-and-time), and time-zone-aware by design.
 
+For years I reached for external libraries whenever I had to do anything non-trivial with dates, times, or time zones. Back in the day it was [Moment.js](https://momentjs.com/) (and `moment-timezone` for IANA support), and more recently [Luxon](https://moment.github.io/luxon/) or [date-fns](https://date-fns.org/) for a leaner, immutable-friendly API. They are all genuinely good libraries and they served me well over the years, but I am always happy to drop a dependency, and you should be too.
+
 ### Today, tomorrow, and a month from now
 
 ```javascript
