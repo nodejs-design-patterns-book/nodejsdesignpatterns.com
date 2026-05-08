@@ -209,6 +209,8 @@ function getUser(id) {
 
 The callback only runs if the key is not already present. Once it runs, its return value is stored and returned, and every subsequent call gets the cached entry.
 
+A lot of other languages have had this for years (Python's `dict.setdefault` and Rust's `HashMap::entry().or_insert_with(...)`, I am looking at you!) and every time I bounced between languages I would think how nice it would be to have this in JavaScript too. Well, now we do, and we get to use it in Node.js too. Hooray!
+
 ### Grouping and counting
 
 `getOrInsertComputed` is also great for the "group items by key" pattern, which usually involves the same `if (!map.has(...))` boilerplate:
