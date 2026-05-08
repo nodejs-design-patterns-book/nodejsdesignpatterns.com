@@ -492,7 +492,9 @@ Our book **Node.js Design Patterns** keeps a tight focus on the patterns that su
 
 Node.js 26 is a release that pulls a lot of long-running threads into the present: Temporal goes from "behind a flag" to "the recommended way to handle dates", common Map and Iterator patterns finally get first-class methods, and the runtime sheds a layer of legacy. If you only try one thing today, start by replacing a `new Date()` call with a `Temporal.Now.plainDateISO()` and see how much cleaner your date-handling code becomes.
 
-For deeper dives, you might enjoy our pieces on [making HTTP requests in Node.js](/blog/nodejs-http-request/) and on [checking your Node.js version](/blog/checking-node-js-version/).
+For the full list of changes, including the lower-level details we did not cover here, the [official Node.js 26.0.0 release announcement](https://nodejs.org/en/blog/release/v26.0.0) is the canonical reference.
+
+For deeper dives, you might also enjoy our pieces on [making HTTP requests in Node.js](/blog/nodejs-http-request/) and on [checking your Node.js version](/blog/checking-node-js-version/).
 
 See you in the next article!
 
