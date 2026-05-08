@@ -9,8 +9,8 @@ tags: ['blog']
 faq:
   - question: When was Node.js 26 released?
     answer: Node.js 26 was released on May 5, 2026. It enters Long Term Support (LTS) in October 2026, after a six-month period on the "Current" release line.
-  - question: Why did Node.js skip version 25?
-    answer: Node.js jumped from v24 straight to v26 so the major version number aligns with the underlying Chromium release (Chromium 146 / V8 14.6). Expect this even-numbered alignment to continue going forward.
+  - question: What happened to Node.js 25?
+    answer: Node.js 25 was released in October 2025 as a "Current" line release. Per the standard Node.js release cycle, odd-numbered majors do not get LTS and reach end-of-life when the next major ships. v25 was superseded by v26 in May 2026.
   - question: Is the Temporal API stable in Node.js 26?
     answer: Yes. Temporal is enabled by default and considered stable for production use. It is the recommended replacement for the legacy Date object when working with dates, times, and time zones.
   - question: Should I upgrade existing projects to Node.js 26?
@@ -21,7 +21,7 @@ faq:
 
 Node.js 26 landed on May 5, 2026, and it might be one of the more exciting majors in recent memory. After years of waiting, the **Temporal API is stable and enabled by default**, V8 jumped to 14.6 (which brings some genuinely useful new built-ins), Undici got a major version bump, and a long list of legacy APIs finally retired.
 
-If you noticed that we went from v24 straight to v26: that is not a typo. Node.js skipped version 25 so the major number now matches the bundled Chromium release (146). Expect the version cadence to keep aligning with Chromium going forward.
+Node.js 26 is on the **Current** release line and will enter LTS in October 2026. If you have been on a v24 LTS deployment for a while, note that v25 was the previous Current release (October 2025) and is now end-of-life as v26 takes over the Current slot, which is the standard cadence for odd-numbered Node.js majors.
 
 In this article we will tour the highlights, **starting from the coolest, most code-relevant features and moving down to migration concerns**. Every section shows you what the new API looks like and, where useful, what the same code used to look like in older Node.js versions so you can see exactly what these changes unlock.
 
@@ -498,9 +498,9 @@ See you in the next article!
 
 Node.js 26 was released on May 5, 2026. It enters Long Term Support (LTS) in October 2026, after a six-month period on the "Current" release line.
 
-### Why did Node.js skip version 25?
+### What happened to Node.js 25?
 
-Node.js jumped from v24 straight to v26 so the major version number aligns with the underlying Chromium release (Chromium 146 / V8 14.6). Expect this even-numbered alignment to continue going forward.
+Node.js 25 was released in October 2025 as a "Current" line release. Per the standard Node.js release cycle, odd-numbered majors do not get LTS and reach end-of-life when the next major ships. v25 was superseded by v26 in May 2026.
 
 ### Is the Temporal API stable in Node.js 26?
 
