@@ -1,16 +1,26 @@
 ---
 import { Picture } from 'astro:assets'
+import { Swiper, SwiperWrapper, SwiperSlide, SwiperPagination } from 'astro-swiper'
 import david from '@images/people/david-gonzalez.png'
 import joe from '@images/people/joe-karlsson.png'
 import maya from '@images/people/maya-shavin.png'
-import 'swiper/css'
-import 'swiper/css/pagination'
 ---
 
 <section id="trust-quote" class="pt-16 px-4">
-  <div class="swiper">
-    <div class="swiper-wrapper">
-      <div class="w-full swiper-slide">
+  <Swiper options={{
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+    autoplay: {
+      delay: 6000,
+      disableOnInteraction: true,
+    },
+    loop: true,
+
+  }}>
+    <SwiperWrapper>
+      <SwiperSlide class="w-full">
         <div class="max-w-4xl mx-auto px-4 py-4 sm:px-6 lg:px-8 text-center">
           <div class="relative">
             <div
@@ -52,9 +62,9 @@ import 'swiper/css/pagination'
             </div>
           </div>
         </div>
-      </div>
+      </SwiperSlide>
 
-      <div class="w-full swiper-slide">
+      <SwiperSlide class="w-full">
         <div class="max-w-4xl mx-auto px-4 py-4 sm:px-6 lg:px-8 text-center">
           <div class="relative">
             <div
@@ -96,9 +106,9 @@ import 'swiper/css/pagination'
             </div>
           </div>
         </div>
-      </div>
+      </SwiperSlide>
 
-      <div class="w-full swiper-slide">
+      <SwiperSlide class="w-full">
         <div class="max-w-4xl mx-auto px-4 py-4 sm:px-6 lg:px-8 text-center">
           <div class="relative">
             <div
@@ -140,30 +150,12 @@ import 'swiper/css/pagination'
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </SwiperSlide>
+    </SwiperWrapper>
 
-    <div class="swiper-pagination"></div>
-  </div>
+    <SwiperPagination />
+  </Swiper>
 </section>
-
-<script>
-  import { Swiper } from 'swiper'
-  import { Pagination, Autoplay } from 'swiper/modules'
-
-  new Swiper('.swiper', {
-    modules: [Pagination, Autoplay],
-    pagination: {
-      el: '.swiper-pagination',
-      clickable: true,
-    },
-    autoplay: {
-      delay: 6000,
-      disableOnInteraction: true,
-    },
-    loop: true,
-  })
-</script>
 
 <style is:inline>
   .swiper-pagination-bullet {
