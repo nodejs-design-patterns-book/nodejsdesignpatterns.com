@@ -1,6 +1,6 @@
 ---
-date: 2026-05-10T16:15:00
-updatedAt: 2026-05-10T16:15:00
+date: 2026-05-10T16:41:00
+updatedAt: 2026-05-10T16:41:00
 title: What's new in Node.js 26
 slug: whats-new-in-nodejs-26
 description: Node.js 26 ships the Temporal API by default, Map upsert helpers, Iterator.concat, V8 14.6 and Undici 8. A code-heavy tour with practical examples.
