@@ -85,6 +85,7 @@
 | Installing Node.js       | UPDATED  | /blog/5-ways-to-install-node-js                          |
 | Docker development       | COMPLETE | /blog/node-js-development-with-docker-and-docker-compose |
 | What's new in Node.js 26 | NEW      | /blog/whats-new-in-nodejs-26                             |
+| Node.js release schedule changes | NEW | /blog/nodejs-release-schedule-changes               |
 
 ---
 
@@ -140,6 +141,15 @@ What's new in Node.js 26 (NEW)
     └── companion repo: github.com/lmammino/nodejs-26-examples (every snippet runnable)
     └── inbound opportunities → Async Iterators, HTTP Requests, Stream Consumer, Checking Node.js version
        (each could mention the relevant v26 update with a link back)
+    └── links to → Node.js release schedule changes (NEW) — "Node.js 26 is the last release of the old model" note
+
+Node.js release schedule changes (NEW)
+    └── links to → Installing Node.js (existing) — old odd/even model reference
+    └── links to → Checking Node.js version (existing) — how to check your version + LTS advice
+    └── links to → What's new in Node.js 26 (existing) — "what ships inside the releases" companion
+    └── inbound update notes ← Checking Node.js version, Installing Node.js, What's new in Node.js 26
+       (each carries a :::note pointing here, since their odd/even explanations are now superseded)
+    └── evergreen hub for "node js release schedule" / "node js lts" / "node js versioning" queries
 
 Security Cluster (future)
     └── Path Traversal Security (hub for file security)
@@ -179,5 +189,13 @@ Security Cluster (future)
 - **Node.js major-release announcements** (the v26 article) make a strong recurring slot:
   evergreen-but-timely SEO around release time ("what's new in Node.js X" queries), and
   they double as a hub linking back to evergreen guides (HTTP, async iterators, streams,
-  install). Plan one per even-numbered LTS major (next: v28 in April 2027). Companion
-  GitHub repo with runnable snippets is a strong differentiator.
+  install). Companion GitHub repo with runnable snippets is a strong differentiator.
+  NOTE: from the 2026 release-schedule change, there is now **one major a year** (every
+  April, LTS in October), so plan one "what's new" article per year, not two. Next: v27
+  in April 2027.
+- **Node.js release-policy / schedule changes** are a second, distinct recurring hook:
+  the release-schedule-change article (June 2026) shows that policy news (not just feature
+  news) ranks well and ages into an evergreen reference. It targets "node js release
+  schedule" / "node js lts" / "node js versioning" and acts as the canonical explainer the
+  evergreen guides (install, checking-version) can point to whenever the model shifts.
+  Revisit whenever the official schedule changes again.

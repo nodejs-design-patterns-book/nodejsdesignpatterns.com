@@ -30,12 +30,16 @@ Knowing your versions is crucial for several reasons:
 5. **Project requirements**: Many projects specify minimum version requirements in their documentation
 6. **Support and maintenance**: **This is critical** - according to the [official Node.js releases roadmap](https://nodejs.org/en/about/previous-releases), production applications should only use **Active LTS** or **Maintenance LTS** releases
 
-The Node.js project follows a predictable release cycle where:
+The Node.js project follows a predictable release cycle. Through Node.js 26, that cycle works like this:
 
 - Major versions are "Current" for six months
 - Odd-numbered releases become unsupported after six months
 - Even-numbered releases move to "Active LTS" with critical bug fixes guaranteed for 30 months
 - Older, unsupported versions may have unaddressed security vulnerabilities
+
+:::note[Heads-up: the release model changes from Node.js 27]
+Starting in October 2026, Node.js moves to **one major release a year**, version numbers line up with the calendar year, and **every release becomes LTS** (the odd/even rule goes away). The support windows stay similar, so the advice below, "run a supported version, ideally LTS", does not change. For the full picture, see our guide on [the new Node.js release schedule and version numbers](/blog/nodejs-release-schedule-changes/).
+:::
 
 <figure>
 
