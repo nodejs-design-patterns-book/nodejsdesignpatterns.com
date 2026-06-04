@@ -74,6 +74,8 @@ This is my favorite part, and it is the change the title of this article is real
 
 I will happily admit that I can never remember off the top of my head which year a given Node.js major actually came out. Was 18 a 2022 thing? 2023? With year-based numbers that question disappears. The number _is_ the year, so working out whether a runtime is getting old becomes trivial mental math. If you have ever used Ubuntu, where `24.04` instantly tells you "April 2024," you already know how nice this is to reason about.
 
+There is also a happy little coincidence that makes this line up so cleanly. Right now the major version (26) already matches the last two digits of the year (20**26**), and moving to exactly one release a year keeps them in lockstep from here on: 27 in 20**27**, 28 in 20**28**, and so on. It almost looks like the Node.js maintainers have quietly been waiting for the stars to line up before making the jump.
+
 ### Every release becomes LTS
 
 With one release a year, there is no longer any need for the odd/even dance. **Every release becomes LTS.** Node.js 27 will become LTS, Node.js 28 will become LTS, and so on, every single year.
@@ -99,17 +101,9 @@ Putting it all together, every release now flows through the same four phases:
 | **LTS**         | 30 months | The long, stable window you deploy to production.          |
 | **End of Life** | -         | The project stops providing fixes.                         |
 
-That is roughly **36 months** from a version's first Current release to its end of life, which keeps the overall support window very close to what we have today. Here is how the new lifecycle looks across the next few releases, side by side with Node.js 26 on the old model so you can see the difference:
+That is roughly **36 months** from a version's first Current release to its end of life, which keeps the overall support window very close to what we have today.
 
-<figure>
-
-![Timeline of the Node.js release schedule from April 2026 to April 2032. The top row shows Node.js 26 on the old model: Current, then Active LTS, then Maintenance. Below it, Node.js 27, 28 and 29 each follow the new model: a six-month orange Alpha phase, a six-month green Current phase, then a 30-month blue LTS phase. Each new major starts one year after the previous one, in a regular annual staircase.](./nodejs-new-release-schedule-2026.svg)
-
-<figcaption>The new Node.js release schedule: one major a year, each flowing through Alpha, Current, and LTS</figcaption>
-
-</figure>
-
-Notice the regular staircase: every year a new Alpha begins as the previous version settles into LTS. There is always plenty of overlap between supported LTS lines, so you keep the comfortable migration windows you have today.
+The nice thing about this lifecycle is how regular it is. Every year a new Alpha begins just as the previous version settles into LTS, so there is always plenty of overlap between supported LTS lines and you keep the comfortable migration windows you have today. You can see that rhythm laid out concretely in the schedule table further down.
 
 ## Node.js 26 vs Node.js 27
 
