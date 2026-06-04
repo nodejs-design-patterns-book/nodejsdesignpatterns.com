@@ -25,6 +25,10 @@ The big ones: the **Temporal API is stable and enabled by default**, V8 jumped t
 
 Node.js 26 is on the **Current** release line and will enter LTS in October 2026. If you've been on a v24 LTS deployment for a while, note that v25 was the previous Current release (October 2025) and is now end-of-life as v26 takes over the Current slot, which is the standard cadence for odd-numbered Node.js majors.
 
+:::note[Node.js 26 is the last release of the old model]
+This odd/even cadence is about to change. Node.js 26 is the **final release under the old schedule**. Starting with Node.js 27 in 2027, the project moves to **one major a year**, year-based version numbers, and **every release becoming LTS**. If you want the full story, we wrote it up in [Node.js is changing its release schedule and version numbers](/blog/nodejs-release-schedule-changes/).
+:::
+
 In this article we'll tour the highlights, **starting from the coolest, most code-relevant features and moving down to migration concerns**. Every section shows you what the new API looks like and, where useful, what the same code used to look like in older Node.js versions so you can see exactly what these changes unlock.
 
 :::note[Code samples]

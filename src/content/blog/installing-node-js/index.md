@@ -58,10 +58,14 @@ Before moving on and exploring all the different installation options, it is def
 
 Node.js offers 2 main release lines:
 
-- **Stable** (or _Current_): every new major Node.js release is considered "Current" for the first 6 months after the publish date. The idea is to give library authors the time to test their compatibility with the new release and do any necessary change. After the 6 months period, all the odd release numbers (9, 11, 13, 15, etc.) move to the state of _Unsupported_, while even releases (10, 12, 14, etc.) are promoted to _Long Term Support_ (or "LTS").
+- **Stable** (or _Current_): every new major Node.js release is considered "Current" for the first 6 months after the publish date. The idea is to give library authors the time to test their compatibility with the new release and do any necessary change. Through Node.js 26, after the 6 months period, all the odd release numbers (9, 11, 13, 15, etc.) move to the state of _Unsupported_, while even releases (10, 12, 14, etc.) are promoted to _Long Term Support_ (or "LTS").
 - **LTS**: releases marked as "Long Term Support" get critical bug fixes for a total of 30 months since the initial publish date. This makes LTS releases particularly suitable for production deployments. The most recent LTS is also called _Active LTS_, while previous LTS versions (still under the 30 months support timeframe) are called _Maintenance LTS_.
 
 Finally, the release coming from the current _master_ branch is considered **Unstable**. This is generally a release dedicated to people maintaining Node.js or developers who want to explore new experimental features that haven't been yet included in any of the major releases.
+
+:::note[The release model changes from Node.js 27]
+The odd/even rule described above applies through Node.js 26. Starting in October 2026, Node.js moves to **one major release a year**, version numbers line up with the calendar year, and **every release becomes LTS**. The practical advice does not change (for production, stick to LTS), but the version numbering does. See our full guide on [the new Node.js release schedule and version numbers](/blog/nodejs-release-schedule-changes/).
+:::
 
 Node.js publishes an [official timeline of current and future releases](https://nodejs.org/en/about/releases/). You can always check the current release schedule on the official Node.js website.
 
