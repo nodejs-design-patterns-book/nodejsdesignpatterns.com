@@ -1,6 +1,6 @@
 ---
-date: 2026-06-04T10:00:00
-updatedAt: 2026-06-04T10:00:00
+date: 2026-06-04T20:09:24
+updatedAt: 2026-06-04T20:09:24
 title: Node.js is changing its release schedule and version numbers
 slug: nodejs-release-schedule-changes
 description: Node.js is moving to one major release a year, year-based version numbers, every release becoming LTS, and a new Alpha channel. Here is what changes.
