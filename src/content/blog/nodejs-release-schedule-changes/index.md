@@ -38,7 +38,7 @@ If you only have a minute, here is the whole thing in six bullets:
 
 The rest of this article unpacks each of these and adds the dates, the reasoning, and the practical advice.
 
-## How Node.js releases work today
+## How Node.js releases work today (pre October 2026)
 
 Before we get into what is changing, it is worth a quick refresher on how things have worked up to now, because the contrast is what makes the new model click.
 
