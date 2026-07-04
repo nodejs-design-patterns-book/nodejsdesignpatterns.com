@@ -76,6 +76,9 @@
 
 | Topic                    | Coverage | Link                                                     |
 | ------------------------ | -------- | -------------------------------------------------------- |
+| Environment variables    | COMPLETE | /blog/nodejs-environment-variables                       |
+| What's new in Node.js 26 | COMPLETE | /blog/whats-new-in-nodejs-26                             |
+| Release schedule changes | COMPLETE | /blog/nodejs-release-schedule-changes                    |
 | Reading/writing files    | COMPLETE | /blog/reading-writing-files-nodejs                       |
 | Stream consumers         | COMPLETE | /blog/node-js-stream-consumer                            |
 | Async iterators          | COMPLETE | /blog/javascript-async-iterators                         |
@@ -96,8 +99,15 @@ HTTP Requests
     └── links to → API Server (no deps)
     └── links to → Reading/Writing Files (existing)
 
-Environment Variables
-    └── links to → CLI with parseArgs
+Environment Variables (COMPLETE)
+    └── links to → 5 Ways to Install Node.js (existing)
+    └── links to → Docker development (existing)
+    └── links to → Checking Node.js version (existing)
+    └── links to → HTTP Requests (existing)
+    └── links to → Reading/Writing Files (existing)
+    └── links to → Path Traversal Security (existing)
+    └── links to → CLI with parseArgs (future: add link once published)
+    └── linked from → HTTP Requests, Docker development
 
 Files & Paths
     └── links to → Reading/Writing Files (existing)
@@ -168,6 +178,9 @@ Security Cluster (future)
 - [x] Add CTAs for free chapter download to all posts
 - [x] Publish path traversal security article (new security pillar)
 - [x] Add link to path traversal article from Reading/Writing Files guide
+- [x] Publish environment variables article (Core APIs pillar, #2)
+- [x] Cross-link env vars article (HTTP Requests and Docker guides link to it; it links out to 6 existing articles)
+- [ ] Promote env vars article (r/node, dev.to, newsletter); the "when NOT to use env vars for secrets" angle is a good hook
 - [ ] Monitor keyword rankings for existing content
 - [ ] A/B test CTA placements
 - [ ] Promote path traversal article on security forums (r/netsec, HN)
@@ -186,6 +199,16 @@ Security Cluster (future)
 - `using`/`await using` (Explicit Resource Management) is TC39 Stage 3, in Node.js 20.4+.
   Most coverage is TypeScript-focused — opportunity for a Node.js-specific deep dive that
   ties naturally to the design patterns theme
+- **Next up (as of Jul 2026)**: prioritize "Writing a CLI with Node.js" (#4) over SQLite (#3).
+  The env vars article already reserves a link to it (parseArgs), CLI tools are heavy env var
+  consumers (reciprocal links), and it closes out the Foundation batch. SQLite (#3) follows.
+- Off-calendar wins: "What's new in Node.js 26" and "Release schedule changes" (May/Jun 2026)
+  cover the Modern Node.js pillar ahead of schedule and give every future article a
+  version-context page to link to. Consider linking env vars article from future "What's new"
+  posts when env-related flags change (e.g., --env-file updates).
+- Env vars article angle worth reusing: honest "when NOT to use X" sections differentiate us
+  from tutorial mills and build trust; apply the same treatment to SQLite (vs a real DB
+  server) and the CLI article (parseArgs vs commander/yargs).
 - **Node.js major-release announcements** (the v26 article) make a strong recurring slot:
   evergreen-but-timely SEO around release time ("what's new in Node.js X" queries), and
   they double as a hub linking back to evergreen guides (HTTP, async iterators, streams,

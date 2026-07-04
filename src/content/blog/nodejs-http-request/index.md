@@ -652,7 +652,7 @@ Now that we've covered the mechanics of making HTTP requests, let's consolidate 
 
 3. **Validate responses**: Don't assume the response structure. Validate before accessing properties.
 
-4. **Use environment variables for URLs and tokens**: Never hardcode API keys or sensitive URLs.
+4. **Use environment variables for URLs and tokens**: Never hardcode API keys or sensitive URLs. Our [guide to environment variables in Node.js](/blog/nodejs-environment-variables/) covers how to load and validate them properly.
 
 5. **Consider rate limiting**: Respect API rate limits. Implement backoff strategies for retries.
 

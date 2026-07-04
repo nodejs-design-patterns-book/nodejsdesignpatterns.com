@@ -207,7 +207,7 @@ IP_MYSQL_SERVER=172.16.250.11
 
 It is not always necessary to use an `.env` file, especially in simple examples like this one. It is a good practice to use one, though. The main advantage is when you have to share the `docker-compose.yml` and the `.env` with the team.
 
-Generally the `.env` file is not committed to the repository. The idea is to use it to provide "user specific" configuration, so every member of the team can choose your own range of IPs or reference their own work folders.
+Generally the `.env` file is not committed to the repository. The idea is to use it to provide "user specific" configuration, so every member of the team can choose your own range of IPs or reference their own work folders. If you want to go deeper into how Node.js itself handles environment variables and `.env` files (including the native `--env-file` flag), check out our [complete guide to environment variables in Node.js](/blog/nodejs-environment-variables/).
 
 Let's see an example. If we add in `docker-compose` a service for Node.js we can add some "link" to other services.
 (official docker documentation: https://docs.docker.com/compose/compose-file/compose-file-v3/#extra_hosts)
