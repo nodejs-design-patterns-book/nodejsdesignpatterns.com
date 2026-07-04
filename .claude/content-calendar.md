@@ -65,10 +65,11 @@
 
 ### Month 11-12: Advanced & Experimental
 
-| #   | Status      | Article                        | Primary Keyword | Notes                 |
-| --- | ----------- | ------------------------------ | --------------- | --------------------- |
-| 21+ | NOT STARTED | Rust/Zig + Node.js integration | niche           | Thought leadership    |
-| 22+ | NOT STARTED | TBD based on analytics         | TBD             | Iterate based on data |
+| #   | Status      | Article                                  | Primary Keyword | Notes                                                                      |
+| --- | ----------- | ---------------------------------------- | --------------- | -------------------------------------------------------------------------- |
+| 21  | PLANNED     | Calling native libraries with `node:ffi` | "node js ffi"   | Early mover: experimental since 26.1 (May 2026). Brief: .claude/briefs/nodejs-ffi.md. Pull forward to Jul/Aug 2026 |
+| 22  | NOT STARTED | Rust + Node.js via node:ffi (spoke)      | "rust node js"  | Thought-leadership follow-up to #21                                         |
+| 23+ | NOT STARTED | TBD based on analytics                   | TBD             | Iterate based on data                                                       |
 
 ---
 
@@ -161,6 +162,14 @@ Node.js release schedule changes (NEW)
        (each carries a :::note pointing here, since their odd/even explanations are now superseded)
     └── evergreen hub for "node js release schedule" / "node js lts" / "node js versioning" queries
 
+node:ffi (planned, #21)
+    └── links to → What's new in Node.js 26 (existing)
+    └── links to → Release schedule changes (existing; experimental → LTS context)
+    └── links to → Environment Variables (existing; NODE_OPTIONS to enable flags)
+    └── links to → Checking Node.js version (existing; requires 26.1+)
+    └── links to → Explicit Resource Management (future; `using` with dlopen)
+    └── spoke → Rust + Node.js via node:ffi (#22)
+
 Security Cluster (future)
     └── Path Traversal Security (hub for file security)
     └── Input Validation
@@ -199,9 +208,16 @@ Security Cluster (future)
 - `using`/`await using` (Explicit Resource Management) is TC39 Stage 3, in Node.js 20.4+.
   Most coverage is TypeScript-focused — opportunity for a Node.js-specific deep dive that
   ties naturally to the design patterns theme
-- **Next up (as of Jul 2026)**: prioritize "Writing a CLI with Node.js" (#4) over SQLite (#3).
-  The env vars article already reserves a link to it (parseArgs), CLI tools are heavy env var
-  consumers (reciprocal links), and it closes out the Foundation batch. SQLite (#3) follows.
+- **Next up (as of Jul 2026)**: pair "Writing a CLI with Node.js" (#4) with the new
+  `node:ffi` article (#21) for Jul/Aug, then SQLite (#3). Rationale: the CLI article closes
+  the Foundation batch and the env vars article reserves a link to it; the FFI article is
+  time-sensitive (experimental since 26.1, May 2026), and early-mover windows on new Node.js
+  features close fast, as competitors catch up. SQLite has stable volume and can wait a cycle.
+- **node:ffi cluster**: article #21 (brief at .claude/briefs/nodejs-ffi.md) also creates the
+  anchor for the Explicit Resource Management article (15b): the FFI docs use `using` with
+  dlopen, so publishing FFI first gives ERM a concrete in-house example to link to. The Rust
+  spoke (#22) follows once #21 has traction. Watch nodejs/node releases for node:ffi
+  stability changes and update the article when it graduates from experimental.
 - Off-calendar wins: "What's new in Node.js 26" and "Release schedule changes" (May/Jun 2026)
   cover the Modern Node.js pillar ahead of schedule and give every future article a
   version-context page to link to. Consider linking env vars article from future "What's new"
