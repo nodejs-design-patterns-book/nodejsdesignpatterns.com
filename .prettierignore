@@ -1,3 +1,4 @@
+.agents/
 .claude/
 .tmp/
 pnpm-lock.yaml
