@@ -474,6 +474,8 @@ NODE_ENV=development
 
 This serves as documentation for new team members and CI setup, without exposing real credentials.
 
+Keep in mind that `.env` files are also a favorite target for attackers: vulnerabilities like [path traversal](/blog/nodejs-path-traversal-security/) are commonly exploited to read them straight off your server's filesystem, which is one more reason not to keep production secrets in files.
+
 :::warning[Check your git history]
 If you accidentally committed a `.env` file, adding it to `.gitignore` won't remove it from history. Anyone who clones the repo can still find the secrets. Rotate all exposed credentials immediately, then purge the file from history with `git filter-branch` or [BFG Repo-Cleaner](https://rtyley.github.io/bfg-repo-cleaner/).
 :::
@@ -641,7 +643,7 @@ This disables **ALL** TLS validation, making your application vulnerable to man-
 
 ### Performance and Runtime Variables
 
-- `UV_THREADPOOL_SIZE`: Controls the libuv thread pool size (default 4, max 1024). This affects async DNS lookups, filesystem operations, and crypto operations. If your app is heavy on these, increasing the pool can improve throughput.
+- `UV_THREADPOOL_SIZE`: Controls the libuv thread pool size (default 4, max 1024). This affects async DNS lookups, [filesystem operations](/blog/reading-writing-files-nodejs/), and crypto operations. If your app is heavy on these, increasing the pool can improve throughput.
 - `NODE_COMPILE_CACHE=dir`: V8 code cache directory for faster startup. Node.js caches compiled code so subsequent runs skip the compilation step.
 - `TZ`: Sets the timezone for the process. Affects `Date`, `Intl`, and logging timestamps.
 
@@ -660,16 +662,16 @@ TZ=UTC node app.js
 
 Here's a reference table for additional variables worth knowing:
 
-| Variable                     | Purpose                                                            |
-| ---------------------------- | ------------------------------------------------------------------ |
-| `NODE_PATH`                  | Additional module lookup paths (mostly superseded by ESM)          |
-| `NODE_ICU_DATA`              | Custom ICU data for internationalization                           |
-| `NODE_REPL_HISTORY`          | Path to REPL history file                                          |
-| `NODE_V8_COVERAGE=dir`       | Output directory for V8 code coverage data                         |
-| `NODE_TEST_CONTEXT`          | Context value available in the built-in test runner                |
-| `NODE_PENDING_DEPRECATION=1` | Emit pending deprecation warnings                                  |
-| `NODE_RUN_SCRIPT_NAME`       | Set by `node --run`, contains the script name being executed       |
-| `NODE_USE_ENV_PROXY=1`       | Use `HTTP_PROXY`/`HTTPS_PROXY` env vars for Node.js fetch requests |
+| Variable                     | Purpose                                                                                          |
+| ---------------------------- | ------------------------------------------------------------------------------------------------ |
+| `NODE_PATH`                  | Additional module lookup paths (mostly superseded by ESM)                                        |
+| `NODE_ICU_DATA`              | Custom ICU data for internationalization                                                         |
+| `NODE_REPL_HISTORY`          | Path to REPL history file                                                                        |
+| `NODE_V8_COVERAGE=dir`       | Output directory for V8 code coverage data                                                       |
+| `NODE_TEST_CONTEXT`          | Context value available in the built-in test runner                                              |
+| `NODE_PENDING_DEPRECATION=1` | Emit pending deprecation warnings                                                                |
+| `NODE_RUN_SCRIPT_NAME`       | Set by `node --run`, contains the script name being executed                                     |
+| `NODE_USE_ENV_PROXY=1`       | Use `HTTP_PROXY`/`HTTPS_PROXY` env vars for Node.js [fetch requests](/blog/nodejs-http-request/) |
 
 For the complete and up-to-date reference, see the [Node.js CLI documentation](https://nodejs.org/api/cli.html#environment-variables_1). You can also check your current Node.js version to know which features are available with our guide on [how to check Node.js version](/blog/checking-node-js-version/).
 
