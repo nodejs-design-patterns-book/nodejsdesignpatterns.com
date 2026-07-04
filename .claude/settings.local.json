@@ -44,7 +44,15 @@
       "mcp__playwright__browser_close",
       "mcp__playwright__browser_resize",
       "mcp__playwright__browser_run_code",
-      "Skill(marketing-skills:seo-audit)"
+      "Skill(marketing-skills:seo-audit)",
+      "Bash(git -C /Users/luciano/repos/nodejsdesignpatterns.com status)",
+      "Bash(git -C /Users/luciano/repos/nodejsdesignpatterns.com log --oneline main..HEAD)",
+      "Bash(git -C /Users/luciano/repos/nodejsdesignpatterns.com diff .claude/settings.local.json)",
+      "Bash(git -C /Users/luciano/repos/nodejsdesignpatterns.com fetch origin)",
+      "Bash(git -C /Users/luciano/repos/nodejsdesignpatterns.com log --oneline HEAD..origin/main)",
+      "Bash(git -C /Users/luciano/repos/nodejsdesignpatterns.com rebase origin/main --autostash)",
+      "Bash(git -C /Users/luciano/repos/nodejsdesignpatterns.com log --oneline -5)",
+      "Bash(git -C /Users/luciano/repos/nodejsdesignpatterns.com status --short)"
     ]
   }
 }
