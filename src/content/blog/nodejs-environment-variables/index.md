@@ -1,6 +1,6 @@
 ---
-date: 2026-03-10T10:00:00
-updatedAt: 2026-03-10T10:00:00
+date: 2026-07-04T17:28:32
+updatedAt: 2026-07-04T17:28:32
 title: Environment Variables in Node.js
 slug: nodejs-environment-variables
 description: Learn how to use environment variables in Node.js with process.env, the native --env-file flag, validation, and security best practices.
@@ -8,24 +8,26 @@ authors: ['luciano-mammino']
 tags: ['blog']
 faq:
   - question: How do I access environment variables in Node.js?
-    answer: Use the global process.env object. For example, process.env.DATABASE_URL returns the value of the DATABASE_URL variable. All values are coerced to strings, so you need to parse numbers and booleans yourself.
+    answer: Use the global process.env object. For example, process.env.API_URL returns the value of the API_URL variable. All values are coerced to strings, so you need to parse numbers and booleans yourself.
   - question: Does Node.js have built-in .env file support?
-    answer: Yes, since Node.js 20.6.0 you can use the --env-file flag to load .env files without any dependencies. Run your app with node --env-file=.env app.js. Since 20.7.0, you can specify multiple files, and since 21.7.0 you can also use process.loadEnvFile() programmatically.
+    answer: Yes, since Node.js 20.6.0 you can use the --env-file flag to load .env files without any dependencies. Run your app with node --env-file=.env app.js. Since 20.7.0, you can specify multiple files, and since 21.7.0 (backported to 20.12.0) you can also use process.loadEnvFile() programmatically.
   - question: Do I still need the dotenv package in Node.js?
     answer: For new projects running Node.js 20.6 or later, the native --env-file flag covers most use cases. However, dotenv still offers features the native implementation lacks, such as multiline values and variable expansion. Use dotenv if you need these advanced features or support older Node.js versions.
+  - question: Should I store secrets in environment variables in Node.js?
+    answer: It's common and convenient, but not ideal. Environment variables are inherited by child processes, visible in docker inspect output, and often captured by crash reporters and logs. For production, prefer a dedicated secrets manager or mounted secret files, and never commit secrets to version control.
   - question: What is NODE_ENV and should I use it?
     answer: NODE_ENV is a widely adopted convention (not an official Node.js feature) that indicates the runtime environment, typically set to "development" or "production". Many frameworks use it to toggle behavior. You should use it, but never rely on it alone for security decisions.
   - question: Why are all process.env values strings in Node.js?
     answer: Environment variables are strings at the operating system level. Node.js preserves this behavior, so process.env coerces everything to strings. The number 42 becomes "42", null becomes "null", and undefined becomes "undefined". Always validate and parse values at application startup.
 ---
 
-We've all been there. You hardcode a database connection string, push it to production, and everything works. Then someone needs to point the app at a different database and suddenly the only option is to change the source code and redeploy. Or worse, you commit an API key to a public repository and scramble to rotate it before someone finds it.
+We've all been there. You hardcode the base URL of the API your app talks to, everything works fine on your machine and in staging, and then the production deploy goes out still pointing at the staging endpoint. Now production is broken, and the only fix is to change the source code and redeploy. Or you crank the log level up to `debug` while chasing a bug, forget to change it back, and your production logs balloon overnight. These are exactly the problems that environment variables solve, and not just in JavaScript: they're a standard mechanism that every language and operating system supports. In this article, we'll see how to use environment variables in Node.js the right way.
 
-This is the problem that environment variables solve. The [Twelve-Factor App methodology](https://12factor.net/config) puts it simply: configuration that varies between deploys belongs in the environment, not in the code. The litmus test is straightforward: could your codebase be open-sourced right now without compromising any credentials?
+The [Twelve-Factor App methodology](https://12factor.net/config) puts it simply: configuration that varies between deploys belongs in the environment, not in the code. The litmus test is straightforward: could your codebase be open-sourced right now without compromising any credentials? Mind you, getting credentials out of the code is only half the story: as we'll discuss in a moment, environment variables aren't the ideal home for secrets either. But the principle holds for everything that varies between deploys (API endpoints, log levels, feature flags, etc.).
 
-Environment variables give you a clean separation between your code and its configuration. They're language and OS agnostic, easy to change between deploys without rebuilding, and they keep secrets out of version control. Every deployment platform you'll encounter, whether it's Docker, Kubernetes, AWS, or a CI/CD pipeline, supports them natively.
+Environment variables give you a clean separation between your code and its configuration, and that separation is what enables the modern deployment workflow: you build and package your application once, then promote the exact same artifact (say, a Docker image) from development to staging to production, with each environment supplying its own configuration at runtime. No rebuilds, no environment-specific bundles. On top of that, environment variables are language and OS agnostic, they keep environment-specific values out of version control, and every deployment platform you'll encounter, whether it's Docker, Kubernetes, AWS, or a CI/CD pipeline, supports them natively.
 
-In this guide, you'll learn everything you need to work with environment variables in Node.js effectively: from the basics of `process.env` to the native `--env-file` flag introduced in Node.js 20.6, validation strategies, security best practices, and the full set of Node.js-specific variables you should know about.
+In this guide, you'll learn everything you need to work with environment variables in Node.js effectively: when they're the right tool (and when they're not), the basics of `process.env`, the native `--env-file` flag introduced in Node.js 20.6, validation strategies, security best practices, and the full set of Node.js-specific variables you should know about.
 
 :::note[Prerequisites]
 The examples in this guide use **top-level `await`** and ESM syntax. Set `"type": "module"` in your `package.json` or use the `.mjs` extension. All examples assume Node.js 20 or later (Node.js 22+ for some features). If you need to install or update Node.js, check out our guide on [5 ways to install Node.js](/blog/5-ways-to-install-node-js/).
@@ -37,23 +39,56 @@ If you just need to read an environment variable, here's the short version:
 
 ```javascript
 // app.js
-const apiKey = process.env.API_KEY
+const apiUrl = process.env.API_URL
 
-if (!apiKey) {
-  console.error('Missing API_KEY environment variable')
+if (!apiUrl) {
+  console.error('Missing API_URL environment variable')
   process.exit(1)
 }
 
-console.log('API key loaded successfully')
+console.log(`Using API at ${apiUrl}`)
 ```
 
 Run it by passing the variable inline:
 
 ```bash
-API_KEY=abc123 node app.js
+API_URL=https://api.example.com node app.js
 ```
 
 That's the core idea. But there are plenty of gotchas hiding behind this simplicity: string coercion traps, `.env` file loading options, validation strategies, and security concerns. Keep reading to learn how to handle environment variables like a pro.
+
+## When to Use Environment Variables (and When Not To)
+
+Before we dive into the mechanics, it's worth being honest about what environment variables are good at and where they fall short. Not every piece of configuration belongs in the environment.
+
+Environment variables shine for configuration that **changes between deploys and isn't particularly sensitive**:
+
+- The port and host your server binds to
+- Log levels and debug flags
+- URLs of the services your app depends on
+- Feature flags and tuning knobs
+- The environment name itself (`NODE_ENV`)
+
+The common thread is that these values differ between your laptop, staging, and production, but nothing terrible happens if someone sees them. And because they live outside the code, you can build your application once and run that exact same artifact in every environment, just with a different configuration wrapped around it.
+
+They're a poor fit for other kinds of configuration, though:
+
+- **Large or structured configuration**: if you need nested objects, lists, or dozens of related settings, a proper configuration file (JSON, YAML, TOML) loaded per environment is easier to read and review. Use environment variables to select the environment and override individual values, not to encode your entire config.
+- **Values that never change between deploys**: those are constants, and they belong in code where they can be reviewed and versioned.
+- **Secrets, ideally**: this one deserves its own explanation.
+
+Here's the nuance. The Twelve-Factor App methodology treats credentials as just another piece of config to store in the environment, and in practice that's what most teams do. I'll confess I've shipped more than one `DATABASE_URL` with a password embedded in it, simply because it's so convenient. But convenience is exactly the problem: environment variables leak more easily than you might expect.
+
+- Every child process inherits them by default (we'll see this in detail later)
+- They're visible in `docker inspect` output
+- On Linux, they can be read from `/proc/<pid>/environ` by any process running as the same user
+- Crash reporters and error-tracking tools love to capture the entire environment in their reports
+
+For production systems, the more robust approach is a dedicated secrets manager, like HashiCorp Vault or AWS Secrets Manager, that your app queries at runtime, or secrets mounted as files with restricted permissions. Kubernetes, for example, explicitly recommends secret volumes over environment variables for exactly these reasons. Secrets managers also unlock something environment variables fundamentally can't: integrated secret rotation. Because the app fetches secrets while it runs, credentials can be rotated centrally without restarting the process or redeploying the app. An environment variable, by contrast, is a snapshot taken at process startup: to pick up a new value, you have to restart.
+
+That said, let's stay pragmatic: secrets passed as environment variables, injected at runtime by a trusted platform and never written to a committed file, are still a huge improvement over credentials hardcoded in your source. If that's where your project is today, you're in good company. Just be aware of the trade-off, and treat "move the secrets to a proper secrets manager" as a natural next step as your application grows. We'll come back to these risks in the security best practices section later in this guide.
+
+With the "when" sorted, let's get into the "how", starting with how `process.env` actually works.
 
 ## Understanding `process.env`
 
@@ -118,7 +153,30 @@ console.log(process.env.MISSING) // 'undefined'
 `if (process.env.FEATURE_ENABLED)` evaluates to `true` even when the value is `"false"`, because `"false"` is a non-empty string. Always compare explicitly: `process.env.FEATURE_ENABLED === 'true'`.
 :::
 
-This behavior means you should never use truthy/falsy checks for boolean environment variables. A value of `"false"`, `"0"`, or even `"null"` will all evaluate as truthy in a conditional check. Always parse and validate explicitly.
+This behavior means you should never use truthy/falsy checks for boolean environment variables. A value of `"false"`, `"0"`, or even `"null"` will all evaluate as truthy in a conditional check. Always parse and validate explicitly. See for yourself:
+
+```javascript
+// truthy-traps.js
+
+if ('0') {
+  console.log('"0" is truthy') // this prints!
+}
+
+if ('false') {
+  console.log('"false" is truthy') // this prints too!
+}
+
+if ('null') {
+  console.log('"null" is truthy') // yep, this one as well!
+}
+
+// The only falsy string is the empty string
+if ('') {
+  console.log('this never prints')
+}
+```
+
+One more thing worth knowing: this implicit conversion is officially deprecated. Future versions of Node.js may throw an error when the assigned value is not a string, number, or boolean, so it's a good habit to assign strings explicitly.
 
 ### Platform Differences
 
@@ -133,13 +191,13 @@ This matters if you're building cross-platform applications. If you set `process
 The simplest way to pass an environment variable to a Node.js process is inline, right before the command:
 
 ```bash
-DATABASE_URL=postgres://localhost/mydb node app.js
+PORT=3000 node app.js
 ```
 
 You can pass multiple variables at once:
 
 ```bash
-DATABASE_URL=postgres://localhost/mydb PORT=3000 NODE_ENV=production node app.js
+LISTEN_ADDRESS=0.0.0.0 PORT=3000 NODE_ENV=production node app.js
 ```
 
 These variables exist only for the duration of that single command. Once the process exits, they're gone. This approach is great for quick testing and one-off scripts.
@@ -153,8 +211,8 @@ You can use inline variables in `package.json` scripts too. However, this syntax
 To make a variable available for the entire shell session, use `export` in bash or zsh:
 
 ```bash
-export API_KEY=my-secret-key
-node app.js   # Can read process.env.API_KEY
+export LOG_LEVEL=debug
+node app.js   # Can read process.env.LOG_LEVEL
 node other.js # This one too
 ```
 
@@ -189,7 +247,7 @@ DATABASE_URL=postgres://localhost:5432/myapp
 PORT=3000
 HOST=0.0.0.0
 
-# API keys (never commit real values!)
+# Local dev secrets can live here, but ONLY if this file never gets committed
 API_KEY=your-api-key-here
 
 # Values with special characters need quotes
@@ -200,7 +258,7 @@ MESSAGE="This has a # hash inside"
 ```
 
 :::note[.env file format]
-Variable names must start with a letter or underscore, followed by letters, digits, or underscores (pattern: `^[a-zA-Z_]+[a-zA-Z0-9_]*$`). Use double or single quotes for values containing `=` or `#` characters. Comments start with `#` on their own line. Empty lines are ignored. Multiline values are supported inside quoted strings.
+Each line is a `KEY=VALUE` pair. Use double or single quotes for values containing `=` or `#` characters. Anything after a `#` is treated as a comment (inline comments after a value work too), and empty lines are ignored. A leading `export ` keyword before a variable name is ignored, which is handy when converting shell scripts. Multiline values inside quoted strings are supported since Node.js 20.12/21.7.
 :::
 
 Since Node.js 20.7.0, you can specify **multiple `.env` files**. Later files take precedence over earlier ones, which is useful for layering base and local configurations:
@@ -211,7 +269,7 @@ node --env-file=.env --env-file=.env.local app.js
 
 In this example, any variables defined in `.env.local` will override those in `.env`. A common pattern is to commit `.env` with default (non-sensitive) values and add `.env.local` to `.gitignore` for developer-specific overrides.
 
-For optional `.env` files that may not exist (e.g., `.env.local` in CI environments), use `--env-file-if-exists` to avoid errors when the file is missing:
+For optional `.env` files that may not exist (e.g., `.env.local` in CI environments), use `--env-file-if-exists` (added in Node.js 22.9.0) to avoid errors when the file is missing:
 
 ```bash
 node --env-file=.env --env-file-if-exists=.env.local app.js
@@ -221,7 +279,7 @@ node --env-file=.env --env-file-if-exists=.env.local app.js
 
 ### `process.loadEnvFile()` and `util.parseEnv()`
 
-Starting with Node.js 21.7.0, you can also load `.env` files programmatically:
+Starting with Node.js 21.7.0 (backported to 20.12.0, so LTS users have it too), you can also load `.env` files programmatically:
 
 ```javascript
 // load-env-programmatic.js
@@ -275,11 +333,11 @@ The `override: true` option tells dotenv to overwrite existing environment varia
 | Feature                       | Native `--env-file`          | dotenv                           |
 | ----------------------------- | ---------------------------- | -------------------------------- |
 | Zero dependencies             | Yes                          | No                               |
-| Multiline values              | Yes (in quoted strings)      | Yes                              |
+| Multiline values              | Yes (20.12+, quoted strings) | Yes                              |
 | Variable expansion (`${VAR}`) | No                           | Yes (dotenv-expand)              |
-| Multiple .env files           | Yes (20.7.0+)                | Via dotenv-expand                |
+| Multiple .env files           | Yes (20.7.0+)                | Yes (`path` array, dotenv 16.4+) |
 | Optional file loading         | Yes (`--env-file-if-exists`) | Manual check                     |
-| Programmatic loading          | Yes (21.7.0+)                | Yes                              |
+| Programmatic loading          | Yes (20.12.0+ / 21.7.0+)     | Yes                              |
 | Env precedence (OS wins)      | Yes                          | Configurable (`override` option) |
 | Minimum Node.js               | 20.6.0                       | Any                              |
 
@@ -293,7 +351,7 @@ Replace `import 'dotenv/config'` with the `--env-file` CLI flag. The `.env` form
 
 Reading environment variables is easy. The hard part is ensuring they're actually correct. Without validation, a missing or malformed variable might not cause an error until it's buried deep in your application logic, maybe during a database query that runs hours after startup, or in an edge case that only triggers in production.
 
-The principle is simple: **fail fast at startup with clear errors**. If your app needs `DATABASE_URL` and it's missing, crash immediately with a helpful message rather than starting up and failing silently later.
+The principle is simple: **fail fast at startup with clear errors**. If your app needs `API_URL` and it's missing, crash immediately with a helpful message rather than starting up and failing silently later.
 
 ### Manual Validation
 
@@ -304,9 +362,9 @@ For a zero-dependency approach, a simple validation function does the job:
 function loadConfig() {
   const errors = []
 
-  const databaseUrl = process.env.DATABASE_URL
-  if (!databaseUrl) {
-    errors.push('DATABASE_URL is required')
+  const apiUrl = process.env.API_URL
+  if (!apiUrl) {
+    errors.push('API_URL is required')
   }
 
   const port = Number(process.env.PORT || '3000')
@@ -326,7 +384,7 @@ function loadConfig() {
   }
 
   return Object.freeze({
-    databaseUrl,
+    apiUrl,
     port,
     nodeEnv,
   })
@@ -346,7 +404,7 @@ For larger applications, a schema validation library like [Zod](https://zod.dev/
 import { z } from 'zod'
 
 const envSchema = z.object({
-  DATABASE_URL: z.string().url('DATABASE_URL must be a valid URL'),
+  API_URL: z.string().url('API_URL must be a valid URL'),
   PORT: z.coerce.number().int().min(1).max(65535).default(3000),
   NODE_ENV: z
     .enum(['development', 'production', 'test'])
@@ -391,7 +449,7 @@ This centralization gives you a single place to see every environment variable y
 
 ## Security Best Practices
 
-Environment variables often hold your most sensitive data: database credentials, API keys, encryption secrets. Handling them carelessly can undo all the security benefits they're supposed to provide.
+As we discussed earlier, environment variables end up holding your most sensitive data in many real-world setups: database credentials, API keys, encryption secrets. Ideally your most critical secrets live in a dedicated secrets manager, but whenever they do travel through the environment, handling them carelessly can undo all the benefits they're supposed to provide.
 
 ### Keep `.env` Files Out of Version Control
 
@@ -634,16 +692,16 @@ Here's a consolidated checklist for working with environment variables in Node.j
 
 Here's a quick reference for choosing the right approach:
 
-| Approach                | Best For                                     | Node.js Version |
-| ----------------------- | -------------------------------------------- | --------------- |
-| `process.env`           | Reading variables already in the environment | All             |
-| `--env-file`            | Loading `.env` files with no dependencies    | 20.6.0+         |
-| `--env-file-if-exists`  | Optional `.env` files that may not exist     | 22.0.0+         |
-| `process.loadEnvFile()` | Programmatic `.env` loading at runtime       | 21.7.0+         |
-| `util.parseEnv()`       | Parsing `.env`-formatted strings             | 21.7.0+         |
-| `dotenv`                | Variable expansion, older Node.js versions   | Any             |
+| Approach                | Best For                                     | Node.js Version    |
+| ----------------------- | -------------------------------------------- | ------------------ |
+| `process.env`           | Reading variables already in the environment | All                |
+| `--env-file`            | Loading `.env` files with no dependencies    | 20.6.0+            |
+| `--env-file-if-exists`  | Optional `.env` files that may not exist     | 22.9.0+            |
+| `process.loadEnvFile()` | Programmatic `.env` loading at runtime       | 20.12.0+ / 21.7.0+ |
+| `util.parseEnv()`       | Parsing `.env`-formatted strings             | 20.12.0+ / 21.7.0+ |
+| `dotenv`                | Variable expansion, older Node.js versions   | Any                |
 
-Separating configuration from code is one of the most impactful things you can do for the maintainability and security of your applications. Environment variables give you a standard, portable way to do it. With the native `--env-file` flag, modern Node.js makes it easier than ever to work with `.env` files without adding dependencies.
+Separating configuration from code is one of the most impactful things you can do for the maintainability and security of your applications. Environment variables give you a standard, portable way to do it, and they're what make it possible to build your app once and ship the same artifact to every environment. With the native `--env-file` flag, modern Node.js makes it easier than ever to work with `.env` files without adding dependencies.
 
 Whether you're building a small script or a production service, the principles are the same: validate early, centralize access, parse types explicitly, and never let secrets leak into your code or logs.
 
@@ -657,15 +715,19 @@ Environment variables are just one piece of building production-grade applicatio
 
 ### How do I access environment variables in Node.js?
 
-Use the global `process.env` object. For example, `process.env.DATABASE_URL` returns the value of the `DATABASE_URL` variable. All values are coerced to strings, so you need to parse numbers with `Number()` and compare booleans explicitly (e.g., `process.env.DEBUG === 'true'`). The `process.env` object is available globally without any imports.
+Use the global `process.env` object. For example, `process.env.API_URL` returns the value of the `API_URL` variable. All values are coerced to strings, so you need to parse numbers with `Number()` and compare booleans explicitly (e.g., `process.env.DEBUG === 'true'`). The `process.env` object is available globally without any imports.
 
 ### Does Node.js have built-in .env file support?
 
-Yes, since Node.js 20.6.0 you can use the `--env-file` flag to load `.env` files without any dependencies. Run your app with `node --env-file=.env app.js`. Since 20.7.0, you can specify multiple files (later files override earlier ones), and since 21.7.0 you can also use `process.loadEnvFile()` and `util.parseEnv()` for programmatic loading and parsing.
+Yes, since Node.js 20.6.0 you can use the `--env-file` flag to load `.env` files without any dependencies. Run your app with `node --env-file=.env app.js`. Since 20.7.0, you can specify multiple files (later files override earlier ones), and since 21.7.0 (backported to 20.12.0) you can also use `process.loadEnvFile()` and `util.parseEnv()` for programmatic loading and parsing.
 
 ### Do I still need the dotenv package in Node.js?
 
 For new projects running Node.js 20.6 or later, the native `--env-file` flag covers most use cases with zero dependencies. However, dotenv still offers features the native implementation lacks, most notably variable expansion (`${VAR}` syntax via dotenv-expand) and the `override` option that lets `.env` files overwrite existing OS variables. Use dotenv if you need these features or need to support older Node.js versions.
+
+### Should I store secrets in environment variables in Node.js?
+
+It's common and convenient, but not ideal. Environment variables are inherited by child processes by default, visible in `docker inspect` output, readable from `/proc/<pid>/environ` on Linux, and often captured by crash reporters and logging tools. For production systems, prefer a dedicated secrets manager (like AWS Secrets Manager or HashiCorp Vault) or secrets mounted as files with restricted permissions. If you do pass secrets as environment variables, make sure they're injected at runtime by your platform and never committed to version control.
 
 ### What is NODE_ENV and should I use it?
 

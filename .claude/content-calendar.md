@@ -22,7 +22,7 @@
 | #   | Status      | Article                          | Primary Keyword                 | Est. Volume | Pillar    |
 | --- | ----------- | -------------------------------- | ------------------------------- | ----------- | --------- |
 | 1   | COMPLETE    | **HTTP request in Node.js**      | "node js http request"          | 15,000+     | Core APIs |
-| 2   | NOT STARTED | Environment variables in Node.js | "node js environment variables" | 8,000+      | Core APIs |
+| 2   | COMPLETE    | **Environment variables in Node.js** | "node js environment variables" | 8,000+      | Core APIs |
 | 3   | NOT STARTED | Using Node.js built-in SQLite    | "node js sqlite"                | 5,000+      | Modern    |
 | 4   | NOT STARTED | Writing a CLI with Node.js       | "node js cli"                   | 4,000+      | Core APIs |
 
