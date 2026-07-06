@@ -1,5 +1,6 @@
-import { defineCollection, reference, z } from 'astro:content'
+import { defineCollection, reference } from 'astro:content'
 import { glob } from 'astro/loaders'
+import { z } from 'astro/zod'
 
 const chapters = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/chapters' }),
@@ -32,7 +33,7 @@ const reviews = defineCollection({
     platform: z
       .enum(['Amazon', 'Goodreads', 'Bookshop', 'Reddit', 'LinkedIn'])
       .optional(),
-    url: z.string().url().optional(),
+    url: z.url().optional(),
   }),
 })
 
@@ -49,7 +50,7 @@ const authors = defineCollection({
     z.object({
       name: z.string(),
       profile_pic: image(),
-      link: z.string().url(),
+      link: z.url(),
       bio: z.string().optional(),
     }),
 })
