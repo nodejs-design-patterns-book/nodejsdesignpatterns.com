@@ -69,7 +69,8 @@
 | --- | ----------- | ---------------------------------------- | --------------- | -------------------------------------------------------------------------- |
 | 21  | PLANNED     | Calling native libraries with `node:ffi` | "node js ffi"   | Early mover: experimental since 26.1 (May 2026). Brief: .claude/briefs/nodejs-ffi.md. Pull forward to Jul/Aug 2026 |
 | 22  | NOT STARTED | Rust + Node.js via node:ffi (spoke)      | "rust node js"  | Thought-leadership follow-up to #21                                         |
-| 23+ | NOT STARTED | TBD based on analytics                   | TBD             | Iterate based on data                                                       |
+| 23  | IDEA        | Secrets management beyond env vars (workload identities, short-lived credentials) | "node js secrets management" | Sparked by LinkedIn discussion with Dawid Gatti on env vars article (Jul 2026). Security pillar; env vars article now contains the "secret-handling ladder" that this article would expand (OIDC trust, IAM roles, IRSA, managed identities, SDK credential providers) |
+| 24+ | NOT STARTED | TBD based on analytics                   | TBD             | Iterate based on data                                                       |
 
 ---
 

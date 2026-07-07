@@ -1,6 +1,6 @@
 ---
 date: 2026-07-04T17:28:32
-updatedAt: 2026-07-04T17:28:32
+updatedAt: 2026-07-07T10:00:00
 title: Environment Variables in Node.js
 slug: nodejs-environment-variables
 description: Learn how to use environment variables in Node.js with process.env, the native --env-file flag, validation, and security best practices.
@@ -14,7 +14,7 @@ faq:
   - question: Do I still need the dotenv package in Node.js?
     answer: For new projects running Node.js 20.6 or later, the native --env-file flag covers most use cases. However, dotenv still offers features the native implementation lacks, such as multiline values and variable expansion. Use dotenv if you need these advanced features or support older Node.js versions.
   - question: Should I store secrets in environment variables in Node.js?
-    answer: It's common and convenient, but not ideal. Environment variables are inherited by child processes, visible in docker inspect output, and often captured by crash reporters and logs. For production, prefer a dedicated secrets manager or mounted secret files, and never commit secrets to version control.
+    answer: It's common and convenient, but not ideal. Environment variables are inherited by child processes, visible in docker inspect output, and often captured by crash reporters and logs. For production, prefer a dedicated secrets manager or mounted secret files, and never commit secrets to version control. When your platform supports workload identities (IAM roles, managed identities, OIDC federation), short-lived credentials minted on demand are even better, since there is no long-lived secret to leak.
   - question: What is NODE_ENV and should I use it?
     answer: NODE_ENV is a widely adopted convention (not an official Node.js feature) that indicates the runtime environment, typically set to "development" or "production". Many frameworks use it to toggle behavior. You should use it, but never rely on it alone for security decisions.
   - question: Why are all process.env values strings in Node.js?
@@ -85,6 +85,17 @@ Here's the nuance. The Twelve-Factor App methodology treats credentials as just 
 - Crash reporters and error-tracking tools love to capture the entire environment in their reports
 
 For production systems, the more robust approach is a dedicated secrets manager, like HashiCorp Vault or AWS Secrets Manager, that your app queries at runtime, or secrets mounted as files with restricted permissions. Kubernetes, for example, explicitly recommends secret volumes over environment variables for exactly these reasons. Secrets managers also unlock something environment variables fundamentally can't: integrated secret rotation. Because the app fetches secrets while it runs, credentials can be rotated centrally without restarting the process or redeploying the app. An environment variable, by contrast, is a snapshot taken at process startup: to pick up a new value, you have to restart.
+
+There's one more step beyond rotation, and it's worth knowing about because it changes the game entirely: not having long-lived credentials at all. Rotation narrows the window of exposure, but a rotated password is still fully valid until it expires, including any copy that already leaked into a log or a crash report. With **workload identities** (an OIDC trust relationship or a platform equivalent like AWS IAM roles, Azure Managed Identity, or GCP service accounts), your process authenticates as itself and mints short-lived credentials on demand, so anything that leaks expires on its own within minutes, whether you noticed the leak or not.
+
+You can think of secret handling as a ladder, where each rung shrinks the blast radius of a leak:
+
+1. Plain-text secrets in environment variables or committed `.env` files
+2. Secrets mounted as files with restricted permissions (e.g., Kubernetes secret volumes)
+3. A secrets manager your app queries at runtime, with regular rotation
+4. No long-lived secrets at all: short-lived credentials obtained through a workload identity
+
+Not every dependency lets you climb to the top rung. A database hosted outside your cloud provider, a third-party API key, or a service access token often leaves you no choice but a long-lived secret. When that's the case, aim for the highest rung available: keep the secret in a secrets manager and rotate it regularly.
 
 That said, let's stay pragmatic: secrets passed as environment variables, injected at runtime by a trusted platform and never written to a committed file, are still a huge improvement over credentials hardcoded in your source. If that's where your project is today, you're in good company. Just be aware of the trade-off, and treat "move the secrets to a proper secrets manager" as a natural next step as your application grows. We'll come back to these risks in the security best practices section later in this guide.
 
@@ -538,7 +549,8 @@ Environment variables are the right abstraction for passing configuration to you
 - **Docker**: Use `-e` flag, `--env-file`, or Docker Compose `environment` / `env_file` directives. Avoid `ENV` directives in Dockerfiles for secrets since Docker layers are inspectable.
 - **Kubernetes**: Use ConfigMaps for non-sensitive config and Secrets for credentials. Mount them as environment variables in your pod spec.
 - **Cloud providers**: AWS Secrets Manager, Azure Key Vault, and GCP Secret Manager provide encrypted storage with access controls, rotation policies, and audit logs.
-- **CI/CD**: GitHub Actions Secrets, GitLab CI Variables, and similar features inject secrets at build/deploy time without exposing them in code.
+- **Workload identities**: where supported, skip the long-lived secret entirely. ECS task roles, Lambda execution roles, EC2 instance profiles, IAM Roles for Service Accounts on EKS, Azure Managed Identity, and GCP service accounts let your process obtain short-lived credentials on demand, and the official SDKs pick them up automatically. As we saw earlier, this is the top rung of the secret-handling ladder.
+- **CI/CD**: GitHub Actions Secrets, GitLab CI Variables, and similar features inject secrets at build/deploy time without exposing them in code. Here too, prefer OIDC federation with your cloud provider (supported by GitHub Actions and GitLab CI) over storing long-lived cloud keys as pipeline secrets.
 
 :::important[Never bake secrets into Docker images]
 Avoid `ENV` directives in Dockerfiles for secrets. Docker layers are inspectable with `docker history` or `docker inspect`. Pass secrets at runtime via `-e` flags or mounted secret files.
@@ -685,7 +697,7 @@ Here's a consolidated checklist for working with environment variables in Node.j
 4. **Use the native `--env-file` flag**: Zero dependencies, built into Node.js 20.6+.
 5. **Never commit `.env` files**: Add them to `.gitignore`. Commit a `.env.example` instead.
 6. **Don't log the full environment**: Redact sensitive keys. A stray `console.log(process.env)` can leak secrets to your monitoring stack.
-7. **Use a secrets manager in production**: Don't rely on `.env` files in production. Use your platform's secrets management solution.
+7. **Use a secrets manager in production**: Don't rely on `.env` files in production. Use your platform's secrets management solution, or better yet, workload identities with short-lived credentials where supported.
 8. **Document variables in `.env.example`**: New team members and CI pipelines need to know what variables are required.
 9. **Be aware of string coercion**: Everything is a string. `"false"` is truthy. `"3000"` is not a number.
 10. **Control child process inheritance**: Don't pass secrets to child processes that don't need them.
@@ -729,7 +741,7 @@ For new projects running Node.js 20.6 or later, the native `--env-file` flag cov
 
 ### Should I store secrets in environment variables in Node.js?
 
-It's common and convenient, but not ideal. Environment variables are inherited by child processes by default, visible in `docker inspect` output, readable from `/proc/<pid>/environ` on Linux, and often captured by crash reporters and logging tools. For production systems, prefer a dedicated secrets manager (like AWS Secrets Manager or HashiCorp Vault) or secrets mounted as files with restricted permissions. If you do pass secrets as environment variables, make sure they're injected at runtime by your platform and never committed to version control.
+It's common and convenient, but not ideal. Environment variables are inherited by child processes by default, visible in `docker inspect` output, readable from `/proc/<pid>/environ` on Linux, and often captured by crash reporters and logging tools. For production systems, prefer a dedicated secrets manager (like AWS Secrets Manager or HashiCorp Vault) or secrets mounted as files with restricted permissions. Better still, when your platform supports workload identities (IAM roles, Azure Managed Identity, OIDC federation), use short-lived credentials minted on demand: there's no long-lived secret to leak in the first place. If you do pass secrets as environment variables, make sure they're injected at runtime by your platform and never committed to version control.
 
 ### What is NODE_ENV and should I use it?
 
