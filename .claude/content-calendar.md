@@ -189,7 +189,7 @@ Security Cluster (future)
 - [x] Add link to path traversal article from Reading/Writing Files guide
 - [x] Publish environment variables article (Core APIs pillar, #2)
 - [x] Cross-link env vars article (HTTP Requests and Docker guides link to it; it links out to 6 existing articles)
-- [ ] Promote env vars article (r/node, dev.to, newsletter); the "when NOT to use env vars for secrets" angle is a good hook
+- [ ] Promote env vars article (r/node, dev.to, newsletter); the "when NOT to use env vars for secrets" angle is a good hook. Drafts ready: .claude/social/nodejs-environment-variables.md (X thread + 4 standalone posts, 2 LinkedIn posts, Bluesky/Mastodon, r/node, dev.to plan, newsletter blurb, schedule)
 - [ ] Monitor keyword rankings for existing content
 - [ ] A/B test CTA placements
 - [ ] Promote path traversal article on security forums (r/netsec, HN)
