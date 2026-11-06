@@ -155,6 +155,11 @@
   border: 1px solid #ccc;
 }
 
+/* daisyUI 5.7+ adds vertical padding to inline code in .prose; keep the previous compact look */
+:root .prose :where(code):not(pre > code) {
+  padding-block: 0;
+}
+
 .content ul {
   list-style: disc;
 }
