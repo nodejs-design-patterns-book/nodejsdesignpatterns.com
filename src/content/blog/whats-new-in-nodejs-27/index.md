@@ -19,7 +19,7 @@ faq:
     answer: No. The Alpha phase (October 2026 to March 2027) is designed for library authors, CI pipelines, and early experimentation so breaking changes can be caught early. Wait until Node.js 27 enters Current in April 2027 or LTS in October 2027 for production workloads.
 ---
 
-On October 29, 2026, the Node.js team published [`v27.0.0-alpha.0.0.0`](https://nodejs.org/en/blog/release/v27.0.0-alpha.0.0.0). If you have been using Node.js for a few years, that version string alone probably made you do a double take. Where is the usual October `v27.0.0` Current release? And why does the version number have three zeroes after `alpha`?
+On October 29, 2026, the Node.js team published [`v27.0.0-alpha.0.0.0`](https://nodejs.org/en/blog/release/v27.0.0-alpha.0.0.0). If you have been using Node.js for a few years, that version string alone probably made you do a double take. Where is the usual October `v27.0.0` Current release?
 
 Welcome to the new Node.js release era! Node.js 27 is the very first release to follow the **new annual release schedule**: instead of dropping a full major release in October that would die six months later without ever reaching Long Term Support (LTS), October now kicks off a six-month **Alpha phase** leading up to the official `27.0.0` Current release in **April 2027**, followed by **LTS promotion in October 2027**.
 
@@ -201,7 +201,7 @@ console.log(ledger.reduce((sum, n) => sum + n, 0))
 // 0 (the 0.1 completely vanished!)
 ```
 
-When you sum numbers with `.reduce((a, b) => a + b, 0)`, each addition rounds its intermediate result to the nearest representable 64-bit float. Over dozens or thousands of additions, those tiny rounding errors accumulate. Worse, if you add a small number (`0.1`) to a huge number (`1e20`) and later subtract `-1e20`, the `0.1` is lost completely during the first addition because a 64-bit float doesn't have enough mantissa bits to hold both magnitudes at once.
+When you sum numbers with `.reduce((a, b) => a + b, 0)`, each addition rounds its intermediate result to the nearest representable 64-bit float. Over dozens or thousands of additions, those tiny rounding errors accumulate. Worse, if you add a small number (`0.1`) to a huge number (`1e20`) and later add `-1e20`, the `0.1` is lost completely during the first addition because a 64-bit float doesn't have enough mantissa bits to hold both magnitudes at once.
 
 In Node.js 27, V8 15.6 enables **`Math.sumPrecise()`** by default. It accepts any iterable of numbers, computes the sum using an internal high-precision accumulator, and rounds only once at the very end:
 
@@ -232,7 +232,7 @@ console.log(`Order total: $${total}`) // Order total: $379.92
 ```
 
 :::caution[When you still need integer cents or decimal libraries]
-`Math.sumPrecise()` eliminates intermediate rounding drift when _summing_ IEEE-754 floats, and it is faster and far more accurate than `.reduce()`. However, remember that individual inputs like `0.1` are still binary floating-point approximations under the hood. For strict accounting, tax calculations, or multi-currency arithmetic with division and multiplication rules, storing integer minor units (like cents) or using a dedicated decimal library is still best practice.
+`Math.sumPrecise()` eliminates intermediate rounding drift when _summing_ IEEE-754 floats, and it is far more accurate than `.reduce()`. However, remember that individual inputs like `0.1` are still binary floating-point approximations under the hood. For strict accounting, tax calculations, or multi-currency arithmetic with division and multiplication rules, storing integer minor units (like cents) or using a dedicated decimal library is still best practice.
 :::
 
 ## `node:net/promises` and async-iterable TCP servers
@@ -299,7 +299,7 @@ await serverLoop
 There are two really nice design choices here:
 
 1. **`listen()` and `connect()` return Promises for the one-shot lifecycle moments** (binding the port and establishing the connection), and both support an `AbortSignal` out of the box. If binding or connecting fails, the underlying server or socket is cleaned up and the Promise rejects cleanly.
-2. **`for await (const socket of server)` turns incoming TCP connections into an async iterable stream**, matching the ergonomics we explored in [JavaScript async iterators](/blog/javascript-async-iterators/). If your loop body awaits some async work, incoming connections buffer naturally (bounded by `server.maxConnections`), giving you sequential connection handling with zero callback nesting.
+2. **`for await (const socket of server)` turns incoming TCP connections into an async iterable stream**, matching the ergonomics we explored in [JavaScript async iterators](/blog/javascript-async-iterators/). If your loop body awaits some async work, incoming connections continue to arrive and can buffer without bound. Set `server.maxConnections` explicitly to limit concurrent connections when handling them sequentially.
 
 ## Virtual File System (`node:vfs`) is now unflagged
 
@@ -352,7 +352,7 @@ That command mounts `bundle.zip` (or a directory) via `node:vfs` and runs your a
 
 Beyond the headline modules above, Node.js 27 lands a great set of quality-of-life improvements across the standard library. Let's tour the most practical ones.
 
-### Atomic temporary files with `fs.mkstemp()` and 2x faster `fs.glob()`
+### Atomic temporary files with `fs.mkstemp()` and native `fs.glob()`
 
 Until now, if you needed a temporary file in Node.js, your safest built-in option was `fs.mkdtemp()` to create a temporary _directory_, and then opening a file inside it. Creating a random filename yourself and calling `fs.open()` was error-prone and required a retry loop in case of collisions.
 
@@ -375,7 +375,7 @@ try {
 }
 ```
 
-And if you use the built-in **`fs.glob()`** (introduced in Node.js 22), you get a free speed boost in Node.js 27: the implementation was ported from JavaScript to native C++, making `fs.glob()` and `fs.globSync()` **more than 2x faster** across the board with zero changes to your code.
+The built-in **`fs.glob()`** (introduced in Node.js 22) was ported from JavaScript to native C++ in Node.js 27. The [maintainers' benchmarks](https://github.com/nodejs/node/pull/65392#issuecomment-5443229793) show substantial speedups for some workloads, but gains vary by API and options, and one synchronous exclude-pattern workload regressed. Benchmark your own patterns before assuming a speedup.
 
 ### Permission Model gets `--allow-env`
 
@@ -386,7 +386,7 @@ Node.js 27 adds **`--allow-env`** to the Permission Model (`--permission`). When
 ```bash
 # Only allow variables starting with PUBLIC_ or APP_
 SECRET_KEY=super-secret APP_PORT=3000 \
-  node --permission --allow-env=PUBLIC_*,APP_* server.js
+  node --permission --allow-env='PUBLIC_*,APP_*' server.js
 ```
 
 Even better, Node.js scrubs the disallowed variables from the underlying OS environment block (and blocks reads to `/proc/self/environ` on Linux), so native add-ons or FFI calls cannot sneak around `process.env` to read them either. You can also drop access to an environment variable at runtime right after reading it using `process.permission.drop()`.
@@ -395,7 +395,7 @@ Even better, Node.js scrubs the disallowed variables from the underlying OS envi
 
 If you have been using the built-in `node:test` runner, Node.js 27 brings three nice upgrades:
 
-- **`--test-watch` is now officially stable** (Stability 2).
+- **Watch mode (`node --test --watch`) is now officially stable** (Stability 2).
 - **`--test-forbid-only`** fails the test run if any test is marked with `{ only: true }` or `test.only()`, which is great for catching accidental `.only` commits in CI.
 - **Shorthand methods on mocks**: instead of wrapping simple return values or promises inside `fn.mock.mockImplementation(() => ...)`, `MockFunctionContext` now has **`mockReturnValue()`**, **`mockResolvedValue()`**, **`mockRejectedValue()`**, and **`mockThrownValue()`**:
 
@@ -423,7 +423,7 @@ test('mock shorthand helpers in Node.js 27', async () => {
 Three HTTP changes in Node.js 27 deserve a special callout because they directly affect production web servers:
 
 1. **`http.Server` `keepAliveTimeout` increased from 5 seconds to 65 seconds**:
-   If you have ever run a Node.js HTTP server behind an AWS Application Load Balancer (ALB), Nginx, or Cloudflare, you may have been bitten by intermittent `502 Bad Gateway` errors under load. Why? Because most reverse proxies default to a 60-second idle keep-alive timeout, while Node.js historically defaulted to just **5 seconds** (`5000` ms). If Node.js closed an idle socket at 5.001 seconds right as the load balancer reused it to forward a request, the request failed with a 502. Bumping Node's default `keepAliveTimeout` to **65 seconds** (`65000` ms) puts it safely above standard 60-second proxy timeouts out of the box!
+   If you have ever run a Node.js HTTP server behind an AWS Application Load Balancer (ALB), Nginx, or Cloudflare, you may have been bitten by intermittent `502 Bad Gateway` errors under load. Why? Because most reverse proxies default to a 60-second idle keep-alive timeout, while Node.js historically defaulted to just **5 seconds** (`5000` ms). If Node.js closed an idle socket at 5.001 seconds right as the load balancer reused it to forward a request, the request failed with a 502. Bumping Node's default `keepAliveTimeout` to **65 seconds** (`65000` ms) puts it above a 60-second proxy timeout out of the box. Check your proxy's actual idle timeout and configure Node's timeout to exceed it; 65 seconds does not cover every proxy configuration.
 2. **`req.headers` and `req.trailers` now have a `null` prototype**:
    Incoming request headers (`Object.getPrototypeOf(req.headers) === null`) no longer inherit from `Object.prototype`. This prevents prototype-pollution edge cases when looking up header names like `req.headers['toString']` or `req.headers['constructor']` and matches `req.headersDistinct`. (See the breaking changes section below if your code calls `req.headers.hasOwnProperty(...)`!)
 3. **Larger HTTP/2 window sizes**:
@@ -487,7 +487,7 @@ When testing your project or library against Node.js 27:
 
 1. Search your codebase for `req.headers.hasOwnProperty` or `req.trailers.hasOwnProperty` and replace them with `Object.hasOwn(...)`.
 2. Check if you persist `v8.serialize()` output across processes or in Redis/databases that might be read by Node.js 24 or 26 instances.
-3. Explicitly set `--max-old-space-size` in production if your container sizing assumed a 2 GB default ceiling on 4 to 15 GB hosts, or if you hold huge `Buffer` pools.
+3. Explicitly set `--max-old-space-size` in production if your container sizing assumed a 2 GB default ceiling on hosts with more than 4 GB and less than 15 GB of memory, or if you hold huge `Buffer` pools.
 4. Grep for legacy `_http_*`, `_tls_*`, or `node:domain` imports in your codebase and dependencies.
 5. Rebuild native C++ add-ons (`NODE_MODULE_VERSION` is 153, and `node::ObjectWrap` is now officially deprecated in favor of Node-API / `napi.h`).
    :::
