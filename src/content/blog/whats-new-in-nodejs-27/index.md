@@ -227,7 +227,7 @@ The iterator helpers shown above work with **synchronous iterators**. Their `.ne
 
 ## Goodbye `0.30000000000000004`: `Math.sumPrecise()`
 
-Every JavaScript developer has a story about the day they first met IEEE-754 double-precision floating-point math:
+Beyond iterator helpers, V8 15.6 also brings a useful addition for numerical calculations: `Math.sumPrecise()`. To see why it matters, let's look at a familiar floating-point surprise.
 
 ```js title="02-math-sum-precise/sum-old.js"
 // Node.js 26 and earlier - floating-point drift in action
