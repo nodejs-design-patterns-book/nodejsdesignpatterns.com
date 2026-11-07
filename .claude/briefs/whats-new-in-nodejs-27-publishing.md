@@ -17,10 +17,10 @@ Target publication date: 7 November 2026. If publication slips, update both `dat
 
 ## Before publication
 
-- [ ] Review the rendered article on desktop and mobile, especially long code blocks, the chat screenshot, admonitions, and the free-chapter CTA.
-- [ ] Review the search/social preview and finalize the meta description if needed.
-- [ ] Refresh PR #42's description. It still claims a blanket 2x glob speedup and describes the earlier TCP demo; summarize the final chat example and validation instead.
-- [ ] Close the three rejected review threads with the verified explanations (abort behavior, zip padding, and mkstemp return shape). The nine accepted threads are already resolved.
+- [x] Review the rendered article on desktop and mobile, especially long code blocks, the chat screenshot, admonitions, and the free-chapter CTA.
+- [x] Review the search/social preview. The description is 148 characters; correct blog Open Graph metadata from `book` to `article`.
+- [x] Refresh PR #42's description with the final TCP chat example, qualified performance claims, and validation evidence.
+- [x] Close the three rejected review threads with verified explanations (abort behavior, zip padding, and mkstemp return shape). All 12 review threads are resolved.
 - [ ] Confirm the latest PR commit passes CI: lint, repository formatting, typecheck, and build. Address any failures before merging.
 - [ ] Merge PR #42 into `main` when ready to publish. The push to `main` triggers the GitHub Pages deployment.
 
