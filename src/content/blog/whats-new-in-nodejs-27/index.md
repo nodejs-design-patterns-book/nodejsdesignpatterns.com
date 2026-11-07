@@ -327,7 +327,7 @@ const server = await listen({
   signal: ac.signal,
 })
 
-// Consume incoming connections with for await...of!
+// One-client demo: stop accepting connections after the first response.
 const serverLoop = (async () => {
   for await (const socket of server) {
     socket.end('Hello from async-iterable TCP server!\n')
@@ -350,7 +350,19 @@ await serverLoop
 There are two really nice design choices here:
 
 1. **`listen()` and `connect()` return Promises for the one-shot lifecycle moments** (binding the port and establishing the connection), and both support an `AbortSignal` out of the box. If binding or connecting fails, the underlying server or socket is cleaned up and the Promise rejects cleanly.
-2. **`for await (const socket of server)` turns incoming TCP connections into an async iterable stream**, matching the ergonomics we explored in [JavaScript async iterators](/blog/javascript-async-iterators/). If your loop body awaits some async work, incoming connections continue to arrive and can buffer without bound. Set `server.maxConnections` explicitly to limit concurrent connections when handling them sequentially.
+2. **`for await (const socket of server)` turns incoming TCP connections into an async iterable stream**, matching the ergonomics we explored in [JavaScript async iterators](/blog/javascript-async-iterators/).
+
+:::caution[Awaiting a handler inside the loop serializes connection handling]
+The iterator yields **connections**, not application-level requests. A single TCP connection may carry many requests, depending on your protocol.
+
+If the loop body calls `await handleConnection(socket)`, it finishes that handler before advancing to the next connection. If the handler reads until the client disconnects, one long-lived connection can delay handling every connection behind it. Unlike dispatching an async handler from a `'connection'` callback, awaiting it inside this loop makes the handlers run sequentially.
+
+To handle connections concurrently, start each handler without awaiting it in the loop. For example, `void handleConnection(socket).catch(...)` lets the loop advance while the handler waits for I/O. The `.catch()` must handle failures and clean up the socket, for example by logging the error and calling `socket.destroy()`. Here `handleConnection` represents your application's async handler.
+
+The server continues accepting connections while the loop body waits. The [server iterator documentation](https://nodejs.org/download/release/v27.0.0-alpha.0.0.0/docs/api/net.html#serversymbolasynciterator) warns that a slow consumer can buffer connections without bound. Set `server.maxConnections` explicitly to cap open connections, and choose a limit appropriate to your workload; dispatching handlers concurrently also needs a resource limit.
+
+Our example above is deliberately a one-client demo: `socket.end()` starts sending the response without waiting for the socket to close, and `ac.abort()` stops accepting further connections. It demonstrates the API, rather than concurrent connection handling.
+:::
 
 ## Virtual File System (`node:vfs`) is now unflagged
 
