@@ -315,78 +315,106 @@ for await (const chunk of client) {
 server.close()
 ```
 
-Node.js 27 introduces the experimental **`node:net/promises`** module with two action-oriented helpers, **`listen()`** and **`connect()`**, and makes **`net.Server` itself an async iterable**:
+Node.js 27 introduces the experimental **`node:net/promises`** module with two action-oriented helpers, **`listen()`** and **`connect()`**, and makes **`net.Server` itself an async iterable**.
+
+Let's build a small TCP chat server. Each connected client can send a line of text, and the server forwards it to every other client, prefixed with the sender's connection ID:
 
 ```js title="03-net-promises/net-promises.js"
-import { connect, listen } from 'node:net/promises'
-import { setTimeout as delay } from 'node:timers/promises'
+import { listen } from 'node:net/promises'
+import { createInterface } from 'node:readline'
 
 const ac = new AbortController()
 const server = await listen({
-  port: 0,
+  port: 8124,
   host: '127.0.0.1',
   signal: ac.signal,
 })
 server.maxConnections = 10
 
+const clients = new Map()
+
 async function handleConnection(socket) {
-  console.log('Handler started')
-  await delay(100) // Simulate waiting for a database or another service.
-  socket.end('Hello from async-iterable TCP server!\n')
-  console.log('Response queued')
+  const clientId = `${socket.remoteAddress}:${socket.remotePort}`
+  const lines = createInterface({ input: socket, crlfDelay: Infinity })
+  clients.set(clientId, socket)
+
+  // Close the line iterator even if the connection ends abruptly.
+  socket.once('close', () => lines.close())
+  socket.on('error', (error) => {
+    console.error(`${clientId}:`, error.message)
+    lines.close()
+  })
+
+  socket.write(`Connected as ${clientId}\n`)
+  console.log(`${clientId} joined`)
+
+  try {
+    for await (const message of lines) {
+      for (const [otherId, otherSocket] of clients) {
+        if (otherId !== clientId && !otherSocket.destroyed) {
+          otherSocket.write(`${clientId} > ${message}\n`)
+        }
+      }
+    }
+  } finally {
+    clients.delete(clientId)
+    lines.close()
+    socket.destroy()
+    console.log(`${clientId} left`)
+  }
 }
 
-const serverLoop = (async () => {
-  for await (const socket of server) {
-    // Start the handler and immediately advance to the next connection.
-    void handleConnection(socket).catch((error) => {
-      console.error('Connection handler failed:', error)
-      socket.destroy()
-    })
-  }
-})()
-
-try {
-  // Connect three clients concurrently.
-  await Promise.all(
-    [1, 2, 3].map(async (id) => {
-      const client = await connect({
-        port: server.address().port,
-        host: '127.0.0.1',
-      })
-
-      for await (const chunk of client) {
-        console.log(`Client ${id}:`, chunk.toString().trim())
-      }
-    }),
-  )
-} finally {
+process.once('SIGINT', () => {
   ac.abort()
-  await serverLoop
+  for (const socket of clients.values()) socket.destroy()
+})
+
+console.log('Chat listening on 127.0.0.1:8124. Press Ctrl+C to stop.')
+
+for await (const socket of server) {
+  // Each handler stays active for the lifetime of its connection.
+  void handleConnection(socket).catch((error) => {
+    console.error('Connection handler failed:', error)
+    socket.destroy()
+  })
 }
 ```
 
-`listen()` and `connect()` return promises for binding the port and establishing a connection, respectively. Both support an `AbortSignal`, and failed setup cleans up the underlying server or socket before rejecting.
+Run the server from the companion repo:
 
-The connection loop starts each `handleConnection(socket)` call **without awaiting it**. While one handler waits for its simulated database call, the loop can dispatch the next connection. You should see the three `Handler started` messages before the first `Response queued` message. The handlers overlap while waiting for I/O; their JavaScript still runs on the event loop.
+```bash
+node 03-net-promises/net-promises.js
+```
 
-The `.catch()` handles rejected handler promises and destroys the affected socket. `server.maxConnections = 10` caps open connections for this small demo. We start three clients concurrently, wait for them to finish reading their responses, and then abort the listening server in `finally`.
+Then open two or three other terminals and run this command in each (with [netcat](https://man.openbsd.org/nc) installed):
+
+```bash
+nc 127.0.0.1 8124
+```
+
+Each terminal receives its connection ID, for example `Connected as 127.0.0.1:54321`. Type a message and press Enter. The other terminals receive a line such as `127.0.0.1:54321 > Hello everyone!`. The server does not echo messages back to their sender. Press Ctrl+C in a client terminal to disconnect, or in the server terminal to close the chat and all active connections.
+
+`listen()` resolves once the server is listening. The `clients` map tracks active sockets by their remote address and port, which distinguish connections to this server. These are connection labels, not permanent user identities: reconnecting can give a client a different port.
+
+Inside each handler, `readline` turns the socket's byte stream into lines. TCP chunks do not correspond to messages: a line may arrive in several chunks, or one chunk may contain several lines. Each completed line is broadcast to every other active socket. The `finally` block removes disconnected clients and closes their resources.
+
+The outer connection loop starts each `handleConnection(socket)` call **without awaiting it**. That lets it accept the next client while earlier handlers wait for messages. Each handler still awaits its own incoming lines, so clients can remain connected and chat concurrently. The `.catch()` handles rejected handler promises; socket errors are handled separately, and `server.maxConnections = 10` caps open connections for this demo.
 
 :::caution[The pitfall: awaiting each connection handler]
-This small change would be wrong if we wanted concurrent connection handling:
+This small change would break the chat's concurrency:
 
 ```js
-// Counter-example: each handler blocks dispatch of the next connection.
+// Counter-example: the second client cannot chat until the first disconnects.
 for await (const socket of server) {
   await handleConnection(socket)
 }
 ```
 
-Now the loop waits for the first handler to finish before starting the second. Our three simulated database calls would run one after another. If a handler instead reads until its client disconnects, one long-lived connection can delay handling every connection behind it.
+`handleConnection()` stays active until its client disconnects. Awaiting it here means only the first client gets a handler and joins the `clients` map. Later connections can be accepted by the server, but the loop will not dispatch their handlers until that first client leaves. There is nobody else in the map to receive the first client's messages!
 
-The server continues accepting connections while the loop body waits. The [server iterator documentation](https://nodejs.org/download/release/v27.0.0-alpha.0.0.0/docs/api/net.html#serversymbolasynciterator) warns that a slow consumer can buffer connections without bound. Set `server.maxConnections` explicitly and choose a limit appropriate to your workload, including when dispatching handlers concurrently.
+The [server iterator documentation](https://nodejs.org/download/release/v27.0.0-alpha.0.0.0/docs/api/net.html#serversymbolasynciterator) warns that a slow consumer can buffer connections without bound. Set `server.maxConnections` explicitly and choose a limit appropriate to your workload, including when dispatching handlers concurrently.
 
-The iterator yields **TCP connections**, not application-level requests. One connection may carry many requests, depending on your protocol. Awaiting a handler can be appropriate when you deliberately want sequential processing, but it changes the concurrency you would normally get by dispatching async work from a `'connection'` callback.
+The iterator yields **TCP connections**, not individual chat messages or application-level requests. Awaiting a handler can be appropriate for deliberate sequential processing, but a chat server needs overlapping connection handlers.
 :::
 
 ## Virtual File System (`node:vfs`) is now unflagged
