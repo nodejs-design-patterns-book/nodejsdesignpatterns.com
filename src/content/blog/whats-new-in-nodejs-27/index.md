@@ -70,62 +70,58 @@ In [What's new in Node.js 26](/blog/whats-new-in-nodejs-26/), we looked at how `
 
 ### Pairing sequences lazily with `Iterator.zip()`
 
-Suppose you have two or more separate sequences of data that belong together positionally: for example, a list of sensor names, a generator yielding live readings, and a `Set` of units.
+Suppose you are checking a weather forecast against the temperatures recorded over the same four days. The predictions come from your model, while the actual values come from observations. To calculate each day's error, you need to pair the values at the same position. Both sequences must cover the same days in the same order.
 
-In Node.js 26 and earlier, JavaScript had no built-in `zip`. If your data was already in arrays, you would typically reach for `.map()` with an index lookup:
+In Node.js 26 and earlier, if both sequences were arrays, you would typically use `.map()` with an index lookup:
 
 ```js title="01-iterators/iterator-zip-old.js"
-// Node.js 26 and earlier - only works on materialized arrays
-const sensors = ['temp-1', 'humidity-1', 'pressure-1']
-const readings = [21.4, 48.0, 1013.2]
-const units = ['C', '%', 'hPa']
+// Node.js 26 and earlier
+const predicted = [18, 21, 20, 23]
+const actual = [19, 20, 22, 21]
 
-const paired = sensors.map((sensor, i) => [sensor, readings[i], units[i]])
-for (const [sensor, value, unit] of paired) {
-  console.log(`${sensor}: ${value} ${unit}`)
-}
+const errors = predicted.map((prediction, i) => actual[i] - prediction)
+console.log(errors) // [1, -1, 2, -2]
 ```
 
-That looks harmless for three elements, but it has two real drawbacks:
+That works well for arrays. But what if observations come from a generator, or your model returns an iterator of predictions? Index lookups won't work on those inputs, and converting them to arrays means loading both sequences into memory first.
 
-1. It **eagerly allocates** a brand-new intermediate array before your loop even starts.
-2. It **only works if every input is already an indexable array**. If `readings` is a generator or a `Map.prototype.values()` iterator, `readings[i]` is `undefined` unless you spread everything into memory first (`[...readings]`).
-
-In Node.js 27, `Iterator.zip()` takes an iterable of iterables and returns a lazy `Iterator` that yields tuple arrays step by step:
+In Node.js 27, `Iterator.zip()` takes an iterable of iterables and returns a lazy iterator of pairs. We can calculate the errors with the same pipeline whether the inputs are arrays or iterators:
 
 ```js title="01-iterators/iterator-zip.js"
-function* nextSequenceId(start = 100) {
-  let id = start
-  while (true) yield id++
-}
+const predicted = [18, 21, 20, 23]
+const actual = [19, 20, 22, 21]
 
-const sensors = ['temp-1', 'humidity-1', 'pressure-1']
-const readings = new Map([
-  ['t', 21.4],
-  ['h', 48.0],
-  ['p', 1013.2],
-]).values()
+const errors = Iterator.zip([predicted, actual])
+  .map(([prediction, observation]) => observation - prediction)
+  .toArray()
 
-// Lazily pairs an infinite generator, an array, and a Map iterator!
-const zipped = Iterator.zip([nextSequenceId(), sensors, readings])
-
-for (const [id, sensor, value] of zipped) {
-  console.log(`#${id} ${sensor}: ${value}`)
-}
-// #100 temp-1: 21.4
-// #101 humidity-1: 48
-// #102 pressure-1: 1013.2
+console.log(errors) // [1, -1, 2, -2]
 ```
 
-Notice what happened with `nextSequenceId()` in that example: it is an **infinite generator**! If we had tried to spread it into an array first, our process would have hung until it ran out of memory. Because `Iterator.zip()` defaults to `mode: 'shortest'`, it pulls one item at a time from each input and automatically stops (and closes the remaining open iterators) as soon as the shortest iterable finishes.
+Each pair contains a prediction and its corresponding observation. A positive error means the day was warmer than predicted; a negative error means it was cooler. The pairing and mapping happen one item at a time. Only the final `.toArray()` collects the errors into an array so we can print them together.
+
+Another common use is the **dot product** of two vectors: multiply matching components, then add the products. This operation appears in graphics, machine learning, and numerical computing:
+
+```js title="01-iterators/iterator-zip-dot-product.js"
+const a = [1, 2, 3]
+const b = [4, 5, 6]
+
+const dotProduct = Iterator.zip([a, b], { mode: 'strict' })
+  .map(([x, y]) => x * y)
+  .reduce((sum, product) => sum + product, 0)
+
+console.log(dotProduct) // 32 (1 * 4 + 2 * 5 + 3 * 6)
+```
+
+Here we never collect the pairs or products into an intermediate array. We also use `mode: 'strict'` because a dot product requires vectors of equal length: silently ignoring extra components would hide an input error.
 
 :::tip[Handling mismatched lengths with `mode`]
-By default, `Iterator.zip()` uses `{ mode: 'shortest' }`. If your sequences should always have the exact same length and a mismatch means a bug in your data, pass `{ mode: 'strict' }` so it throws a `TypeError` if one iterable finishes early. Or pass `{ mode: 'longest', padding: [null, 0] }` if you want to keep going until the longest iterable finishes.
+By default, `Iterator.zip()` uses `{ mode: 'shortest' }`: it stops when the shortest input finishes and closes the remaining open iterators. For the forecast example, that means comparing only the days available in both sequences. Use `{ mode: 'strict' }` if a missing prediction or observation should instead throw a `TypeError`. Or pass `{ mode: 'longest', padding: [null, 0] }` to continue until the longest input finishes, using the corresponding padding value when an input runs out.
 :::
 
 ### Turning columns into objects with `Iterator.zipKeyed()`
 
-Tuple arrays like `[id, sensor, value]` are great for two or three items, but once you have four or five parallel sources, positional destructuring gets easy to mix up.
+Tuple arrays like `[prediction, observation]` are easy to read for two or three items, but once you have four or five parallel sources, positional destructuring gets easy to mix up.
 
 That is where `Iterator.zipKeyed()` comes in. Instead of passing an array of iterables and getting back positional tuples, you pass an **object whose values are iterables**, and each step yields a neatly labeled object with those exact keys:
 
