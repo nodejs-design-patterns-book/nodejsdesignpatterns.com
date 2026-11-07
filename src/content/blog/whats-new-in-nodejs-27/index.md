@@ -178,7 +178,7 @@ for (const row of rows) {
 // charlie (#103) has role: viewer
 ```
 
-If you ever work with columnar data formats (like CSV columns, spreadsheet exports, time-series arrays, or analytics responses where each metric comes back as its own array), `Iterator.zipKeyed()` turns column arrays into a lazy stream of row objects in a single line.
+If an API returns each field as a separate array, like user IDs, names, and roles, `Iterator.zipKeyed()` lets you process them together as a lazy sequence of row objects. The arrays must describe the same records in the same order.
 
 ### Finishing pipelines with `Iterator.prototype.join()` and `includes()`
 
