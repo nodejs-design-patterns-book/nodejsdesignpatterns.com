@@ -51,8 +51,13 @@ const renderedReviews = await Promise.all(
                 <review.Content />
               </div>
               <footer class="text-sm text-base-content/70">
-                — {review.data.name} on{' '}
-                <a target="_blank" href={review.data.url} class="text-primary">
+                <span class="font-medium">{review.data.name}</span> on{' '}
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={review.data.url}
+                  class="text-primary"
+                >
                   {review.data.platform}
                 </a>
               </footer>

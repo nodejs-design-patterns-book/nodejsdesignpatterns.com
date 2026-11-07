@@ -29,4 +29,4 @@ Here’s a breakdown of all the patterns you'll learn:
 - **Iterator**, including **Generators** and **Async Iterators**
 - **Middleware**
 
-In addition to these, the book also introduces **JavaScript- and Node.js-specific patterns and best practices** throughout, in the context of each relevant topic. This ensures you're not just learning abstract theory — you're gaining **practical, production-ready skills** and a deep understanding of **how to build real-world Node.js systems with confidence**.
+In addition to these, the book also introduces **JavaScript- and Node.js-specific patterns and best practices** throughout, in the context of each relevant topic. This ensures you're not just learning abstract theory: you're gaining **practical, production-ready skills** and a deep understanding of **how to build real-world Node.js systems with confidence**.
