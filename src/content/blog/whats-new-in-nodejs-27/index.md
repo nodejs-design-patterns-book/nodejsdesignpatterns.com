@@ -458,6 +458,10 @@ async function loadAppConfig(configDir) {
 // memoryFs is automatically unmounted here!
 ```
 
+:::note[Why does it unmount automatically?]
+The `using` declaration tells JavaScript to call `memoryFs[Symbol.dispose]()` when execution leaves the block, including when an error is thrown. `VirtualFileSystem` implements that method to unmount itself. Declaring it with `const` would require us to call `unmount()` explicitly.
+:::
+
 Notice that `memoryFs.mount()` mounts the virtual file system under a reserved namespace (`path.join(os.devNull, 'vfs')`, such as `/dev/null/vfs/1` on POSIX), so a virtual mount can never accidentally shadow or overwrite real files on your disk. If you want to compare this with working on real files, check out our guide on [reading and writing files in Node.js](/blog/reading-writing-files-nodejs/).
 
 Unflagging `node:vfs` also unlocks **`--vfs-load`** on the CLI without needing an experimental flag:

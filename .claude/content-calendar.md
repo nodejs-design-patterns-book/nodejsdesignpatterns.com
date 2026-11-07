@@ -139,6 +139,8 @@ Path Traversal Security (NEW)
     └── links to → OWASP Top 10 for Node.js (future)
 
 Explicit Resource Management (using/await using)
+    └── incoming link opportunity ← What's new in Node.js 27 (VFS `using` note; add when #15b is published)
+    └── links to → What's new in Node.js 27 (concrete VFS disposal example)
     └── links to → Reading/Writing Files (existing)
     └── links to → Stream Consumer (existing)
     └── links to → Async Iterators (existing)
@@ -191,6 +193,7 @@ Security Cluster (future)
 - [x] Publish environment variables article (Core APIs pillar, #2)
 - [x] Cross-link env vars article (HTTP Requests and Docker guides link to it; it links out to 6 existing articles)
 - [ ] Promote env vars article (r/node, dev.to, newsletter); the "when NOT to use env vars for secrets" angle is a good hook. Drafts ready: .claude/social/nodejs-environment-variables.md (X thread + 4 standalone posts, 2 LinkedIn posts, Bluesky/Mastodon, r/node, dev.to plan, newsletter blurb, schedule)
+- [ ] When publishing Explicit Resource Management (#15b), add a link to it from the "Why does it unmount automatically?" note in `src/content/blog/whats-new-in-nodejs-27/index.md`. Link back from #15b to `/blog/whats-new-in-nodejs-27/#virtual-file-system-nodevfs-is-now-unflagged` as a practical `using` / `Symbol.dispose` example.
 - [ ] Monitor keyword rankings for existing content
 - [ ] A/B test CTA placements
 - [ ] Promote path traversal article on security forums (r/netsec, HN)
