@@ -8,6 +8,7 @@ import { defineConfig, fontProviders } from 'astro/config'
 import expressiveCode from 'astro-expressive-code'
 import remarkDirective from 'remark-directive' /* Handle ::: directives as nodes */
 import { remarkAdmonitions } from './src/plugins/remark-admonitions' /* Add admonitions */
+import { remarkTableScroll } from './src/plugins/remark-table-scroll' /* Scrollable tables on mobile */
 
 // https://astro.build/config
 export default defineConfig({
@@ -20,7 +21,7 @@ export default defineConfig({
     /* Explicitly use the remark/rehype pipeline (instead of Astro 7's default
        Sätteri) since admonitions depend on remark plugins */
     processor: unified({
-      remarkPlugins: [remarkDirective, remarkAdmonitions],
+      remarkPlugins: [remarkDirective, remarkAdmonitions, remarkTableScroll],
     }),
   },
   vite: {

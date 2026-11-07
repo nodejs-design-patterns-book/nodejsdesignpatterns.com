@@ -78,8 +78,9 @@ const promoVariant = extractPromoVariant(selectedPromoKey)
   data-analytics-cta-type="book_promo_card"
   data-analytics-cta-position="sidebar"
 >
-  <a class="absolute inset-0 text-[0px]" href={BUY_LINK_PRINT}
-    >Link to buy Node.js Design Patterns</a
+  <a
+    class="absolute inset-0 z-10 rounded-lg text-[0px] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary"
+    href={BUY_LINK_PRINT}>Get your copy of Node.js Design Patterns</a
   >
 
   <div class="flex flex-col no-underline text-inherit pointer-events-none">
@@ -94,15 +95,17 @@ const promoVariant = extractPromoVariant(selectedPromoKey)
       <p class="text-base leading-relaxed text-base-content m-0 font-medium">
         {selectedPromoMessage}
       </p>
+      <!-- Visual label only: the whole card is the link (one large target, one tab stop) -->
       <span
-        class="inline-flex items-center font-semibold text-primary text-sm mt-auto relative pointer-events-auto"
+        class="inline-flex items-center font-semibold text-primary text-sm mt-auto relative"
+        aria-hidden="true"
       >
-        <a href={BUY_LINK_PRINT} class="relative"
+        <span class="relative"
           >Get Your Copy Today →
           <span
             class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary/50 transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"
           ></span>
-        </a>
+        </span>
       </span>
     </div>
   </div>

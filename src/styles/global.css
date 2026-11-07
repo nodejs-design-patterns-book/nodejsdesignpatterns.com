@@ -191,6 +191,27 @@
   margin-top: 0.8em;
 }
 
+/* Narrow screens: long inline code (URLs, env strings) wraps instead of
+   pushing the page sideways; wide tables scroll inside their own region */
+.prose :where(:not(pre) > code, a):not(:where(.not-prose, .not-prose *)) {
+  overflow-wrap: anywhere;
+}
+
+.prose .table-scroll {
+  overflow-x: auto;
+  margin-block: 2em;
+  border-radius: 0.25rem;
+}
+
+.prose .table-scroll:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.prose .table-scroll > table {
+  margin-block: 0;
+}
+
 .prose :where(a):not(:where(.not-prose, .not-prose *)) {
   text-underline-offset: 0.18em;
   text-decoration-thickness: 1px;
@@ -349,6 +370,7 @@ aside.admonition {
 
 aside.admonition .admonition-title {
   margin: 0 0 0.75rem 0;
+  overflow-wrap: anywhere;
   display: flex;
   align-items: center;
   gap: 0.5rem;

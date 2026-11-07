@@ -118,12 +118,12 @@ const buyButton = {
       id="mobile-menu"
       class="md:hidden border-t border-base-300 overflow-hidden transition-all duration-200 ease-in-out max-h-0 opacity-0 p-0"
     >
-      <div class="py-4 md:py-0 flex flex-col space-y-4">
+      <div class="py-2 md:py-0 flex flex-col">
         {
           menuItems.map((item) => (
             <a
               href={item.href}
-              class="mobile-nav-link text-left text-sm font-medium transition-colors duration-200 ease-in-out hover:text-primary text-base-content/70"
+              class="mobile-nav-link block py-2.5 text-left text-base font-medium transition-colors duration-200 ease-in-out hover:text-primary text-base-content/70"
             >
               {item.label}
             </a>
@@ -134,7 +134,7 @@ const buyButton = {
           href={buyButton.href}
           variant="primary"
           size="sm"
-          class="bg-primary hover:bg-primary-focus text-primary-content w-fit"
+          class="mt-3 bg-primary hover:bg-primary/90 text-primary-content w-fit"
           id="mobile-cta-button"
         >
           {buyButton.label}
