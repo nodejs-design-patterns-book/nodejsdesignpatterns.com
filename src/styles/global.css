@@ -191,6 +191,13 @@
   margin-top: 0.8em;
 }
 
+/* Reading measure: text blocks cap at ~70 characters (Atkinson at 20px
+   averages ~0.45em per glyph), while code blocks and tables keep the full
+   column so wide code scrolls less */
+.prose > :where(p, ul, ol, dl, h2, h3, h4, blockquote, aside, details) {
+  max-width: 39rem;
+}
+
 /* Narrow screens: long inline code (URLs, env strings) wraps instead of
    pushing the page sideways; wide tables scroll inside their own region */
 .prose :where(:not(pre) > code, a):not(:where(.not-prose, .not-prose *)) {
