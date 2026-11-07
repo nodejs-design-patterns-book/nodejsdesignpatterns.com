@@ -2,7 +2,12 @@
 import { getCollection, render } from 'astro:content'
 import { Picture } from 'astro:assets'
 import { Masonry } from 'astro-masonry'
-import BuyButtons from '@components/pages/Home/components/BuyButtons.astro'
+
+const FEATURED_IN_TRUST_QUOTE = new Set([
+  'David Gonzalez',
+  'Joe Karlsson',
+  'Maya Shavin',
+])
 
 const quotes = await getCollection('quotes')
 const renderedQuotes = (
@@ -16,7 +21,10 @@ const renderedQuotes = (
       }
     }),
   )
-).sort((a, b) => 1 - a.id.localeCompare(b.id))
+)
+  .sort((a, b) => 1 - a.id.localeCompare(b.id))
+  // These three already open the page in the TrustQuote carousel
+  .filter((q) => !FEATURED_IN_TRUST_QUOTE.has(q.data.name))
 ---
 
 <section
@@ -75,24 +83,6 @@ const renderedQuotes = (
           ))
         }
       </Masonry>
-
-      <!-- Call to Action -->
-      <div class="text-center mt-24">
-        <h2
-          class="text-3xl lg:text-4xl font-bold text-base-content font-heading mb-6"
-        >
-          Listen to the experts
-        </h2>
-        <p class="text-2xl lg:text-3xl text-base-content/80 font-heading">
-          Start your improvement journey today with <strong
-            >Node.js Design Patterns</strong
-          >.
-        </p>
-      </div>
-
-      <div class="flex justify-center mt-16">
-        <BuyButtons location="quotes" align="center" />
-      </div>
     </div>
   </div>
 </section>
