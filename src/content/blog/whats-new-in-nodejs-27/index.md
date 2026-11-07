@@ -189,31 +189,41 @@ V8 15.6 adds two terminal helpers directly onto `Iterator.prototype`:
 - **`Iterator.prototype.join(separator)`**: consumes the iterator and joins items into a string directly.
 - **`Iterator.prototype.includes(value)`**: consumes the iterator until it finds a matching value (using `SameValueZero` equality, just like `Array.prototype.includes()`) and short-circuits immediately.
 
-Let's see them combined with `Iterator.zipKeyed()` to generate a CSV report lazily:
+For `join()`, let's return to our sensor readings. This time we only need one temperature sensor, and we want to format five readings as a comma-separated string. As before, we simulate the hardware so you can run the example locally:
 
-```js title="01-iterators/iterator-join-includes.js"
-const rawLogs = {
-  service: ['auth', 'payments', 'search', 'notifications'],
-  status: [200, 503, 200, 500],
-  latencyMs: [12, 450, 28, 310],
+```js title="01-iterators/iterator-join.js"
+function* temperatureReadings() {
+  while (true) {
+    yield 18 + Math.random() * 6
+  }
 }
 
-// 1. Check if any service returned a 503 (short-circuits on the 2nd item!)
-const hasServiceUnavailable = rawLogs.status.values().includes(503)
-console.log('Any 503 errors?', hasServiceUnavailable) // true
+const readings = temperatureReadings()
+  .take(5)
+  .map((temperature) => `${temperature.toFixed(1)}°C`)
+  .join(', ')
 
-// 2. Build a CSV of failing endpoints without ever allocating an array
-const failingCsv = Iterator.zipKeyed(rawLogs)
-  .filter((entry) => entry.status >= 500)
-  .map((entry) => `${entry.service},${entry.status},${entry.latencyMs}ms`)
-  .join('\n')
-
-console.log(failingCsv)
-// payments,503,450ms
-// notifications,500,310ms
+console.log(readings)
+// For example: 21.3°C, 19.8°C, 23.1°C, 20.0°C, 22.4°C
 ```
 
-Because `Iterator.zipKeyed()`, `.filter()`, `.map()`, and `.join()` all operate on the iterator protocol one item at a time, not a single intermediate array is created in that entire pipeline.
+`.take(5)` makes the endless source finite, `.map()` formats each reading, and `.join()` builds the string without collecting an intermediate array. These five readings are taken immediately, with no delay between them. Without `.take(5)`, joining this endless iterator would never finish.
+
+For `includes()`, imagine checking whether a commit message references a particular issue. `String.prototype.matchAll()` already returns an iterator, so we can extract the complete references and search them directly:
+
+```js title="01-iterators/iterator-includes.js"
+const message = 'Fixes APP-142. Follow-up work tracked in APP-208.'
+
+const references = message.matchAll(/\bAPP-\d+\b/g).map((match) => match[0])
+
+console.log(references.includes('APP-142')) // true
+```
+
+`includes()` stops as soon as it finds `APP-142`, without extracting the later reference. Matching complete references also avoids the false positive you would get from `message.includes('APP-14')`, which matches part of `APP-142`. The search consumes the iterator, so create a fresh one for another search.
+
+:::note[Synchronous iterators only]
+The iterator helpers shown above work with **synchronous iterators**. Their `.next()` calls return results directly; these helpers do not await promises from async iterators. You cannot use the same chains on an `async function*` generator or a Node.js readable stream's async iterator. Use `for await...of` or a library with async iterator helpers for those sources. Async iterator helpers are covered by a [separate TC39 proposal](https://github.com/tc39/proposal-async-iterator-helpers).
+:::
 
 ## Goodbye `0.30000000000000004`: `Math.sumPrecise()`
 
