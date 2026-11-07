@@ -317,7 +317,7 @@ server.close()
 
 Node.js 27 introduces the experimental **`node:net/promises`** module with two action-oriented helpers, **`listen()`** and **`connect()`**, and makes **`net.Server` itself an async iterable**.
 
-Let's build a small TCP chat server. Each connected client can send a line of text, and the server forwards it to every other client, prefixed with the sender's connection ID:
+Let's try something fun and build a small TCP chat server. Each connected client can send a line of text, and the server forwards it to every other client, prefixed with the sender's connection ID:
 
 ```js title="03-net-promises/net-promises.js"
 import { listen } from 'node:net/promises'
