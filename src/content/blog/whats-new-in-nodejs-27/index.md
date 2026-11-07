@@ -225,7 +225,7 @@ console.log(references.includes('APP-142')) // true
 The iterator helpers shown above work with **synchronous iterators**. Their `.next()` calls return results directly; these helpers do not await promises from async iterators. You cannot use the same chains on an `async function*` generator or a Node.js readable stream's async iterator. Use `for await...of` or a library with async iterator helpers for those sources. Async iterator helpers are covered by a [separate TC39 proposal](https://github.com/tc39/proposal-async-iterator-helpers) and are **not built into Node.js 27 as of `v27.0.0-alpha.0.0.0`**.
 :::
 
-## Goodbye `0.30000000000000004`: `Math.sumPrecise()`
+## More accurate sums with `Math.sumPrecise()`
 
 Beyond iterator helpers, V8 15.6 also brings a useful addition for numerical calculations: `Math.sumPrecise()`. To see why it matters, let's look at a familiar floating-point surprise.
 
