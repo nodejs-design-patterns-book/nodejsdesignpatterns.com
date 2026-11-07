@@ -24,6 +24,7 @@ export interface Props {
   title?: string
   description?: string
   ogTitle?: string
+  ogType?: string
   ogDescription?: string
   ogImage?: string
   canonical?: string
@@ -35,6 +36,7 @@ const {
   title = SITE_TITLE,
   description = SITE_DESCRIPTION,
   ogTitle = OG_TITLE,
+  ogType = OG_TYPE,
   ogDescription = OG_DESCRIPTION,
   ogImage = OG_IMAGE,
   canonical,
@@ -88,7 +90,7 @@ const {
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content={OG_TYPE} />
+    <meta property="og:type" content={ogType} />
     <meta property="og:url" content={canonical} />
     <meta property="og:title" content={ogTitle} />
     <meta property="og:description" content={ogDescription} />
