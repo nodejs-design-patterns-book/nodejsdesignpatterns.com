@@ -274,7 +274,16 @@ console.log(`Order total: $${total}`) // Order total: $379.92
 ```
 
 :::caution[When you still need integer cents or decimal libraries]
-`Math.sumPrecise()` eliminates intermediate rounding drift when _summing_ IEEE-754 floats, and it is far more accurate than `.reduce()`. However, remember that individual inputs like `0.1` are still binary floating-point approximations under the hood. For strict accounting, tax calculations, or multi-currency arithmetic with division and multiplication rules, storing integer minor units (like cents) or using a dedicated decimal library is still best practice.
+`Math.sumPrecise()` avoids rounding after each addition. Its result is what you would get by adding the exact mathematical values of the input floating-point numbers, then rounding the total once to the nearest representable 64-bit float. But those inputs may already differ from the decimal values you intended:
+
+```js title="02-math-sum-precise/sum-input-precision.js"
+console.log(Math.sumPrecise([0.1, 0.2]))
+// 0.30000000000000004
+```
+
+As the [MDN explanation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sumPrecise#description) points out, the literals `0.1` and `0.2` are stored as binary floating-point values slightly greater than their exact decimal counterparts. Adding those stored values and rounding once still produces `0.30000000000000004`. The method cannot recover the intended decimal inputs.
+
+For money calculations that require exact decimal arithmetic, use integer minor units (like cents) or a decimal library with explicit rounding rules. `Math.sumPrecise()` improves summation accuracy; it does not turn JavaScript numbers into decimal numbers.
 :::
 
 ## `node:net/promises` and async-iterable TCP servers
