@@ -245,9 +245,16 @@ const {
         initLinkClickTracking()
       }
     </script>
-    <Font cssVariable="--font-base-sans" preload />
-    <Font cssVariable="--font-base-serif" preload />
-    <Font cssVariable="--font-base-mono" preload />
+    <!-- Preload only what paints above the fold: body text and bold headings -->
+    <Font
+      cssVariable="--font-base-sans"
+      preload={[{ weight: 400, style: 'normal' }]}
+    />
+    <Font
+      cssVariable="--font-base-serif"
+      preload={[{ weight: 700, style: 'normal' }]}
+    />
+    <Font cssVariable="--font-base-mono" />
 
     {import.meta.env.PROD && <Analytics />}
   </head>

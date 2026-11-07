@@ -31,16 +31,27 @@ export default defineConfig({
       provider: fontProviders.google(),
       name: 'Hanuman',
       cssVariable: '--font-base-serif',
+      /* Headings are bold; 400 is used by the FAQ toggles and quote marks.
+         Without 700 the browser fakes bold by smearing the 400 outlines */
+      weights: [400, 700],
+      styles: ['normal'],
+      fallbacks: ['serif'],
     },
     {
       provider: fontProviders.google(),
       name: 'Atkinson Hyperlegible',
       cssVariable: '--font-base-sans',
+      weights: [400, 700],
+      styles: ['normal', 'italic'],
+      fallbacks: ['sans-serif'],
     },
     {
       provider: fontProviders.google(),
       name: 'Cascadia Mono',
       cssVariable: '--font-base-mono',
+      weights: [400, 700],
+      styles: ['normal', 'italic'],
+      fallbacks: ['monospace'],
     },
   ],
 })

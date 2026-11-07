@@ -151,8 +151,8 @@ if (post.rendered?.metadata?.headings) {
           class="flex-1 min-w-0"
           data-reading-time={readingTime}
         >
-          <!-- ToC -->
-          <div>
+          <!-- ToC + body, capped at a ~70 character reading measure -->
+          <div class="max-w-3xl">
             {
               nestedToc.length > 0 && (
                 <details class="bg-base-100 py-2 mb-8 open:bg-primary/10 border border-base-200 hover:border-primary/20 open:border-primary/20 rounded-md transform transition-all duration-300 px-4 open:[&_.summary-arrow]:-rotate-180">
