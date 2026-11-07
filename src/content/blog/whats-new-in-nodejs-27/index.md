@@ -1,6 +1,6 @@
 ---
-date: 2026-11-06T10:08:00
-updatedAt: 2026-11-06T10:08:00
+date: 2026-11-07T19:24:54
+updatedAt: 2026-11-07T19:24:54
 title: What's new in Node.js 27
 slug: whats-new-in-nodejs-27
 description: Node.js 27 brings V8 15.6 with Iterator.zip, Iterator.zipKeyed, Math.sumPrecise, net/promises, an unflagged node:vfs, and a 4 GB default heap limit.
