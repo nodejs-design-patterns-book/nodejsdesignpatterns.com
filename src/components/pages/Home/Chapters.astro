@@ -2,14 +2,7 @@
 import { getCollection, render } from 'astro:content'
 import Badge from '@components/ui/badge.astro'
 import Button from '@components/ui/button.astro'
-import {
-  BookOpen,
-  ChevronDown,
-  ChevronRight,
-  Clock,
-  CodeXml,
-  LockOpen,
-} from '@lucide/astro'
+import { BookOpen, ChevronDown, Clock, CodeXml, LockOpen } from '@lucide/astro'
 
 function readingTime(numWords: number): number {
   const wordsPerMinute = 180 // Average reading speed for technical content
@@ -35,7 +28,9 @@ const renderedChapters = await Promise.all(
 <section id="chapters">
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-12">
-      <h2 class="text-3xl lg:text-4xl font-bold text-base-content mb-4">
+      <h2
+        class="text-4xl lg:text-5xl font-bold text-base-content font-heading mb-4"
+      >
         Let's unpack each Chapter
       </h2>
       <p class="text-xl text-base-content/70">
@@ -93,8 +88,10 @@ const renderedChapters = await Promise.all(
                   </div>
 
                   <div>
-                    <ChevronDown class="chapter-close h-5 w-5 text-primary" />
-                    <ChevronRight class="chapter-open h-5 w-5 text-primary hidden" />
+                    <ChevronDown
+                      aria-hidden="true"
+                      class="chapter-chevron h-5 w-5 text-primary motion-safe:transition-transform motion-safe:duration-200"
+                    />
                   </div>
                 </div>
               </div>
@@ -158,8 +155,8 @@ const renderedChapters = await Promise.all(
   const chapters = document.querySelectorAll('.chapter')
 
   chapters.forEach((chapter) => {
-    const chapterClose = chapter.querySelector('.chapter-close')
-    const chapterOpen = chapter.querySelector('.chapter-open')
+    // One chevron: points down when collapsed, flips up when expanded
+    const chevron = chapter.querySelector('.chapter-chevron')
     const chapterContent = chapter.querySelector('.chapter-content')
     const toggle = chapter.querySelector('.chapter-toggle')
 
@@ -172,16 +169,13 @@ const renderedChapters = await Promise.all(
     const chapterTitle = chapterElement.dataset.chapterTitle || ''
 
     chapterContent?.classList.add('hidden')
-    chapterClose?.classList.add('hidden')
-    chapterOpen?.classList.remove('hidden')
     toggle?.setAttribute('aria-expanded', 'false')
 
     let status: 'open' | 'closed' = 'closed'
     toggle?.addEventListener('click', () => {
       if (status === 'closed') {
         chapterContent?.classList.remove('hidden')
-        chapterClose?.classList.remove('hidden')
-        chapterOpen?.classList.add('hidden')
+        chevron?.classList.add('rotate-180')
         status = 'open'
         toggle?.setAttribute('aria-expanded', 'true')
 
@@ -192,8 +186,7 @@ const renderedChapters = await Promise.all(
         })
       } else {
         chapterContent?.classList.add('hidden')
-        chapterClose?.classList.add('hidden')
-        chapterOpen?.classList.remove('hidden')
+        chevron?.classList.remove('rotate-180')
         status = 'closed'
         toggle?.setAttribute('aria-expanded', 'false')
       }
