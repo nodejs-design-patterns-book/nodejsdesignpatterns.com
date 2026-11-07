@@ -44,8 +44,12 @@ const buyButton = {
             ></path>
           </svg>
           <span class="font-bold text-base-content">
-            <span class="md:hidden lg:inline"> Node.js Design Patterns </span>
-            <span class="hidden md:inline lg:hidden">Node.js DP</span>
+            <span class="max-[379px]:hidden md:hidden lg:inline">
+              Node.js Design Patterns
+            </span>
+            <span class="hidden max-[379px]:inline md:inline lg:hidden"
+              >Node.js DP</span
+            >
           </span>
         </a>
       </div>
@@ -77,8 +81,17 @@ const buyButton = {
         </Button>
       </div>
 
-      <!-- Mobile menu button -->
-      <div class="md:hidden">
+      <!-- Mobile: a buy button stays reachable next to the menu toggle -->
+      <div class="md:hidden flex items-center gap-4">
+        <Button
+          element="a"
+          href={buyButton.href}
+          variant="secondary"
+          size="sm"
+          id="mobile-header-cta"
+        >
+          {buyButton.label}
+        </Button>
         <button
           type="button"
           id="mobile-menu-toggle"
@@ -134,16 +147,6 @@ const buyButton = {
             </a>
           ))
         }
-        <Button
-          element="a"
-          href={buyButton.href}
-          variant="primary"
-          size="sm"
-          class="mt-3 bg-primary hover:bg-primary/90 text-primary-content w-fit"
-          id="mobile-cta-button"
-        >
-          {buyButton.label}
-        </Button>
       </div>
     </div>
   </div>

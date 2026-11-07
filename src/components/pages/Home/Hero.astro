@@ -22,11 +22,9 @@ const numberFormatter = new Intl.NumberFormat('en-US', {
   <HeroBackdrop />
   <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-      <AnimatedSection
-        direction="left"
-        delay={0.2}
-        class="order-last lg:order-first"
-      >
+      <!-- Mobile: headline and buy buttons first so they're above the fold;
+           desktop keeps text left, cover right -->
+      <AnimatedSection direction="left" delay={0.2} class="lg:order-first">
         <div class="space-y-8">
           <div class="space-y-4">
             <h1
@@ -66,7 +64,7 @@ const numberFormatter = new Intl.NumberFormat('en-US', {
         </div>
       </AnimatedSection>
 
-      <div class="flex order-first lg:order-last justify-center lg:justify-end">
+      <div class="flex lg:order-last justify-center lg:justify-end">
         <Picture
           formats={['avif', 'webp', 'png']}
           layout="constrained"
@@ -74,9 +72,9 @@ const numberFormatter = new Intl.NumberFormat('en-US', {
           src={coverImage}
           alt="Node.js Design Patterns Book Cover"
           pictureAttributes={{
-            class: 'w-full max-w-sm lg:max-w-md',
+            class: 'w-full max-w-xs sm:max-w-sm lg:max-w-md',
           }}
-          class="w-full max-w-sm lg:max-w-md drop-shadow-2xl shadow-2xl lg:absolute rounded-tr-sm rounded-br-sm"
+          class="w-full max-w-xs sm:max-w-sm lg:max-w-md drop-shadow-2xl shadow-2xl lg:absolute rounded-tr-sm rounded-br-sm"
           loading="eager"
           fetchpriority="high"
           width={1000}
