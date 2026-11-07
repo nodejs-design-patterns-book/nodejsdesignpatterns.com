@@ -394,6 +394,10 @@ nc 127.0.0.1 8124
 
 Each terminal receives its connection ID, for example `Connected as 127.0.0.1:54321`. Type a message and press Enter. The other terminals receive a line such as `127.0.0.1:54321 > Hello everyone!`. The server does not echo messages back to their sender. Press Ctrl+C in a client terminal to disconnect, or in the server terminal to close the chat and all active connections.
 
+Here is the chat running with three netcat clients, each receiving the other clients' messages:
+
+![A TCP chat server above three netcat clients exchanging messages, with each received message prefixed by the sender's address and port](./tcp-chat.png)
+
 `listen()` resolves once the server is listening. The `clients` map tracks active sockets by their remote address and port, which distinguish connections to this server. These are connection labels, not permanent user identities: reconnecting can give a client a different port.
 
 Inside each handler, `readline` turns the socket's byte stream into lines. TCP chunks do not correspond to messages: a line may arrive in several chunks, or one chunk may contain several lines. Each completed line is broadcast to every other active socket. The `finally` block removes disconnected clients and closes their resources.
