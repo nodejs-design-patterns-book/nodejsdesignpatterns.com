@@ -56,7 +56,7 @@ const buyButton = {
           menuItems.map((item) => (
             <a
               href={item.href}
-              class="nav-link text-sm font-medium transition-colors duration-200 ease-in-out hover:text-primary text-base-content/70"
+              class="nav-link text-sm font-medium transition-colors duration-200 ease-in-out hover:text-primary text-base-content/80"
             >
               {item.label}
             </a>
@@ -85,7 +85,7 @@ const buyButton = {
           aria-controls="mobile-menu"
           aria-expanded="false"
           aria-label="Open menu"
-          class="-m-2.5 p-2.5 text-base-content/70 hover:text-base-content transition-colors duration-200 ease-in-out"
+          class="-m-2.5 p-2.5 text-base-content/80 hover:text-base-content transition-colors duration-200 ease-in-out"
         >
           <svg
             id="menu-icon"
@@ -128,7 +128,7 @@ const buyButton = {
           menuItems.map((item) => (
             <a
               href={item.href}
-              class="mobile-nav-link block py-2.5 text-left text-base font-medium transition-colors duration-200 ease-in-out hover:text-primary text-base-content/70"
+              class="mobile-nav-link block py-2.5 text-left text-base font-medium transition-colors duration-200 ease-in-out hover:text-primary text-base-content/80"
             >
               {item.label}
             </a>
@@ -269,7 +269,7 @@ const buyButton = {
       navLinks.forEach((link) => {
         const linkHref = (link as HTMLAnchorElement).getAttribute('href')
         if (linkHref === `#${sectionId}`) {
-          link.classList.remove('text-base-content/70')
+          link.classList.remove('text-base-content/80')
           link.classList.add(
             'text-primary',
             'border-b-2',
@@ -277,7 +277,7 @@ const buyButton = {
             'pb-1',
           )
         } else {
-          link.classList.add('text-base-content/70')
+          link.classList.add('text-base-content/80')
           link.classList.remove(
             'text-primary',
             'border-b-2',
@@ -292,10 +292,10 @@ const buyButton = {
       mobileNavLinks.forEach((link) => {
         const linkHref = (link as HTMLAnchorElement).getAttribute('href')
         if (linkHref === `#${sectionId}`) {
-          link.classList.remove('text-base-content/70')
+          link.classList.remove('text-base-content/80')
           link.classList.add('text-primary')
         } else {
-          link.classList.add('text-base-content/70')
+          link.classList.add('text-base-content/80')
           link.classList.remove('text-primary')
         }
       })

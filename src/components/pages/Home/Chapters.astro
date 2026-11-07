@@ -46,20 +46,29 @@ const renderedChapters = await Promise.all(
       {
         renderedChapters.map((chapter) => (
           <div
-            class="chapter overflow-hidden border-2 border-primary/20 hover:border-primary/50 transition-all duration-200 rounded-xl bg-card text-base-content shadow"
+            class="chapter overflow-hidden border-2 border-primary/20 hover:border-primary/50 transition-all duration-200 rounded-xl bg-base-100 text-base-content shadow"
             data-chapter-number={chapter.data.number}
             data-chapter-title={chapter.data.title}
           >
-            <div class="flex flex-col space-y-1.5 p-6 cursor-pointer bg-primary/10 hover:bg-primary/30 transition-colors">
+            <div class="relative flex flex-col space-y-1.5 p-6 bg-primary/10 hover:bg-primary/30 transition-colors">
               <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
                   <div class="shrink-0 w-10 h-10 bg-primary text-primary-content rounded-full flex items-center justify-center text-sm font-bold">
                     {chapter.data.number}
                   </div>
                   <div>
-                    <div class="font-semibold leading-none tracking-tight text-lg text-left">
-                      {chapter.data.title}
-                    </div>
+                    {/* A real button (stretched over the header via ::after) so
+                        chapters open with the keyboard as well as the mouse */}
+                    <h3 class="font-semibold leading-snug tracking-tight text-lg text-left">
+                      <button
+                        type="button"
+                        class="chapter-toggle text-left cursor-pointer after:absolute after:inset-0 focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:-outline-offset-2 focus-visible:after:outline-primary focus-visible:after:rounded-t-xl"
+                        aria-expanded="true"
+                        aria-controls={`chapter-${chapter.data.number}-content`}
+                      >
+                        {chapter.data.title}
+                      </button>
+                    </h3>
                     <p class="text-sm text-base-content/70 mt-1">
                       {chapter.data.description}
                     </p>
@@ -91,7 +100,10 @@ const renderedChapters = await Promise.all(
               </div>
             </div>
 
-            <div class="chapter-content overflow-hidden">
+            <div
+              id={`chapter-${chapter.data.number}-content`}
+              class="chapter-content overflow-hidden"
+            >
               <div class="p-6 pt-0 border-t border-primary/10">
                 <div class="py-4">
                   <div class="text-base-content/70 leading-relaxed mb-4 flex flex-col gap-2">
@@ -149,6 +161,7 @@ const renderedChapters = await Promise.all(
     const chapterClose = chapter.querySelector('.chapter-close')
     const chapterOpen = chapter.querySelector('.chapter-open')
     const chapterContent = chapter.querySelector('.chapter-content')
+    const toggle = chapter.querySelector('.chapter-toggle')
 
     // Get chapter data for analytics
     const chapterElement = chapter as HTMLElement
@@ -161,14 +174,16 @@ const renderedChapters = await Promise.all(
     chapterContent?.classList.add('hidden')
     chapterClose?.classList.add('hidden')
     chapterOpen?.classList.remove('hidden')
+    toggle?.setAttribute('aria-expanded', 'false')
 
     let status: 'open' | 'closed' = 'closed'
-    chapter.addEventListener('click', () => {
+    toggle?.addEventListener('click', () => {
       if (status === 'closed') {
         chapterContent?.classList.remove('hidden')
         chapterClose?.classList.remove('hidden')
         chapterOpen?.classList.add('hidden')
         status = 'open'
+        toggle?.setAttribute('aria-expanded', 'true')
 
         // Track chapter expansion
         trackViewChapterDetails({
@@ -180,6 +195,7 @@ const renderedChapters = await Promise.all(
         chapterClose?.classList.add('hidden')
         chapterOpen?.classList.remove('hidden')
         status = 'closed'
+        toggle?.setAttribute('aria-expanded', 'false')
       }
     })
   })

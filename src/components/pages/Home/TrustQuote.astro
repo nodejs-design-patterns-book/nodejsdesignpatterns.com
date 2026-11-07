@@ -232,6 +232,19 @@ import 'swiper/css/pagination'
     --swiper-pagination-bullet-inactive-color: var(--color-base-content);
   }
 
+  /* 8px dot, 24px hit area (WCAG 2.5.8): padding + content-box background */
+  #trust-quote .swiper-pagination-bullet {
+    box-sizing: content-box;
+    padding: 8px;
+    margin: 0 !important;
+    background-clip: content-box;
+  }
+
+  #trust-quote .swiper-pagination-bullet:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: -4px;
+  }
+
   .swiper {
     width: 100%;
   }
