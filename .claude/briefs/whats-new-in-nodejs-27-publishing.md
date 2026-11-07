@@ -21,7 +21,7 @@ Target publication date: 7 November 2026. If publication slips, update both `dat
 - [x] Review the search/social preview. The description is 148 characters; correct blog Open Graph metadata from `book` to `article`.
 - [x] Refresh PR #42's description with the final TCP chat example, qualified performance claims, and validation evidence.
 - [x] Close the three rejected review threads with verified explanations (abort behavior, zip padding, and mkstemp return shape). All 12 review threads are resolved.
-- [ ] Confirm the latest PR commit passes CI: lint, repository formatting, typecheck, and build. Address any failures before merging.
+- [x] Confirm CI passes for the final code changes (`d8d4c4d`): lint, repository formatting, typecheck, and build. [GitHub CI result](https://github.com/nodejs-design-patterns-book/nodejsdesignpatterns.com/actions/runs/42406627985). Recheck if code changes before merging.
 - [ ] Merge PR #42 into `main` when ready to publish. The push to `main` triggers the GitHub Pages deployment.
 
 ## After publication
