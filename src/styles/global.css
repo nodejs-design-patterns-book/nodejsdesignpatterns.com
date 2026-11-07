@@ -18,6 +18,10 @@
   --font-heading: var(--font-serif);
 }
 
+/* `dark:` utilities follow the theme toggle (data-theme), which already
+   resolves "system" to light/dark, instead of only the OS preference */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
 @plugin "daisyui" {
   themes:
     light --default,
@@ -228,139 +232,48 @@
   text-decoration-thickness: 2px;
 }
 
-.content h1,
-.content h2,
-.content h3,
-.content h4 {
-  margin: 2.5rem 0 1.5rem 0;
-  line-height: 1.25;
-  color: var(--color-primary);
-  font-weight: bold;
-}
-
-.content a {
+/* FAQ answers (Home/Faq.astro): markdown with paragraphs, links and lists */
+.faq-answer a {
   color: var(--color-accent);
   border-bottom: 1px solid var(--color-accent);
   text-decoration: none;
 }
 
-.content a:hover,
-.content a:focus,
-.content a:active {
+.faq-answer a:hover,
+.faq-answer a:focus-visible {
   color: var(--color-primary);
-  border-bottom: 1px solid var(--color-primary);
-  text-decoration: none;
+  border-bottom-color: var(--color-primary);
 }
 
-.content p {
+.faq-answer p {
   margin: 1em 0;
   line-height: 1.5;
 }
 
-.content p code {
-  background-color: #eee;
-  padding: 0.05em 0.2em;
-  border: 1px solid #ccc;
+.faq-answer ul {
+  list-style: disc;
+}
+
+.faq-answer ol {
+  list-style: decimal;
+}
+
+.faq-answer ol,
+.faq-answer ul {
+  margin: 1em;
+}
+
+.faq-answer li :where(ol, ul) {
+  margin: 0 2em;
+}
+
+.faq-answer li p {
+  margin: 0;
 }
 
 /* daisyUI 5.7+ adds vertical padding to inline code in .prose; keep the previous compact look */
 :root .prose :where(code):not(pre > code) {
   padding-block: 0;
-}
-
-.content ul {
-  list-style: disc;
-}
-
-.content ol {
-  list-style: decimal;
-}
-
-.content ol,
-.content ul {
-  margin: 1em;
-}
-
-.content ol li ol,
-.content ol li ul,
-.content ul li ol,
-.content ul li ul {
-  margin: 0 2em;
-}
-
-.content ol li p,
-.content ul li p {
-  margin: 0;
-}
-
-.content dl {
-  font-family: monospace, monospace;
-}
-
-.content dl dt {
-  font-weight: bold;
-}
-
-.content dl dd {
-  margin: -1em 0 1em 1em;
-}
-
-.content img {
-  max-width: 100%;
-  display: block;
-  margin: 0 auto;
-  padding: 0.5em;
-}
-
-.content blockquote {
-  padding-left: 1em;
-  font-style: italic;
-  border-left: solid 1px #fa6432;
-}
-
-.content table {
-  font-size: 1rem;
-  text-align: left;
-  caption-side: bottom;
-  margin-bottom: 2em;
-}
-
-.content table * {
-  border: none;
-}
-
-.content table thead,
-.content table tr {
-  display: table;
-  table-layout: fixed;
-  width: 100%;
-}
-
-.content table tr:nth-child(even) {
-  background-color: rgba(200, 200, 200, 0.2);
-}
-
-.content table tbody {
-  display: block;
-  max-height: 70vh;
-  overflow-y: auto;
-}
-
-.content table td,
-.content table th {
-  padding: 0.25em;
-}
-
-.content table,
-.content .highlight > pre,
-.content pre.example {
-  max-height: 70vh;
-  margin: 1em 0;
-  padding: 1em;
-  overflow: auto;
-  font-size: 0.85rem;
-  font-family: monospace, monospace;
-  border: 1px dashed rgba(250, 100, 50, 0.5);
 }
 
 /* Star ratings: one masked element per rating (see ui/StarRating.astro).

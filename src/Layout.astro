@@ -162,6 +162,24 @@ const {
         ))
     }
 
+    <!-- Apply the saved theme before first paint (module scripts run after
+         parsing, which flashed the wrong theme). Mirrors lib/theme.ts -->
+    <script is:inline>
+      try {
+        var saved = localStorage.getItem('theme')
+        var actual =
+          saved === 'light' || saved === 'dark'
+            ? saved
+            : matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light'
+        document.documentElement.dataset.theme = actual
+        document.documentElement.dataset.codeTheme =
+          actual === 'dark' ? 'material-theme-ocean' : 'min-light'
+      } catch {
+        // Storage blocked: lib/theme.ts falls back to the OS preference
+      }
+    </script>
     <script>
       import { initTheme } from './lib/theme.ts'
       initTheme()
