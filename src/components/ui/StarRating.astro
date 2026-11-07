@@ -1,0 +1,21 @@
+---
+/**
+ * A star rating drawn as one masked element instead of one SVG per star.
+ * Fractional ratings show a partial last star (4.6 renders 4.6 stars), and
+ * the rating is announced to screen readers through the label.
+ */
+interface Props {
+  rating: number
+  max?: number
+  class?: string
+}
+
+const { rating, max = 5, class: className = '' } = Astro.props
+const value = Math.max(0, Math.min(rating, max))
+---
+
+<span
+  role="img"
+  aria-label={`Rated ${value} out of ${max}`}
+  class={`star-rating ${className}`}
+  style={`--rating: ${value}; --max: ${max}`}></span>

@@ -2,7 +2,7 @@
 import { getCollection, render } from 'astro:content'
 import { Masonry } from 'astro-masonry'
 import { REVIEWS, RATING } from '@lib/const'
-import { Star } from '@lucide/astro'
+import StarRating from '@components/ui/StarRating.astro'
 import BuyButtons from '@components/pages/Home/components/BuyButtons.astro'
 
 const reviews = await getCollection('reviews')
@@ -45,11 +45,7 @@ const renderedReviews = await Promise.all(
           <div class="flex items-center mt-4">
             <blockquote class="bg-primary/10 p-4 rounded-lg shadow-sm w-full">
               {review.data.rating && (
-                <div class="flex mb-4">
-                  {[...Array(review.data.rating)].map(() => (
-                    <Star class="h-4 w-4 fill-warning text-secondary" />
-                  ))}
-                </div>
+                <StarRating rating={review.data.rating} class="mb-4" />
               )}
               <div class="text-md text-base-content mb-4 quote-content">
                 <review.Content />

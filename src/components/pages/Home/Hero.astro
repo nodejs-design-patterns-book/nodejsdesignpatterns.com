@@ -1,12 +1,13 @@
 ---
 import { Picture } from 'astro:assets'
 import AnimatedSection from '@components/AnimatedSection.astro'
-import { ParallaxBackground } from '@components/ParallaxBackground'
+import HeroBackdrop from './HeroBackdrop.astro'
 import BuyButtons from '@components/pages/Home/components/BuyButtons.astro'
 import Badge from '@components/ui/badge.astro'
 import coverImage from '@images/book-cover.png'
 import { MAX_RATING, RATING, READERS } from '@lib/const.ts'
-import { Star, Users } from '@lucide/astro'
+import { Users } from '@lucide/astro'
+import StarRating from '@components/ui/StarRating.astro'
 
 const numberFormatter = new Intl.NumberFormat('en-US', {
   notation: 'compact',
@@ -19,7 +20,7 @@ const numberFormatter = new Intl.NumberFormat('en-US', {
   id="hero"
   class="relative bg-gradient-to-br from-primary/10 via-base-100 to-primary/5 dark:from-base-300 dark:via-base-200 dark:to-base-300 overflow-hidden"
 >
-  <ParallaxBackground client:load />
+  <HeroBackdrop />
   <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
       <AnimatedSection
@@ -65,14 +66,8 @@ const numberFormatter = new Intl.NumberFormat('en-US', {
 
           <div class="flex items-center space-x-6 text-sm text-base-content/70">
             <div class="flex items-center space-x-2">
-              <div class="flex">
-                {
-                  [...Array(5)].map(() => (
-                    <Star class="h-4 w-4 fill-warning text-secondary" />
-                  ))
-                }
-              </div>
-              <span>{RATING}/{MAX_RATING} rating</span>
+              <StarRating rating={RATING} max={MAX_RATING} />
+              <span aria-hidden="true">{RATING}/{MAX_RATING} rating</span>
             </div>
             <div class="flex items-center space-x-2">
               <Users class="h-4 w-4" />

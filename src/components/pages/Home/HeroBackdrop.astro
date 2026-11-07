@@ -1,0 +1,92 @@
+---
+/**
+ * Soft green "particles" behind the hero.
+ *
+ * Pure CSS: positions are generated at build time and each dot drifts with a
+ * transform-only animation, so there's no client JS and no work on scroll.
+ * With reduced motion the dots simply stay still.
+ */
+
+// Small deterministic PRNG so the layout is stable between builds
+let seed = 7
+const random = () => {
+  seed = (seed * 16807) % 2147483647
+  return (seed - 1) / 2147483646
+}
+
+const sizes = ['soft', 'normal', 'hard'] as const
+const grid = [0, 25, 50, 75, 100]
+const particles = grid.flatMap((y) =>
+  grid.map((x) => ({
+    left: x + random() * 10 - 5,
+    top: y + random() * 10 - 5,
+    size: sizes[Math.floor(random() * sizes.length)],
+    dx: Math.round(random() * 40 - 20),
+    dy: Math.round(random() * 40 - 30),
+    duration: (6 + random() * 6).toFixed(1),
+    delay: (-random() * 12).toFixed(1),
+  })),
+)
+---
+
+<div class="hero-backdrop" aria-hidden="true">
+  <div
+    class="absolute inset-0 bg-gradient-to-tr from-primary/30 via-base-100 to-accent/40"
+  >
+  </div>
+  {
+    particles.map((p) => (
+      <span
+        class:list={['hero-particle', `hero-particle--${p.size}`]}
+        style={`left:${p.left.toFixed(1)}%;top:${p.top.toFixed(1)}%;--dx:${p.dx}px;--dy:${p.dy}px;animation-duration:${p.duration}s;animation-delay:${p.delay}s`}
+      />
+    ))
+  }
+</div>
+
+<style>
+  .hero-backdrop {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .hero-particle {
+    position: absolute;
+    border-radius: 9999px;
+    background-color: color-mix(in oklab, var(--color-accent) 55%, transparent);
+    opacity: 0.3;
+    animation: hero-drift ease-in-out infinite alternate;
+  }
+
+  .hero-particle--soft {
+    width: 1rem;
+    height: 1rem;
+    filter: blur(4px);
+  }
+
+  .hero-particle--normal {
+    width: 2.5rem;
+    height: 2.5rem;
+    filter: blur(8px);
+  }
+
+  .hero-particle--hard {
+    width: 4rem;
+    height: 4rem;
+    filter: blur(12px);
+  }
+
+  @keyframes hero-drift {
+    to {
+      transform: translate(var(--dx), var(--dy));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-particle {
+      animation: none;
+    }
+  }
+</style>

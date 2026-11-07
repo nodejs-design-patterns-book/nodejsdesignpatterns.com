@@ -32,7 +32,6 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "daisyui": "^5.7.50",
-    "framer-motion": "^14.9.1",
     "hastscript": "^9.0.3",
     "mdast-util-directive": "^3.2.0",
     "mdast-util-to-markdown": "^2.2.2",
