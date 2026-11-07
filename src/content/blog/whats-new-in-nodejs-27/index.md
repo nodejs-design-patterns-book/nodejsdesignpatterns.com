@@ -119,6 +119,42 @@ Here we never collect the pairs or products into an intermediate array. We also 
 By default, `Iterator.zip()` uses `{ mode: 'shortest' }`: it stops when the shortest input finishes and closes the remaining open iterators. For the forecast example, that means comparing only the days available in both sequences. Use `{ mode: 'strict' }` if a missing prediction or observation should instead throw a `TypeError`. Or pass `{ mode: 'longest', padding: [null, 0] }` to continue until the longest input finishes, using the corresponding padding value when an input runs out.
 :::
 
+### Combining endless iterators: solar generation and household consumption
+
+So far, our inputs have been arrays. But `Iterator.zip()` also works with iterators that have no end. Imagine a home with two power meters: one measures solar generation, and the other measures household consumption. Each meter gives us its current reading in watts whenever we poll it. Subtracting consumption from generation tells us whether the house has surplus power to export or needs to import power from the grid (assuming there is no battery).
+
+We can wrap each meter in an endless generator. Here we simulate the readings with random values so the example runs without hardware:
+
+```js title="01-iterators/iterator-zip-power-meters.js"
+function* powerReadings(readWatts) {
+  while (true) {
+    yield readWatts()
+  }
+}
+
+// Simulated meters: each call produces a fresh reading in watts.
+const solar = powerReadings(() => Math.round(Math.random() * 4000))
+const household = powerReadings(() => Math.round(Math.random() * 3000))
+
+const netPower = Iterator.zip([solar, household]).map(
+  ([generation, consumption]) => generation - consumption,
+)
+
+for (const watts of netPower.take(5)) {
+  if (watts > 0) {
+    console.log(`Exporting ${watts} W`)
+  } else if (watts < 0) {
+    console.log(`Importing ${-watts} W`)
+  } else {
+    console.log('Generation matches consumption')
+  }
+}
+```
+
+Neither generator reads anything until we request a value from `netPower`. Each request polls both meters once and calculates the difference. Both input iterators can keep producing readings forever, but `.take(5)` limits this demo to five pairs. Collecting either input with `[...solar]` or `.toArray()` would never finish and would eventually exhaust memory.
+
+These are synchronous, on-demand readings: the two meters are polled sequentially, close together, rather than at exactly the same instant. The loop takes five readings immediately; `zip()` does not add a polling interval. With real hardware, the callbacks would read the meters instead of generating random numbers.
+
 ### Turning columns into objects with `Iterator.zipKeyed()`
 
 Tuple arrays like `[prediction, observation]` are easy to read for two or three items, but once you have four or five parallel sources, positional destructuring gets easy to mix up.
