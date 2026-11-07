@@ -319,6 +319,7 @@ Node.js 27 introduces the experimental **`node:net/promises`** module with two a
 
 ```js title="03-net-promises/net-promises.js"
 import { connect, listen } from 'node:net/promises'
+import { setTimeout as delay } from 'node:timers/promises'
 
 const ac = new AbortController()
 const server = await listen({
@@ -326,42 +327,66 @@ const server = await listen({
   host: '127.0.0.1',
   signal: ac.signal,
 })
+server.maxConnections = 10
 
-// One-client demo: stop accepting connections after the first response.
+async function handleConnection(socket) {
+  console.log('Handler started')
+  await delay(100) // Simulate waiting for a database or another service.
+  socket.end('Hello from async-iterable TCP server!\n')
+  console.log('Response queued')
+}
+
 const serverLoop = (async () => {
   for await (const socket of server) {
-    socket.end('Hello from async-iterable TCP server!\n')
-    ac.abort() // close server after serving one connection
+    // Start the handler and immediately advance to the next connection.
+    void handleConnection(socket).catch((error) => {
+      console.error('Connection handler failed:', error)
+      socket.destroy()
+    })
   }
 })()
 
-const client = await connect({
-  port: server.address().port,
-  host: '127.0.0.1',
-})
+try {
+  // Connect three clients concurrently.
+  await Promise.all(
+    [1, 2, 3].map(async (id) => {
+      const client = await connect({
+        port: server.address().port,
+        host: '127.0.0.1',
+      })
 
-for await (const chunk of client) {
-  console.log('Received:', chunk.toString().trim())
+      for await (const chunk of client) {
+        console.log(`Client ${id}:`, chunk.toString().trim())
+      }
+    }),
+  )
+} finally {
+  ac.abort()
+  await serverLoop
 }
-
-await serverLoop
 ```
 
-There are two really nice design choices here:
+`listen()` and `connect()` return promises for binding the port and establishing a connection, respectively. Both support an `AbortSignal`, and failed setup cleans up the underlying server or socket before rejecting.
 
-1. **`listen()` and `connect()` return Promises for the one-shot lifecycle moments** (binding the port and establishing the connection), and both support an `AbortSignal` out of the box. If binding or connecting fails, the underlying server or socket is cleaned up and the Promise rejects cleanly.
-2. **`for await (const socket of server)` turns incoming TCP connections into an async iterable stream**, matching the ergonomics we explored in [JavaScript async iterators](/blog/javascript-async-iterators/).
+The connection loop starts each `handleConnection(socket)` call **without awaiting it**. While one handler waits for its simulated database call, the loop can dispatch the next connection. You should see the three `Handler started` messages before the first `Response queued` message. The handlers overlap while waiting for I/O; their JavaScript still runs on the event loop.
 
-:::caution[Awaiting a handler inside the loop serializes connection handling]
-The iterator yields **connections**, not application-level requests. A single TCP connection may carry many requests, depending on your protocol.
+The `.catch()` handles rejected handler promises and destroys the affected socket. `server.maxConnections = 10` caps open connections for this small demo. We start three clients concurrently, wait for them to finish reading their responses, and then abort the listening server in `finally`.
 
-If the loop body calls `await handleConnection(socket)`, it finishes that handler before advancing to the next connection. If the handler reads until the client disconnects, one long-lived connection can delay handling every connection behind it. Unlike dispatching an async handler from a `'connection'` callback, awaiting it inside this loop makes the handlers run sequentially.
+:::caution[The pitfall: awaiting each connection handler]
+This small change would be wrong if we wanted concurrent connection handling:
 
-To handle connections concurrently, start each handler without awaiting it in the loop. For example, `void handleConnection(socket).catch(...)` lets the loop advance while the handler waits for I/O. The `.catch()` must handle failures and clean up the socket, for example by logging the error and calling `socket.destroy()`. Here `handleConnection` represents your application's async handler.
+```js
+// Counter-example: each handler blocks dispatch of the next connection.
+for await (const socket of server) {
+  await handleConnection(socket)
+}
+```
 
-The server continues accepting connections while the loop body waits. The [server iterator documentation](https://nodejs.org/download/release/v27.0.0-alpha.0.0.0/docs/api/net.html#serversymbolasynciterator) warns that a slow consumer can buffer connections without bound. Set `server.maxConnections` explicitly to cap open connections, and choose a limit appropriate to your workload; dispatching handlers concurrently also needs a resource limit.
+Now the loop waits for the first handler to finish before starting the second. Our three simulated database calls would run one after another. If a handler instead reads until its client disconnects, one long-lived connection can delay handling every connection behind it.
 
-Our example above is deliberately a one-client demo: `socket.end()` starts sending the response without waiting for the socket to close, and `ac.abort()` stops accepting further connections. It demonstrates the API, rather than concurrent connection handling.
+The server continues accepting connections while the loop body waits. The [server iterator documentation](https://nodejs.org/download/release/v27.0.0-alpha.0.0.0/docs/api/net.html#serversymbolasynciterator) warns that a slow consumer can buffer connections without bound. Set `server.maxConnections` explicitly and choose a limit appropriate to your workload, including when dispatching handlers concurrently.
+
+The iterator yields **TCP connections**, not application-level requests. One connection may carry many requests, depending on your protocol. Awaiting a handler can be appropriate when you deliberately want sequential processing, but it changes the concurrency you would normally get by dispatching async work from a `'connection'` callback.
 :::
 
 ## Virtual File System (`node:vfs`) is now unflagged
