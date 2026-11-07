@@ -14,7 +14,7 @@ faq:
   - question: What are the biggest JavaScript features in Node.js 27?
     answer: Thanks to V8 15.6, Node.js 27 ships Iterator.zip(), Iterator.zipKeyed(), Iterator.prototype.join(), Iterator.prototype.includes(), Math.sumPrecise(), and Intl.Locale.prototype.variants enabled by default.
   - question: How did the default memory limit change in Node.js 27?
-    answer: When --max-old-space-size is not set, V8 now defaults to half of physical memory clamped between 256 MB and 4 GB (meaning an 8 GB machine gets a 4 GB heap instead of 2 GB). Additionally, memory held by Buffer and ArrayBuffer instances now counts toward the heap limit.
+    answer: When --max-old-space-size is not set, V8 now defaults to half of physical memory clamped between 256 MB and 4 GB (meaning an 8 GB machine gets a 4 GB heap instead of 2 GB). Additionally, memory held by Buffer and ArrayBuffer instances now counts toward V8's global allocation limit, affecting when garbage collection runs.
   - question: Should I run Node.js 27 in production?
     answer: If you are reading this before April 2027, keep production workloads on an LTS release. Node.js 27 is still in its Alpha testing phase during that period, intended for library authors, CI pipelines, and experimentation. It is scheduled to enter Current in April 2027 and LTS in October 2027. Once a stable release is available, evaluate it against your application's support requirements.
 ---
@@ -32,7 +32,7 @@ Even in this very first Alpha cut, Node.js 27 is already packed with genuinely e
 In this article we will tour the highlights, **starting from the most enjoyable day-to-day JavaScript and Node.js APIs and moving down to runtime internals and breaking changes**. As usual, we will compare the new APIs with what the equivalent code looked like in older Node.js versions so you can immediately feel the difference.
 
 :::note[Code samples]
-Every snippet in this article is also available, ready to run, in the companion repo [`lmammino/nodejs-27-examples`](https://github.com/lmammino/nodejs-27-examples) on GitHub.
+Every code block with a file path in its title matches a runnable file in the companion repo [`lmammino/nodejs-27-examples`](https://github.com/lmammino/nodejs-27-examples) on GitHub.
 :::
 
 ## Quick Answer: what's new in Node.js 27
@@ -40,13 +40,13 @@ Every snippet in this article is also available, ready to run, in the companion 
 If you only have a minute, here is what matters in Node.js 27 so far:
 
 1. **New `Iterator` helpers (`zip`, `zipKeyed`, `join`, `includes`)** make lazy data pipelines dramatically more expressive.
-2. **`Math.sumPrecise()`** sums any iterable of numbers without floating-point rounding drift.
+2. **`Math.sumPrecise()`** sums an iterable of numbers without rounding each intermediate addition.
 3. **`node:net/promises` and async-iterable `net.Server`** bring clean `async`/`await` ergonomics to TCP servers and sockets.
 4. **Virtual File System (`node:vfs`) is unflagged**, making in-memory file systems and `--vfs-load` available without `--experimental-vfs`.
 5. **Core upgrades across `fs`, permissions, test runner, and `http`**, including atomic temp files with `fs.mkstemp()`, `--allow-env`, Jest-style mock helpers, and a 65-second HTTP `keepAliveTimeout`.
 6. **V8 15.6, OpenSSL 4.1, and a 4 GB heap default** modernize memory limits, sorting, and cryptography under the hood.
 
-Here is a 6-line teaser of what code in Node.js 27 looks like:
+Here is a short teaser of what code in Node.js 27 looks like:
 
 ```js title="00-quick-answer/teaser.js"
 const items = ['Keyboard', 'Mouse', 'Monitor']
@@ -182,7 +182,7 @@ If an API returns each field as a separate array, like user IDs, names, and role
 
 ### Finishing pipelines with `Iterator.prototype.join()` and `includes()`
 
-Until Node.js 26, if you built a lazy iterator pipeline using `.map()` and `.filter()` and wanted to format the result as a string, you had to call `.toArray().join(', ')` at the end. That final `.toArray()` meant allocating an array holding every single string just so `.join()` could concatenate them and throw the array away.
+In Node.js 26, a common way to format a lazy iterator pipeline as a string was to call `.toArray().join(', ')` at the end. That final `.toArray()` meant allocating an array holding every single string just so `.join()` could concatenate them and throw the array away.
 
 V8 15.6 adds two terminal helpers directly onto `Iterator.prototype`:
 
@@ -467,10 +467,11 @@ Notice that `memoryFs.mount()` mounts the virtual file system under a reserved n
 Unflagging `node:vfs` also unlocks **`--vfs-load`** on the CLI without needing an experimental flag:
 
 ```bash
-node --vfs-load=bundle.zip
+node --vfs-load=04-vfs/bundle
+# Hello from the VFS bundle
 ```
 
-That command mounts `bundle.zip` (or a directory) via `node:vfs` and runs your application's `package.json` `"main"` or `index.js` entry point straight out of the ZIP archive. And if you use Single Executable Applications (SEA), `vfsArchive` is now mounted at layer 0 and automatically available inside Worker threads too.
+That command mounts the companion repo's `04-vfs/bundle` directory and runs its `index.js`, which prints `Hello from the VFS bundle`. You can also pass a ZIP archive; Node.js runs its `package.json` `"main"` or `index.js` entry point from the mounted archive. And if you use Single Executable Applications (SEA), `vfsArchive` is now mounted at layer 0 and automatically available inside Worker threads too.
 
 ## More Node.js Core upgrades: `fs`, Permissions, Test Runner, and HTTP
 
@@ -480,7 +481,7 @@ Beyond the headline modules above, Node.js 27 lands a great set of quality-of-li
 
 Until now, if you needed a temporary file in Node.js, your safest built-in option was `fs.mkdtemp()` to create a temporary _directory_, and then opening a file inside it. Creating a random filename yourself and calling `fs.open()` was error-prone and required a retry loop in case of collisions.
 
-Node.js 27 exposes POSIX `mkstemp(3)` via **`fs.mkstemp()`**, **`fs.mkstempSync()`**, and **`fsPromises.mkstemp()`**. It atomically generates a unique filename (appending six random characters to your prefix) and opens the file in a single step, returning both the `path` and the open `FileHandle` (or file descriptor `fd`):
+Node.js 27 adds APIs modeled on POSIX `mkstemp(3)`: **`fs.mkstemp()`**, **`fs.mkstempSync()`**, and **`fsPromises.mkstemp()`**. It atomically generates a unique filename (appending six random characters to your prefix) and opens the file in a single step, returning both the `path` and the open `FileHandle` (or file descriptor `fd`):
 
 ```js title="05-core-upgrades/fs-mkstemp.js"
 import { mkstemp, rm } from 'node:fs/promises'
@@ -505,15 +506,16 @@ The built-in **`fs.glob()`** (introduced in Node.js 22) was ported from JavaScri
 
 As we covered in our guide to [environment variables in Node.js](/blog/nodejs-environment-variables/), `process.env` is where most applications keep their most sensitive secrets (API keys, database URLs, signing tokens). It is also the very first place a compromised dependency looks when trying to exfiltrate credentials.
 
-Node.js 27 adds **`--allow-env`** to the Permission Model (`--permission`). When `--permission` is enabled, **every environment variable not explicitly matched by `--allow-env` is scrubbed at process startup** before any JavaScript runs (except safe runtime defaults like `PATH`, `HOME`, `LANG`, and `NODE_OPTIONS`, plus variables explicitly loaded via `--env-file`):
+Node.js 27 adds **`--allow-env`** to the Permission Model (`--permission`). When `--permission` is enabled, **every environment variable not explicitly matched by `--allow-env` is scrubbed at process startup** before any JavaScript runs (except runtime variables like `PATH`, `HOME`, `LANG`, and `NODE_OPTIONS`, plus variables explicitly loaded via `--env-file`):
 
 ```bash
 # Only allow variables starting with PUBLIC_ or APP_
 SECRET_KEY=super-secret APP_PORT=3000 \
-  node --permission --allow-env='PUBLIC_*,APP_*' server.js
+  node --permission --allow-env='PUBLIC_*,APP_*' 05-core-upgrades/permissions-env.js
+# { port: '3000', secret: undefined }
 ```
 
-Even better, Node.js scrubs the disallowed variables from the underlying OS environment block (and blocks reads to `/proc/self/environ` on Linux), so native add-ons or FFI calls cannot sneak around `process.env` to read them either. You can also drop access to an environment variable at runtime right after reading it using `process.permission.drop()`.
+Node.js also scrubs disallowed variables from the underlying OS environment block and restricts access to `/proc/self/environ` on Linux. Native code loaded by Node.js sees the reduced environment too. This reduces accidental exposure; the Permission Model is not a sandbox for malicious code. You can remove a variable after reading it with `process.permission.drop('env', 'VARIABLE_NAME')`. Keep `NODE_ENV` explicitly if your application uses it, since it is not preserved by default.
 
 ### Built-in Test Runner: stable watch mode and Jest-style mock helpers
 
@@ -547,7 +549,7 @@ test('mock shorthand helpers in Node.js 27', async () => {
 Three HTTP changes in Node.js 27 deserve a special callout because they directly affect production web servers:
 
 1. **`http.Server` `keepAliveTimeout` increased from 5 seconds to 65 seconds**:
-   If you have ever run a Node.js HTTP server behind an AWS Application Load Balancer (ALB), Nginx, or Cloudflare, you may have been bitten by intermittent `502 Bad Gateway` errors under load. Why? Because most reverse proxies default to a 60-second idle keep-alive timeout, while Node.js historically defaulted to just **5 seconds** (`5000` ms). If Node.js closed an idle socket at 5.001 seconds right as the load balancer reused it to forward a request, the request failed with a 502. Bumping Node's default `keepAliveTimeout` to **65 seconds** (`65000` ms) puts it above a 60-second proxy timeout out of the box. Check your proxy's actual idle timeout and configure Node's timeout to exceed it; 65 seconds does not cover every proxy configuration.
+   If you have ever run a Node.js HTTP server behind an AWS Application Load Balancer (ALB), Nginx, or Cloudflare, you may have been bitten by intermittent `502 Bad Gateway` errors under load. Why? Because a proxy can keep an upstream connection available longer than Node.js keeps it open. AWS ALB, for example, defaults to a 60-second idle timeout, while Node.js historically set `keepAliveTimeout` to **5 seconds** (`5000` ms). If Node.js closes an idle socket just as the proxy reuses it, the forwarded request can fail with a 502. The actual socket timeout also includes `keepAliveTimeoutBuffer` (1 second by default). Bumping Node's default `keepAliveTimeout` to **65 seconds** (`65000` ms) puts it above a 60-second proxy timeout out of the box. Check your proxy's actual idle timeout and configure Node's timeout to exceed it; 65 seconds does not cover every proxy configuration.
 2. **`req.headers` and `req.trailers` now have a `null` prototype**:
    Incoming request headers (`Object.getPrototypeOf(req.headers) === null`) no longer inherit from `Object.prototype`. This prevents prototype-pollution edge cases when looking up header names like `req.headers['toString']` or `req.headers['constructor']` and matches `req.headersDistinct`. (See the breaking changes section below if your code calls `req.headers.hasOwnProperty(...)`!)
 3. **Larger HTTP/2 window sizes**:
@@ -558,9 +560,9 @@ Three HTTP changes in Node.js 27 deserve a special callout because they directly
 Beyond new APIs, several big engine and dependency upgrades landed in Node.js 27:
 
 - **Default Heap Limit up to 4 GB on mid-sized machines**:
-  When `--max-old-space-size` is not specified, V8 now sets the default old-generation heap limit to **half of physical memory (or container cgroup memory), clamped between 256 MB and 4 GB**. Previously, machines with less than 15 GB of RAM were capped at 2 GB. That means on a very common **8 GB container or VM**, your Node.js process can now use up to **4 GB** of heap by default instead of crashing with an Out-Of-Memory error at 2 GB (and on a 6 GB machine, 3 GB instead of 2 GB).
-- **`Buffer` and `ArrayBuffer` memory counts toward the heap limit**:
-  Memory held by `Buffer` and `ArrayBuffer` instances is now included in V8's global allocation limit. If your app allocates large off-heap buffers (for example, image processing or large file buffers), garbage collection will trigger more proactively to keep total memory bounded.
+  When `--max-old-space-size` is not specified, V8 now sets the default old-generation heap limit to **half of physical memory (or container cgroup memory), clamped between 256 MB and 4 GB**. Previously, machines with less than 15 GB of RAM were capped at 2 GB. On an **8 GB container or VM**, the default old-generation limit therefore rises from **2 GB to 4 GB** (and on a 6 GB machine, from 2 GB to 3 GB). These are old-generation limits, not limits on the process's total memory use.
+- **`Buffer` and `ArrayBuffer` memory affects garbage collection scheduling**:
+  Memory held by `Buffer` and `ArrayBuffer` instances is now included in V8's global allocation limit. If your app allocates large off-heap buffers (for example, image processing or large file buffers), this affects when garbage collection is scheduled. The global allocation limit is distinct from the old-generation heap limit and does not impose a hard cap on the process's total memory.
 - **V8 15.6 performance improvements**:
   - `Array.prototype.sort()` now uses **PowerSort** instead of TimSort for large arrays (still stable, with better performance on tricky input distributions).
   - `await` on an already-fulfilled Promise incurs fewer microtasks and allocates less, and async generators are around 6% faster on file-system benchmarks.
@@ -574,23 +576,43 @@ Because Node.js 27 is currently in its Alpha window, catching breaking changes e
 
 ### 1. `req.headers` has a `null` prototype
 
-Because `req.headers` and `req.trailers` in `node:http` are now created with `Object.create(null)`, calling `Object.prototype` methods directly on `req.headers` will throw a `TypeError`:
+Because `req.headers` and `req.trailers` in `node:http` are now created with `Object.create(null)`, calling `req.headers.hasOwnProperty()` throws a `TypeError`. This runnable example checks that failure and demonstrates `Object.hasOwn()` instead. Checking for a header's presence does not authenticate its value:
 
 ```js title="05-core-upgrades/http-headers.js"
-// Throws in Node.js 27: TypeError: req.headers.hasOwnProperty is not a function
-if (req.headers.hasOwnProperty('authorization')) {
-  // ...
-}
+import { createServer } from 'node:http'
+import { once } from 'node:events'
+import assert from 'node:assert/strict'
 
-// Safe in all modern Node.js versions:
-if (Object.hasOwn(req.headers, 'authorization')) {
-  // ...
+const server = createServer((req, res) => {
+  assert.strictEqual(Object.getPrototypeOf(req.headers), null)
+  assert.throws(() => req.headers.hasOwnProperty('authorization'), TypeError)
+
+  // Check for the header without relying on Object.prototype.
+  const hasAuthorization = Object.hasOwn(req.headers, 'authorization')
+  res.end(
+    hasAuthorization
+      ? 'Authorization header present'
+      : 'No authorization header',
+  )
+})
+
+server.listen(0, '127.0.0.1')
+await once(server, 'listening')
+
+try {
+  const { port } = server.address()
+  const response = await fetch(`http://127.0.0.1:${port}`, {
+    headers: { authorization: 'Bearer example' },
+  })
+  console.log(await response.text()) // Authorization header present
+} finally {
+  server.close()
 }
 ```
 
 ### 2. Memory limits for multi-process deployments
 
-If you run multiple Node.js processes on a 6 GB or 8 GB machine and relied on the old implicit 2 GB heap cap to keep them from starving each other, **pass `--max-old-space-size=2048` explicitly**. Similarly, if your application holds hundreds of megabytes of `Buffer` data in memory alongside a large JS heap, be aware that `Buffer` allocations now count toward V8's heap limit.
+If you run multiple Node.js processes on a 6 GB or 8 GB machine and relied on the old implicit 2 GB heap cap to keep them from starving each other, **pass `--max-old-space-size=2048` explicitly**. Similarly, if your application holds hundreds of megabytes of `Buffer` data in memory alongside a large JS heap, be aware that `Buffer` allocations now influence V8's global allocation limit and garbage collection scheduling.
 
 ### 3. V8 serialization format and larger heap snapshots
 
@@ -660,7 +682,7 @@ Thanks to V8 15.6, Node.js 27 ships `Iterator.zip()`, `Iterator.zipKeyed()`, `It
 
 ### How did the default memory limit change in Node.js 27?
 
-When `--max-old-space-size` is not set, V8 now defaults to half of physical memory clamped between 256 MB and 4 GB (meaning an 8 GB machine gets a 4 GB heap instead of 2 GB). Additionally, memory held by `Buffer` and `ArrayBuffer` instances now counts toward the heap limit.
+When `--max-old-space-size` is not set, V8 now defaults to half of physical memory clamped between 256 MB and 4 GB (meaning an 8 GB machine gets a 4 GB heap instead of 2 GB). Additionally, memory held by `Buffer` and `ArrayBuffer` instances now counts toward V8's global allocation limit, affecting when garbage collection runs.
 
 ### Should I run Node.js 27 in production?
 
