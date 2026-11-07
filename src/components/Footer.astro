@@ -33,12 +33,12 @@ const currentYear = new Date().getFullYear()
     >
       <!-- Get the book -->
       <div>
-        <h3
+        <h2
           class="text-lg font-bold font-heading text-base-content mb-4 flex items-center gap-2"
         >
           <BookOpen class="h-5 w-5 text-primary" />
           Get the book
-        </h3>
+        </h2>
         <div class="space-y-3">
           <a
             href={BUY_LINK_PRINT}
@@ -72,12 +72,12 @@ const currentYear = new Date().getFullYear()
 
       <!-- Connect -->
       <div>
-        <h3
+        <h2
           class="text-lg font-bold font-heading text-base-content mb-4 flex items-center gap-2"
         >
           <Users class="h-5 w-5 text-primary" />
           Connect
-        </h3>
+        </h2>
         <div class="space-y-3">
           <a
             href="https://x.com/mariocasciaro"
@@ -137,7 +137,7 @@ const currentYear = new Date().getFullYear()
 
       <!-- Latest from the blog -->
       <div>
-        <h3
+        <h2
           class="text-lg font-bold font-heading text-base-content mb-4 flex items-center gap-2"
         >
           <Rss class="h-5 w-5 text-primary" />
@@ -146,7 +146,7 @@ const currentYear = new Date().getFullYear()
             class="text-base-content/80 hover:text-primary transition-colors duration-200"
             >blog</a
           >
-        </h3>
+        </h2>
         <div class="space-y-3">
           {
             latestBlogPosts.map((post) => (
@@ -169,12 +169,12 @@ const currentYear = new Date().getFullYear()
 
       <!-- Additional space for future content -->
       <div>
-        <h3
+        <h2
           class="text-lg font-bold font-heading text-base-content mb-4 flex items-center gap-2"
         >
           <Github class="h-5 w-5 text-primary" />
           Community
-        </h3>
+        </h2>
         <div class="space-y-3">
           <a
             href="https://github.com/PacktPublishing/Node.js-Design-Patterns-Fourth-Edition/discussions"
@@ -215,7 +215,7 @@ const currentYear = new Date().getFullYear()
         this website better on{' '}
         <a
           href="https://github.com/nodejs-design-patterns-book/nodejsdesignpatterns.com"
-          class="text-accent underline-offset-2 hover:underline font-medium"
+          class="text-base-content font-medium underline underline-offset-2 hover:text-primary"
           target="_blank"
           rel="noopener noreferrer"
         >

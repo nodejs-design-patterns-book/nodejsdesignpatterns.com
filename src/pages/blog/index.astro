@@ -24,7 +24,11 @@ const pageDescription =
   ogDescription={pageDescription}
   canonical={`${SITE_URL}/blog/`}
 >
-  <main class="min-h-screen bg-base-100">
+  <main
+    id="main-content"
+    tabindex="-1"
+    class="min-h-screen outline-none bg-base-100"
+  >
     <header class="bg-gradient-to-b from-primary/40 to-primary/10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <!-- Breadcrumbs -->
@@ -62,8 +66,8 @@ const pageDescription =
               </div>
             ) : (
               <div class="grid gap-8 md:grid-cols-2">
-                {posts.map((post, tabindex) => (
-                  <BlogCard post={post} tabindex={tabindex} />
+                {posts.map((post) => (
+                  <BlogCard post={post} />
                 ))}
               </div>
             )

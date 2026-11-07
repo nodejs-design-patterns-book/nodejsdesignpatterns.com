@@ -40,13 +40,13 @@ const classes = sizeClasses[size]
           href={author.data.link}
           target="_blank"
           rel="noopener noreferrer"
-          class="block relative"
+          class="block relative z-10"
           title={author.data.name}
         >
           <Picture
             src={author.data.profile_pic}
             alt={author.data.name}
-            class={`${classes.avatar} rounded-full border-2 border-white dark:border-gray-800 object-cover`}
+            class={`${classes.avatar} rounded-full border-2 border-base-100 object-cover`}
             loading="lazy"
           />
         </a>
@@ -65,7 +65,7 @@ const classes = sizeClasses[size]
               href={author.data.link}
               target="_blank"
               rel="noopener noreferrer"
-              class={`${classes.name} text-base-content hover:text-primary transition-colors`}
+              class={`${classes.name} relative z-10 text-base-content hover:text-primary transition-colors`}
             >
               {author.data.name}
             </a>

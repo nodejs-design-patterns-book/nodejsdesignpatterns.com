@@ -10,8 +10,10 @@ import { visit } from 'unist-util-visit'
  * it too (WCAG 2.1.1).
  */
 export const remarkTableScroll: Plugin<[], Root> = () => (tree) => {
+  let count = 0
   visit(tree, 'table', (node, index, parent: Parent | undefined) => {
     if (!parent || index === undefined) return
+    count += 1
     const wrapper = {
       type: 'tableScroll',
       data: {
@@ -19,7 +21,8 @@ export const remarkTableScroll: Plugin<[], Root> = () => (tree) => {
         hProperties: {
           className: ['table-scroll'],
           role: 'region',
-          ariaLabel: 'Scrollable table',
+          // Landmarks need unique names, so number the tables
+          ariaLabel: `Table ${count} (scrollable)`,
           tabIndex: 0,
         },
       },

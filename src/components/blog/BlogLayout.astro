@@ -85,7 +85,11 @@ if (post.rendered?.metadata?.headings) {
   canonical={`${SITE_URL}/blog/${post.id}/`}
   additionalSchema={schemas}
 >
-  <main class="min-h-screen bg-base-100">
+  <main
+    id="main-content"
+    tabindex="-1"
+    class="min-h-screen outline-none bg-base-100"
+  >
     <!-- Blog Header -->
     <header class="bg-gradient-to-b from-primary/40 to-primary/10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -212,7 +216,7 @@ if (post.rendered?.metadata?.headings) {
           </div>
 
           <!-- Article Footer (used as read completion marker) -->
-          <aside
+          <footer
             id="article-footer"
             class="mt-16 pt-8 border-t border-base-300"
           >
@@ -220,9 +224,9 @@ if (post.rendered?.metadata?.headings) {
               class="flex flex-col sm:flex-row items-center justify-between gap-6"
             >
               <div>
-                <h3 class="font-semibold text-base-content mb-2">
+                <h2 class="font-semibold text-base-content mb-2">
                   Share this article
-                </h3>
+                </h2>
                 <div class="flex space-x-4 justify-center sm:justify-start">
                   <a
                     href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`${SITE_URL}/blog/${post.id}`)}&text=${encodeURIComponent(title)}`}
@@ -283,12 +287,15 @@ if (post.rendered?.metadata?.headings) {
                 </a>
               </div>
             </div>
-          </aside>
+          </footer>
 
           <!-- Previous/Next Navigation -->
           {
             (prevPost || nextPost) && (
-              <nav class="mt-12 pt-8 border-t border-base-300">
+              <nav
+                aria-label="More articles"
+                class="mt-12 pt-8 border-t border-base-300"
+              >
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
                   {/* <!-- Previous Article (Left Column) --> */}
 
@@ -315,11 +322,7 @@ if (post.rendered?.metadata?.headings) {
                           Previous Article
                         </a>
                         <div class="flex-1">
-                          <BlogCard
-                            post={prevPost}
-                            tabindex={0}
-                            class="h-full"
-                          />
+                          <BlogCard post={prevPost} class="h-full" />
                         </div>
                       </div>
                     )}
@@ -350,11 +353,7 @@ if (post.rendered?.metadata?.headings) {
                           </svg>
                         </a>
                         <div class="flex-1">
-                          <BlogCard
-                            post={nextPost}
-                            tabindex={0}
-                            class="h-full"
-                          />
+                          <BlogCard post={nextPost} class="h-full" />
                         </div>
                       </div>
                     )}
