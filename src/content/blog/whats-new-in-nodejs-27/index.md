@@ -15,8 +15,8 @@ faq:
     answer: Thanks to V8 15.6, Node.js 27 ships Iterator.zip(), Iterator.zipKeyed(), Iterator.prototype.join(), Iterator.prototype.includes(), Math.sumPrecise(), and Intl.Locale.prototype.variants enabled by default.
   - question: How did the default memory limit change in Node.js 27?
     answer: When --max-old-space-size is not set, V8 now defaults to half of physical memory clamped between 256 MB and 4 GB (meaning an 8 GB machine gets a 4 GB heap instead of 2 GB). Additionally, memory held by Buffer and ArrayBuffer instances now counts toward the heap limit.
-  - question: Should I run Node.js 27 Alpha in production?
-    answer: No. The Alpha phase (October 2026 to March 2027) is designed for library authors, CI pipelines, and early experimentation so breaking changes can be caught early. Wait until Node.js 27 enters Current in April 2027 or LTS in October 2027 for production workloads.
+  - question: Should I run Node.js 27 in production?
+    answer: If you are reading this before April 2027, keep production workloads on an LTS release. Node.js 27 is still in its Alpha testing phase during that period, intended for library authors, CI pipelines, and experimentation. It is scheduled to enter Current in April 2027 and LTS in October 2027. Once a stable release is available, evaluate it against your application's support requirements.
 ---
 
 On October 29, 2026, the Node.js team published [`v27.0.0-alpha.0.0.0`](https://nodejs.org/en/blog/release/v27.0.0-alpha.0.0.0). If you have been using Node.js for a few years, that version string alone probably made you do a double take. Where is the usual October `v27.0.0` Current release?
@@ -618,9 +618,9 @@ When testing your project or library against Node.js 27:
 
 ## Should you use Node.js 27 today?
 
-Because Node.js 27 is currently in its **Alpha phase** (October 2026 to March 2027), the answer depends entirely on what hat you are wearing today:
+The answer depends on when you are reading this and what you need from the release:
 
-- **For production workloads**: **No, not yet.** Keep running Node.js 24 LTS or Node.js 26 LTS in production. Node.js 27 will enter **Current in April 2027** and become **LTS in October 2027** (with support all the way to April 2030).
+- **For production workloads**: **If you are reading this before April 2027, keep using an LTS release.** Node.js 27 is still in its Alpha testing phase during that period. It is scheduled to enter **Current in April 2027** and become **LTS in October 2027** (with support until April 2030). Once a stable release is available, evaluate it against your application's support requirements.
 - **For open-source library and framework authors**: **Yes, add it to your CI now!** As we talked about in [our article on the new release schedule](/blog/nodejs-release-schedule-changes/), the Alpha channel exists specifically so maintainers can catch breaking changes (like `null`-prototype `req.headers`, V8 15.6 changes, or native add-on ABI updates) months before users upgrade. Note that the Node.js team even patched `npm` engines checks in this Alpha so your CI won't trip over the `-alpha` prerelease tag.
 - **For local experimentation and learning**: **Absolutely!** Trying out `Iterator.zipKeyed()`, `Math.sumPrecise()`, `node:net/promises`, and `node:vfs` on side projects is the best way to stay ahead of the curve.
 
@@ -662,6 +662,6 @@ Thanks to V8 15.6, Node.js 27 ships `Iterator.zip()`, `Iterator.zipKeyed()`, `It
 
 When `--max-old-space-size` is not set, V8 now defaults to half of physical memory clamped between 256 MB and 4 GB (meaning an 8 GB machine gets a 4 GB heap instead of 2 GB). Additionally, memory held by `Buffer` and `ArrayBuffer` instances now counts toward the heap limit.
 
-### Should I run Node.js 27 Alpha in production?
+### Should I run Node.js 27 in production?
 
-No. The Alpha phase (October 2026 to March 2027) is designed for library authors, CI pipelines, and early experimentation so breaking changes can be caught early. Wait until Node.js 27 enters Current in April 2027 or LTS in October 2027 for production workloads.
+If you are reading this before April 2027, keep production workloads on an LTS release. Node.js 27 is still in its Alpha testing phase during that period, intended for library authors, CI pipelines, and experimentation. It is scheduled to enter Current in April 2027 and LTS in October 2027. Once a stable release is available, evaluate it against your application's support requirements.
