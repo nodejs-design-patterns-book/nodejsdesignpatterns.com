@@ -165,7 +165,7 @@ That is where `Iterator.zipKeyed()` comes in. Instead of passing an array of ite
 const columns = {
   id: [101, 102, 103],
   user: ['alice', 'bob', 'charlie'],
-  role: new Set(['admin', 'editor', 'viewer']),
+  role: ['admin', 'editor', 'viewer'],
 }
 
 const rows = Iterator.zipKeyed(columns)
