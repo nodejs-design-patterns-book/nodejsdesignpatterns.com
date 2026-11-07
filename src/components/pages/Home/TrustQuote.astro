@@ -7,7 +7,7 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 ---
 
-<section id="trust-quote" class="pt-16 px-4">
+<section id="trust-quote" class="pt-16 px-4" aria-label="What readers say">
   <div class="swiper">
     <div class="swiper-wrapper">
       <div class="w-full swiper-slide">
@@ -143,26 +143,87 @@ import 'swiper/css/pagination'
       </div>
     </div>
 
-    <div class="swiper-pagination"></div>
+    <div class="flex items-center justify-center gap-3 mt-2">
+      <div class="swiper-pagination !static !w-auto"></div>
+      <!-- WCAG 2.2.2: auto-advancing content needs a way to pause it -->
+      <button
+        type="button"
+        id="trust-quote-toggle"
+        class="hidden p-1.5 rounded-full text-base-content/70 hover:text-base-content focus-visible:outline-2 focus-visible:outline-primary"
+        aria-label="Pause quotes"
+      >
+        <svg
+          class="h-4 w-4"
+          data-icon="pause"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+          ><rect x="6" y="5" width="4" height="14" rx="1"></rect><rect
+            x="14"
+            y="5"
+            width="4"
+            height="14"
+            rx="1"></rect></svg
+        >
+        <svg
+          class="h-4 w-4 hidden"
+          data-icon="play"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+          ><path
+            d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"
+          ></path></svg
+        >
+      </button>
+    </div>
   </div>
 </section>
 
 <script>
   import { Swiper } from 'swiper'
-  import { Pagination, Autoplay } from 'swiper/modules'
+  import { A11y, Autoplay, Pagination } from 'swiper/modules'
 
-  new Swiper('.swiper', {
-    modules: [Pagination, Autoplay],
+  // No autoplay at all for visitors who ask for reduced motion
+  const reduceMotion = window.matchMedia(
+    '(prefers-reduced-motion: reduce)',
+  ).matches
+
+  const swiper = new Swiper('#trust-quote .swiper', {
+    modules: [A11y, Pagination, Autoplay],
     pagination: {
-      el: '.swiper-pagination',
+      el: '#trust-quote .swiper-pagination',
       clickable: true,
     },
-    autoplay: {
-      delay: 6000,
-      disableOnInteraction: true,
-    },
+    a11y: { containerRoleDescriptionMessage: 'carousel' },
+    autoplay: reduceMotion
+      ? false
+      : { delay: 6000, disableOnInteraction: true, pauseOnMouseEnter: true },
     loop: true,
   })
+
+  const toggle = document.getElementById('trust-quote-toggle')
+  if (toggle && !reduceMotion) {
+    // The button only reflects state; Swiper's events are the source of truth
+    const showPaused = (paused: boolean) => {
+      toggle.setAttribute('aria-label', paused ? 'Play quotes' : 'Pause quotes')
+      toggle
+        .querySelector('[data-icon="pause"]')
+        ?.classList.toggle('hidden', paused)
+      toggle
+        .querySelector('[data-icon="play"]')
+        ?.classList.toggle('hidden', !paused)
+    }
+    toggle.classList.remove('hidden')
+    toggle.addEventListener('click', () => {
+      if (swiper.autoplay.running) swiper.autoplay.stop()
+      else swiper.autoplay.start()
+    })
+    // Stop rotating while a keyboard user is inside the slides
+    swiper.wrapperEl.addEventListener('focusin', () => swiper.autoplay.stop())
+    swiper.on('autoplayStop', () => showPaused(true))
+    swiper.on('autoplayStart', () => showPaused(false))
+  }
 </script>
 
 <style is:inline>

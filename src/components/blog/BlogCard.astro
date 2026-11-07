@@ -22,7 +22,7 @@ const readingTime = calculateReadingTime(post.body as string)
 
 <!-- One link per card: the title link stretches over the whole card via ::after -->
 <article
-  class={`group relative bg-base-100 rounded-xl border border-base-200 hover:shadow-xl hover:-translate-y-0.5 hover:border-primary transition-all duration-300 overflow-hidden p-6 flex flex-col ${className}`}
+  class={`group relative bg-base-100 rounded-xl border border-base-200 hover:shadow-xl motion-safe:hover:-translate-y-0.5 hover:border-primary transition-all duration-300 overflow-hidden p-6 flex flex-col ${className}`}
 >
   <!-- Card body -->
   <div class="flex flex-1">

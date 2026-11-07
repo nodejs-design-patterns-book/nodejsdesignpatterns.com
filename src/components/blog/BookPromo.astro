@@ -73,7 +73,7 @@ const promoVariant = extractPromoVariant(selectedPromoKey)
 
 <div
   id="blog-promo-cta"
-  class="group bg-base-100 border-2 border-base-200 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 hover:border-primary transition-all duration-300 relative overflow-hidden"
+  class="group bg-base-100 border-2 border-base-200 rounded-lg shadow-lg hover:shadow-xl motion-safe:hover:-translate-y-0.5 hover:border-primary transition-all duration-300 relative overflow-hidden"
   data-analytics-variant={promoVariant}
   data-analytics-cta-type="book_promo_card"
   data-analytics-cta-position="sidebar"
@@ -88,7 +88,7 @@ const promoVariant = extractPromoVariant(selectedPromoKey)
       <Image
         src={selectedPromoImg}
         alt={selectedPromoImgAlt}
-        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+        class="w-full h-full object-cover transition-transform duration-300 motion-safe:group-hover:scale-110"
       />
     </div>
     <div class="p-5 flex flex-col gap-3">
