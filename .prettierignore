@@ -2,3 +2,6 @@
 .claude/
 .tmp/
 pnpm-lock.yaml
+
+# Impeccable design-tool cache
+.impeccable/
