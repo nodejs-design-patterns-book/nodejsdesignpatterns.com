@@ -14,8 +14,7 @@ export const BUY_LINK_PACKT =
 // SEO Constants
 export const SITE_TITLE =
   'Node.js Design Patterns: Master production-grade Node.js applications'
-export const SITE_DESCRIPTION =
-  'The definitive guide to Node.js patterns and best practices. Learn proven techniques for building scalable, maintainable applications with 660+ pages, 150+ examples, and expert insights from Mario Casciaro and Luciano Mammino.'
+export const SITE_DESCRIPTION = `The definitive guide to Node.js patterns and best practices. Learn proven techniques for building scalable, maintainable applications with ${PAGES} pages, ${EXAMPLES} examples, and expert insights from Mario Casciaro and Luciano Mammino.`
 export const SITE_URL = 'https://nodejsdesignpatterns.com'
 
 // Open Graph

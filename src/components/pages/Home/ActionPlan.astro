@@ -1,7 +1,7 @@
 ---
 import BuyButtons from '@components/pages/Home/components/BuyButtons.astro'
 import { ArrowRight, BicepsFlexed, Book, Rocket } from '@lucide/astro'
-import { PAGES, EXAMPLES, EXERCISES } from '@lib/const'
+import { PAGES, EXAMPLES, EXERCISES, READERS } from '@lib/const'
 ---
 
 <section id="action-plan" class="bg-base-100 py-16 lg:py-24">
@@ -60,7 +60,7 @@ import { PAGES, EXAMPLES, EXERCISES } from '@lib/const'
             Learn by Doing
           </h3>
           <p class="text-lg text-base-content/80 font-sans leading-relaxed">
-            Work through {EXAMPLES}+ real examples that demonstrate patterns in
+            Work through {EXAMPLES} real examples that demonstrate patterns in
             action.
           </p>
         </div>
@@ -100,8 +100,8 @@ import { PAGES, EXAMPLES, EXERCISES } from '@lib/const'
         Ready to Transform Your Node.js Skills?
       </h2>
       <p class="text-2xl lg:text-3xl text-base-content/80 font-heading">
-        Join thousands of developers who have mastered Node.js with our
-        comprehensive guide.
+        Join {READERS.toLocaleString('en-US')}+ developers who have mastered
+        Node.js with our comprehensive guide.
       </p>
     </div>
 
