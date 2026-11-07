@@ -31,7 +31,9 @@
   --color-base-200: oklch(92% 0.013 255.508);
   --color-base-300: oklch(70% 0.04 256.788);
   --color-base-content: oklch(20% 0.042 265.755);
-  --color-primary: oklch(62.7% 0.194 149.214);
+  /* Deep enough to pass WCAG AA both as text on light surfaces (~5:1)
+     and behind white button labels (~5:1). Dark theme keeps the brighter green */
+  --color-primary: oklch(50% 0.16 149.214);
   --color-primary-content: oklch(98% 0.003 247.858);
   --color-secondary: oklch(76% 0.188 70.08);
   --color-secondary-content: oklch(20% 0.042 265.755);
@@ -49,6 +51,9 @@
   --color-warning-content: oklch(27% 0.077 45.635);
   --color-error: oklch(71% 0.194 13.428);
   --color-error-content: oklch(27% 0.105 12.094);
+  /* Readable text versions of the warning/error hues, for callout titles */
+  --color-caution-ink: oklch(50% 0.13 60);
+  --color-danger-ink: oklch(52% 0.19 20);
   --radius-selector: 0.5rem;
   --radius-field: 0.25rem;
   --radius-box: 0.5rem;
@@ -104,6 +109,8 @@
   --color-warning-content: oklch(18% 0.07 50);
   --color-error: oklch(66% 0.18 25);
   --color-error-content: oklch(15% 0.08 20);
+  --color-caution-ink: var(--color-warning);
+  --color-danger-ink: var(--color-error);
 
   /* Shared tokens */
   --radius-selector: 0.5rem;
@@ -347,7 +354,6 @@ aside.admonition .admonition-title {
   gap: 0.5rem;
   font-size: 1rem;
   font-weight: bold;
-  text-transform: capitalize;
   color: var(--admonition-color);
 }
 
@@ -405,7 +411,7 @@ aside.admonition[data-admonition-type='important'] .admonition-title::before {
 
 /* Caution admonition */
 aside.admonition[data-admonition-type='caution'] {
-  --admonition-color: var(--color-warning);
+  --admonition-color: var(--color-caution-ink);
   background-color: oklch(from var(--color-warning) l c h / 0.1);
 }
 
@@ -416,7 +422,7 @@ aside.admonition[data-admonition-type='caution'] .admonition-title::before {
 /* Danger/Warning admonition */
 aside.admonition[data-admonition-type='danger'],
 aside.admonition[data-admonition-type='warning'] {
-  --admonition-color: var(--color-error);
+  --admonition-color: var(--color-danger-ink);
   background-color: oklch(from var(--color-error) l c h / 0.1);
 }
 
