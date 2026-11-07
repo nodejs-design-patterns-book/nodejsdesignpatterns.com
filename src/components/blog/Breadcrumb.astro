@@ -7,8 +7,11 @@ const { sections } = Astro.props
 ---
 
 <nav aria-label="Breadcrumb" class="mb-8">
-  <ol class="flex items-center space-x-2 text-sm text-base-content/70">
-    <li>
+  {/* Crumbs wrap as whole units; only the current page title may break */}
+  <ol
+    class="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm text-base-content/70"
+  >
+    <li class="whitespace-nowrap">
       <a href="/" class="hover:text-primary transition-colors"
         >Node.js Design Patterns</a
       >
@@ -16,10 +19,13 @@ const { sections } = Astro.props
     {
       sections.map((section, idx, arr) => (
         <>
-          <li>
+          <li aria-hidden="true">
             <span>/</span>
           </li>
-          <li>
+          <li
+            class={idx === arr.length - 1 ? undefined : 'whitespace-nowrap'}
+            aria-current={idx === arr.length - 1 ? 'page' : undefined}
+          >
             {idx === arr.length - 1 ? (
               <span class="text-base-content/90">{section.title}</span>
             ) : (

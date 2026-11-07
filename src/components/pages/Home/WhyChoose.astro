@@ -133,7 +133,10 @@ server.listen(args.http)`
 
       <div class="bg-secondary lg:order-2 h-[600px] lg:h-auto">
         <div class="relative h-full w-full grow">
-          <div class="absolute top-4 right-0 bottom-0 left-4 overflow-auto">
+          <!-- Smaller code size so the longest line fits the card -->
+          <div
+            class="absolute top-4 right-0 bottom-0 left-4 overflow-auto [--ec-codeFontSize:0.7rem]"
+          >
             <Code
               lang="js"
               code={code1}
@@ -157,7 +160,14 @@ server.listen(args.http)`
         </p>
       </div>
 
-      <div class="bg-base-100 lg:order-6">
+      <!-- The screenshot is much wider than the cell: keep it legible and fade
+           the cropped edge into its own background (#22282f) -->
+      <div class="relative bg-[#22282f] lg:order-6">
+        <div
+          class="pointer-events-none absolute inset-y-0 right-0 z-10 w-1/3 bg-gradient-to-r from-transparent to-[#22282f]"
+          aria-hidden="true"
+        >
+        </div>
         <Picture
           formats={['avif', 'webp', 'png']}
           layout="fixed"
