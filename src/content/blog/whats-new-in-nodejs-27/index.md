@@ -222,7 +222,7 @@ console.log(references.includes('APP-142')) // true
 `includes()` stops as soon as it finds `APP-142`, without extracting the later reference. Matching complete references also avoids the false positive you would get from `message.includes('APP-14')`, which matches part of `APP-142`. The search consumes the iterator, so create a fresh one for another search.
 
 :::note[Synchronous iterators only]
-The iterator helpers shown above work with **synchronous iterators**. Their `.next()` calls return results directly; these helpers do not await promises from async iterators. You cannot use the same chains on an `async function*` generator or a Node.js readable stream's async iterator. Use `for await...of` or a library with async iterator helpers for those sources. Async iterator helpers are covered by a [separate TC39 proposal](https://github.com/tc39/proposal-async-iterator-helpers).
+The iterator helpers shown above work with **synchronous iterators**. Their `.next()` calls return results directly; these helpers do not await promises from async iterators. You cannot use the same chains on an `async function*` generator or a Node.js readable stream's async iterator. Use `for await...of` or a library with async iterator helpers for those sources. Async iterator helpers are covered by a [separate TC39 proposal](https://github.com/tc39/proposal-async-iterator-helpers) and are **not built into Node.js 27 as of `v27.0.0-alpha.0.0.0`**.
 :::
 
 ## Goodbye `0.30000000000000004`: `Math.sumPrecise()`
