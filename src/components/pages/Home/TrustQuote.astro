@@ -143,13 +143,16 @@ import 'swiper/css/pagination'
       </div>
     </div>
 
-    <div class="flex items-center justify-center gap-3 mt-2">
-      <div class="swiper-pagination !static !w-auto"></div>
+    <!-- Three columns (spacer | dots | toggle) so the dots stay centred on the
+         page whether or not the pause button is shown -->
+    <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 mt-2">
+      <div aria-hidden="true"></div>
+      <div class="swiper-pagination !static !w-auto flex items-center"></div>
       <!-- WCAG 2.2.2: auto-advancing content needs a way to pause it -->
       <button
         type="button"
         id="trust-quote-toggle"
-        class="hidden p-1.5 rounded-full text-base-content/70 hover:text-base-content focus-visible:outline-2 focus-visible:outline-primary"
+        class="hidden justify-self-start p-1.5 rounded-full text-base-content/70 hover:text-base-content focus-visible:outline-2 focus-visible:outline-primary"
         aria-label="Pause quotes"
       >
         <svg
