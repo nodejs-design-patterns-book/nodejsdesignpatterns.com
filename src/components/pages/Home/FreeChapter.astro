@@ -155,10 +155,35 @@ import {
                 class="w-full"
               >
                 <Download class="mr-2 h-5 w-5" />
-                Download the FREE chapter
+                <span data-label>Download the FREE chapter</span>
               </Button>
+              <!-- Errors from the inline submit are announced here -->
+              <p
+                id="free-chapter-error"
+                class="text-sm text-(--color-danger-ink) bg-error/15 rounded-md px-3 py-2"
+                role="alert"
+                hidden
+              >
+              </p>
             </div>
           </form>
+
+          <!-- Shown in place of the form after a successful inline submit -->
+          <div
+            id="free-chapter-success"
+            class="rounded-lg border border-primary/30 bg-primary/10 p-6"
+            tabindex="-1"
+            hidden
+          >
+            <p class="text-xl font-bold font-heading text-base-content mb-2">
+              Check your inbox
+            </p>
+            <p class="text-base-content/80">
+              We've sent an email to <strong data-email></strong> with the next step
+              to get your free chapter. If it doesn't show up in a few minutes, have
+              a look in your spam or promotions folder.
+            </p>
+          </div>
         </div>
       </div>
 
@@ -201,10 +226,68 @@ import {
       trackViewFreeChapterForm({ form_location: formLocation })
     })
 
-    // Track form submission
-    form.addEventListener('submit', () => {
+    form.addEventListener('submit', (event) => {
       trackSubmitFreeChapterForm({ form_location: formLocation })
+      submitInline(form as HTMLFormElement, event)
     })
+  }
+
+  /**
+   * Submit to Kit without leaving the page (Kit allows cross-origin posts
+   * and answers JSON when asked). Without JS, or if the request fails for a
+   * network reason, the form falls back to its native target="_blank" submit.
+   */
+  async function submitInline(form: HTMLFormElement, event: SubmitEvent) {
+    event.preventDefault()
+    const button = form.querySelector<HTMLButtonElement>('button[type=submit]')
+    const label = button?.querySelector('[data-label]')
+    const error = document.getElementById('free-chapter-error')
+    const success = document.getElementById('free-chapter-success')
+    const originalLabel = label?.textContent ?? ''
+    const data = new FormData(form)
+
+    if (button) button.disabled = true
+    if (label) label.textContent = 'Sending…'
+    if (error) error.hidden = true
+
+    let response: Response
+    try {
+      response = await fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { Accept: 'application/json' },
+      })
+    } catch {
+      // Network/CORS failure: let the browser do the classic submit instead
+      form.submit()
+      if (button) button.disabled = false
+      if (label) label.textContent = originalLabel
+      return
+    }
+
+    const body = await response.json().catch(() => null)
+    if (response.ok && body?.status === 'success') {
+      const email =
+        form.querySelector<HTMLInputElement>('input[type=email]')?.value ?? ''
+      success?.querySelector('[data-email]')?.replaceChildren(email)
+      form.hidden = true
+      if (success) {
+        success.hidden = false
+        success.focus()
+      }
+      return
+    }
+
+    // Kit rejected the request (e.g. an address it won't accept)
+    const reason =
+      (Array.isArray(body?.errors) && body.errors.join(' ')) ||
+      'Something went wrong on our side.'
+    if (error) {
+      error.textContent = `${reason} Please check your email address and try again.`
+      error.hidden = false
+    }
+    if (button) button.disabled = false
+    if (label) label.textContent = originalLabel
   }
 
   // Initialize when DOM is ready
