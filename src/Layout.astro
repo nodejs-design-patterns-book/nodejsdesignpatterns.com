@@ -27,6 +27,7 @@ export interface Props {
   ogType?: string
   ogDescription?: string
   ogImage?: string
+  ogImageAlt?: string
   canonical?: string
   additionalSchema?: object | object[]
   noindex?: boolean
@@ -39,6 +40,7 @@ const {
   ogType = OG_TYPE,
   ogDescription = OG_DESCRIPTION,
   ogImage = OG_IMAGE,
+  ogImageAlt = OG_IMAGE_ALT,
   canonical,
   additionalSchema,
   noindex = false,
@@ -95,7 +97,7 @@ const {
     <meta property="og:title" content={ogTitle} />
     <meta property="og:description" content={ogDescription} />
     <meta property="og:image" content={new URL(ogImage, SITE_URL)} />
-    <meta property="og:image:alt" content={OG_IMAGE_ALT} />
+    <meta property="og:image:alt" content={ogImageAlt} />
     <meta property="og:site_name" content="Node.js Design Patterns" />
     <meta property="og:locale" content="en_US" />
 
@@ -105,7 +107,7 @@ const {
     <meta property="twitter:title" content={ogTitle} />
     <meta property="twitter:description" content={ogDescription} />
     <meta property="twitter:image" content={new URL(ogImage, SITE_URL)} />
-    <meta property="twitter:image:alt" content={OG_IMAGE_ALT} />
+    <meta property="twitter:image:alt" content={ogImageAlt} />
     <meta property="twitter:site" content={TWITTER_SITE} />
     <meta property="twitter:creator" content={TWITTER_CREATOR} />
 

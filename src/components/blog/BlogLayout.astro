@@ -82,6 +82,8 @@ if (post.rendered?.metadata?.headings) {
   ogTitle={title}
   ogType="article"
   ogDescription={description}
+  ogImage={`/og/${post.id}.png`}
+  ogImageAlt={`${title}, an article on the Node.js Design Patterns blog`}
   canonical={`${SITE_URL}/blog/${post.id}/`}
   additionalSchema={schemas}
 >
