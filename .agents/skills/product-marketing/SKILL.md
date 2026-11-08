@@ -1,8 +1,8 @@
 ---
 name: product-marketing
-description: "When the user wants to create or update their product marketing context document. Also use when the user mentions 'product context,' 'marketing context,' 'set up context,' 'positioning,' 'who is my target audience,' 'describe my product,' 'ICP,' 'ideal customer profile,' or wants to avoid repeating foundational information across marketing tasks. Use this at the start of any new project before using other marketing skills — it creates `.agents/product-marketing.md` that all other skills reference for product, audience, and positioning context."
+description: "When the user wants to create or update their product marketing context document. Also use when the user mentions 'product context,' 'marketing context,' 'set up context,' 'positioning,' 'who is my target audience,' 'describe my product,' 'ICP,' 'ideal customer profile,' 'brand voice,' 'tone of voice,' 'brand guidelines,' 'what have we learned,' 'log this learning,' or wants to avoid repeating foundational information across marketing tasks. Use this at the start of any new project before using other marketing skills — it creates `.agents/product-marketing.md` that all other skills reference for product, audience, and positioning context."
 metadata:
-  version: 2.0.0
+  version: 2.2.0
 ---
 
 # Product Marketing Context
@@ -18,9 +18,10 @@ The document is stored at `.agents/product-marketing.md`.
 First, check if `.agents/product-marketing.md` already exists. Also check `.claude/product-marketing.md` and the legacy filename `product-marketing-context.md` (in either `.agents/` or `.claude/`) for older setups — if found anywhere other than `.agents/product-marketing.md`, offer to move it to the canonical location.
 
 **If it exists:**
-- Read it and summarize what's captured
+- Read it and summarize what's captured — note its current **Document version** and the last few **Changelog** entries so the user sees where the doc stands and what's changed recently
 - Ask which sections they want to update
 - Only gather info for those sections
+- On any substantive save, bump the version and add a changelog entry (see Step 4). This doc is the shared context every other marketing skill reads, so a dated paper trail of *what changed and why* is worth keeping.
 
 **If it doesn't exist, offer two options:**
 
@@ -109,9 +110,11 @@ The JTBD Four Forces:
 - Glossary of product-specific terms
 
 ### 10. Brand Voice
-- Tone (professional, casual, playful, etc.)
-- Communication style (direct, conversational, technical)
-- Brand personality (3-5 adjectives)
+- 3-5 voice attributes, each with what it means, what it doesn't mean, and a real line from existing copy
+- Tone by context: how the voice shifts for support, launches, errors, sales, and social
+- Brand words: terms you own, words you never use (with the reason)
+
+Build this from copy that already performed and from the founder's own writing, rather than from adjectives picked in a meeting. See [references/brand-voice.md](references/brand-voice.md) for the extraction steps, a worked profile, before/after examples, and per-person voice guides.
 
 ### 11. Proof Points
 - Key metrics or results to cite
@@ -124,6 +127,17 @@ The JTBD Four Forces:
 - Key conversion action (what you want people to do)
 - Current metrics (if known)
 
+### 13. Paid Ads (optional, only if they run ads)
+The **ads** skill reads this so the user doesn't re-explain the account every session.
+- Margin reality: the target CPA or ROAS that keeps the business profitable, and the hard floor (the ROAS below which, or CPA above which, to flag immediately)
+- Budget and pacing: monthly budget and acceptable daily variance
+- Conversion truth: which conversion actions count and what each is worth, known tracking weaknesses (lag, double counting, offline gaps), and what separates a good lead from a form fill
+- Campaign naming convention and what each campaign is for, one line each
+- What the agent may do (read, compare, flag, draft, recommend) and may not do without approval (change budgets or bids, pause or launch, edit tracking, publish ads)
+
+### 14. Learnings
+Start this empty. It fills up as work ships (see "Maintaining Learnings" below).
+
 ---
 
 ## Step 3: Create the Document
@@ -133,7 +147,8 @@ After gathering information, create `.agents/product-marketing.md` with this str
 ```markdown
 # Product Marketing Context
 
-*Last updated: [date]*
+**Document version:** v1
+**Last updated:** [date]
 
 ## Product Overview
 **One-liner:**
@@ -201,9 +216,18 @@ After gathering information, create `.agents/product-marketing.md` with this str
 | | |
 
 ## Brand Voice
-**Tone:**
-**Style:**
-**Personality:**
+| Attribute | Means | Doesn't mean | Example line |
+|-----------|-------|--------------|--------------|
+| | | | |
+
+**Tone by context:**
+- Support:
+- Launch:
+- Errors:
+- Sales:
+- Social:
+**Terms we own:**
+**Never use (and why):**
 
 ## Proof Points
 **Metrics:**
@@ -219,16 +243,71 @@ After gathering information, create `.agents/product-marketing.md` with this str
 **Business goal:**
 **Conversion action:**
 **Current metrics:**
+
+## Paid Ads (optional)
+**Target CPA / ROAS:**
+**Hard floor:**
+**Monthly budget and daily variance:**
+**Conversions that count:**
+| Action | Means | Value | Feeds bidding? |
+|--------|-------|-------|----------------|
+| | | | |
+**Known tracking weaknesses:**
+**Good lead vs. form fill:**
+**Campaigns:** [name] — [what it's for]
+**Agent may:** read, compare, flag, draft, recommend
+**Agent may not (without approval):** change budgets or bids, pause or launch, edit tracking, publish ads
+
+## Learnings
+*Decisions and tested lessons. Newest first. Keep it to about 20 active entries.*
+| Date | Learning | Evidence | Applies to | Status |
+|------|----------|----------|------------|--------|
+| | | | | |
+
+## Changelog
+*Newest first. One line per revision: what changed and why.*
+- v1 ([date]) — Initial context.
 ```
 
 ---
 
-## Step 4: Confirm and Save
+## Step 4: Confirm, Version, and Save
 
 - Show the completed document
 - Ask if anything needs adjustment
+- **Set the version and changelog** — this is the paper trail for a doc every other skill reads:
+  - **New document:** set `Document version: v1` and a single Changelog entry — `- v1 ([today]) — Initial context.`
+  - **Updating an existing document:** increment the version (v2 → v3 …), update `Last updated` to today, and **prepend a new Changelog entry** at the top of the list (newest first) summarizing *what changed and why* in one line. Never rewrite or reorder past entries.
+  - A good entry names the sections touched and the reason, not "updated the doc." Examples:
+    - `- v3 (2026-07-16) — Repositioned from "email tool" to "deliverability platform"; added RevOps to the ICP.`
+    - `- v2 (2026-06-02) — Rewrote value prop and objections after 5 customer interviews; added competitor Acme.`
+  - Use today's date in ISO form (YYYY-MM-DD) for the entry and `Last updated`.
+  - **Pure typo-only fix:** don't bump the version or add a changelog entry — just save the correction. Every other change bumps the version and gets an entry. When the change is a real repositioning, say so plainly — downstream skills will now generate against the new context.
 - Save to `.agents/product-marketing.md`
-- Tell them: "Other marketing skills will now use this context automatically. Run `/product-marketing` anytime to update it."
+- Tell them: "Other marketing skills will now use this context automatically. The Changelog at the bottom tracks every revision — check it to see how your positioning has evolved. Run `/product-marketing` anytime to update it."
+
+---
+
+## Maintaining Learnings
+
+The Changelog records how the document changed. **Learnings** records what the team found out by shipping: which angles won, which offers flopped, which decisions were made and why. Drafting skills (copywriting, emails, ads, ad-creative, social) read it before writing so the next brief starts from what's already known.
+
+**Entry format:** one row per learning.
+- **Learning:** one sentence, specific enough to change a draft. "Price-anchored headlines beat outcome headlines on the pricing page" works. "Be clearer" doesn't.
+- **Evidence:** the test, campaign, or source, with the number and sample size. "Variant B +18% trial starts, 2,400 visitors per arm, 3 weeks."
+- **Applies to:** the channels, segments, or skills it affects.
+- **Status:** `active`, `watch` (one data point, worth retesting), or `retired`.
+
+**What earns a place:**
+- A test result that reached its planned sample, or the same pattern seen in two or more campaigns
+- A decision the user made with a reason (positioning, pricing, a channel cut) that future drafts must respect
+- A correction the user gave more than once ("never call it a platform")
+
+**What doesn't:** single-run anecdotes (log those as `watch` or leave them out), task notes, and anything that belongs in another section. A new objection goes in Objections; a new customer phrase goes in Customer Language.
+
+**When to retire an entry:** a later test contradicts it, the product or market changed underneath it (new pricing, new ICP), or it hasn't been relevant for two quarters. Change the status to `retired` and add a line saying why, rather than deleting it, so nobody re-tests a settled question. Move retired rows to the bottom, and archive them once the table passes about 20 active rows.
+
+**Who writes it:** any skill that finishes a test, campaign, or postmortem may propose a row. Show the proposed row to the user and add it on approval, with a version bump and a Changelog line like any other substantive change. Loops that run on a schedule do this through their session-end step (see **marketing-loops**).
 
 ---
 
@@ -238,4 +317,4 @@ After gathering information, create `.agents/product-marketing.md` with this str
 - **Capture exact words**: Customer language beats polished descriptions
 - **Ask for examples**: "Can you give me an example?" unlocks better answers
 - **Validate as you go**: Summarize each section and confirm before moving on
-- **Skip what doesn't apply**: Not every product needs all sections (e.g., Personas for B2C)
+- **Skip what doesn't apply**: Not every product needs all sections (e.g., Personas for B2C, Paid Ads if they don't run ads)

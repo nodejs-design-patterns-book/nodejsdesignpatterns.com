@@ -1,8 +1,8 @@
 ---
 name: programmatic-seo
-description: When the user wants to create SEO-driven pages at scale using templates and data. Also use when the user mentions "programmatic SEO," "template pages," "pages at scale," "directory pages," "location pages," "[keyword] + [city] pages," "comparison pages," "integration pages," "building many pages for SEO," "pSEO," "generate 100 pages," "data-driven pages," or "templated landing pages." Use this whenever someone wants to create many similar pages targeting different keywords or locations. For auditing existing SEO issues, see seo-audit. For content strategy planning, see content-strategy.
+description: When the user wants to create SEO-driven pages at scale using templates and data. Also use when the user mentions "programmatic SEO," "template pages," "pages at scale," "directory pages," "location pages," "[keyword] + [city] pages," "comparison pages," "integration pages," "building many pages for SEO," "pSEO," "generate 100 pages," "data-driven pages," "templated landing pages," or "which CMS for pSEO." Use this whenever someone wants to create many similar pages targeting different keywords or locations. For auditing existing SEO issues, see seo-audit. For content strategy planning, see content-strategy.
 metadata:
-  version: 2.0.0
+  version: 2.1.1
 ---
 
 # Programmatic SEO
@@ -49,7 +49,7 @@ Hierarchy of data defensibility:
 5. Public (anyone can use—weakest)
 
 ### 3. Clean URL Structure
-**Use subfolders, not subdomains** — subfolders consolidate domain authority while subdomains split it:
+**Prefer subfolders to subdomains.** Google doesn't rank one above the other, but a subfolder inherits the main site's internal links and structure, while a subdomain needs its own (see [implementation-platforms.md](references/implementation-platforms.md)):
 - Good: `yoursite.com/templates/resume/`
 - Bad: `templates.yoursite.com/resume/`
 
@@ -158,6 +158,10 @@ You can layer multiple playbooks (e.g., "Best coworking spaces in San Diego").
 - Noindex very thin variations
 - Manage crawl budget thoughtfully
 - Separate sitemaps by page type
+
+### 6. Choose the Build Platform
+
+Check that the platform can hold the page count, refresh the data, render server-side HTML, branch on data for conditional sections, and control indexation per page. Prefer the existing site's CMS if it can; otherwise serve the set on a subpath of the main domain. Options and tradeoffs: [references/implementation-platforms.md](references/implementation-platforms.md).
 
 ---
 
