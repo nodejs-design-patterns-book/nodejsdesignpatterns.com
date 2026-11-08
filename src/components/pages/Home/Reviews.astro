@@ -2,7 +2,7 @@
 import { getCollection, render } from 'astro:content'
 import { Masonry } from 'astro-masonry'
 import { REVIEWS, RATING } from '@lib/const'
-import { Star } from '@lucide/astro'
+import StarRating from '@components/ui/StarRating.astro'
 import BuyButtons from '@components/pages/Home/components/BuyButtons.astro'
 
 const reviews = await getCollection('reviews')
@@ -16,55 +16,95 @@ const renderedReviews = await Promise.all(
     }
   }),
 )
+
+// Show a curated first batch; the rest is one click away (all reviews stay
+// on the page, just not all at once)
+const INITIAL_REVIEWS = 12
+const firstReviews = renderedReviews.slice(0, INITIAL_REVIEWS)
+const moreReviews = renderedReviews.slice(INITIAL_REVIEWS)
+const reviewGroups = [firstReviews, moreReviews].filter((g) => g.length > 0)
 ---
 
-<section id="testimonials" class="base-100 py-16 sm:py-32 mt-16 relative">
+<section
+  id="testimonials"
+  class="bg-base-100 pt-10 lg:pt-12 pb-16 lg:pb-24 relative"
+>
   <div
     class="max-w-4xl lg:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 relative"
   >
     <div class="text-center mb-12">
-      <h2 class="text-3xl lg:text-4xl font-bold text-base-content mb-4">
+      <h2
+        class="text-4xl lg:text-5xl leading-[1.1] font-bold text-base-content font-heading mb-4"
+      >
         Highly Rated, <span class="text-primary">Widely Loved</span> by readers.
       </h2>
-      <p class="text-xl text-base-content/70">
+      <p
+        class="text-xl lg:text-[1.375rem] leading-normal text-base-content/75 max-w-[40rem] mx-auto"
+      >
         <strong>{RATING}</strong> stars with <strong>{REVIEWS}</strong>+ glowing
         reviews from developers like you!
       </p>
     </div>
-    <Masonry
-      breakpointCols={{
-        default: 4,
-        1100: 3,
-        800: 2,
-        600: 1,
-      }}
-      class="flex gap-4"
-    >
-      {
-        renderedReviews.map((review) => (
-          <div class="flex items-center mt-4">
-            <blockquote class="bg-primary/10 p-4 rounded-lg shadow-sm w-full">
-              {review.data.rating && (
-                <div class="flex mb-4">
-                  {[...Array(review.data.rating)].map(() => (
-                    <Star class="h-4 w-4 fill-warning text-secondary" />
-                  ))}
-                </div>
-              )}
-              <div class="text-md text-base-content mb-4 quote-content">
-                <review.Content />
+    {
+      reviewGroups.map((group, i) => (
+        <div
+          id={i === 0 ? undefined : 'more-reviews'}
+          class={i === 0 ? undefined : 'more-reviews'}
+        >
+          <Masonry
+            breakpointCols={{
+              default: 4,
+              1100: 3,
+              800: 2,
+              600: 1,
+            }}
+            class="flex gap-4"
+          >
+            {group.map((review) => (
+              <div class="flex items-center mt-4">
+                <blockquote class="bg-primary/10 p-4 rounded-lg shadow-sm w-full">
+                  {review.data.rating && (
+                    <StarRating rating={review.data.rating} class="mb-4" />
+                  )}
+                  <div class="text-md text-base-content mb-4 quote-content">
+                    <review.Content />
+                  </div>
+                  <footer class="text-sm text-base-content/70">
+                    <span class="font-normal">{review.data.name}</span> on{' '}
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={review.data.url}
+                      class="text-primary inline-block py-1 -my-1"
+                    >
+                      {review.data.platform}
+                    </a>
+                  </footer>
+                </blockquote>
               </div>
-              <footer class="text-sm text-base-content/70">
-                — {review.data.name} on{' '}
-                <a target="_blank" href={review.data.url} class="text-primary">
-                  {review.data.platform}
-                </a>
-              </footer>
-            </blockquote>
-          </div>
-        ))
-      }
-    </Masonry>
+            ))}
+          </Masonry>
+        </div>
+      ))
+    }
+
+    {
+      moreReviews.length > 0 && (
+        <div class="flex justify-center mt-10">
+          {/* Revealed by the script below; without JS every review is visible */}
+          <button
+            type="button"
+            id="show-all-reviews"
+            hidden
+            aria-controls="more-reviews"
+            aria-expanded="false"
+            class="btn btn-outline rounded-md border-2 border-base-300 px-5 text-base-content hover:bg-base-content hover:text-base-100 hover:border-base-content"
+          >
+            Show all {renderedReviews.length} reviews
+          </button>
+        </div>
+      )
+    }
 
     <!-- Call to Action -->
     <div class="text-center mt-24">
@@ -79,7 +119,7 @@ const renderedReviews = await Promise.all(
     </div>
 
     <div class="flex justify-center mt-16">
-      <BuyButtons location="reviews" />
+      <BuyButtons location="reviews" align="center" />
     </div>
   </div>
 
@@ -94,3 +134,23 @@ const renderedReviews = await Promise.all(
   >
   </div>
 </section>
+
+<script>
+  const button = document.getElementById('show-all-reviews')
+  const more = document.getElementById('more-reviews')
+  if (button && more) {
+    more.hidden = true
+    button.hidden = false
+    button.addEventListener('click', () => {
+      more.hidden = false
+      button.setAttribute('aria-expanded', 'true')
+      button.parentElement?.remove()
+      // Move focus to the first newly revealed review for keyboard users
+      const first = more.querySelector('blockquote')
+      if (first) {
+        first.setAttribute('tabindex', '-1')
+        first.focus({ preventScroll: true })
+      }
+    })
+  }
+</script>

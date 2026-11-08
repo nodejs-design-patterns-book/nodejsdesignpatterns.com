@@ -82,10 +82,16 @@ if (post.rendered?.metadata?.headings) {
   ogTitle={title}
   ogType="article"
   ogDescription={description}
+  ogImage={`/og/${post.id}.png`}
+  ogImageAlt={`${title}, an article on the Node.js Design Patterns blog`}
   canonical={`${SITE_URL}/blog/${post.id}/`}
   additionalSchema={schemas}
 >
-  <main class="min-h-screen bg-base-100">
+  <main
+    id="main-content"
+    tabindex="-1"
+    class="min-h-screen outline-none bg-base-100"
+  >
     <!-- Blog Header -->
     <header class="bg-gradient-to-b from-primary/40 to-primary/10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -105,18 +111,19 @@ if (post.rendered?.metadata?.headings) {
         </h1>
 
         <!-- Article Description -->
-        <p class="text-xl text-base-content/80 leading-relaxed mb-8 max-w-3xl">
+        <p
+          class="text-xl lg:text-[1.375rem] leading-normal text-base-content/80 mb-8 max-w-[39rem]"
+        >
           {description}
         </p>
 
         <!-- Article Meta -->
-        <div
-          class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6"
-        >
+        <!-- Author and dates read as one group under the title -->
+        <div class="flex flex-col gap-3">
           <AuthorInfo authors={authors} size="md" />
 
           <div
-            class="flex flex-col lg:items-end space-y-1 text-sm text-base-content/70"
+            class="flex flex-wrap gap-x-5 gap-y-1 text-sm text-base-content/70"
           >
             <time datetime={date.toISOString()} class="flex items-center">
               <Calendar class="h-3 w-3 mr-1" /> Published on {formattedDate}
@@ -144,18 +151,18 @@ if (post.rendered?.metadata?.headings) {
 
     <!-- Blog Content -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div class="flex flex-col md:flex-row gap-12">
+      <div class="flex flex-col lg:flex-row gap-12">
         <!-- Article (left column) -->
         <article
           id="blog-article"
           class="flex-1 min-w-0"
           data-reading-time={readingTime}
         >
-          <!-- ToC -->
-          <div>
+          <!-- ToC + body, capped at a ~70 character reading measure -->
+          <div class="max-w-3xl">
             {
               nestedToc.length > 0 && (
-                <details class="bg-base-100 py-2 mb-8 open:bg-primary/10 border border-base-200 hover:border-primary/20 open:border-primary/20 rounded-md transform transition-all duration-300 px-4 open:[&_.summary-arrow]:-rotate-180">
+                <details class="max-w-[39rem] bg-base-100 py-2 mb-8 open:bg-primary/10 border border-base-200 hover:border-primary/20 open:border-primary/20 rounded-md transform transition-all duration-300 px-4 open:[&_.summary-arrow]:-rotate-180">
                   <summary class="cursor-pointer flex">
                     <span class="flex gap-2 items-center w-full">
                       <List class="w-4.5 text-base-content/50" /> Table of
@@ -212,7 +219,11 @@ if (post.rendered?.metadata?.headings) {
           </div>
 
           <!-- Article Footer (used as read completion marker) -->
-          <aside
+          <div class="lg:hidden mt-16 max-w-md">
+            <BookPromo position="inline" />
+          </div>
+
+          <footer
             id="article-footer"
             class="mt-16 pt-8 border-t border-base-300"
           >
@@ -220,15 +231,15 @@ if (post.rendered?.metadata?.headings) {
               class="flex flex-col sm:flex-row items-center justify-between gap-6"
             >
               <div>
-                <h3 class="font-semibold text-base-content mb-2">
+                <h2 class="font-bold text-base-content mb-2">
                   Share this article
-                </h3>
+                </h2>
                 <div class="flex space-x-4 justify-center sm:justify-start">
                   <a
                     href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`${SITE_URL}/blog/${post.id}`)}&text=${encodeURIComponent(title)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="text-base-content/70 hover:text-primary transition-colors"
+                    class="-m-2 p-2 text-base-content/70 hover:text-primary transition-colors"
                   >
                     <span class="sr-only">Share on X (formerly Twitter)</span>
                     <svg
@@ -245,7 +256,7 @@ if (post.rendered?.metadata?.headings) {
                     href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`${SITE_URL}/blog/${post.id}`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="text-base-content/70 hover:text-primary transition-colors"
+                    class="-m-2 p-2 text-base-content/70 hover:text-primary transition-colors"
                   >
                     <span class="sr-only">Share on LinkedIn</span>
                     <svg
@@ -283,12 +294,15 @@ if (post.rendered?.metadata?.headings) {
                 </a>
               </div>
             </div>
-          </aside>
+          </footer>
 
           <!-- Previous/Next Navigation -->
           {
             (prevPost || nextPost) && (
-              <nav class="mt-12 pt-8 border-t border-base-300">
+              <nav
+                aria-label="More articles"
+                class="mt-12 pt-8 border-t border-base-300"
+              >
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
                   {/* <!-- Previous Article (Left Column) --> */}
 
@@ -297,7 +311,7 @@ if (post.rendered?.metadata?.headings) {
                       <div class="flex flex-col h-full">
                         <a
                           href={`/blog/${prevPost.id}`}
-                          class="flex items-center text-sm font-medium text-base-content/60 hover:text-primary transition-colors mb-4"
+                          class="flex items-center text-sm font-normal text-base-content/60 hover:text-primary transition-colors mb-4"
                         >
                           <svg
                             class="w-4 h-4 mr-2"
@@ -315,11 +329,7 @@ if (post.rendered?.metadata?.headings) {
                           Previous Article
                         </a>
                         <div class="flex-1">
-                          <BlogCard
-                            post={prevPost}
-                            tabindex={0}
-                            class="h-full"
-                          />
+                          <BlogCard post={prevPost} class="h-full" />
                         </div>
                       </div>
                     )}
@@ -332,7 +342,7 @@ if (post.rendered?.metadata?.headings) {
                       <div class="flex flex-col h-full">
                         <a
                           href={`/blog/${nextPost.id}`}
-                          class="flex items-center justify-end text-sm font-medium text-base-content/60 hover:text-primary transition-colors mb-4"
+                          class="flex items-center justify-end text-sm font-normal text-base-content/60 hover:text-primary transition-colors mb-4"
                         >
                           Next Article
                           <svg
@@ -350,11 +360,7 @@ if (post.rendered?.metadata?.headings) {
                           </svg>
                         </a>
                         <div class="flex-1">
-                          <BlogCard
-                            post={nextPost}
-                            tabindex={0}
-                            class="h-full"
-                          />
+                          <BlogCard post={nextPost} class="h-full" />
                         </div>
                       </div>
                     )}
@@ -366,9 +372,10 @@ if (post.rendered?.metadata?.headings) {
         </article>
 
         <!-- Sidebar (right column) -->
-        <aside class="w-full md:w-60 lg:w-70 xl:w-80 md:flex-shrink-0">
-          <div class="md:sticky md:top-20 max-w-80">
-            <BookPromo />
+        <!-- Sidebar promo from lg; below that it sits inline after the article -->
+        <aside class="hidden lg:block lg:w-70 xl:w-80 lg:flex-shrink-0">
+          <div class="lg:sticky lg:top-20 max-w-80">
+            <BookPromo position="sidebar" />
           </div>
         </aside>
       </div>

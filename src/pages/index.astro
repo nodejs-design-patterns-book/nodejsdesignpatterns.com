@@ -13,25 +13,25 @@ import Quotes from '@components/pages/Home/Quotes.astro'
 import Reviews from '@components/pages/Home/Reviews.astro'
 import FreeChapter from '@components/pages/Home/FreeChapter.astro'
 import Faq from '@components/pages/Home/Faq.astro'
-import Navigation from '@components/Navigation.astro'
 import Footer from '@components/Footer.astro'
 import { DEFAULT_CANONICAL_URL } from '@lib/const'
 ---
 
 <Layout canonical={`${DEFAULT_CANONICAL_URL}/`}>
-  <Navigation />
-  <Hero />
-  <Counters />
-  <TrustedQuote />
-  <ProblemStatement />
-  <Authors />
-  <WhatsInside />
-  <Chapters />
-  <WhyChoose />
-  <ActionPlan />
-  <Quotes />
-  <Reviews />
-  <FreeChapter />
-  <Faq />
+  <main id="main-content" tabindex="-1" class="outline-none">
+    <Hero />
+    <Counters />
+    <TrustedQuote />
+    <ProblemStatement />
+    <Authors />
+    <WhatsInside />
+    <Chapters />
+    <WhyChoose />
+    <ActionPlan />
+    <Quotes />
+    <Reviews />
+    <FreeChapter />
+    <Faq />
+  </main>
   <Footer />
 </Layout>

@@ -22,9 +22,7 @@ const props = Astro.props
   <div class={cn('flex flex-col space-y-1.5 p-6', props.headerClass)}>
     <slot name="header" />
   </div>
-  <div
-    class={cn('font-semibold leading-none tracking-tight', props.titleClass)}
-  >
+  <div class={cn('font-bold leading-none tracking-tight', props.titleClass)}>
     <slot name="title" />
   </div>
   <div class={cn('text-sm text-muted-foreground', props.descriptionClass)}>

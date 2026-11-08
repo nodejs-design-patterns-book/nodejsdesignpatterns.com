@@ -26,23 +26,23 @@ const currentYear = new Date().getFullYear()
     </div>
   </div> -->
 
-  <div class="max-w-7xl mx-auto px-6 z-10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
     <!-- Main Footer Content -->
     <div
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12"
     >
       <!-- Get the book -->
       <div>
-        <h3
+        <h2
           class="text-lg font-bold font-heading text-base-content mb-4 flex items-center gap-2"
         >
           <BookOpen class="h-5 w-5 text-primary" />
           Get the book
-        </h3>
-        <div class="space-y-3">
+        </h2>
+        <div class="space-y-1">
           <a
             href={BUY_LINK_PRINT}
-            class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200"
+            class="flex items-center py-1 text-base-content/80 hover:text-primary transition-colors duration-200"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -51,7 +51,7 @@ const currentYear = new Date().getFullYear()
           </a>
           <a
             href={BUY_LINK_EBOOK}
-            class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200"
+            class="flex items-center py-1 text-base-content/80 hover:text-primary transition-colors duration-200"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -60,7 +60,7 @@ const currentYear = new Date().getFullYear()
           </a>
           <a
             href={BUY_LINK_PACKT}
-            class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200"
+            class="flex items-center py-1 text-base-content/80 hover:text-primary transition-colors duration-200"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -72,16 +72,16 @@ const currentYear = new Date().getFullYear()
 
       <!-- Connect -->
       <div>
-        <h3
+        <h2
           class="text-lg font-bold font-heading text-base-content mb-4 flex items-center gap-2"
         >
           <Users class="h-5 w-5 text-primary" />
           Connect
-        </h3>
-        <div class="space-y-3">
+        </h2>
+        <div class="space-y-1">
           <a
             href="https://x.com/mariocasciaro"
-            class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
+            class="flex items-center py-1 text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -90,7 +90,7 @@ const currentYear = new Date().getFullYear()
           </a>
           <a
             href="https://www.linkedin.com/in/mariocasciaro/"
-            class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
+            class="flex items-center py-1 text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -100,7 +100,7 @@ const currentYear = new Date().getFullYear()
 
           <a
             href="https://x.com/loige"
-            class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
+            class="flex items-center py-1 text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -109,7 +109,7 @@ const currentYear = new Date().getFullYear()
           </a>
           <a
             href="https://bsky.app/profile/loige.co"
-            class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
+            class="flex items-center py-1 text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -118,7 +118,7 @@ const currentYear = new Date().getFullYear()
           </a>
           <a
             href="https://www.linkedin.com/in/lucianomammino/"
-            class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
+            class="flex items-center py-1 text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -128,7 +128,7 @@ const currentYear = new Date().getFullYear()
 
           <a
             href="mailto:authors@nodejsdesignpatterns.com"
-            class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200 text-sm mt-3 font-medium"
+            class="flex items-center py-1 text-base-content/80 hover:text-primary transition-colors duration-200 text-sm mt-3 font-normal"
           >
             Email us <Mail class="ml-1 h-3 w-3" />
           </a>
@@ -137,7 +137,7 @@ const currentYear = new Date().getFullYear()
 
       <!-- Latest from the blog -->
       <div>
-        <h3
+        <h2
           class="text-lg font-bold font-heading text-base-content mb-4 flex items-center gap-2"
         >
           <Rss class="h-5 w-5 text-primary" />
@@ -146,13 +146,13 @@ const currentYear = new Date().getFullYear()
             class="text-base-content/80 hover:text-primary transition-colors duration-200"
             >blog</a
           >
-        </h3>
-        <div class="space-y-3">
+        </h2>
+        <div class="space-y-1">
           {
             latestBlogPosts.map((post) => (
               <a
                 href={`/blog/${post.id}`}
-                class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
+                class="flex items-center py-1 text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
               >
                 {post.data.title}
               </a>
@@ -160,7 +160,7 @@ const currentYear = new Date().getFullYear()
           }
           <a
             href={`/blog/`}
-            class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
+            class="flex items-center py-1 text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
           >
             Read all articles from the blog
           </a>
@@ -169,16 +169,16 @@ const currentYear = new Date().getFullYear()
 
       <!-- Additional space for future content -->
       <div>
-        <h3
+        <h2
           class="text-lg font-bold font-heading text-base-content mb-4 flex items-center gap-2"
         >
           <Github class="h-5 w-5 text-primary" />
           Community
-        </h3>
-        <div class="space-y-3">
+        </h2>
+        <div class="space-y-1">
           <a
             href="https://github.com/PacktPublishing/Node.js-Design-Patterns-Fourth-Edition/discussions"
-            class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
+            class="flex items-center py-1 text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -187,7 +187,7 @@ const currentYear = new Date().getFullYear()
           </a>
           <a
             href="https://github.com/PacktPublishing/Node.js-Design-Patterns-fourth-Edition"
-            class="flex items-center text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
+            class="flex items-center py-1 text-base-content/80 hover:text-primary transition-colors duration-200 text-sm"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -210,12 +210,12 @@ const currentYear = new Date().getFullYear()
       </div>
 
       <!-- GitHub contribution line -->
-      <div class="text-center text-base-content/60 text-xs">
+      <div class="text-center text-base-content/75 text-xs">
         Found an error or something that can be improved? You can help us make
         this website better on{' '}
         <a
           href="https://github.com/nodejs-design-patterns-book/nodejsdesignpatterns.com"
-          class="text-primary hover:text-primary/80 transition-colors duration-200 font-medium"
+          class="text-base-content font-normal underline underline-offset-2 hover:text-primary"
           target="_blank"
           rel="noopener noreferrer"
         >

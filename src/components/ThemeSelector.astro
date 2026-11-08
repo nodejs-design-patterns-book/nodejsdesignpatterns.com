@@ -4,7 +4,7 @@
 
 <button
   id="theme-selector"
-  class="relative p-2 rounded-full bg-base-200 hover:bg-base-300 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
+  class="relative p-2 rounded-full bg-base-200 hover:bg-base-300 transition-all duration-300 motion-safe:hover:scale-105 motion-safe:active:scale-95 cursor-pointer"
   title="Click to change theme"
   aria-label="Toggle theme"
 >
@@ -210,13 +210,22 @@
     new ThemeSelector()
   })
 
-  // Mount theme selector into navigation
+  // Mount the single theme toggle into the nav: in the desktop bar from lg,
+  // inside the menu panel below that (the compact bar has no room for it)
   document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('theme-selector-container')
+    const desktop = document.getElementById('theme-selector-container')
+    const mobile = document.getElementById('theme-selector-container-mobile')
     const themeSelector = document.getElementById('theme-selector')
+    if (!themeSelector) return
 
-    if (container && themeSelector) {
-      container.appendChild(themeSelector)
+    const wide = window.matchMedia('(min-width: 64rem)')
+    const place = () => {
+      const target = wide.matches ? desktop : mobile
+      if (target && themeSelector.parentElement !== target) {
+        target.appendChild(themeSelector)
+      }
     }
+    place()
+    wide.addEventListener('change', place)
   })
 </script>

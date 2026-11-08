@@ -18,6 +18,10 @@
   --font-heading: var(--font-serif);
 }
 
+/* `dark:` utilities follow the theme toggle (data-theme), which already
+   resolves "system" to light/dark, instead of only the OS preference */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
 @plugin "daisyui" {
   themes:
     light --default,
@@ -31,7 +35,9 @@
   --color-base-200: oklch(92% 0.013 255.508);
   --color-base-300: oklch(70% 0.04 256.788);
   --color-base-content: oklch(20% 0.042 265.755);
-  --color-primary: oklch(62.7% 0.194 149.214);
+  /* Deep enough to pass WCAG AA both as text on light surfaces (~5:1)
+     and behind white button labels (~5:1). Dark theme keeps the brighter green */
+  --color-primary: oklch(50% 0.16 149.214);
   --color-primary-content: oklch(98% 0.003 247.858);
   --color-secondary: oklch(76% 0.188 70.08);
   --color-secondary-content: oklch(20% 0.042 265.755);
@@ -49,6 +55,9 @@
   --color-warning-content: oklch(27% 0.077 45.635);
   --color-error: oklch(71% 0.194 13.428);
   --color-error-content: oklch(27% 0.105 12.094);
+  /* Readable text versions of the warning/error hues, for callout titles */
+  --color-caution-ink: oklch(50% 0.13 60);
+  --color-danger-ink: oklch(52% 0.19 20);
   --radius-selector: 0.5rem;
   --radius-field: 0.25rem;
   --radius-box: 0.5rem;
@@ -104,6 +113,8 @@
   --color-warning-content: oklch(18% 0.07 50);
   --color-error: oklch(66% 0.18 25);
   --color-error-content: oklch(15% 0.08 20);
+  --color-caution-ink: var(--color-warning);
+  --color-danger-ink: var(--color-error);
 
   /* Shared tokens */
   --radius-selector: 0.5rem;
@@ -120,161 +131,238 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' style='color: green' viewBox='0 0 304 304' width='304' height='304'%3E%3Cpath fill='currentColor' fill-opacity='0.05' d='M44.1 224a5 5 0 1 1 0 2H0v-2h44.1zm160 48a5 5 0 1 1 0 2H82v-2h122.1zm57.8-46a5 5 0 1 1 0-2H304v2h-42.1zm0 16a5 5 0 1 1 0-2H304v2h-42.1zm6.2-114a5 5 0 1 1 0 2h-86.2a5 5 0 1 1 0-2h86.2zm-256-48a5 5 0 1 1 0 2H0v-2h12.1zm185.8 34a5 5 0 1 1 0-2h86.2a5 5 0 1 1 0 2h-86.2zM258 12.1a5 5 0 1 1-2 0V0h2v12.1zm-64 208a5 5 0 1 1-2 0v-54.2a5 5 0 1 1 2 0v54.2zm48-198.2V80h62v2h-64V21.9a5 5 0 1 1 2 0zm16 16V64h46v2h-48V37.9a5 5 0 1 1 2 0zm-128 96V208h16v12.1a5 5 0 1 1-2 0V210h-16v-76.1a5 5 0 1 1 2 0zm-5.9-21.9a5 5 0 1 1 0 2H114v48H85.9a5 5 0 1 1 0-2H112v-48h12.1zm-6.2 130a5 5 0 1 1 0-2H176v-74.1a5 5 0 1 1 2 0V242h-60.1zm-16-64a5 5 0 1 1 0-2H114v48h10.1a5 5 0 1 1 0 2H112v-48h-10.1zM66 284.1a5 5 0 1 1-2 0V274H50v30h-2v-32h18v12.1zM236.1 176a5 5 0 1 1 0 2H226v94h48v32h-2v-30h-48v-98h12.1zm25.8-30a5 5 0 1 1 0-2H274v44.1a5 5 0 1 1-2 0V146h-10.1zm-64 96a5 5 0 1 1 0-2H208v-80h16v-14h-42.1a5 5 0 1 1 0-2H226v18h-16v80h-12.1zm86.2-210a5 5 0 1 1 0 2H272V0h2v32h10.1zM98 101.9V146H53.9a5 5 0 1 1 0-2H96v-42.1a5 5 0 1 1 2 0zM53.9 34a5 5 0 1 1 0-2H80V0h2v34H53.9zm60.1 3.9V66H82v64H69.9a5 5 0 1 1 0-2H80V64h32V37.9a5 5 0 1 1 2 0zM101.9 82a5 5 0 1 1 0-2H128V37.9a5 5 0 1 1 2 0V82h-28.1zm16-64a5 5 0 1 1 0-2H146v44.1a5 5 0 1 1-2 0V18h-26.1zm102.2 270a5 5 0 1 1 0 2H98v14h-2v-16h124.1zM242 149.9V160h16v34h-16v62h48v48h-2v-46h-48v-66h16v-30h-16v-12.1a5 5 0 1 1 2 0zM53.9 18a5 5 0 1 1 0-2H64V2H48V0h18v18H53.9zm112 32a5 5 0 1 1 0-2H192V0h50v2h-48v48h-28.1zm-48-48a5 5 0 0 1-9.8-2h2.07a3 3 0 1 0 5.66 0H178v34h-18V21.9a5 5 0 1 1 2 0V32h14V2h-58.1zm0 96a5 5 0 1 1 0-2H137l32-32h39V21.9a5 5 0 1 1 2 0V66h-40.17l-32 32H117.9zm28.1 90.1a5 5 0 1 1-2 0v-76.51L175.59 80H224V21.9a5 5 0 1 1 2 0V82h-49.59L146 112.41v75.69zm16 32a5 5 0 1 1-2 0v-99.51L184.59 96H300.1a5 5 0 0 1 3.9-3.9v2.07a3 3 0 0 0 0 5.66v2.07a5 5 0 0 1-3.9-3.9H185.41L162 121.41v98.69zm-144-64a5 5 0 1 1-2 0v-3.51l48-48V48h32V0h2v50H66v55.41l-48 48v2.69zM50 53.9v43.51l-48 48V208h26.1a5 5 0 1 1 0 2H0v-65.41l48-48V53.9a5 5 0 1 1 2 0zm-16 16V89.41l-34 34v-2.82l32-32V69.9a5 5 0 1 1 2 0zM12.1 32a5 5 0 1 1 0 2H9.41L0 43.41V40.6L8.59 32h3.51zm265.8 18a5 5 0 1 1 0-2h18.69l7.41-7.41v2.82L297.41 50H277.9zm-16 160a5 5 0 1 1 0-2H288v-71.41l16-16v2.82l-14 14V210h-28.1zm-208 32a5 5 0 1 1 0-2H64v-22.59L40.59 194H21.9a5 5 0 1 1 0-2H41.41L66 216.59V242H53.9zm150.2 14a5 5 0 1 1 0 2H96v-56.6L56.6 162H37.9a5 5 0 1 1 0-2h19.5L98 200.6V256h106.1zm-150.2 2a5 5 0 1 1 0-2H80v-46.59L48.59 178H21.9a5 5 0 1 1 0-2H49.41L82 208.59V258H53.9zM34 39.8v1.61L9.41 66H0v-2h8.59L32 40.59V0h2v39.8zM2 300.1a5 5 0 0 1 3.9 3.9H3.83A3 3 0 0 0 0 302.17V256h18v48h-2v-46H2v42.1zM34 241v63h-2v-62H0v-2h34v1zM17 18H0v-2h16V0h2v18h-1zm273-2h14v2h-16V0h2v16zm-32 273v15h-2v-14h-14v14h-2v-16h18v1zM0 92.1A5.02 5.02 0 0 1 6 97a5 5 0 0 1-6 4.9v-2.07a3 3 0 1 0 0-5.66V92.1zM80 272h2v32h-2v-32zm37.9 32h-2.07a3 3 0 0 0-5.66 0h-2.07a5 5 0 0 1 9.8 0zM5.9 0A5.02 5.02 0 0 1 0 5.9V3.83A3 3 0 0 0 3.83 0H5.9zm294.2 0h2.07A3 3 0 0 0 304 3.83V5.9a5 5 0 0 1-3.9-5.9zm3.9 300.1v2.07a3 3 0 0 0-1.83 1.83h-2.07a5 5 0 0 1 3.9-3.9zM97 100a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0-16a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm16 16a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm16 16a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0 16a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-48 32a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm16 16a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm32 48a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-16 16a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm32-16a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0-32a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm16 32a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm32 16a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0-16a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-16-64a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm16 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm16 96a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0 16a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm16 16a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm16-144a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0 32a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm16-32a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm16-16a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-96 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0 16a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm16-32a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm96 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-16-64a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm16-16a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-32 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0-16a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-16 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-16 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-16 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM49 36a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-32 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm32 16a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM33 68a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm16-48a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0 240a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm16 32a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-16-64a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0 16a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-16-32a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm80-176a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm16 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-16-16a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm32 48a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm16-16a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0-32a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm112 176a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-16 16a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0 16a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0 16a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM17 180a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0 16a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0-32a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm16 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM17 84a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm32 64a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm16-16a3 3 0 1 0 0-6 3 3 0 0 0 0 6z'%3E%3C/path%3E%3C/svg%3E");
 }
 
-.content h1,
-.content h2,
-.content h3,
-.content h4 {
-  margin: 2.5rem 0 1.5rem 0;
-  line-height: 1.25;
-  color: var(--color-primary);
-  font-weight: bold;
+/* Typography: line breaking, selection, and article prose */
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p,
+  li,
+  blockquote,
+  dd,
+  figcaption {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: oklch(from var(--color-primary) l c h / 0.28);
+  }
 }
 
-.content a {
+/* Article prose: headings share the site's Hanuman voice, with clear size
+   steps (h2 > h3 > h4 > body) instead of prose-xl's close 36/30px pair */
+.prose {
+  line-height: 1.7;
+}
+
+.prose :where(h2, h3, h4):not(:where(.not-prose, .not-prose *)) {
+  font-family:
+    var(--font-base-serif),
+    Iowan Old Style,
+    Baskerville,
+    serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  scroll-margin-top: 5rem;
+}
+
+.prose :where(h2):not(:where(.not-prose, .not-prose *)) {
+  font-size: 1.6em;
+  line-height: 1.2;
+  margin-top: 2em;
+  margin-bottom: 0.6em;
+}
+
+.prose :where(h3):not(:where(.not-prose, .not-prose *)) {
+  font-size: 1.25em;
+  line-height: 1.3;
+  margin-top: 1.8em;
+  margin-bottom: 0.5em;
+}
+
+.prose :where(h4):not(:where(.not-prose, .not-prose *)) {
+  font-size: 1.05em;
+  line-height: 1.4;
+  margin-top: 1.6em;
+  margin-bottom: 0.4em;
+}
+
+.prose :where(h2 + h3, h3 + h4):not(:where(.not-prose, .not-prose *)) {
+  margin-top: 0.8em;
+}
+
+/* Reading measure: text blocks cap at ~70 characters (Atkinson at 20px
+   averages ~0.45em per glyph), while code blocks and tables keep the full
+   column so wide code scrolls less */
+.prose > :where(p, ul, ol, dl, h2, h3, h4, blockquote, aside, details) {
+  max-width: 39rem;
+}
+
+/* Narrow screens: long inline code (URLs, env strings) wraps instead of
+   pushing the page sideways; wide tables scroll inside their own region */
+.prose :where(:not(pre) > code, a):not(:where(.not-prose, .not-prose *)) {
+  overflow-wrap: anywhere;
+}
+
+.prose .table-scroll {
+  overflow-x: auto;
+  margin-block: 2em;
+  border-radius: 0.25rem;
+}
+
+.prose .table-scroll:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.prose .table-scroll > table {
+  margin-block: 0;
+}
+
+.prose :where(a):not(:where(.not-prose, .not-prose *)) {
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+
+.prose :where(a):not(:where(.not-prose, .not-prose *)):hover {
+  text-decoration-thickness: 2px;
+}
+
+/* FAQ answers (Home/Faq.astro): markdown with paragraphs, links and lists */
+.faq-answer a {
   color: var(--color-accent);
   border-bottom: 1px solid var(--color-accent);
   text-decoration: none;
 }
 
-.content a:hover,
-.content a:focus,
-.content a:active {
+.faq-answer a:hover,
+.faq-answer a:focus-visible {
   color: var(--color-primary);
-  border-bottom: 1px solid var(--color-primary);
-  text-decoration: none;
+  border-bottom-color: var(--color-primary);
 }
 
-.content p {
+.faq-answer p {
   margin: 1em 0;
   line-height: 1.5;
 }
 
-.content p code {
-  background-color: #eee;
-  padding: 0.05em 0.2em;
-  border: 1px solid #ccc;
-}
-
-/* daisyUI 5.7+ adds vertical padding to inline code in .prose; keep the previous compact look */
-:root .prose :where(code):not(pre > code) {
-  padding-block: 0;
-}
-
-.content ul {
+.faq-answer ul {
   list-style: disc;
 }
 
-.content ol {
+.faq-answer ol {
   list-style: decimal;
 }
 
-.content ol,
-.content ul {
+.faq-answer ol,
+.faq-answer ul {
   margin: 1em;
 }
 
-.content ol li ol,
-.content ol li ul,
-.content ul li ol,
-.content ul li ul {
+.faq-answer li :where(ol, ul) {
   margin: 0 2em;
 }
 
-.content ol li p,
-.content ul li p {
+.faq-answer li p {
   margin: 0;
 }
 
-.content dl {
-  font-family: monospace, monospace;
+/* Inline code: a light chip that marks code without shouting. daisyUI 5.7+
+   adds vertical padding to inline code in .prose; keep the compact look */
+:root .prose :where(code):not(pre > code) {
+  padding-block: 0;
+  padding-inline: 0.3em;
+  font-size: 0.85em;
+  border-radius: 0.3rem;
+  border-color: oklch(from var(--color-base-content) l c h / 0.12);
 }
 
-.content dl dt {
-  font-weight: bold;
+/* Code inside headings takes the heading's voice, no chip */
+:root .prose :where(h1, h2, h3, h4) :where(code) {
+  padding: 0;
+  background: none;
+  border: 0;
+  font-size: 0.9em;
 }
 
-.content dl dd {
-  margin: -1em 0 1em 1em;
+/* Only 400 and 700 are loaded: make prose weights say what renders */
+.prose :where(strong, b, th):not(:where(.not-prose, .not-prose *)) {
+  font-weight: 700;
 }
 
-.content img {
-  max-width: 100%;
-  display: block;
-  margin: 0 auto;
-  padding: 0.5em;
+.prose :where(a):not(:where(.not-prose, .not-prose *)) {
+  font-weight: 400;
 }
 
-.content blockquote {
-  padding-left: 1em;
-  font-style: italic;
-  border-left: solid 1px #fa6432;
+/* Phones: 17px body (prose default is 16px); desktop code at 15px so it
+   doesn't look shrunken next to 20px body text */
+@media (max-width: 63.99rem) {
+  .prose {
+    font-size: 1.0625rem;
+  }
+
+  /* Tablets get a wide column below lg: keep ~70 characters at 17px */
+  .prose > :where(p, ul, ol, dl, h2, h3, h4, blockquote, aside, details) {
+    max-width: 34rem;
+  }
 }
 
-.content table {
-  font-size: 1rem;
-  text-align: left;
-  caption-side: bottom;
-  margin-bottom: 2em;
+@media (min-width: 64rem) {
+  .prose {
+    --ec-codeFontSize: 0.9375rem;
+  }
 }
 
-.content table * {
-  border: none;
+/* Images break out of the text measure like code blocks do: a paragraph
+   holding only an image (optionally linked) uses the full article column.
+   Small images keep their natural size (max-width: 100%, never upscaled) */
+.prose > p:has(> img:only-child),
+.prose > p:has(> a:only-child > img:only-child) {
+  max-width: none;
 }
 
-.content table thead,
-.content table tr {
-  display: table;
-  table-layout: fixed;
-  width: 100%;
+/* Callout body sits a step below the article text */
+aside.admonition .admonition-content {
+  font-size: 0.9em;
 }
 
-.content table tr:nth-child(even) {
-  background-color: rgba(200, 200, 200, 0.2);
-}
-
-.content table tbody {
-  display: block;
-  max-height: 70vh;
-  overflow-y: auto;
-}
-
-.content table td,
-.content table th {
-  padding: 0.25em;
-}
-
-.content table,
-.content .highlight > pre,
-.content pre.example {
-  max-height: 70vh;
-  margin: 1em 0;
-  padding: 1em;
-  overflow: auto;
-  font-size: 0.85rem;
-  font-family: monospace, monospace;
-  border: 1px dashed rgba(250, 100, 50, 0.5);
+/* Star ratings: one masked element per rating (see ui/StarRating.astro).
+   Each star tile is 1rem plus a small gap; width follows the rating value */
+.star-rating {
+  --star: 1.1667rem;
+  display: inline-block;
+  flex-shrink: 0;
+  height: 1rem;
+  width: calc(var(--star) * var(--rating, 5));
+  background-color: var(--color-secondary);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 24'%3E%3Cpath fill='black' d='M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z'/%3E%3C/svg%3E")
+    left center / var(--star) 1rem repeat-x;
 }
 
 /* Admonition styles */
 aside.admonition {
   --admonition-color: var(--color-neutral);
-  border-left-width: 3px;
-  border-left-style: solid;
-  border-color: var(--admonition-color);
-  padding: 1rem;
+  /* Type is carried by the tinted surface, colored icon, and title; a hairline
+     in the same hue just defines the edge */
+  border: 1px solid oklch(from var(--admonition-color) l c h / 0.25);
+  padding: 1rem 1.25rem;
   margin: 1.5rem 0;
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
   background-color: var(--color-base-200);
 }
 
 aside.admonition .admonition-title {
   margin: 0 0 0.75rem 0;
+  overflow-wrap: anywhere;
   display: flex;
   align-items: center;
   gap: 0.5rem;
   font-size: 1rem;
   font-weight: bold;
-  text-transform: capitalize;
   color: var(--admonition-color);
 }
 
@@ -332,7 +420,7 @@ aside.admonition[data-admonition-type='important'] .admonition-title::before {
 
 /* Caution admonition */
 aside.admonition[data-admonition-type='caution'] {
-  --admonition-color: var(--color-warning);
+  --admonition-color: var(--color-caution-ink);
   background-color: oklch(from var(--color-warning) l c h / 0.1);
 }
 
@@ -343,7 +431,7 @@ aside.admonition[data-admonition-type='caution'] .admonition-title::before {
 /* Danger/Warning admonition */
 aside.admonition[data-admonition-type='danger'],
 aside.admonition[data-admonition-type='warning'] {
-  --admonition-color: var(--color-error);
+  --admonition-color: var(--color-danger-ink);
   background-color: oklch(from var(--color-error) l c h / 0.1);
 }
 

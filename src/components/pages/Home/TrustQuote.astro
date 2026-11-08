@@ -7,26 +7,30 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 ---
 
-<section id="trust-quote" class="pt-16 px-4">
+<section
+  id="trust-quote"
+  class="py-10 lg:py-12 px-4"
+  aria-label="What readers say"
+>
   <div class="swiper">
     <div class="swiper-wrapper">
       <div class="w-full swiper-slide">
         <div class="max-w-4xl mx-auto px-4 py-4 sm:px-6 lg:px-8 text-center">
           <div class="relative">
             <div
-              class="font-serif italic text-6xl text-primary absolute -top-2 -left-4 -sm:left-6 -lg:left-8"
+              class="font-serif text-6xl text-primary absolute -top-2 -left-4 sm:-left-6 lg:-left-8"
             >
               &ldquo;
             </div>
             <blockquote
-              class="font-sans text-2xl lg:text-3xl font-medium text-base-content leading-relaxed relative z-10"
+              class="font-sans text-2xl lg:text-3xl font-normal text-base-content leading-snug relative z-10"
             >
               I have learnt a lot by just going through Node.js Design
               Patterns... This is a book I recommend to my students to{' '}
               <strong>go from 0 to hero</strong> and keep it as a reference forever.
             </blockquote>
             <div
-              class="font-serif italic text-6xl text-primary absolute -bottom-12 right-2 -sm:right-6 -lg:right-8"
+              class="font-serif text-6xl text-primary absolute -bottom-12 right-2 sm:-right-6 lg:-right-8"
             >
               &rdquo;
             </div>
@@ -44,7 +48,7 @@ import 'swiper/css/pagination'
             height={256}
           />
           <div class="text-left">
-            <div class="font-serif font-semibold text-base-content">
+            <div class="font-sans font-bold text-base-content">
               David Gonzalez
             </div>
             <div class="text-base-content/70">
@@ -58,19 +62,19 @@ import 'swiper/css/pagination'
         <div class="max-w-4xl mx-auto px-4 py-4 sm:px-6 lg:px-8 text-center">
           <div class="relative">
             <div
-              class="font-serif italic text-6xl text-primary absolute -top-2 -left-4 -sm:left-6 -lg:left-8"
+              class="font-serif text-6xl text-primary absolute -top-2 -left-4 sm:-left-6 lg:-left-8"
             >
               &ldquo;
             </div>
             <blockquote
-              class="font-sans text-2xl lg:text-3xl font-medium text-base-content leading-relaxed relative z-10"
+              class="font-sans text-2xl lg:text-3xl font-normal text-base-content leading-snug relative z-10"
             >
               This book surprised me for how <strong>detailed</strong> it is… an
               <strong>excellent reference</strong> to apply design patterns in any
               <strong>real scale Node.js application</strong>.
             </blockquote>
             <div
-              class="font-serif italic text-6xl text-primary absolute -bottom-12 right-2 -sm:right-6 -lg:right-8"
+              class="font-serif text-6xl text-primary absolute -bottom-12 right-2 sm:-right-6 lg:-right-8"
             >
               &rdquo;
             </div>
@@ -88,9 +92,7 @@ import 'swiper/css/pagination'
             height={256}
           />
           <div class="text-left">
-            <div class="font-serif font-semibold text-base-content">
-              Maya Shavin
-            </div>
+            <div class="font-sans font-bold text-base-content">Maya Shavin</div>
             <div class="text-base-content/70">
               Lead Software Engineer at <strong>Salesforce</strong>
             </div>
@@ -102,19 +104,19 @@ import 'swiper/css/pagination'
         <div class="max-w-4xl mx-auto px-4 py-4 sm:px-6 lg:px-8 text-center">
           <div class="relative">
             <div
-              class="font-serif italic text-6xl text-primary absolute -top-2 -left-4 -sm:left-6 -lg:left-8"
+              class="font-serif text-6xl text-primary absolute -top-2 -left-4 sm:-left-6 lg:-left-8"
             >
               &ldquo;
             </div>
             <blockquote
-              class="font-sans text-2xl lg:text-3xl font-medium text-base-content leading-relaxed relative z-10"
+              class="font-sans text-2xl lg:text-3xl font-normal text-base-content leading-snug relative z-10"
             >
               I've read basically every Node.js book ever published, and this is <strong
                 >my personal favorite</strong
               > (and best) by far... This is a must for anyone writing code in Node.js.
             </blockquote>
             <div
-              class="font-serif italic text-6xl text-primary absolute -bottom-12 right-2 -sm:right-6 -lg:right-8"
+              class="font-serif text-6xl text-primary absolute -bottom-12 right-2 sm:-right-6 lg:-right-8"
             >
               &rdquo;
             </div>
@@ -132,7 +134,7 @@ import 'swiper/css/pagination'
             height={256}
           />
           <div class="text-left">
-            <div class="font-serif font-semibold text-base-content">
+            <div class="font-sans font-bold text-base-content">
               Joe Karlsson
             </div>
             <div class="text-base-content/70">
@@ -143,32 +145,109 @@ import 'swiper/css/pagination'
       </div>
     </div>
 
-    <div class="swiper-pagination"></div>
+    <!-- Three columns (spacer | dots | toggle) so the dots stay centred on the
+         page whether or not the pause button is shown -->
+    <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 mt-2">
+      <div aria-hidden="true"></div>
+      <div class="swiper-pagination !static !w-auto flex items-center"></div>
+      <!-- WCAG 2.2.2: auto-advancing content needs a way to pause it -->
+      <button
+        type="button"
+        id="trust-quote-toggle"
+        class="hidden justify-self-start p-1.5 rounded-full text-base-content/70 hover:text-base-content focus-visible:outline-2 focus-visible:outline-primary"
+        aria-label="Pause quotes"
+      >
+        <svg
+          class="h-4 w-4"
+          data-icon="pause"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+          ><rect x="6" y="5" width="4" height="14" rx="1"></rect><rect
+            x="14"
+            y="5"
+            width="4"
+            height="14"
+            rx="1"></rect></svg
+        >
+        <svg
+          class="h-4 w-4 hidden"
+          data-icon="play"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+          ><path
+            d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"
+          ></path></svg
+        >
+      </button>
+    </div>
   </div>
 </section>
 
 <script>
   import { Swiper } from 'swiper'
-  import { Pagination, Autoplay } from 'swiper/modules'
+  import { A11y, Autoplay, Pagination } from 'swiper/modules'
 
-  new Swiper('.swiper', {
-    modules: [Pagination, Autoplay],
+  // No autoplay at all for visitors who ask for reduced motion
+  const reduceMotion = window.matchMedia(
+    '(prefers-reduced-motion: reduce)',
+  ).matches
+
+  const swiper = new Swiper('#trust-quote .swiper', {
+    modules: [A11y, Pagination, Autoplay],
     pagination: {
-      el: '.swiper-pagination',
+      el: '#trust-quote .swiper-pagination',
       clickable: true,
     },
-    autoplay: {
-      delay: 6000,
-      disableOnInteraction: true,
-    },
+    a11y: { containerRoleDescriptionMessage: 'carousel' },
+    autoplay: reduceMotion
+      ? false
+      : { delay: 6000, disableOnInteraction: true, pauseOnMouseEnter: true },
     loop: true,
   })
+
+  const toggle = document.getElementById('trust-quote-toggle')
+  if (toggle && !reduceMotion) {
+    // The button only reflects state; Swiper's events are the source of truth
+    const showPaused = (paused: boolean) => {
+      toggle.setAttribute('aria-label', paused ? 'Play quotes' : 'Pause quotes')
+      toggle
+        .querySelector('[data-icon="pause"]')
+        ?.classList.toggle('hidden', paused)
+      toggle
+        .querySelector('[data-icon="play"]')
+        ?.classList.toggle('hidden', !paused)
+    }
+    toggle.classList.remove('hidden')
+    toggle.addEventListener('click', () => {
+      if (swiper.autoplay.running) swiper.autoplay.stop()
+      else swiper.autoplay.start()
+    })
+    // Stop rotating while a keyboard user is inside the slides
+    swiper.wrapperEl.addEventListener('focusin', () => swiper.autoplay.stop())
+    swiper.on('autoplayStop', () => showPaused(true))
+    swiper.on('autoplayStart', () => showPaused(false))
+  }
 </script>
 
 <style is:inline>
   .swiper-pagination-bullet {
     --swiper-pagination-color: var(--color-primary);
     --swiper-pagination-bullet-inactive-color: var(--color-base-content);
+  }
+
+  /* 8px dot, 24px hit area (WCAG 2.5.8): padding + content-box background */
+  #trust-quote .swiper-pagination-bullet {
+    box-sizing: content-box;
+    padding: 8px;
+    margin: 0 !important;
+    background-clip: content-box;
+  }
+
+  #trust-quote .swiper-pagination-bullet:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: -4px;
   }
 
   .swiper {

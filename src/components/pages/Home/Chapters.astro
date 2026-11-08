@@ -2,14 +2,7 @@
 import { getCollection, render } from 'astro:content'
 import Badge from '@components/ui/badge.astro'
 import Button from '@components/ui/button.astro'
-import {
-  BookOpen,
-  ChevronDown,
-  ChevronRight,
-  Clock,
-  CodeXml,
-  LockOpen,
-} from '@lucide/astro'
+import { BookOpen, ChevronDown, Clock, CodeXml, LockOpen } from '@lucide/astro'
 
 function readingTime(numWords: number): number {
   const wordsPerMinute = 180 // Average reading speed for technical content
@@ -32,13 +25,17 @@ const renderedChapters = await Promise.all(
 )
 ---
 
-<section id="chapters">
+<section id="chapters" class="pb-16 lg:pb-24">
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-12">
-      <h2 class="text-3xl lg:text-4xl font-bold text-base-content mb-4">
+      <h2
+        class="text-4xl lg:text-5xl leading-[1.1] font-bold text-base-content font-heading mb-4"
+      >
         Let's unpack each Chapter
       </h2>
-      <p class="text-xl text-base-content/70">
+      <p
+        class="text-xl lg:text-[1.375rem] leading-normal text-base-content/75 max-w-[40rem] mx-auto"
+      >
         Discover the key topics and takeaways in every chapter.
       </p>
     </div>
@@ -46,20 +43,29 @@ const renderedChapters = await Promise.all(
       {
         renderedChapters.map((chapter) => (
           <div
-            class="chapter overflow-hidden border-2 border-primary/20 hover:border-primary/50 transition-all duration-200 rounded-xl bg-card text-base-content shadow"
+            class="chapter overflow-hidden border-2 border-primary/20 hover:border-primary/50 transition-all duration-200 rounded-xl bg-base-100 text-base-content shadow"
             data-chapter-number={chapter.data.number}
             data-chapter-title={chapter.data.title}
           >
-            <div class="flex flex-col space-y-1.5 p-6 cursor-pointer bg-primary/10 hover:bg-primary/30 transition-colors">
+            <div class="relative flex flex-col space-y-1.5 p-6 bg-primary/10 hover:bg-primary/30 transition-colors">
               <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
                   <div class="shrink-0 w-10 h-10 bg-primary text-primary-content rounded-full flex items-center justify-center text-sm font-bold">
                     {chapter.data.number}
                   </div>
                   <div>
-                    <div class="font-semibold leading-none tracking-tight text-lg text-left">
-                      {chapter.data.title}
-                    </div>
+                    {/* A real button (stretched over the header via ::after) so
+                        chapters open with the keyboard as well as the mouse */}
+                    <h3 class="font-heading font-bold leading-snug text-xl text-left">
+                      <button
+                        type="button"
+                        class="chapter-toggle text-left cursor-pointer after:absolute after:inset-0 focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:-outline-offset-2 focus-visible:after:outline-primary focus-visible:after:rounded-t-xl"
+                        aria-expanded="true"
+                        aria-controls={`chapter-${chapter.data.number}-content`}
+                      >
+                        {chapter.data.title}
+                      </button>
+                    </h3>
                     <p class="text-sm text-base-content/70 mt-1">
                       {chapter.data.description}
                     </p>
@@ -84,14 +90,19 @@ const renderedChapters = await Promise.all(
                   </div>
 
                   <div>
-                    <ChevronDown class="chapter-close h-5 w-5 text-primary" />
-                    <ChevronRight class="chapter-open h-5 w-5 text-primary hidden" />
+                    <ChevronDown
+                      aria-hidden="true"
+                      class="chapter-chevron h-5 w-5 text-primary motion-safe:transition-transform motion-safe:duration-200"
+                    />
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="chapter-content overflow-hidden">
+            <div
+              id={`chapter-${chapter.data.number}-content`}
+              class="chapter-content overflow-hidden"
+            >
               <div class="p-6 pt-0 border-t border-primary/10">
                 <div class="py-4">
                   <div class="text-base-content/70 leading-relaxed mb-4 flex flex-col gap-2">
@@ -112,20 +123,20 @@ const renderedChapters = await Promise.all(
                   <div class="flex flex-wrap gap-4 text-sm">
                     <div class="flex items-center space-x-2 text-accent">
                       <Clock class="h-4 w-4" />
-                      <span class="font-medium">
+                      <span class="font-normal">
                         Reading time: {readingTime(chapter.data.numWords)} min
                       </span>
                     </div>
                     <div class="flex items-center space-x-2 text-accent">
                       <CodeXml class="h-4 w-4" />
-                      <span class="font-medium">
+                      <span class="font-normal">
                         {chapter.data.numExamples} practical examples
                       </span>
                     </div>
                     {chapter.data.numExercises > 0 && (
                       <div class="flex items-center space-x-2 text-accent">
                         <BookOpen class="h-4 w-4" />
-                        <span class="font-medium">
+                        <span class="font-normal">
                           {chapter.data.numExercises} Chapter exercises included
                         </span>
                       </div>
@@ -146,9 +157,10 @@ const renderedChapters = await Promise.all(
   const chapters = document.querySelectorAll('.chapter')
 
   chapters.forEach((chapter) => {
-    const chapterClose = chapter.querySelector('.chapter-close')
-    const chapterOpen = chapter.querySelector('.chapter-open')
+    // One chevron: points down when collapsed, flips up when expanded
+    const chevron = chapter.querySelector('.chapter-chevron')
     const chapterContent = chapter.querySelector('.chapter-content')
+    const toggle = chapter.querySelector('.chapter-toggle')
 
     // Get chapter data for analytics
     const chapterElement = chapter as HTMLElement
@@ -159,16 +171,15 @@ const renderedChapters = await Promise.all(
     const chapterTitle = chapterElement.dataset.chapterTitle || ''
 
     chapterContent?.classList.add('hidden')
-    chapterClose?.classList.add('hidden')
-    chapterOpen?.classList.remove('hidden')
+    toggle?.setAttribute('aria-expanded', 'false')
 
     let status: 'open' | 'closed' = 'closed'
-    chapter.addEventListener('click', () => {
+    toggle?.addEventListener('click', () => {
       if (status === 'closed') {
         chapterContent?.classList.remove('hidden')
-        chapterClose?.classList.remove('hidden')
-        chapterOpen?.classList.add('hidden')
+        chevron?.classList.add('rotate-180')
         status = 'open'
+        toggle?.setAttribute('aria-expanded', 'true')
 
         // Track chapter expansion
         trackViewChapterDetails({
@@ -177,9 +188,9 @@ const renderedChapters = await Promise.all(
         })
       } else {
         chapterContent?.classList.add('hidden')
-        chapterClose?.classList.add('hidden')
-        chapterOpen?.classList.remove('hidden')
+        chevron?.classList.remove('rotate-180')
         status = 'closed'
+        toggle?.setAttribute('aria-expanded', 'false')
       }
     })
   })

@@ -1,41 +1,72 @@
 ---
 import Button from '@components/ui/button.astro'
 import { Book, TabletSmartphone } from '@lucide/astro'
-import { BUY_LINK_PRINT, BUY_LINK_EBOOK } from '@lib/const'
+import {
+  BUY_LINK_PRINT,
+  BUY_LINK_EBOOK,
+  BUY_LINK_PACKT,
+  BOOK_EDITION,
+  BOOK_PUBLICATION_DATE,
+} from '@lib/const'
 import type { ButtonLocation } from '@lib/analytics'
 
 interface Props {
   location?: ButtonLocation
+  align?: 'start' | 'center'
 }
 
-const { location = 'hero' } = Astro.props
+const { location = 'hero', align = 'start' } = Astro.props
+
+// "October 2025": tells buyers this is the current edition before they leave
+const publishedOn = new Date(BOOK_PUBLICATION_DATE).toLocaleDateString(
+  'en-US',
+  { month: 'long', year: 'numeric', timeZone: 'UTC' },
+)
 ---
 
 <div
-  class="buy-buttons-container flex flex-col sm:flex-row gap-4"
-  data-analytics-location={location}
+  class:list={[
+    'flex flex-col gap-3',
+    align === 'center' ? 'items-center text-center' : 'items-start',
+  ]}
 >
-  <Button
-    element="a"
-    href={BUY_LINK_PRINT}
-    variant="primary"
-    size="lg"
-    data-analytics-format="print"
+  <div
+    class="buy-buttons-container flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
+    data-analytics-location={location}
   >
-    <Book class="mr-2 h-5 w-5" />
-    Buy print
-  </Button>
+    <Button
+      element="a"
+      href={BUY_LINK_PRINT}
+      variant="primary"
+      size="lg"
+      data-analytics-format="print"
+    >
+      <Book class="mr-2 h-5 w-5" />
+      Buy print
+    </Button>
 
-  <Button
-    element="a"
-    href={BUY_LINK_EBOOK}
-    variant="default"
-    size="lg"
-    data-analytics-format="ebook"
-  >
-    <TabletSmartphone class="mr-2 h-5 w-5" />
-    Buy e-book
-  </Button>
+    <Button
+      element="a"
+      href={BUY_LINK_EBOOK}
+      variant="default"
+      size="lg"
+      data-analytics-format="ebook"
+    >
+      <TabletSmartphone class="mr-2 h-5 w-5" />
+      Buy e-book
+    </Button>
+  </div>
+  <!-- Reassurance at the buy moment: which edition, and where the buttons go -->
+  <p class="text-sm text-base-content/75">
+    {BOOK_EDITION}, {publishedOn} · Print and Kindle on Amazon · also from{' '}
+    <a
+      href={BUY_LINK_PACKT}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-block py-1 -my-1 font-bold underline underline-offset-2 hover:text-primary"
+      >Packt</a
+    >
+  </p>
 </div>
 
 <script>

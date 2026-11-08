@@ -1,38 +1,93 @@
 ---
-import { AnimatedCounter } from '@components/AnimatedCounter.tsx'
 import { EXAMPLES, EXERCISES, PAGES, READERS } from '@lib/const.ts'
 import { Book, LaptopMinimalCheck, Swords, Users } from '@lucide/astro'
+
+// 30000 -> "30k", 732 -> "732". Shared with the count-up script below.
+const formatCount = (n: number) =>
+  n >= 1000 ? `${(n / 1000).toFixed(1).replace(/\.0$/, '')}k` : String(n)
+
+const counters = [
+  { value: READERS, suffix: '+', label: 'Happy Developers', Icon: Users },
+  { value: PAGES, suffix: '', label: 'Pages of Content', Icon: Book },
+  {
+    value: EXAMPLES,
+    suffix: '',
+    label: 'Working Examples',
+    Icon: LaptopMinimalCheck,
+  },
+  { value: EXERCISES, suffix: '', label: 'Practice Exercises', Icon: Swords },
+]
 ---
 
 <section
   id="counters"
-  class="py-12 bg-base-200/50 border-b border-t border-base-200/70"
+  class="py-10 lg:py-12 bg-base-200/50 border-b border-t border-base-200/70"
 >
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
-      <AnimatedCounter value={READERS} suffix="+" client:load>
-        <div class="flex gap-2 justify-center">
-          <Users class="h-4 w-4" /> Happy Developers
-        </div>
-      </AnimatedCounter>
-
-      <AnimatedCounter value={PAGES} client:load>
-        <div class="flex gap-2 justify-center">
-          <Book class="h-4 w-4" /> Pages of Content
-        </div>
-      </AnimatedCounter>
-
-      <AnimatedCounter value={EXAMPLES} client:load>
-        <div class="flex gap-2 justify-center">
-          <LaptopMinimalCheck class="h-4 w-4" /> Working Examples
-        </div>
-      </AnimatedCounter>
-
-      <AnimatedCounter value={EXERCISES} client:load>
-        <div class="flex gap-2 justify-center">
-          <Swords class="h-4 w-4" /> Practice Exercises
-        </div>
-      </AnimatedCounter>
-    </div>
+    <dl class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+      {
+        counters.map(({ value, suffix, label, Icon }) => (
+          <div class="flex flex-col-reverse text-center">
+            <dt class="flex gap-2 justify-center items-center font-sans text-sm lg:text-base text-base-content/80 font-bold">
+              <Icon class="h-4 w-4" aria-hidden="true" /> {label}
+            </dt>
+            <dd class="font-heading text-4xl lg:text-5xl leading-none font-bold text-primary mb-3 tabular-nums">
+              {/* Final value is in the HTML so crawlers and no-JS visitors see it */}
+              <span data-count-to={value} data-suffix={suffix}>
+                {formatCount(value) + suffix}
+              </span>
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
   </div>
 </section>
+
+<script>
+  // Count up from zero the first time the numbers scroll into view.
+  // Skipped entirely when the visitor prefers reduced motion.
+  const formatCount = (n: number) =>
+    n >= 1000 ? `${(n / 1000).toFixed(1).replace(/\.0$/, '')}k` : String(n)
+
+  const reduceMotion = window.matchMedia(
+    '(prefers-reduced-motion: reduce)',
+  ).matches
+  const els = document.querySelectorAll<HTMLElement>('[data-count-to]')
+
+  if (!reduceMotion && 'IntersectionObserver' in window) {
+    const animate = (el: HTMLElement) => {
+      const target = Number(el.dataset.countTo)
+      const duration = 1600
+      const start = performance.now()
+      const step = (now: number) => {
+        const t = Math.min((now - start) / duration, 1)
+        const eased = 1 - Math.pow(1 - t, 4) // ease-out quart
+        el.textContent =
+          formatCount(t < 1 ? Math.floor(target * eased) : target) +
+          (el.dataset.suffix ?? '')
+        if (t < 1) requestAnimationFrame(step)
+      }
+      requestAnimationFrame(step)
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue
+          observer.unobserve(entry.target)
+          animate(entry.target as HTMLElement)
+        }
+      },
+      { threshold: 0.3 },
+    )
+
+    els.forEach((el) => {
+      // Only reset to 0 if it's not already on screen (avoids a visible flash)
+      if (el.getBoundingClientRect().top > window.innerHeight) {
+        el.textContent = '0' + (el.dataset.suffix ?? '')
+      }
+      observer.observe(el)
+    })
+  }
+</script>

@@ -1,5 +1,6 @@
 ---
 import { Picture } from 'astro:assets'
+
 import { Code } from 'astro-expressive-code/components'
 import casualManReading from '@images/mktg/casual-man-reading1.png'
 import githubCommunity from '@images/mktg/github-community.png'
@@ -80,24 +81,26 @@ server.listen(args.http)`
 
 <section
   id="process"
-  class="bg-gradient-to-br from-primary/10 to-primary/20 py-16 sm:py-32 mt-16"
+  class="bg-gradient-to-br from-primary/10 to-primary/20 py-16 lg:py-24"
 >
-  <div class="mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8">
+  <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
     <h2
-      class="mx-auto mt-2 max-w-lg text-center text-4xl font-semibold tracking-tight text-balance text-base-content sm:text-5xl"
+      class="mx-auto mt-2 max-w-2xl text-center text-4xl lg:text-5xl leading-[1.1] font-bold text-base-content font-heading"
     >
       Why Choose Node.js Design Patterns?
     </h2>
 
     <div class="mt-10 grid gap-4 sm:mt-16 lg:grid-cols-3 lg:grid-rows-2">
       <div class="bg-base-100 lg:order-1 p-8">
-        <p class="mt-2 text-xl font-bold tracking-tight text-base-content">
+        <h3
+          class="mt-2 font-heading text-2xl leading-tight font-bold text-base-content"
+        >
           Master the Full Node.js Ecosystem
-        </p>
+        </h3>
         <p class="mt-2 max-w-lg text-lg text-base-content/80">
           Get a complete 360° understanding of Node.js, from core principles to
-          advanced architecture. With 660 pages of theory, practical insights,
-          and real-world examples, you'll gain the skills to write scalable and
+          advanced architecture. Through theory, practical insights, and
+          real-world examples, you'll gain the skills to write scalable and
           maintainable Node.js applications.
         </p>
       </div>
@@ -116,9 +119,11 @@ server.listen(args.http)`
       </div>
 
       <div class="bg-base-100 lg:order-5 p-8">
-        <p class="mt-2 text-xl font-bold tracking-tight text-base-content">
+        <h3
+          class="mt-2 font-heading text-2xl leading-tight font-bold text-base-content"
+        >
           Realistic code examples
-        </p>
+        </h3>
         <p class="mt-2 max-w-lg text-lg text-base-content/80">
           Each topic in the book is introduced with practical, real-world
           applications. You'll learn by building projects like a website
@@ -132,7 +137,10 @@ server.listen(args.http)`
 
       <div class="bg-secondary lg:order-2 h-[600px] lg:h-auto">
         <div class="relative h-full w-full grow">
-          <div class="absolute top-4 right-0 bottom-0 left-4 overflow-auto">
+          <!-- Smaller code size so the longest line fits the card -->
+          <div
+            class="absolute top-4 right-0 bottom-0 left-4 overflow-auto [--ec-codeFontSize:0.7rem]"
+          >
             <Code
               lang="js"
               code={code1}
@@ -145,9 +153,11 @@ server.listen(args.http)`
       </div>
 
       <div class="bg-base-100 lg:order-3 p-8">
-        <p class="mt-2 text-xl font-bold tracking-tight text-base-content">
+        <h3
+          class="mt-2 font-heading text-2xl leading-tight font-bold text-base-content"
+        >
           Learn with the Community
-        </p>
+        </h3>
         <p class="mt-2 max-w-lg text-lg text-base-content/80">
           Every chapter includes hands-on exercises to help you solidify your
           knowledge and apply it to real projects. You don't have to tackle them
@@ -156,7 +166,14 @@ server.listen(args.http)`
         </p>
       </div>
 
-      <div class="bg-base-100 lg:order-6">
+      <!-- The screenshot is much wider than the cell: keep it legible and fade
+           the cropped edge into its own background (#22282f) -->
+      <div class="relative bg-[#22282f] lg:order-6">
+        <div
+          class="pointer-events-none absolute inset-y-0 right-0 z-10 w-1/3 bg-gradient-to-r from-transparent to-[#22282f]"
+          aria-hidden="true"
+        >
+        </div>
         <Picture
           formats={['avif', 'webp', 'png']}
           layout="fixed"

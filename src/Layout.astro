@@ -27,6 +27,7 @@ export interface Props {
   ogType?: string
   ogDescription?: string
   ogImage?: string
+  ogImageAlt?: string
   canonical?: string
   additionalSchema?: object | object[]
   noindex?: boolean
@@ -39,6 +40,7 @@ const {
   ogType = OG_TYPE,
   ogDescription = OG_DESCRIPTION,
   ogImage = OG_IMAGE,
+  ogImageAlt = OG_IMAGE_ALT,
   canonical,
   additionalSchema,
   noindex = false,
@@ -95,7 +97,7 @@ const {
     <meta property="og:title" content={ogTitle} />
     <meta property="og:description" content={ogDescription} />
     <meta property="og:image" content={new URL(ogImage, SITE_URL)} />
-    <meta property="og:image:alt" content={OG_IMAGE_ALT} />
+    <meta property="og:image:alt" content={ogImageAlt} />
     <meta property="og:site_name" content="Node.js Design Patterns" />
     <meta property="og:locale" content="en_US" />
 
@@ -105,7 +107,7 @@ const {
     <meta property="twitter:title" content={ogTitle} />
     <meta property="twitter:description" content={ogDescription} />
     <meta property="twitter:image" content={new URL(ogImage, SITE_URL)} />
-    <meta property="twitter:image:alt" content={OG_IMAGE_ALT} />
+    <meta property="twitter:image:alt" content={ogImageAlt} />
     <meta property="twitter:site" content={TWITTER_SITE} />
     <meta property="twitter:creator" content={TWITTER_CREATOR} />
 
@@ -162,6 +164,24 @@ const {
         ))
     }
 
+    <!-- Apply the saved theme before first paint (module scripts run after
+         parsing, which flashed the wrong theme). Mirrors lib/theme.ts -->
+    <script is:inline>
+      try {
+        var saved = localStorage.getItem('theme')
+        var actual =
+          saved === 'light' || saved === 'dark'
+            ? saved
+            : matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light'
+        document.documentElement.dataset.theme = actual
+        document.documentElement.dataset.codeTheme =
+          actual === 'dark' ? 'material-theme-ocean' : 'min-light'
+      } catch {
+        // Storage blocked: lib/theme.ts falls back to the OS preference
+      }
+    </script>
     <script>
       import { initTheme } from './lib/theme.ts'
       initTheme()
@@ -245,15 +265,24 @@ const {
         initLinkClickTracking()
       }
     </script>
-    <Font cssVariable="--font-base-sans" preload />
-    <Font cssVariable="--font-base-serif" preload />
-    <Font cssVariable="--font-base-mono" preload />
+    <!-- Preload only what paints above the fold: body text and bold headings -->
+    <Font
+      cssVariable="--font-base-sans"
+      preload={[{ weight: 400, style: 'normal' }]}
+    />
+    <Font cssVariable="--font-base-serif" preload={[{ style: 'normal' }]} />
+    <Font cssVariable="--font-base-mono" />
 
     {import.meta.env.PROD && <Analytics />}
   </head>
   <body
     class="antialiased transition-colors duration-300 bg-base-100 text-base-content"
   >
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-md focus:bg-base-100 focus:px-4 focus:py-2 focus:text-base-content focus:font-bold focus:shadow-lg focus:outline-2 focus:outline-primary"
+      >Skip to content</a
+    >
     <Navigation />
     <ThemeSelector />
     <slot />

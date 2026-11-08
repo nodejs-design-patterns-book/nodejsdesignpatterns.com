@@ -1,26 +1,25 @@
 ---
 import { Picture } from 'astro:assets'
-import BuyButtons from '@components/pages/Home/components/BuyButtons.astro'
 import businessManImage from '@images/mktg/business-man-1.png'
 import { Construction } from '@lucide/astro'
 ---
 
 <section id="problem-statement" class="bg-base-100 bg-circuit">
-  <div class="relative max-w-7xl mx-auto px-6 py-16 lg:py-24">
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
     <!-- Main Headline -->
     <div class="text-center mb-12">
       <p class="text-accent text-4xl lg:text-6xl font-bold font-heading mb-6">
         <Construction class="inline-block h-9 w-9 ml-2" />
       </p>
       <h2
-        class="text-4xl lg:text-6xl font-heading font-bold text-base-content mb-8 leading-tight"
+        class="text-3xl lg:text-5xl font-heading font-bold text-base-content mb-8 leading-[1.1]"
       >
         Building <span class="text-primary">modern</span>, <span
           class="text-primary">reliable</span
         >, and <span class="text-primary">extensible</span> web applications is still
         surprisingly
         <span
-          class="text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text"
+          class="underline decoration-secondary decoration-[0.1em] underline-offset-[0.12em]"
           >hard</span
         >!
       </h2>
@@ -31,7 +30,7 @@ import { Construction } from '@lucide/astro'
 
     <!-- Problem Statement -->
     <div
-      class="max-w-6xl justify-self-center bg-base-100/80 rounded-2xl p-8 lg:p-12 shadow border border-base-300/50 mb-12"
+      class="max-w-3xl mx-auto justify-self-center bg-base-100/80 rounded-2xl p-8 lg:p-12 shadow border border-base-300/50 mb-12"
     >
       <p
         class="text-lg lg:text-xl text-base-content/90 font-sans leading-relaxed mb-8"
@@ -153,22 +152,6 @@ import { Construction } from '@lucide/astro'
           />
         </div>
       </div>
-    </div>
-
-    <!-- Call to Action -->
-    <div class="text-center mb-12">
-      <h2
-        class="text-3xl lg:text-4xl font-bold text-base-content font-heading mb-6"
-      >
-        Stop stitching together half-solutions.
-      </h2>
-      <p class="text-2xl lg:text-3xl text-base-content/80 font-heading">
-        Start learning Node.js the way it was meant to be learned.
-      </p>
-    </div>
-
-    <div class="flex justify-center">
-      <BuyButtons location="problem_statement" />
     </div>
   </div>
 </section>

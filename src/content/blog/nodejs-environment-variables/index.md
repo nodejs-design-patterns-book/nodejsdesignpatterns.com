@@ -542,6 +542,8 @@ const safeChild = spawn('node', ['worker.js'], {
 A child process running user-provided code with access to `DATABASE_URL` and `API_SECRET` is a security risk. Always pass only the variables the child process actually needs.
 :::
 
+The same idea applies to your own process, too: every dependency you install can read `process.env`. Starting with Node.js 27, the Permission Model supports `--allow-env`, which scrubs any environment variable you don't explicitly allow before your code runs. We show how it works in [What's new in Node.js 27](/blog/whats-new-in-nodejs-27/#permission-model-gets---allow-env).
+
 ### Secrets Management in Production
 
 Environment variables are the right abstraction for passing configuration to your application, but storing and managing those secrets requires dedicated tooling in production:

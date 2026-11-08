@@ -35,10 +35,10 @@ const faqPageSchema = generateFAQPageSchema(faqSchemaItems)
 
 <section id="faq" class="bg-base-100 py-16 lg:py-24">
   <script type="application/ld+json" set:html={JSON.stringify(faqPageSchema)} />
-  <div class="max-w-7xl mx-auto px-6">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="max-w-4xl mx-auto text-center mb-16">
       <h2
-        class="text-4xl lg:text-5xl font-bold text-base-content font-heading mb-6"
+        class="text-4xl lg:text-5xl leading-[1.1] font-bold text-base-content font-heading mb-6"
       >
         FAQ
       </h2>
@@ -47,9 +47,12 @@ const faqPageSchema = generateFAQPageSchema(faqSchemaItems)
       </p>
     </div>
 
-    <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+    <!-- Questions get the wider column; the photo stays in view beside them -->
+    <div
+      class="grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-12 lg:gap-16 items-start"
+    >
       <!-- Left Content -->
-      <div class="flex justify-center">
+      <div class="flex justify-center lg:sticky lg:top-24">
         <Picture
           formats={['avif', 'webp', 'png']}
           layout="none"
@@ -74,13 +77,19 @@ const faqPageSchema = generateFAQPageSchema(faqSchemaItems)
                 class="accordion border-t-1 border-t-base-200 first:border-t-0 pt-4 first:pt-0"
                 id={faqItem.id}
               >
-                <button class="accordion-toggle group flex text-xl font-serif leading-8 w-full cursor-pointer">
-                  <h5 class="font-bold text-left group-hover:text-primary">
-                    {faqItem.data.question}
-                  </h5>
-                  <div class="flex grow justify-end">
+                <h3 class="text-xl font-serif leading-8">
+                  <button
+                    type="button"
+                    id={`${faqItem.id}-toggle`}
+                    aria-controls={`${faqItem.id}-content`}
+                    class="accordion-toggle group flex w-full gap-4 font-bold text-left cursor-pointer rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+                  >
+                    <span class="group-hover:text-primary">
+                      {faqItem.data.question}
+                    </span>
                     <svg
-                      class="accordion-icon text-base-content transition duration-500 group-hover:text-primary accordion-active:rotate-180"
+                      aria-hidden="true"
+                      class="accordion-icon ml-auto mt-1.5 shrink-0 text-base-content transition duration-500 group-hover:text-primary"
                       width="22"
                       height="22"
                       viewBox="0 0 22 22"
@@ -95,12 +104,13 @@ const faqPageSchema = generateFAQPageSchema(faqSchemaItems)
                         stroke-linejoin="round"
                       />
                     </svg>
-                  </div>
-                </button>
+                  </button>
+                </h3>
                 <div
                   id={`${faqItem.id}-content`}
-                  class="content accordion-content w-full px-0 pr-4 active"
-                  aria-labelledby={faqItem.id}
+                  role="region"
+                  class="faq-answer accordion-content w-full px-0 pr-4 active"
+                  aria-labelledby={`${faqItem.id}-toggle`}
                 >
                   <faqItem.Content />
                 </div>
@@ -120,18 +130,16 @@ const faqPageSchema = generateFAQPageSchema(faqSchemaItems)
     const toggle = accordion.querySelector('.accordion-toggle')
     const toggleIcon = toggle?.querySelector('.accordion-icon')
     const content = accordion.querySelector('.accordion-content')
+    // Answers stay visible without JS; collapse them once the script runs
     content?.classList.add('hidden')
+    toggle?.setAttribute('aria-expanded', 'false')
 
     toggle?.addEventListener('click', () => {
       const isOpen = !content?.classList.contains('hidden')
 
-      if (!isOpen) {
-        content?.classList.remove('hidden')
-        toggleIcon?.classList.add('-rotate-180')
-      } else {
-        content?.classList.add('hidden')
-        toggleIcon?.classList.remove('-rotate-180')
-      }
+      content?.classList.toggle('hidden', isOpen)
+      toggleIcon?.classList.toggle('-rotate-180', !isOpen)
+      toggle.setAttribute('aria-expanded', String(!isOpen))
     })
   })
 </script>

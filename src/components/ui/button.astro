@@ -4,16 +4,16 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md transition-all duration-200 ease-in-out hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 font-bold',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md transition-all duration-200 ease-in-out motion-safe:hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 font-bold',
   {
     variants: {
       variant: {
         default:
-          'btn bg-base-content text-base-100 shadow hover:bg-base-content/90 shadow-md hover:shadow-lg hover:shadow-base-content/25 border-0',
+          'btn bg-base-content text-base-100 dark:bg-neutral dark:text-neutral-content shadow hover:bg-base-content/90 dark:hover:bg-neutral/80 shadow-md hover:shadow-lg hover:shadow-base-content/25 border-0',
         primary:
-          'btn bg-primary text-white dark:text-white hover:bg-primary-focus border-2 border-primary/20 hover:border-primary/40 shadow-md hover:shadow-lg hover:shadow-primary/25',
+          'btn bg-primary text-primary-content hover:bg-primary/90 border-2 border-primary/20 hover:border-primary/40 shadow-md hover:shadow-lg hover:shadow-primary/25',
         secondary:
-          'btn bg-secondary text-secondary-content shadow hover:bg-secondary-focus hover:shadow-lg hover:shadow-secondary/20 border-0',
+          'btn bg-secondary text-secondary-content shadow hover:bg-secondary/90 hover:shadow-lg hover:shadow-secondary/20 border-0',
         destructive:
           'btn bg-error text-error-content shadow hover:bg-error-content hover:text-error border-0',
         ghost:
@@ -23,7 +23,7 @@ const buttonVariants = cva(
       },
       size: {
         default: 'btn-md px-4 py-2 text-sm',
-        sm: 'btn-sm px-3 py-1.5 text-xs',
+        sm: 'btn-sm px-3 py-1.5 text-sm',
         md: 'btn-md px-4 py-2 text-sm',
         lg: 'btn-lg px-6 py-3 text-base',
         icon: 'btn-square btn-md w-10 h-10',

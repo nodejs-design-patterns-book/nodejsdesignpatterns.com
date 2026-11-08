@@ -8,6 +8,7 @@ import { defineConfig, fontProviders } from 'astro/config'
 import expressiveCode from 'astro-expressive-code'
 import remarkDirective from 'remark-directive' /* Handle ::: directives as nodes */
 import { remarkAdmonitions } from './src/plugins/remark-admonitions' /* Add admonitions */
+import { remarkTableScroll } from './src/plugins/remark-table-scroll' /* Scrollable tables on mobile */
 
 // https://astro.build/config
 export default defineConfig({
@@ -20,7 +21,7 @@ export default defineConfig({
     /* Explicitly use the remark/rehype pipeline (instead of Astro 7's default
        Sätteri) since admonitions depend on remark plugins */
     processor: unified({
-      remarkPlugins: [remarkDirective, remarkAdmonitions],
+      remarkPlugins: [remarkDirective, remarkAdmonitions, remarkTableScroll],
     }),
   },
   vite: {
@@ -31,16 +32,27 @@ export default defineConfig({
       provider: fontProviders.google(),
       name: 'Hanuman',
       cssVariable: '--font-base-serif',
+      /* Headings are bold; 400 is used by the FAQ toggles and quote marks.
+         Without 700 the browser fakes bold by smearing the 400 outlines */
+      weights: [400, 700],
+      styles: ['normal'],
+      fallbacks: ['serif'],
     },
     {
       provider: fontProviders.google(),
       name: 'Atkinson Hyperlegible',
       cssVariable: '--font-base-sans',
+      weights: [400, 700],
+      styles: ['normal', 'italic'],
+      fallbacks: ['sans-serif'],
     },
     {
       provider: fontProviders.google(),
       name: 'Cascadia Mono',
       cssVariable: '--font-base-mono',
+      weights: [400, 700],
+      styles: ['normal', 'italic'],
+      fallbacks: ['monospace'],
     },
   ],
 })

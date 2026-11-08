@@ -1,24 +1,24 @@
 ---
 import { Picture } from 'astro:assets'
 import mockup1 from '@images/mktg/mockup1.png'
-import { CHAPTERS, EXAMPLES, EXERCISES, PAGES } from '@lib/const.ts'
+import { CHAPTERS } from '@lib/const.ts'
 import { Book, Brain, Building, Code, TestTube, Zap } from '@lucide/astro'
 ---
 
-<section id="whats-inside" class="bg-base-100 pt-16 lg:pt-24">
-  <div class="max-w-6xl mx-auto px-6">
+<section id="whats-inside" class="bg-base-100 pt-16 lg:pt-24 pb-10 lg:pb-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Section Header -->
     <div class="text-center mb-16">
       <h2
-        class="text-4xl lg:text-5xl font-bold text-base-content font-heading mb-8"
+        class="text-4xl lg:text-5xl leading-[1.1] font-bold text-base-content font-heading mb-8"
       >
         What's Inside
       </h2>
     </div>
 
     <!-- Key Stats -->
-    <div class="grid md:grid-cols-3 gap-8 mb-16">
-      <!-- 660 Pages -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+      <!-- Depth -->
       <div
         class="bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl p-8 text-center border border-primary/20"
       >
@@ -26,19 +26,16 @@ import { Book, Brain, Building, Code, TestTube, Zap } from '@lucide/astro'
           <Book class="w-12 h-12 text-primary" />
         </div>
         <h3 class="text-2xl font-bold text-base-content font-heading mb-2">
-          {CHAPTERS} Chapters
-        </h3>
-        <p class="text-lg font-semibold text-primary mb-4">
           All Signal, No Filler
-        </p>
+        </h3>
         <p class="text-base text-base-content/80 font-sans leading-relaxed">
-          With more than {PAGES} pages packed with practical knowledge, you'll find
-          clear explanations, real-world context, and insights that guide you from
-          the basics to advanced Node.js techniques, no matter your current level.
+          Clear explanations, real-world context, and insights that guide you
+          from the basics to advanced Node.js techniques, no matter your current
+          level.
         </p>
       </div>
 
-      <!-- 150+ Code Examples -->
+      <!-- Hands-on code -->
       <div
         class="bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl p-8 text-center border border-primary/20"
       >
@@ -46,9 +43,8 @@ import { Book, Brain, Building, Code, TestTube, Zap } from '@lucide/astro'
           <Code class="w-12 h-12 text-primary" />
         </div>
         <h3 class="text-2xl font-bold text-base-content font-heading mb-2">
-          {EXAMPLES}+ Code Examples
+          Learn by Doing
         </h3>
-        <p class="text-lg font-semibold text-primary mb-4">Learn by Doing</p>
         <p class="text-base text-base-content/80 font-sans leading-relaxed">
           Every concept is backed by working code. Follow step-by-step examples
           and build your skills through hands-on challenges that reinforce what
@@ -56,7 +52,7 @@ import { Book, Brain, Building, Code, TestTube, Zap } from '@lucide/astro'
         </p>
       </div>
 
-      <!-- 50+ Exercises -->
+      <!-- Practice -->
       <div
         class="bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl p-8 text-center border border-primary/20"
       >
@@ -64,11 +60,8 @@ import { Book, Brain, Building, Code, TestTube, Zap } from '@lucide/astro'
           <Brain class="w-12 h-12 text-primary" />
         </div>
         <h3 class="text-2xl font-bold text-base-content font-heading mb-2">
-          {EXERCISES}+ Exercises
-        </h3>
-        <p class="text-lg font-semibold text-primary mb-4">
           Master the Material
-        </p>
+        </h3>
         <p class="text-base text-base-content/80 font-sans leading-relaxed">
           At the end of each chapter, sharpen your skills with practical
           exercises designed to test and solidify your understanding.
@@ -78,9 +71,9 @@ import { Book, Brain, Building, Code, TestTube, Zap } from '@lucide/astro'
 
     <!-- More Than Just Design Patterns -->
     <div
-      class="bg-base-100/80 rounded-2xl p-8 lg:p-12 shadow border border-base-300/50 mb-12"
+      class="bg-base-100/80 rounded-2xl p-8 lg:p-12 shadow border border-base-300/50"
     >
-      <div class="grid lg:grid-cols-2 gap-12 items-start">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
         <!-- Content -->
         <div>
           <h3
@@ -89,13 +82,13 @@ import { Book, Brain, Building, Code, TestTube, Zap } from '@lucide/astro'
             More Than Just Design Patterns
           </h3>
           <p
-            class="text-xl lg:text-2xl text-base-content/90 font-sans leading-relaxed mb-8"
+            class="text-xl lg:text-[1.375rem] leading-normal text-base-content/85 max-w-[40rem] mb-8"
           >
             This is the comprehensive guide to writing professional-grade
             Node.js applications.
           </p>
           <p
-            class="text-lg text-base-content/80 font-sans leading-relaxed mb-8"
+            class="text-lg leading-relaxed text-base-content/80 max-w-[40rem] mb-8"
           >
             With <strong>{CHAPTERS} deeply researched chapters</strong>, you'll
             learn:
