@@ -317,6 +317,14 @@
   }
 }
 
+/* Images break out of the text measure like code blocks do: a paragraph
+   holding only an image (optionally linked) uses the full article column.
+   Small images keep their natural size (max-width: 100%, never upscaled) */
+.prose > p:has(> img:only-child),
+.prose > p:has(> a:only-child > img:only-child) {
+  max-width: none;
+}
+
 /* Callout body sits a step below the article text */
 aside.admonition .admonition-content {
   font-size: 0.9em;
