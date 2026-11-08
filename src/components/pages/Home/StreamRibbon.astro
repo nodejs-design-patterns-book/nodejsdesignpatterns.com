@@ -1,0 +1,131 @@
+---
+/**
+ * The flowing line ribbon from the book cover, redrawn as SVG linework.
+ *
+ * Every line is generated at build time (no client JS to draw it). A few of
+ * the lines carry short dashes that travel along them: data "chunks" moving
+ * through a stream, which is what the free chapter (Chapter 6) is about.
+ * The flow only runs while the ribbon is on screen and never with reduced
+ * motion (see the script and CSS below).
+ */
+interface Props {
+  class?: string
+}
+
+const { class: className = '' } = Astro.props
+
+const W = 1600
+const H = 800
+const LINES = 26
+const SAMPLES = 80
+
+const lines = Array.from({ length: LINES }, (_, i) => {
+  const t = i / (LINES - 1)
+  const points: string[] = []
+  for (let s = 0; s <= SAMPLES; s++) {
+    const u = s / SAMPLES
+    const x = u * W
+    // A main swell, plus a spread term that pinches and widens the ribbon
+    // (the "twist" on the cover), plus a small ripple per line
+    const y =
+      H * 0.5 +
+      150 * Math.sin(2 * Math.PI * u * 1.15 + 0.6) +
+      (t - 0.5) * 320 * Math.cos(2 * Math.PI * u * 0.85 + 1.2) +
+      36 * Math.sin(2 * Math.PI * u * 2.3 + t * 2.4)
+    points.push(`${x.toFixed(1)} ${y.toFixed(1)}`)
+  }
+  return {
+    d: `M${points.join(' L')}`,
+    // Outer lines fade, the middle of the ribbon is brightest
+    opacity: (0.28 + 0.5 * Math.sin(Math.PI * t)).toFixed(2),
+    flows: i % 4 === 1,
+    duration: (2.4 + (i % 3) * 0.8).toFixed(1),
+  }
+})
+---
+
+<svg
+  class:list={['stream-ribbon', className]}
+  viewBox={`0 0 ${W} ${H}`}
+  aria-hidden="true"
+  focusable="false"
+>
+  <defs>
+    <!-- Brand green flowing into the cover's blue and violet -->
+    <linearGradient
+      id="stream-ribbon-gradient"
+      gradientUnits="userSpaceOnUse"
+      x1="0"
+      y1="0"
+      x2={W}
+      y2="0"
+    >
+      <stop offset="0" stop-color="#2fb463"></stop>
+      <stop offset="0.55" stop-color="#4b63e8"></stop>
+      <stop offset="1" stop-color="#a24be0"></stop>
+    </linearGradient>
+  </defs>
+  <g class="ribbon-lines" stroke="url(#stream-ribbon-gradient)" fill="none">
+    {lines.map((line) => <path d={line.d} opacity={line.opacity} />)}
+  </g>
+  <g class="ribbon-chunks" fill="none">
+    {
+      lines
+        .filter((line) => line.flows)
+        .map((line) => (
+          <path d={line.d} style={`animation-duration:${line.duration}s`} />
+        ))
+    }
+  </g>
+</svg>
+
+<style>
+  .stream-ribbon .ribbon-lines {
+    stroke-width: 1.4;
+    transition: opacity 0.6s ease-out;
+    opacity: 0.85;
+  }
+
+  .stream-ribbon .ribbon-chunks path {
+    stroke: #8ff0b3;
+    stroke-width: 3;
+    stroke-linecap: round;
+    /* one 14-unit chunk every 100 units; the keyframe moves one period */
+    stroke-dasharray: 14 86;
+    opacity: 0.7;
+    animation: ribbon-flow linear infinite paused;
+    transition: opacity 0.6s ease-out;
+  }
+
+  .stream-ribbon[data-flowing] .ribbon-chunks path {
+    animation-play-state: running;
+  }
+
+  /* A successful signup "flushes" the stream for a moment */
+  .stream-ribbon.is-flushing .ribbon-lines,
+  .stream-ribbon.is-flushing .ribbon-chunks path {
+    opacity: 1;
+  }
+
+  @keyframes ribbon-flow {
+    to {
+      stroke-dashoffset: -100;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stream-ribbon .ribbon-chunks path {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  // Only stream while visible: nonessential loops shouldn't run off screen
+  document.querySelectorAll<SVGElement>('.stream-ribbon').forEach((ribbon) => {
+    if (!('IntersectionObserver' in window)) return
+    new IntersectionObserver(([entry]) => {
+      ribbon.toggleAttribute('data-flowing', entry.isIntersecting)
+    }).observe(ribbon)
+  })
+</script>
