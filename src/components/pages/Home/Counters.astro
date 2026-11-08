@@ -28,10 +28,10 @@ const counters = [
       {
         counters.map(({ value, suffix, label, Icon }) => (
           <div class="flex flex-col-reverse text-center">
-            <dt class="flex gap-2 justify-center items-center font-serif text-sm lg:text-base text-base-content font-bold">
+            <dt class="flex gap-2 justify-center items-center font-sans text-sm lg:text-base text-base-content/80 font-bold">
               <Icon class="h-4 w-4" aria-hidden="true" /> {label}
             </dt>
-            <dd class="font-mono text-3xl lg:text-4xl font-bold text-primary mb-2 tabular-nums">
+            <dd class="font-heading text-4xl lg:text-5xl leading-none font-bold text-primary mb-3 tabular-nums">
               {/* Final value is in the HTML so crawlers and no-JS visitors see it */}
               <span data-count-to={value} data-suffix={suffix}>
                 {formatCount(value) + suffix}

@@ -43,24 +43,20 @@ const buyButton = {
               d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
             ></path>
           </svg>
-          <span class="font-bold text-base-content">
-            <span class="max-[379px]:hidden md:hidden lg:inline">
-              Node.js Design Patterns
-            </span>
-            <span class="hidden max-[379px]:inline md:inline lg:hidden"
-              >Node.js DP</span
-            >
+          <span class="font-bold text-base-content whitespace-nowrap">
+            <span class="max-[429px]:hidden"> Node.js Design Patterns </span>
+            <span class="hidden max-[429px]:inline">Node.js DP</span>
           </span>
         </a>
       </div>
 
       <!-- Desktop Navigation -->
-      <div class="hidden md:flex items-center space-x-6">
+      <div class="hidden lg:flex items-center space-x-6">
         {
           menuItems.map((item) => (
             <a
               href={item.href}
-              class="nav-link text-sm font-medium transition-colors duration-200 ease-in-out hover:text-primary text-base-content/80"
+              class="nav-link text-sm font-normal transition-colors duration-200 ease-in-out hover:text-primary text-base-content/80"
             >
               {item.label}
             </a>
@@ -82,7 +78,7 @@ const buyButton = {
       </div>
 
       <!-- Mobile: a buy button stays reachable next to the menu toggle -->
-      <div class="md:hidden flex items-center gap-4">
+      <div class="lg:hidden flex items-center gap-4">
         <Button
           element="a"
           href={buyButton.href}
@@ -134,19 +130,26 @@ const buyButton = {
     <div
       id="mobile-menu"
       inert
-      class="md:hidden border-t border-base-300 overflow-hidden transition-all duration-200 ease-in-out max-h-0 opacity-0 p-0"
+      class="lg:hidden border-t border-base-300 overflow-hidden transition-all duration-200 ease-in-out max-h-0 opacity-0 p-0"
     >
-      <div class="py-2 md:py-0 flex flex-col">
+      <div class="py-2 flex flex-col">
         {
           menuItems.map((item) => (
             <a
               href={item.href}
-              class="mobile-nav-link block py-2.5 text-left text-base font-medium transition-colors duration-200 ease-in-out hover:text-primary text-base-content/80"
+              class="mobile-nav-link block py-2.5 text-left text-base font-normal transition-colors duration-200 ease-in-out hover:text-primary text-base-content/80"
             >
               {item.label}
             </a>
           ))
         }
+        <!-- Theme toggle lives here below lg (moved by ThemeSelector's script) -->
+        <div
+          class="flex items-center justify-between py-2.5 text-base text-base-content/80"
+        >
+          <span>Theme</span>
+          <div id="theme-selector-container-mobile"></div>
+        </div>
       </div>
     </div>
   </div>

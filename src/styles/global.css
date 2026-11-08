@@ -271,9 +271,50 @@
   margin: 0;
 }
 
-/* daisyUI 5.7+ adds vertical padding to inline code in .prose; keep the previous compact look */
+/* Inline code: a light chip that marks code without shouting. daisyUI 5.7+
+   adds vertical padding to inline code in .prose; keep the compact look */
 :root .prose :where(code):not(pre > code) {
   padding-block: 0;
+  padding-inline: 0.3em;
+  font-size: 0.85em;
+  border-radius: 0.3rem;
+  border-color: oklch(from var(--color-base-content) l c h / 0.12);
+}
+
+/* Code inside headings takes the heading's voice, no chip */
+:root .prose :where(h1, h2, h3, h4) :where(code) {
+  padding: 0;
+  background: none;
+  border: 0;
+  font-size: 0.9em;
+}
+
+/* Only 400 and 700 are loaded: make prose weights say what renders */
+.prose :where(strong, b, th):not(:where(.not-prose, .not-prose *)) {
+  font-weight: 700;
+}
+
+.prose :where(a):not(:where(.not-prose, .not-prose *)) {
+  font-weight: 400;
+}
+
+/* Phones: 17px body (prose default is 16px); desktop code at 15px so it
+   doesn't look shrunken next to 20px body text */
+@media (max-width: 63.99rem) {
+  .prose {
+    font-size: 1.0625rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  .prose {
+    --ec-codeFontSize: 0.9375rem;
+  }
+}
+
+/* Callout body sits a step below the article text */
+aside.admonition .admonition-content {
+  font-size: 0.9em;
 }
 
 /* Star ratings: one masked element per rating (see ui/StarRating.astro).

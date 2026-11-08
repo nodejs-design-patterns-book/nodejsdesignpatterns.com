@@ -29,11 +29,13 @@ const renderedChapters = await Promise.all(
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-12">
       <h2
-        class="text-4xl lg:text-5xl font-bold text-base-content font-heading mb-4"
+        class="text-4xl lg:text-5xl leading-[1.1] font-bold text-base-content font-heading mb-4"
       >
         Let's unpack each Chapter
       </h2>
-      <p class="text-xl text-base-content/70">
+      <p
+        class="text-xl lg:text-[1.375rem] leading-normal text-base-content/75 max-w-[40rem] mx-auto"
+      >
         Discover the key topics and takeaways in every chapter.
       </p>
     </div>
@@ -54,7 +56,7 @@ const renderedChapters = await Promise.all(
                   <div>
                     {/* A real button (stretched over the header via ::after) so
                         chapters open with the keyboard as well as the mouse */}
-                    <h3 class="font-semibold leading-snug tracking-tight text-lg text-left">
+                    <h3 class="font-heading font-bold leading-snug text-xl text-left">
                       <button
                         type="button"
                         class="chapter-toggle text-left cursor-pointer after:absolute after:inset-0 focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:-outline-offset-2 focus-visible:after:outline-primary focus-visible:after:rounded-t-xl"
@@ -121,20 +123,20 @@ const renderedChapters = await Promise.all(
                   <div class="flex flex-wrap gap-4 text-sm">
                     <div class="flex items-center space-x-2 text-accent">
                       <Clock class="h-4 w-4" />
-                      <span class="font-medium">
+                      <span class="font-normal">
                         Reading time: {readingTime(chapter.data.numWords)} min
                       </span>
                     </div>
                     <div class="flex items-center space-x-2 text-accent">
                       <CodeXml class="h-4 w-4" />
-                      <span class="font-medium">
+                      <span class="font-normal">
                         {chapter.data.numExamples} practical examples
                       </span>
                     </div>
                     {chapter.data.numExercises > 0 && (
                       <div class="flex items-center space-x-2 text-accent">
                         <BookOpen class="h-4 w-4" />
-                        <span class="font-medium">
+                        <span class="font-normal">
                           {chapter.data.numExercises} Chapter exercises included
                         </span>
                       </div>

@@ -31,11 +31,13 @@ const reviewGroups = [firstReviews, moreReviews].filter((g) => g.length > 0)
   >
     <div class="text-center mb-12">
       <h2
-        class="text-4xl lg:text-5xl font-bold text-base-content font-heading mb-4"
+        class="text-4xl lg:text-5xl leading-[1.1] font-bold text-base-content font-heading mb-4"
       >
         Highly Rated, <span class="text-primary">Widely Loved</span> by readers.
       </h2>
-      <p class="text-xl text-base-content/70">
+      <p
+        class="text-xl lg:text-[1.375rem] leading-normal text-base-content/75 max-w-[40rem] mx-auto"
+      >
         <strong>{RATING}</strong> stars with <strong>{REVIEWS}</strong>+ glowing
         reviews from developers like you!
       </p>
@@ -65,7 +67,7 @@ const reviewGroups = [firstReviews, moreReviews].filter((g) => g.length > 0)
                     <review.Content />
                   </div>
                   <footer class="text-sm text-base-content/70">
-                    <span class="font-medium">{review.data.name}</span> on{' '}
+                    <span class="font-normal">{review.data.name}</span> on{' '}
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
