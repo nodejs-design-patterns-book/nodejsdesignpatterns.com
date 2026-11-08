@@ -1,9 +1,7 @@
 ---
-import { Picture } from 'astro:assets'
 import Button from '@components/ui/button.astro'
 import { Download, BookOpen, Code, MailCheck } from '@lucide/astro'
 import StreamRibbon from './StreamRibbon.astro'
-import chapter6Image from '@images/mktg/person-reading-node-js-design-patterns-chapter-6.png'
 import {
   FREE_CHAPTER_FORM_ACTION,
   FREE_CHAPTER_FORM_FIELD_NAME,
@@ -38,14 +36,14 @@ import {
     </div>
   </div>
 
-  <!-- The ribbon streams behind the form and into the chapter photo -->
-  <div class="relative">
+  <!-- The form sits in the stream: the ribbon runs behind the card, visible
+       on both sides on wide screens and flowing out beneath it on phones -->
+  <div class="relative pb-24 lg:pb-0">
     <StreamRibbon
-      class="pointer-events-none absolute left-1/2 top-[69%] lg:top-1/2 w-full min-w-[1100px] h-auto -translate-x-1/2 -translate-y-1/2"
+      class="pointer-events-none absolute left-1/2 top-[calc(100%-6rem)] lg:top-1/2 w-full min-w-[1100px] h-auto -translate-x-1/2 -translate-y-1/2"
     />
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        <!-- Left Content -->
+      <div class="max-w-2xl mx-auto">
         <div>
           <!-- Try Chapter Section -->
           <div
@@ -209,24 +207,6 @@ import {
               </p>
             </div>
           </div>
-        </div>
-
-        <!-- Main Image -->
-        <div class="flex justify-center">
-          <Picture
-            formats={['avif', 'webp', 'png']}
-            layout="constrained"
-            sizes="(min-width: 600px) 600px, 100vw"
-            src={chapter6Image}
-            alt="A person holding a copy of Node.js Design Patterns open on Chapter 6: Coding with Streams"
-            pictureAttributes={{
-              class: 'w-full max-w-sm lg:max-w-md',
-            }}
-            class="rounded-lg shadow-lg"
-            loading="lazy"
-            width={1000}
-            height={1300}
-          />
         </div>
       </div>
     </div>
