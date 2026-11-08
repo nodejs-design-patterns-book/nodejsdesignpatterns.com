@@ -10,6 +10,15 @@ import {
   EXERCISES,
   BUY_LINK_PRINT,
 } from '@lib/const'
+import type { CtaPosition } from '@lib/analytics'
+
+interface Props {
+  // 'sidebar' on wide screens; 'inline' where it sits in the content flow
+  position?: CtaPosition
+  class?: string
+}
+
+const { position = 'sidebar', class: className = '' } = Astro.props
 import { extractPromoVariant } from '@lib/analytics'
 
 const images = import.meta.glob<{ default: ImageMetadata }>(
@@ -72,11 +81,13 @@ const promoVariant = extractPromoVariant(selectedPromoKey)
 ---
 
 <div
-  id="blog-promo-cta"
-  class="group bg-base-100 border-2 border-base-200 rounded-lg shadow-lg hover:shadow-xl motion-safe:hover:-translate-y-0.5 hover:border-primary transition-all duration-300 relative overflow-hidden"
+  class:list={[
+    'blog-promo-cta group bg-base-100 border-2 border-base-200 rounded-lg shadow-lg hover:shadow-xl motion-safe:hover:-translate-y-0.5 hover:border-primary transition-all duration-300 relative overflow-hidden',
+    className,
+  ]}
   data-analytics-variant={promoVariant}
-  data-analytics-cta-type="book_promo_card"
-  data-analytics-cta-position="sidebar"
+  data-analytics-cta-type='\"book_promo_card\"'
+  data-analytics-cta-position={position}
 >
   <a
     class="absolute inset-0 z-10 rounded-lg text-[0px] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary"
@@ -121,10 +132,15 @@ const promoVariant = extractPromoVariant(selectedPromoKey)
     validateCtaPosition,
   } from '@lib/analytics'
 
+  // The promo can appear twice (sidebar on wide screens, inline below lg);
+  // the hidden copy is display:none, so it never reports a view
   function initBlogPromoTracking() {
-    const promoCard = document.getElementById('blog-promo-cta')
-    if (!promoCard) return
+    document
+      .querySelectorAll<HTMLElement>('.blog-promo-cta')
+      .forEach(initPromoCard)
+  }
 
+  function initPromoCard(promoCard: HTMLElement) {
     const variant = validatePromoVariant(
       promoCard.dataset.analyticsVariant || 'promo01',
     )

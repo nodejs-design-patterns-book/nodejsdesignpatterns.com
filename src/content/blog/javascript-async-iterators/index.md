@@ -360,6 +360,8 @@ for (const value of countdown) {
 
 In general, generators can be considered great syntactic sugars to write iterators.
 
+Once you have iterators, modern JavaScript also gives you helpers to combine them lazily. For example, Node.js 27 adds `Iterator.zip()` and `Iterator.zipKeyed()` to walk several iterators side by side (even infinite ones built with generators). Check out [What's new in Node.js 27](/blog/whats-new-in-nodejs-27/#new-iterator-superpower-zip-zipkeyed-join-and-includes) to see them in action.
+
 ### The spread syntax for iterable objects
 
 Another interesting detail is that all iterable objects can be used with the _spread syntax_.

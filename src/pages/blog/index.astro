@@ -54,7 +54,7 @@ const pageDescription =
       >
         Latest articles from the blog
       </h2>
-      <div class="flex flex-col md:flex-row gap-12">
+      <div class="flex flex-col lg:flex-row gap-12">
         <!-- Blog Posts -->
         <section class="flex-1 min-w-0">
           {
@@ -66,16 +66,24 @@ const pageDescription =
               </div>
             ) : (
               <div class="grid gap-8 md:grid-cols-2">
-                {posts.map((post) => (
-                  <BlogCard post={post} />
+                {posts.map((post, i) => (
+                  <>
+                    <BlogCard post={post} />
+                    {/* Below lg the promo joins the grid after the first row */}
+                    {i === 1 && (
+                      <div class="lg:hidden md:col-span-2 max-w-md">
+                        <BookPromo position="inline" />
+                      </div>
+                    )}
+                  </>
                 ))}
               </div>
             )
           }
         </section>
-        <aside class="w-full md:w-60 lg:w-70 xl:w-80 md:flex-shrink-0">
-          <div class="md:sticky md:top-20 max-w-80">
-            <BookPromo />
+        <aside class="hidden lg:block lg:w-70 xl:w-80 lg:flex-shrink-0">
+          <div class="lg:sticky lg:top-20 max-w-80">
+            <BookPromo position="sidebar" />
           </div>
         </aside>
       </div>

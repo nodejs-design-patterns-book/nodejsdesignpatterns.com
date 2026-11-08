@@ -35,7 +35,7 @@ const faqPageSchema = generateFAQPageSchema(faqSchemaItems)
 
 <section id="faq" class="bg-base-100 py-16 lg:py-24">
   <script type="application/ld+json" set:html={JSON.stringify(faqPageSchema)} />
-  <div class="max-w-7xl mx-auto px-6">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="max-w-4xl mx-auto text-center mb-16">
       <h2
         class="text-4xl lg:text-5xl leading-[1.1] font-bold text-base-content font-heading mb-6"
@@ -47,9 +47,12 @@ const faqPageSchema = generateFAQPageSchema(faqSchemaItems)
       </p>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+    <!-- Questions get the wider column; the photo stays in view beside them -->
+    <div
+      class="grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-12 lg:gap-16 items-start"
+    >
       <!-- Left Content -->
-      <div class="flex justify-center">
+      <div class="flex justify-center lg:sticky lg:top-24">
         <Picture
           formats={['avif', 'webp', 'png']}
           layout="none"

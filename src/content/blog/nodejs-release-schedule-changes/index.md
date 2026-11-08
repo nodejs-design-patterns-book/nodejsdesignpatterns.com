@@ -129,6 +129,10 @@ The cleanest way to see the shift is to compare the last release of the old worl
 
 If you are running Node.js 26 today, nothing about _your_ version changes. It lives out its full, normal LTS life under the old rules. The new model simply begins with the version that comes after it.
 
+:::note[Node.js 27 Alpha is here]
+The first Node.js 27 Alpha (`v27.0.0-alpha.0.0.0`) was published on October 29, 2026, making it the first release to follow the new schedule. To see what it ships and how the Alpha channel works in practice, check out [What's new in Node.js 27](/blog/whats-new-in-nodejs-27/).
+:::
+
 ## The schedule going forward
 
 Because the cadence is now so regular, you can read the schedule years into the future without a calendar. Each major enters Alpha in October, goes Current the following April, becomes LTS that October, and reaches end of life three years after it first shipped:

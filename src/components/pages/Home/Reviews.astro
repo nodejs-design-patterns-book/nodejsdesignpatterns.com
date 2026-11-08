@@ -25,7 +25,10 @@ const moreReviews = renderedReviews.slice(INITIAL_REVIEWS)
 const reviewGroups = [firstReviews, moreReviews].filter((g) => g.length > 0)
 ---
 
-<section id="testimonials" class="base-100 py-16 sm:py-32 mt-16 relative">
+<section
+  id="testimonials"
+  class="bg-base-100 pt-10 lg:pt-12 pb-16 lg:pb-24 relative"
+>
   <div
     class="max-w-4xl lg:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 relative"
   >
@@ -72,7 +75,7 @@ const reviewGroups = [firstReviews, moreReviews].filter((g) => g.length > 0)
                       target="_blank"
                       rel="noopener noreferrer"
                       href={review.data.url}
-                      class="text-primary"
+                      class="text-primary inline-block py-1 -my-1"
                     >
                       {review.data.platform}
                     </a>

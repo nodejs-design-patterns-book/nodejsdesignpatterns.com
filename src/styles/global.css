@@ -304,6 +304,11 @@
   .prose {
     font-size: 1.0625rem;
   }
+
+  /* Tablets get a wide column below lg: keep ~70 characters at 17px */
+  .prose > :where(p, ul, ol, dl, h2, h3, h4, blockquote, aside, details) {
+    max-width: 34rem;
+  }
 }
 
 @media (min-width: 64rem) {

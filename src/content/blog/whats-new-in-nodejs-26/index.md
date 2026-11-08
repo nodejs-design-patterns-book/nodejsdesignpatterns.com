@@ -29,6 +29,10 @@ Node.js 26 is on the **Current** release line and will enter LTS in October 2026
 This odd/even cadence is about to change. Node.js 26 is the **final release under the old schedule**. Starting with Node.js 27 in 2027, the project moves to **one major a year**, year-based version numbers, and **every release becoming LTS**. If you want the full story, we wrote it up in [Node.js is changing its release schedule and version numbers](/blog/nodejs-release-schedule-changes/).
 :::
 
+:::tip[Looking for what comes next?]
+The first Node.js 27 Alpha landed in October 2026, with `Iterator.zip()`, `Math.sumPrecise()`, `node:net/promises`, and an unflagged `node:vfs`. We cover it all in [What's new in Node.js 27](/blog/whats-new-in-nodejs-27/).
+:::
+
 In this article we'll tour the highlights, **starting from the coolest, most code-relevant features and moving down to migration concerns**. Every section shows you what the new API looks like and, where useful, what the same code used to look like in older Node.js versions so you can see exactly what these changes unlock.
 
 :::note[Code samples]
@@ -278,7 +282,7 @@ Because `WeakMap` keys are held weakly, the metadata is collected automatically 
 
 ## `Iterator.concat()` for composable pipelines
 
-The other goodie that came with V8 14.6 is `Iterator.concat()`. It takes any number of iterables and returns a single iterator that yields from each of them in order, lazily, without ever building an intermediate array.
+The other goodie that came with V8 14.6 is `Iterator.concat()`. It takes any number of iterables and returns a single iterator that yields from each of them in order, lazily, without ever building an intermediate array. (If you want to consume iterables side by side instead of one after another, Node.js 27 adds `Iterator.zip()`, which we explore in [What's new in Node.js 27](/blog/whats-new-in-nodejs-27/#new-iterator-superpower-zip-zipkeyed-join-and-includes).)
 
 ### Combining generators
 
