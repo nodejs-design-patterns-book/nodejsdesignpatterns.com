@@ -24,7 +24,7 @@ On October 29, 2026, the Node.js team published [`v27.0.0-alpha.0.0.0`](https://
 Node.js 27 is the first release to follow the new annual schedule. Under the old schedule, October brought a major release that reached end of life six months later without entering Long Term Support (LTS). October now starts a six-month Alpha phase, ahead of the `27.0.0` Current release in April 2027 and LTS promotion in October 2027.
 
 :::note[Wait, an odd-numbered Node.js release becoming LTS?]
-Yes, the odd/even split is gone. Version numbers now match the calendar year (27 in 2027), with one major release per year, and every release becomes LTS. We covered the timeline and the reasons for the change in [Node.js is changing its release schedule and version numbers](/blog/nodejs-release-schedule-changes/). Because Node.js 27 is currently in its Alpha window, we will keep updating this article as new builds land on the way to April 2027.
+Yes, the odd/even split is gone. Version numbers now match the calendar year (27 in 2027), with one major release per year, and every release becomes LTS. We covered the timeline and the reasons for the change in [Node.js is changing its release schedule and version numbers](/blog/nodejs-release-schedule-changes/). Because Node.js 27 is currently in its Alpha window, I will keep updating this article as new builds land on the way to April 2027.
 :::
 
 In this first Alpha, V8 moves from 14.6 to 15.6, adding `Iterator.zip()`, `Iterator.zipKeyed()`, `Iterator.prototype.join()`, `Iterator.prototype.includes()`, and `Math.sumPrecise()`. There is a promises API for `node:net`, along with async-iterable TCP servers. The Virtual File System (`node:vfs`) is now unflagged, the Permission Model gains `--allow-env`, and HTTP and memory defaults change too.
@@ -579,7 +579,7 @@ Our empty `ordinary` object already "has" a `constructor`, inherited from its pr
 
 Notice that the example uses `__proto__` in two different ways. `{ __proto__: null }` is special object-literal syntax that creates the object with no prototype at all (`Object.create(null)` does the same thing, and the new Node.js code uses the literal form). The later `headers['__proto__'] = ...` is an ordinary assignment: with no inherited `__proto__` setter to intercept it, it simply stores an own property, like any other key.
 
-That's the motivation in [PR #62900](https://github.com/nodejs/node/pull/62900), by Matteo Collina. Besides consistency with the `*Distinct` APIs, its commit message says the change "Fixes prototype pollution concerns where headers like `__proto__` could be interpreted as prototype manipulation." Our reading is that the goal is clean dictionary semantics: a key exists in `req.headers` only if the request sent it.
+That's the motivation in [PR #62900](https://github.com/nodejs/node/pull/62900), by Matteo Collina. Besides consistency with the `*Distinct` APIs, its commit message says the change "Fixes prototype pollution concerns where headers like `__proto__` could be interpreted as prototype manipulation." My reading is that the goal is clean dictionary semantics: a key exists in `req.headers` only if the request sent it.
 
 The [March 2026 security releases](https://nodejs.org/en/blog/vulnerability/march-2026-security-releases) already included a real bug of this kind. CVE-2026-21710 was a denial-of-service flaw in `req.headersDistinct`, and it went like this:
 
