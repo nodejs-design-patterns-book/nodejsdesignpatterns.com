@@ -1,6 +1,6 @@
 ---
 date: 2026-11-07T19:24:54
-updatedAt: 2026-11-07T19:24:54
+updatedAt: 2026-11-09T12:00:00
 title: What's new in Node.js 27
 slug: whats-new-in-nodejs-27
 description: Node.js 27 brings V8 15.6 with Iterator.zip, Iterator.zipKeyed, Math.sumPrecise, net/promises, an unflagged node:vfs, and a 4 GB default heap limit.
@@ -551,9 +551,45 @@ These three HTTP changes affect production web servers:
 1. `http.Server` `keepAliveTimeout` increased from 5 seconds to 65 seconds:
    Running a Node.js HTTP server behind an AWS Application Load Balancer (ALB), Nginx, or Cloudflare can produce intermittent `502 Bad Gateway` errors when the proxy keeps an upstream connection available longer than Node.js keeps it open. AWS ALB, for example, defaults to a 60-second idle timeout, while Node.js historically set `keepAliveTimeout` to 5 seconds (`5000` ms). If Node.js closes an idle socket just as the proxy reuses it, the forwarded request can fail with a 502. The actual socket timeout also includes `keepAliveTimeoutBuffer` (1 second by default). The new default `keepAliveTimeout` of 65 seconds (`65000` ms) exceeds a 60-second proxy timeout. Check your proxy's actual idle timeout and configure Node's timeout to exceed it; 65 seconds does not cover every proxy configuration.
 2. `req.headers` and `req.trailers` now have a `null` prototype:
-   Incoming request headers (`Object.getPrototypeOf(req.headers) === null`) no longer inherit from `Object.prototype`. This prevents prototype-pollution edge cases when looking up header names like `req.headers['toString']` or `req.headers['constructor']` and matches `req.headersDistinct`. (See the breaking changes section below if your code calls `req.headers.hasOwnProperty(...)`!)
+   The header dictionaries on incoming requests no longer inherit from `Object.prototype` (`Object.getPrototypeOf(req.headers) === null`), matching the existing behavior of `req.headersDistinct` and `req.trailersDistinct`. Only these header objects lose their prototype: `req` itself is still a regular `IncomingMessage`. We explain the reasoning [just below](#why-remove-the-prototype-from-reqheaders), and the breaking changes section shows what to do if your code calls `req.headers.hasOwnProperty(...)`.
 3. Larger HTTP/2 window sizes:
    `node:http2` increased its default flow-control window sizes and trimmed per-request callback overhead, improving throughput on high-bandwidth HTTP/2 connections without manual tuning.
+
+#### Why remove the prototype from `req.headers`?
+
+If you are curious why this change was made: it seems a bit weird on the surface, right? Why would Node.js remove the prototype from an otherwise ordinary object?
+
+`req.headers` is a dictionary: the keys are header names chosen by whoever sent the request, and the values are whatever they sent. An ordinary JavaScript object is a poor fit for that kind of data, because it inherits properties from `Object.prototype` that have nothing to do with what you stored in it:
+
+```js title="05-core-upgrades/null-prototype.js"
+const ordinary = {}
+console.log(ordinary.constructor === Object) // true
+console.log(ordinary['__proto__'] === Object.prototype) // true
+
+const headers = { __proto__: null }
+console.log(headers.constructor) // undefined
+console.log(headers['__proto__']) // undefined
+
+headers['__proto__'] = 'some header value'
+console.log(headers['__proto__']) // 'some header value'
+console.log(Object.getPrototypeOf(headers)) // null
+```
+
+Our empty `ordinary` object already "has" a `constructor`, inherited from its prototype. `__proto__` is even more surprising: `Object.prototype` defines an accessor with that name, so reading it returns the prototype, and assigning to it tries to change the prototype instead of storing a value. Both names are already lowercase, which matters here because Node.js lowercases incoming header names. A client can send a `constructor` or `__proto__` header, and it arrives under exactly that key.
+
+Notice that the example uses `__proto__` in two different ways. `{ __proto__: null }` is special object-literal syntax that creates the object with no prototype at all (`Object.create(null)` does the same thing, and the new Node.js code uses the literal form). The later `headers['__proto__'] = ...` is an ordinary assignment: with no inherited `__proto__` setter to intercept it, it simply stores an own property, like any other key.
+
+That's the motivation in [PR #62900](https://github.com/nodejs/node/pull/62900), by Matteo Collina. Besides consistency with the `*Distinct` APIs, its commit message says the change "Fixes prototype pollution concerns where headers like `__proto__` could be interpreted as prototype manipulation." Our reading is that the goal is clean dictionary semantics: a key exists in `req.headers` only if the request sent it.
+
+The [March 2026 security releases](https://nodejs.org/en/blog/vulnerability/march-2026-security-releases) already included a real bug of this kind. CVE-2026-21710 was a denial-of-service flaw in `req.headersDistinct`, and it went like this:
+
+1. A request arrives with a header named `__proto__`.
+2. The application accesses `req.headersDistinct`.
+3. While building the dictionary, the lookup `dest['__proto__']` resolves to the inherited `Object.prototype` instead of `undefined`.
+4. The accumulation logic calls `.push()` on that value, which isn't an array.
+5. The resulting `TypeError` can crash the process if nothing catches it.
+
+Because the exception is thrown synchronously inside a property getter, an `'error'` event listener can't catch it. The fix initialized the `headersDistinct` and `trailersDistinct` objects with `{ __proto__: null }`, which is the behavior PR #62900 later extended to `headers` and `trailers`. The advisory covers `headersDistinct` only, so it doesn't mean `req.headers` had the same crash. The bug also stopped at crashing the process: a header couldn't use it to modify `Object.prototype` globally. And a null-prototype object removes inherited-property hazards only where the headers are created. If you merge headers into an ordinary object, that target still has the inherited `__proto__` accessor.
 
 ## Under the hood: V8 15.6, the 4 GB Heap Default, and OpenSSL 4.1
 
@@ -576,7 +612,11 @@ The Alpha window gives you time to check for breaking changes before the stable 
 
 ### 1. `req.headers` has a `null` prototype
 
-Because `req.headers` and `req.trailers` in `node:http` are now created with `Object.create(null)`, calling `req.headers.hasOwnProperty()` throws a `TypeError`. This runnable example checks that failure and demonstrates `Object.hasOwn()` instead. Checking for a header's presence does not authenticate its value:
+As we saw in [the HTTP section](#why-remove-the-prototype-from-reqheaders), the header dictionaries no longer have a prototype. Normal property access (`req.headers['content-type']`), destructuring, and `Object.keys()` work as before. What breaks is calling methods inherited from `Object.prototype`: `req.headers.hasOwnProperty('authorization')` now throws a `TypeError` (and calling a method looked up on a dictionary of external data was never a good idea anyway).
+
+Replace it with `Object.hasOwn(req.headers, 'authorization')`, which doesn't rely on the object's prototype and works on both Node.js 26 and 27. Please don't "fix" this by restoring `Object.prototype` on the headers object. The `in` operator still works on null-prototype objects, but the updated Node.js docs advise against using it here, and `Object.hasOwn()` expresses the own-property check you actually mean.
+
+This runnable example shows both the failure and the fix. Keep in mind that checking for a header's presence does not authenticate its value:
 
 ```js title="05-core-upgrades/http-headers.js"
 import { createServer } from 'node:http'
