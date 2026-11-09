@@ -593,16 +593,27 @@ Because the exception is thrown synchronously inside a property getter, an `'err
 
 ## Under the hood: V8 15.6, the 4 GB Heap Default, and OpenSSL 4.1
 
-Node.js 27 also updates its engine and bundled dependencies:
+Node.js 27 also updates its engine and bundled dependencies. Most of the V8 details below come from Joyee Cheung's [Notable V8 changes from Node.js 26 to 27 (Alpha)](https://nodejs.org/en/blog/announcements/notable-v8-changes-from-node-js-26-to-27-alpha) on the Node.js blog, which is worth reading in full if you maintain performance-sensitive code or native tooling:
 
 - Default Heap Limit up to 4 GB on mid-sized machines:
   When `--max-old-space-size` is not specified, V8 now sets the default old-generation heap limit to half of physical memory (or container cgroup memory), clamped between 256 MB and 4 GB. Previously, machines with less than 15 GB of RAM were capped at 2 GB. On an 8 GB container or VM, the default old-generation limit therefore rises from 2 GB to 4 GB (and on a 6 GB machine, from 2 GB to 3 GB). These are old-generation limits, not limits on the process's total memory use.
 - `Buffer` and `ArrayBuffer` memory affects garbage collection scheduling:
   Memory held by `Buffer` and `ArrayBuffer` instances is now included in V8's global allocation limit. If your app allocates large off-heap buffers (for example, image processing or large file buffers), this affects when garbage collection is scheduled. The global allocation limit is distinct from the old-generation heap limit and does not impose a hard cap on the process's total memory.
+- Slightly more memory per worker and per native object:
+  Each V8 isolate (the main thread and every worker thread) uses about 180 KB more for property lookup caches, and every JavaScript object that wraps a native resource (a socket, file handle, stream, hash, or blob) may use about 16 bytes more on the heap and about 50 bytes more outside it. That's negligible for most apps, but it adds up if you spawn many workers or hold many open sockets.
+- Fewer hard crashes on fatal errors:
+  More fatal V8 errors now go through Node.js's fatal error handling before aborting, so `--report-on-fatalerror` can produce a diagnostic report in cases that previously aborted without one. Some extreme inputs (overly long template literals, classes with too many elements, a regexp too large to compile) now throw a `RangeError` instead of crashing the process. The V8 post is explicit that this isn't guaranteed, so don't build program logic around it.
 - V8 15.6 performance improvements:
   - `Array.prototype.sort()` now uses PowerSort instead of TimSort for large arrays (still stable, with better performance on tricky input distributions).
-  - `await` on an already-fulfilled Promise incurs fewer microtasks and allocates less, and async generators are around 6% faster on file-system benchmarks.
+  - `await` on an already-fulfilled Promise is faster and allocates less, and async generators are around 6% faster on the `async-fs` JetStream3 benchmark.
+  - Reading properties from objects with many (or deleted) properties is about 10% faster on JetStream3's `richards` and about 20% faster on `espree-wtb`.
+  - `JSON.parse()` is faster on some inputs, such as payloads with many strings or arrays of objects that share the same shape.
+  - Worst-case garbage collection pauses dropped from about 45 ms to about 10 ms in V8's benchmarks.
+  - Regexps are now compiled to machine code the first time they run instead of after a warmup. Regexps that run many times can get faster, while one-off regexps may get slower because they pay the compilation cost up front.
+
+  These numbers come from V8's own benchmarks, and the impact varies with platform, workload, and build configuration. Measure your application before counting on a speedup.
   - `Intl.Locale.prototype.variants` is now available to inspect locale variants (for example, `new Intl.Locale('sl-rozaj-biske').variants` returns `'biske-rozaj'`).
+
 - OpenSSL 4.1.0, Undici 8.12, SQLite 3.54, and npm 12.1.0:
   Node.js 27 upgrades its bundled cryptography to OpenSSL 4.1.0, strips out all legacy OpenSSL 1.x compatibility shims and engine APIs, bumps `npm` to 12.1.0, and updates `NODE_MODULE_VERSION` to 153.
 
@@ -659,7 +670,18 @@ If you run multiple Node.js processes on a 6 GB or 8 GB machine and relied on th
 - `v8.serialize()`, `structuredClone()`, and `postMessage()` use a new V8 serialization format (which adds support for TypedArrays and resizable `ArrayBuffer`s larger than 4 GB in `structuredClone()` and `postMessage()`). Node.js 27 can still read data serialized by older Node.js versions, but older Node.js versions cannot deserialize payloads produced by `v8.serialize()` in Node.js 27. Watch out if you store `v8.serialize()` blobs in Redis or a database shared across mixed Node.js versions during a rolling upgrade!
 - Heap snapshots are ~2x larger and include full script source: `v8.writeHeapSnapshot()` and `v8.getHeapSnapshot()` now always include internal objects, numeric values, and the complete source code of scripts (instead of truncating at 1024 characters). As always, treat `.heapsnapshot` files as sensitive data because they may contain secrets present in your source or memory.
 
-### 4. Deprecations, removals, and platform changes
+### 4. V8 behavior changes that can break tests and caches
+
+Most V8 changes are invisible, but a few can break code that depends on exact results:
+
+- `Math` results can differ in the last bit: V8 now uses LLVM's libm for some `Math` functions. For example, `Math.log(3)` returns `1.0986122886681096` in Node.js 26 and `1.0986122886681098` in Node.js 27. Tests that compare floating-point results against hard-coded values may fail, so compare with a tolerance instead.
+- `Math.random()` produces a different sequence for the same `--random-seed`: the generator now runs xorshift128+ directly without a cache. If your tests or fixtures pass `--random-seed` to get reproducible values, expect new ones (with `--random-seed=42`, the first value changes from `0.6159659788862542` to `0.22876995452731475`).
+- `Array.prototype.sort()` calls your comparator a different number of times: as we saw in the previous section, V8 switched to PowerSort for bigger arrays. Sorting with a consistent comparator gives the same result, but tests that count or record comparator calls, or comparators with side effects, can behave differently.
+- Code caches are invalidated more often: `v8.cachedDataVersionTag()` now changes whenever Node.js applies its own patches on top of V8, not only on V8 upgrades. The built-in module compilation cache and cached data from `vm.Script` or `vm.Module` can be invalidated across Node.js patch and minor releases, so expect more cache misses if you persist that data between upgrades.
+
+The [V8 changes post](https://nodejs.org/en/blog/announcements/notable-v8-changes-from-node-js-26-to-27-alpha) lists more edge cases, including fractional `getTimezoneOffset()` values for historical dates and stricter `take()`/`drop()` limits on iterators.
+
+### 5. Deprecations, removals, and platform changes
 
 - `node:domain` is now runtime-deprecated: Importing or using `node:domain` emits a runtime deprecation warning (and its internals have been ported to `AsyncLocalStorage`).
 - Private `_http_*` modules deprecated and `_tls_*` removed: Undocumented internal modules (`_http_agent`, `_http_client`, `_http_common`, `_http_incoming`, `_http_outgoing`, `_http_server`) are deprecated, and `_tls_common` / `_tls_wrap` have reached End-of-Life. Always import from `node:http` and `node:tls`.
@@ -675,7 +697,8 @@ When testing your project or library against Node.js 27:
 2. Check if you persist `v8.serialize()` output across processes or in Redis/databases that might be read by Node.js 24 or 26 instances.
 3. Explicitly set `--max-old-space-size` in production if your container sizing assumed a 2 GB default ceiling on hosts with more than 4 GB and less than 15 GB of memory, or if you hold huge `Buffer` pools.
 4. Grep for legacy `_http_*`, `_tls_*`, or `node:domain` imports in your codebase and dependencies.
-5. Rebuild native C++ add-ons (`NODE_MODULE_VERSION` is 153, and `node::ObjectWrap` is now officially deprecated in favor of Node-API / `napi.h`).
+5. Rerun tests that hard-code `Math` results, depend on `--random-seed`, or count sort comparator calls.
+6. Rebuild native C++ add-ons (`NODE_MODULE_VERSION` is 153, and `node::ObjectWrap` is now officially deprecated in favor of Node-API / `napi.h`).
    :::
 
 ## Should you use Node.js 27 today?
